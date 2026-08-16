@@ -1,0 +1,180 @@
+{
+  "scenarios": [
+    {
+      "id": "restaurante_pedido",
+      "title": "Ordering at a Restaurant",
+      "tema": "restaurante",
+      "context": "Estás en un restaurante en España. Es la hora de almuerzo y tienes hambre. El mesero se acerca a tu mesa.",
+      "persona": {
+        "name": "Mesero/a",
+        "role": "restaurant server",
+        "formality": "formal (usted)",
+        "personality": "Amable pero un poco apurado; el restaurante está lleno."
+      },
+      "user_objective": "Pide una mesa, ordena comida y bebida, pide un artículo aparte (sin cebolla, etc.), y pide la cuenta al final.",
+      "target_grammar": ["imperative_formal", "double_object_pronouns", "restaurant_vocabulary"],
+      "required_vocabulary": ["mesa", "déme", "aparte", "la cuenta", "por favor", "tener hambre/sed"],
+      "success_criteria": [
+        "Usa al menos 1 mandato formal o 'déme' + pronombre",
+        "Pide un plato específico con al menos un modificador (sin/aparte)",
+        "Pide la cuenta usando una frase natural"
+      ],
+      "difficulty": "B1",
+      "opening_line": "¡Buenas tardes! Bienvenido/a. ¿Mesa para cuántas personas?"
+    },
+    {
+      "id": "transporte_retraso",
+      "title": "Bus Delay at the Station",
+      "tema": "transporte",
+      "context": "Estás en una estación de autobuses. Tu autobús tiene un retraso de 30 minutos y necesitas llegar a una cita importante.",
+      "persona": {
+        "name": "Empleado/a de la estación",
+        "role": "station attendant",
+        "formality": "formal (usted)",
+        "personality": "Profesional, algo cansado/a, pero dispuesto/a a ayudar si le preguntas bien."
+      },
+      "user_objective": "Averigua por qué hay retraso, pregunta por alternativas (otro autobús, reembolso) y negocia una solución.",
+      "target_grammar": ["preterite_vs_imperfect", "future_simple", "polite_requests_conditional"],
+      "required_vocabulary": ["el retraso", "la próxima parada", "el andén", "la taquilla", "¿Podría...?"],
+      "success_criteria": [
+        "Pregunta la razón del retraso",
+        "Usa el condicional para una petición cortés (ej. '¿Podría...?')",
+        "Llega a una resolución (otro bus, reembolso, o esperar)"
+      ],
+      "difficulty": "B1",
+      "opening_line": "Buenas, dígame, ¿en qué puedo ayudarle?"
+    },
+    {
+      "id": "vecino_favor",
+      "title": "Asking a Neighbor for a Favor",
+      "tema": "vecinos",
+      "context": "Necesitas pedirle un favor a tu vecino/a: cuidar tu gato mientras viajas el próximo fin de semana.",
+      "persona": {
+        "name": "Vecino/a",
+        "role": "neighbor",
+        "formality": "informal (tú)",
+        "personality": "Simpático/a pero ocupado/a; puede tener preguntas antes de aceptar."
+      },
+      "user_objective": "Pide el favor de forma educada, explica los detalles (cuándo, qué necesita el gato), y agradece.",
+      "target_grammar": ["imperative_informal", "reflexive_verbs", "conditional_polite_requests"],
+      "required_vocabulary": ["¿Podrías...?", "el favor", "dar de comer", "las llaves", "gracias"],
+      "success_criteria": [
+        "Pide el favor usando una estructura cortés (condicional o pregunta indirecta)",
+        "Da instrucciones claras usando al menos 1 mandato informal (dale, déjale, etc.)",
+        "Agradece apropiadamente al final"
+      ],
+      "difficulty": "A2-B1",
+      "opening_line": "¡Hola! ¿Qué tal? ¿Necesitas algo?"
+    },
+    {
+      "id": "medico_cita",
+      "title": "Doctor's Appointment - Describing Symptoms",
+      "tema": "salud",
+      "context": "No te sientes bien desde hace dos días. Vas al médico para explicar tus síntomas.",
+      "persona": {
+        "name": "Doctor/a",
+        "role": "physician",
+        "formality": "formal (usted)",
+        "personality": "Atento/a, hace preguntas de seguimiento, da recomendaciones."
+      },
+      "user_objective": "Describe cómo te sentías antes (imperfecto) y qué pasó específicamente (pretérito), responde preguntas del doctor.",
+      "target_grammar": ["preterite_vs_imperfect", "reflexive_verbs_health", "tener_expressions"],
+      "required_vocabulary": ["tener fiebre", "sentirse mal", "el dolor", "desde hace", "me dolía"],
+      "success_criteria": [
+        "Usa el imperfecto para describir el estado general (Me sentía mal, tenía dolor de cabeza)",
+        "Usa el pretérito para un evento específico (Ayer empecé a toser, me desmayé)",
+        "Responde correctamente a al menos 2 preguntas del doctor"
+      ],
+      "difficulty": "B1-B2",
+      "opening_line": "Buenos días. Cuénteme, ¿qué le pasa?"
+    },
+    {
+      "id": "cena_familiar_recuerdo",
+      "title": "Recounting a Family Dinner Story",
+      "tema": "narrativa",
+      "context": "Le cuentas a un amigo sobre una cena familiar memorable de tu infancia — algo salió mal o fue muy divertido.",
+      "persona": {
+        "name": "Amigo/a",
+        "role": "close friend",
+        "formality": "informal (tú)",
+        "personality": "Curioso/a, hace preguntas para saber más detalles de la historia."
+      },
+      "user_objective": "Narra una historia del pasado combinando descripción de fondo (imperfecto) con eventos específicos (pretérito).",
+      "target_grammar": ["preterite_vs_imperfect", "pluscuamperfecto_optional"],
+      "required_vocabulary": ["de niño/a", "una vez", "de repente", "mientras", "porque"],
+      "success_criteria": [
+        "Usa el imperfecto al menos 3 veces para describir el contexto (edad, ambiente, emociones)",
+        "Usa el pretérito al menos 3 veces para eventos completados en secuencia",
+        "La historia tiene un inicio, un evento central, y un final claro"
+      ],
+      "difficulty": "B1-B2",
+      "opening_line": "Oye, cuéntame algo curioso de tu infancia. ¿Recuerdas alguna cena familiar memorable?"
+    },
+    {
+      "id": "hotel_reserva_problema",
+      "title": "Hotel Check-In Problem",
+      "tema": "viajes",
+      "context": "Llegas a un hotel donde hiciste una reserva, pero dicen que no tienen tu reservación en el sistema.",
+      "persona": {
+        "name": "Recepcionista",
+        "role": "hotel receptionist",
+        "formality": "formal (usted)",
+        "personality": "Servicial pero un poco confundido/a; necesita que le expliques con calma."
+      },
+      "user_objective": "Explica el problema, muestra evidencia (confirmación), y negocia una solución (habitación disponible, descuento, etc.).",
+      "target_grammar": ["preterite", "polite_commands", "double_object_pronouns"],
+      "required_vocabulary": ["la reservación", "confirmar", "¿Podría revisar...?", "una habitación", "el número de confirmación"],
+      "success_criteria": [
+        "Explica cuándo hizo la reservación usando el pretérito",
+        "Usa al menos una petición formal cortés",
+        "Llega a una resolución con el recepcionista"
+      ],
+      "difficulty": "B1",
+      "opening_line": "Buenas noches, bienvenido/a al hotel. ¿Me da su nombre, por favor?"
+    },
+    {
+      "id": "compras_mercado",
+      "title": "Bargaining at an Open-Air Market",
+      "tema": "compras",
+      "context": "Estás en un mercado al aire libre en Latinoamérica. Ves algo que te gusta pero el precio parece alto.",
+      "persona": {
+        "name": "Vendedor/a",
+        "role": "market vendor",
+        "formality": "informal-neutral (tú o usted según el país)",
+        "personality": "Amigable, dispuesto/a a negociar un poco el precio."
+      },
+      "user_objective": "Pregunta el precio, intenta negociar un descuento, y completa la compra.",
+      "target_grammar": ["numbers_and_money", "conditional_polite", "direct_object_pronouns"],
+      "required_vocabulary": ["¿Cuánto cuesta?", "es muy caro", "¿Me lo deja en...?", "el descuento", "lo llevo"],
+      "success_criteria": [
+        "Pregunta el precio correctamente",
+        "Intenta negociar usando una frase natural de regateo",
+        "Confirma la compra final con un pronombre de objeto directo (Lo llevo / Me lo llevo)"
+      ],
+      "difficulty": "A2-B1",
+      "opening_line": "¡Buenas! Mire, esto que tiene en la mano es de muy buena calidad. ¿Le interesa?"
+    },
+    {
+      "id": "companero_cuarto_reglas",
+      "title": "Setting House Rules with a Roommate",
+      "tema": "convivencia",
+      "context": "Te acabas de mudar con un compañero/a de cuarto nuevo/a. Necesitan establecer reglas básicas de convivencia.",
+      "persona": {
+        "name": "Compañero/a de cuarto",
+        "role": "new roommate",
+        "formality": "informal (tú)",
+        "personality": "Relajado/a pero tiene sus propias ideas; puede estar de acuerdo o proponer alternativas."
+      },
+      "user_objective": "Propón reglas usando mandatos de nosotros ('Limpiemos...', 'No dejemos...') y negocia con tu compañero/a.",
+      "target_grammar": ["imperative_nosotros", "reflexive_imperative", "negative_imperative"],
+      "required_vocabulary": ["limpiar", "los platos", "el turno", "por favor", "de acuerdo"],
+      "success_criteria": [
+        "Usa al menos 2 mandatos de nosotros (afirmativos o negativos)",
+        "Propón un sistema o turno de tareas",
+        "Llega a un acuerdo con el compañero/a"
+      ],
+      "difficulty": "B1",
+      "opening_line": "Oye, ahora que vivimos juntos, ¿hablamos de cómo vamos a organizar la casa?"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "saludos": {
+    "time_based_greetings": [
+      {
+        "spanish": "¡Buenos días!",
+        "english": "Good morning!",
+        "time_range": "until 11:59 am"
+      },
+      {
+        "spanish": "¡Buenas tardes!",
+        "english": "Good afternoon!",
+        "time_range": "12:00 pm - 18:59 pm"
+      },
+      {
+        "spanish": "¡Buenas noches!",
+        "english": "Good evening/night!",
+        "time_range": "7:00 pm onward"
+      },
+      {
+        "spanish": "¡Buenas!",
+        "english": "Hi! (informal, any time)"
+      }
+    ],
+    "how_are_you": [
+      {"spanish": "¿Cómo estás?", "english": "How are you? (informal)"},
+      {"spanish": "¿Cómo está?", "english": "How are you? (formal)"},
+      {"spanish": "¿Qué tal!", "english": "What's up! / How's it going!"},
+      {"spanish": "¿Todo bien?", "english": "Everything good?"},
+      {"spanish": "bien, gracias, ¿y tú/usted?", "english": "good, thanks, and you?"},
+      {"spanish": "más o menos", "english": "so-so, more or less"},
+      {"spanish": "sí, todo bien", "english": "yes, everything's good"}
+    ]
+  },
+  "articles": {
+    "definite_articles": {
+      "rule": "EL/LOS/LA/LAS = 'the' — agree in gender and number",
+      "forms": [
+        {"spanish": "el", "usage": "masculine singular", "example": "el chico"},
+        {"spanish": "los", "usage": "masculine plural", "example": "los chicos"},
+        {"spanish": "la", "usage": "feminine singular", "example": "la chica"},
+        {"spanish": "las", "usage": "feminine plural", "example": "las chicas"}
+      ]
+    },
+    "indefinite_articles": {
+      "rule": "UN/UNOS/UNA/UNAS = 'a, an, some' — agree in gender and number",
+      "forms": [
+        {"spanish": "un", "usage": "masculine singular", "example": "un chico"},
+        {"spanish": "unos", "usage": "masculine plural", "example": "unos chicos"},
+        {"spanish": "una", "usage": "feminine singular", "example": "una chica"},
+        {"spanish": "unas", "usage": "feminine plural", "example": "unas chicas"}
+      ]
+    },
+    "sentence_pattern": {
+      "rule": "LA FRASE: Artículo + Sustantivo + Adjetivo (Article + Noun + Adjective)",
+      "examples": [
+        {"spanish": "El es un buen chico.", "english": "He is a good boy."},
+        {"spanish": "Él es un chico bueno.", "english": "He is a good boy.", "note": "buen (shortened) before noun vs. bueno (full) after noun"},
+        {"spanish": "Ella es una chica buena.", "english": "She is a good girl.", "note": "Feminine form never shortens: buena, not 'buen'"}
+      ]
+    }
+  },
+  "classroom_phrases": [
+    {"spanish": "Buen provecho.", "english": "Enjoy your meal. (Bon appétit)"},
+    {"spanish": "Disculpe, no entiendo.", "english": "Excuse me, I don't understand."},
+    {"spanish": "Hable más lento, por favor.", "english": "Speak more slowly, please."},
+    {"spanish": "¿Puede repetir?", "english": "Can you repeat that?"},
+    {"spanish": "Preste atención.", "english": "Pay attention."}
+  ]
+}

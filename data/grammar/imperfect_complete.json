@@ -1,0 +1,290 @@
+{
+  "imperfect_tense": {
+    "overview": "El Pretérito Imperfecto expresa acciones pasadas que ocurrían de manera habitual o continua. Se usa para describir contexto, acciones repetidas, y estados en el pasado. Es fundamental para la narración en español.",
+    "construction": {
+      "regular_ar_verbs": {
+        "pattern": "-aba, -abas, -aba, -ábamos, -abais, -aban",
+        "example": "hablar",
+        "conjugation": {
+          "yo": "hablaba",
+          "tú": "hablabas",
+          "él_ella_usted": "hablaba",
+          "nosotros": "hablábamos",
+          "vosotros": "hablabais",
+          "ellos_ustedes": "hablaban"
+        }
+      },
+      "regular_er_ir_verbs": {
+        "pattern": "-ía, -ías, -ía, -íamos, -íais, -ían",
+        "examples": ["comer", "vivir"],
+        "conjugation_comer": {
+          "yo": "comía",
+          "tú": "comías",
+          "él_ella_usted": "comía",
+          "nosotros": "comíamos",
+          "vosotros": "comíais",
+          "ellos_ustedes": "comían"
+        }
+      },
+      "only_3_irregular_verbs": {
+        "note": "Only SER, IR, and VER are irregular in imperfect",
+        "ser": {
+          "yo": "era",
+          "tú": "eras",
+          "él_ella_usted": "era",
+          "nosotros": "éramos",
+          "vosotros": "erais",
+          "ellos_ustedes": "eran"
+        },
+        "ir": {
+          "yo": "iba",
+          "tú": "ibas",
+          "él_ella_usted": "iba",
+          "nosotros": "íbamos",
+          "vosotros": "ibais",
+          "ellos_ustedes": "iban"
+        },
+        "ver": {
+          "yo": "veía",
+          "tú": "veías",
+          "él_ella_usted": "veía",
+          "nosotros": "veíamos",
+          "vosotros": "veíais",
+          "ellos_ustedes": "veían"
+        }
+      }
+    },
+    "uses": [
+      {
+        "use_number": 1,
+        "name": "Habitual or Repeated Actions in the Past",
+        "spanish_name": "Acciones habituales o repetidas",
+        "description": "Actions that happened regularly or repeatedly over a period of time in the past",
+        "examples": [
+          {
+            "spanish": "Antes yo pasaba surfeando en la playa.",
+            "english": "Before, I used to spend my time surfing at the beach.",
+            "explanation": "Habitual action in the past; suggests regular repetition"
+          },
+          {
+            "spanish": "Muchas veces pasé unas bonitas vacaciones.",
+            "english": "Many times I spent nice vacations.",
+            "explanation": "Repeated past action; frequency indicates imperfect usage"
+          },
+          {
+            "spanish": "De niño, jugaba al fútbol todos los días.",
+            "english": "As a child, I played soccer every day.",
+            "explanation": "Regular past habit during childhood"
+          }
+        ]
+      },
+      {
+        "use_number": 2,
+        "name": "Background or Descriptive Context",
+        "spanish_name": "Descripción o contexto",
+        "description": "Setting the scene or describing conditions that were true in the past; provides the background for actions",
+        "examples": [
+          {
+            "spanish": "El barco era blanco, tenía 9 pasajeros, una bandera azul y navegaba lentamente.",
+            "english": "The boat was white, had 9 passengers, a blue flag, and was sailing slowly.",
+            "explanation": "Describing the state and characteristics of the boat; background context"
+          },
+          {
+            "spanish": "Hacía mucho calor, había poca gente en la playa.",
+            "english": "It was very hot, there were few people at the beach.",
+            "explanation": "Setting the scene; descriptive conditions"
+          },
+          {
+            "spanish": "Era verano, el cielo estaba azul, los pájaros cantaban.",
+            "english": "It was summer, the sky was blue, birds were singing.",
+            "explanation": "Describing the environment and atmosphere"
+          }
+        ]
+      },
+      {
+        "use_number": 3,
+        "name": "Mental, Emotional, or Physical States in the Past",
+        "spanish_name": "Estados mentales, emocionales o físicos",
+        "description": "Feelings, emotions, thoughts, and physical conditions that existed at a point in time",
+        "examples": [
+          {
+            "spanish": "Tenía cansancio.",
+            "english": "I was tired.",
+            "explanation": "Physical state in the past"
+          },
+          {
+            "spanish": "Estaba feliz, aunque un poco nervioso.",
+            "english": "I was happy, although a bit nervous.",
+            "explanation": "Emotional state"
+          },
+          {
+            "spanish": "Pensaba que era una buena idea.",
+            "english": "I thought it was a good idea.",
+            "explanation": "Mental state/thought"
+          }
+        ]
+      },
+      {
+        "use_number": 4,
+        "name": "Age, Time, and Circumstances",
+        "spanish_name": "Edad, hora, y circunstancias",
+        "description": "Expressing what time it was, how old someone was, or the circumstances",
+        "examples": [
+          {
+            "spanish": "Tenía 15 años cuando aprendí a conducir.",
+            "english": "I was 15 years old when I learned to drive.",
+            "explanation": "Age at a specific point in the past"
+          },
+          {
+            "spanish": "Era las tres de la tarde cuando llegó.",
+            "english": "It was 3 o'clock in the afternoon when he arrived.",
+            "explanation": "Time in the past"
+          }
+        ]
+      },
+      {
+        "use_number": 5,
+        "name": "Continuous or Progressive Actions in the Past",
+        "spanish_name": "Acciones continuas o progresivas",
+        "description": "An action that was ongoing at a specific moment; what was happening",
+        "examples": [
+          {
+            "spanish": "Ella me estaba ayudando.",
+            "english": "She was helping me.",
+            "explanation": "Ongoing action in the past at a certain moment"
+          },
+          {
+            "spanish": "Cuando llamaste, yo comía.",
+            "english": "When you called, I was eating.",
+            "explanation": "Action in progress when interrupted"
+          }
+        ]
+      },
+      {
+        "use_number": 6,
+        "name": "Polite Requests or Suggestions",
+        "spanish_name": "Peticiones o sugerencias corteses",
+        "description": "Using imperfect for polite, indirect requests",
+        "examples": [
+          {
+            "spanish": "Quería pedirte un favor.",
+            "english": "I wanted to ask you for a favor.",
+            "explanation": "Softer, more polite than present"
+          },
+          {
+            "spanish": "¿Querías venir conmigo?",
+            "english": "Did you want to come with me?",
+            "explanation": "Polite invitation"
+          }
+        ]
+      },
+      {
+        "use_number": 7,
+        "name": "Habitual Condition or General Truth in the Past",
+        "spanish_name": "Condición habitual o verdad general en el pasado",
+        "description": "Things that were generally true or typical during a period",
+        "examples": [
+          {
+            "spanish": "Los niños siempre jugaban en el parque después de la escuela.",
+            "english": "The children always played in the park after school.",
+            "explanation": "Habitual condition; general truth during that time"
+          },
+          {
+            "spanish": "En esa época, la gente no tenía internet.",
+            "english": "In that era, people didn't have the internet.",
+            "explanation": "General truth of that historical period"
+          }
+        ]
+      },
+      {
+        "use_number": 8,
+        "name": "Contrast with Preterite (Specific Completed Actions)",
+        "spanish_name": "Contraste con el pretérito",
+        "description": "Imperfect provides background while preterite marks specific events",
+        "examples": [
+          {
+            "spanish": "Ayer pasé un bonito día en la playa. Antes yo pasaba surfeando en la playa.",
+            "english": "Yesterday I spent a nice day at the beach. Before, I used to spend time surfing at the beach.",
+            "explanation": "Preterite (pasé) = specific past event; Imperfect (pasaba) = habitual past action"
+          },
+          {
+            "spanish": "Vimos que el barco chocó, se destruyó y luego se hundió. El barco era blanco, tenía 9 pasajeros...",
+            "english": "We saw that the boat collided, was destroyed, and then sank. The boat was white, had 9 passengers...",
+            "explanation": "Preterite (chocó, se destruyó, se hundió) = sequence of completed events; Imperfect (era, tenía) = background description"
+          }
+        ]
+      }
+    ],
+    "preterite_vs_imperfect": {
+      "rule": "PRETERITE = Completed action; a single event that finished. IMPERFECT = Background, habitual, or ongoing state in the past.",
+      "comparison_chart": [
+        {
+          "aspect": "Focus",
+          "preterite": "Specific completed action",
+          "imperfect": "Background, habit, condition, or state"
+        },
+        {
+          "aspect": "Duration",
+          "preterite": "Marked as completed; has a clear endpoint",
+          "imperfect": "No clear endpoint; was ongoing or habitual"
+        },
+        {
+          "aspect": "Frequency",
+          "preterite": "One-time event or defined series",
+          "imperfect": "Repeated or habitual ('used to', 'would')"
+        },
+        {
+          "aspect": "Time Frame",
+          "preterite": "Specific moment or series of moments",
+          "imperfect": "During a period; simultaneous background"
+        }
+      ],
+      "example_pair": {
+        "preterite": "Comienzó a llover.",
+        "preterite_english": "It began to rain. (Specific moment when rain started)",
+        "imperfect": "Llovía.",
+        "imperfect_english": "It was raining. (Rain was ongoing; no specified start/stop)",
+        "together": "Comienzó a llover mientras yo caminaba por el parque.",
+        "together_english": "It began to rain while I was walking through the park. (Preterite: specific moment rain started; Imperfect: my walking was ongoing)"
+      }
+    },
+    "common_imperfect_time_markers": [
+      "siempre (always)",
+      "muchas veces (many times)",
+      "cada día (every day)",
+      "todas las semanas (every week)",
+      "generalmente (generally)",
+      "normalmente (normally)",
+      "de vez en cuando (from time to time)",
+      "mientras (while)",
+      "cuando (when - used with imperfect for concurrent actions)"
+    ],
+    "practice_sentences": [
+      {
+        "spanish": "Cuando era niño, vivía en Madrid.",
+        "english": "When I was a child, I lived in Madrid.",
+        "use_type": "Age + habitual location"
+      },
+      {
+        "spanish": "Todos los días me levantaba a las 7 y desayunaba cereal.",
+        "english": "Every day I got up at 7 and ate cereal for breakfast.",
+        "use_type": "Daily habitual action"
+      },
+      {
+        "spanish": "Hacía sol y hacía calor. No había nubes en el cielo.",
+        "english": "It was sunny and hot. There were no clouds in the sky.",
+        "use_type": "Descriptive background"
+      },
+      {
+        "spanish": "Me sentía mal, pero tenía que ir al trabajo.",
+        "english": "I was feeling bad, but I had to go to work.",
+        "use_type": "Emotional and physical state + necessity"
+      },
+      {
+        "spanish": "Mientras estudiaba, oí un ruido extraño.",
+        "english": "While I was studying, I heard a strange noise.",
+        "use_type": "Imperfect background + preterite interruption"
+      }
+    ]
+  }
+}

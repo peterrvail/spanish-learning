@@ -1,0 +1,178 @@
+{
+  "conditional_simple": {
+    "overview": "El Condicional Simple expresa la posibilidad sobre la realización de una acción en el presente, pasado o futuro. Generalmente la realización de estas acciones depende de una condición.",
+    "spanish_name": "El Condicional Simple",
+    "construction": {
+      "rule": "INFINITIVO + terminaciones (ía, ías, ía, íamos, íais, ían)",
+      "note": "Same endings for -AR, -ER, -IR verbs; same stem irregularities as future tense",
+      "conjugation_pattern": {
+        "yo": "-ía",
+        "tú": "-ías",
+        "él_ella_usted": "-ía",
+        "nosotros": "-íamos",
+        "vosotros": "-íais",
+        "ellos_ustedes": "-ían"
+      },
+      "example_hablar": {
+        "yo": "hablaría",
+        "tú": "hablarías",
+        "él_ella_usted": "hablaría",
+        "nosotros": "hablaríamos",
+        "vosotros": "hablaríais",
+        "ellos_ustedes": "hablarían"
+      },
+      "example_comer": {
+        "yo": "comería",
+        "tú": "comerías",
+        "él_ella_usted": "comería",
+        "nosotros": "comeríamos",
+        "vosotros": "comeríais",
+        "ellos_ustedes": "comerían"
+      },
+      "example_vivir": {
+        "yo": "viviría",
+        "tú": "vivirías",
+        "él_ella_usted": "viviría",
+        "nosotros": "viviríamos",
+        "vosotros": "viviríais",
+        "ellos_ustedes": "vivirían"
+      }
+    },
+    "irregular_stems": {
+      "note": "Uses the SAME irregular stems as the future tense",
+      "verbs": [
+        {"infinitive": "poder", "stem": "podr-", "example": "podría"},
+        {"infinitive": "salir", "stem": "saldr-", "example": "saldría"},
+        {"infinitive": "valer", "stem": "valdr-", "example": "valdría"},
+        {"infinitive": "poner", "stem": "pondr-", "example": "pondría"},
+        {"infinitive": "venir", "stem": "vendr-", "example": "vendría"},
+        {"infinitive": "tener", "stem": "tendr-", "example": "tendría"},
+        {"infinitive": "saber", "stem": "sabr-", "example": "sabría"},
+        {"infinitive": "haber", "stem": "habr-", "example": "habría"},
+        {"infinitive": "decir", "stem": "dir-", "example": "diría"},
+        {"infinitive": "hacer", "stem": "har-", "example": "haría"},
+        {"infinitive": "querer", "stem": "querr-", "example": "querría"}
+      ]
+    },
+    "uses": [
+      {
+        "use_number": 1,
+        "name": "Possible Action in the Present (with implicit condition)",
+        "description": "Expresses what would happen now, given a hypothetical condition",
+        "examples": [
+          {
+            "spanish": "Yo podría ir a tu fiesta pero tengo que terminar mi tarea.",
+            "english": "I could go to your party, but I have to finish my homework.",
+            "explanation": "Present possibility, condition implied (if I didn't have homework)"
+          },
+          {
+            "spanish": "Si tengo tiempo, comería una pizza.",
+            "english": "If I have time, I would eat a pizza.",
+            "explanation": "Conditional based on a present condition"
+          }
+        ]
+      },
+      {
+        "use_number": 2,
+        "name": "Possible Action in the Past",
+        "description": "Expresses what would have happened or could have happened, referring to a past situation",
+        "examples": [
+          {
+            "spanish": "¿Qué pasaría ayer en el evento de surf?",
+            "english": "What would/could have happened yesterday at the surf event?",
+            "explanation": "Speculation about a past event"
+          }
+        ]
+      },
+      {
+        "use_number": 3,
+        "name": "Possible Action in the Future",
+        "description": "Expresses future possibility, often softer/more tentative than future simple",
+        "examples": [
+          {
+            "spanish": "Mañana me gustaría ir a la playa.",
+            "english": "Tomorrow I would like to go to the beach.",
+            "explanation": "Tentative future plan/desire"
+          }
+        ]
+      },
+      {
+        "use_number": 4,
+        "name": "Polite Requests",
+        "description": "Using conditional to soften requests, making them more polite",
+        "examples": [
+          {
+            "spanish": "¿Podrías ayudarme?",
+            "english": "Could you help me?",
+            "explanation": "Polite request using conditional of poder"
+          },
+          {
+            "spanish": "Me gustaría un café, por favor.",
+            "english": "I would like a coffee, please.",
+            "explanation": "Polite ordering"
+          }
+        ]
+      },
+      {
+        "use_number": 5,
+        "name": "Hypothetical Situations (If-clauses)",
+        "description": "Used in the result clause of hypothetical if-sentences (si + imperfect subjunctive, conditional)",
+        "examples": [
+          {
+            "spanish": "Si tuviera dinero, viajaría por el mundo.",
+            "english": "If I had money, I would travel the world.",
+            "explanation": "Classic hypothetical structure: si + imperfect subjunctive, + conditional"
+          },
+          {
+            "spanish": "Si tengo la oportunidad de verte, te invitaría una copa de vino.",
+            "english": "If I have the chance to see you, I would treat you to a glass of wine.",
+            "explanation": "Conditional as the result of a possible future condition"
+          }
+        ]
+      },
+      {
+        "use_number": 6,
+        "name": "Advice or Suggestions",
+        "description": "Giving advice using conditional (often with deber)",
+        "examples": [
+          {
+            "spanish": "Deberías estudiar más.",
+            "english": "You should study more.",
+            "explanation": "Conditional of deber for advice"
+          },
+          {
+            "spanish": "Yo que tú, hablaría con ella.",
+            "english": "If I were you, I would talk to her.",
+            "explanation": "Advice through hypothetical perspective"
+          }
+        ]
+      },
+      {
+        "use_number": 7,
+        "name": "Future-in-the-Past (Reported Speech)",
+        "description": "Expressing what someone said would happen, from a past reference point",
+        "examples": [
+          {
+            "spanish": "Dijo que vendría mañana.",
+            "english": "He said he would come tomorrow.",
+            "explanation": "Conditional used for future relative to a past statement"
+          }
+        ]
+      }
+    ],
+    "vocabulary_notes": [
+      {
+        "spanish": "darse cuenta de / notar",
+        "english": "to realize, to notice",
+        "example": "Me di cuenta de que era tarde.",
+        "example_english": "I realized it was late."
+      },
+      {
+        "spanish": "a la derecha",
+        "english": "to the right",
+        "example": "Gira a la derecha.",
+        "example_english": "Turn right."
+      }
+    ]
+  }
+}

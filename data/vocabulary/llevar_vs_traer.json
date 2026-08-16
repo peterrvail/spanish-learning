@@ -1,0 +1,42 @@
+{
+  "llevar_vs_traer": {
+    "overview": "Both mean 'to carry/take/bring' but have opposite directional meaning, similar to English 'take' vs 'bring'.",
+    "llevar": {
+      "english": "to take, to carry (away from speaker)",
+      "direction": "away from here / to another place",
+      "example": "Llevo el pastel a la fiesta.",
+      "example_english": "I'll take the cake to the party. (moving away from current location)"
+    },
+    "traer": {
+      "english": "to bring (toward speaker)",
+      "direction": "toward here / to this place",
+      "example": "¿Tú no trajiste nada a la fiesta?",
+      "example_english": "Didn't you bring anything to the party?",
+      "conjugation_preterite": {
+        "yo": "traje", "tú": "trajiste", "él_ella_usted": "trajo",
+        "nosotros": "trajimos", "ellos_ustedes": "trajeron"
+      },
+      "note": "Irregular j-stem in preterite; ellos form drops the 'i' (trajeron, not trajieron)"
+    }
+  },
+  "restaurant_delivery_vocabulary": [
+    {"spanish": "¿Para comer aquí o para llevar?", "english": "For here or to go?"},
+    {"spanish": "servicio a domicilio", "english": "home delivery service"},
+    {"spanish": "pedidos ya", "english": "orders now / order now (delivery app-style phrase)"}
+  ],
+  "household_and_maintenance_vocabulary": [
+    {"spanish": "la temporada de lluvia", "english": "rainy season"},
+    {"spanish": "el chocolate caliente", "english": "hot chocolate"},
+    {"spanish": "la puerta principal", "english": "the main door"},
+    {"spanish": "el portón", "english": "the (large) gate"},
+    {"spanish": "la puerta del garaje", "english": "the garage door"},
+    {"spanish": "oxidado", "english": "rusty"},
+    {"spanish": "Cuando no tiene mantenimiento se destruye.", "english": "When it's not maintained, it gets destroyed."},
+    {"spanish": "los huecos", "english": "holes, gaps"},
+    {"spanish": "cuidar", "english": "to take care of"},
+    {"spanish": "mantener", "english": "to maintain"},
+    {"spanish": "es inalámbrico", "english": "it's wireless"},
+    {"spanish": "la voz", "english": "voice"},
+    {"spanish": "la refrigeradora es muy pesada", "english": "the refrigerator is very heavy"}
+  ]
+}

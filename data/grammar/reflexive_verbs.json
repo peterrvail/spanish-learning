@@ -1,0 +1,75 @@
+{
+  "reflexive_verbs": {
+    "definition": "VERBOS REFLEXIVOS: Cuando una misma persona HACE y RECIBE la acción del verbo. (When the same person DOES and RECEIVES the action of the verb.)",
+    "pattern_verb": "bañarse",
+    "conjugation": {
+      "yo": {"pronoun": "me", "form": "baño"},
+      "tú": {"pronoun": "te", "form": "bañas"},
+      "él_ella_usted": {"pronoun": "se", "form": "baña"},
+      "nosotros": {"pronoun": "nos", "form": "bañamos"},
+      "ellos_ustedes": {"pronoun": "se", "form": "bañan"}
+    },
+    "pronoun_positions": [
+      {
+        "position": 1,
+        "rule": "Antes de un verbo conjugado (Before a conjugated verb)",
+        "example": "El niño se baña.",
+        "english": "The child bathes (himself)."
+      },
+      {
+        "position": 2,
+        "rule": "Antes o después de una estructura con infinitivo (Before or after an infinitive structure)",
+        "examples": [
+          {
+            "spanish": "Se va a bañar. / Va a bañarse.",
+            "english": "He is going to bathe (himself)."
+          }
+        ]
+      }
+    ],
+    "reflexive_vs_non_reflexive_contrast": {
+      "rule": "The same verb can be reflexive (self) or non-reflexive (transitive, acting on someone else)",
+      "examples": [
+        {
+          "non_reflexive": "La mamá baña al niño.",
+          "non_reflexive_english": "The mom bathes the child. (Mom acts on child - not reflexive)",
+          "reflexive": "El niño se baña.",
+          "reflexive_english": "The child bathes himself. (Same person does and receives action - reflexive)"
+        }
+      ]
+    },
+    "common_reflexive_verbs": [
+      {"spanish": "bañarse", "english": "to bathe (oneself)"},
+      {"spanish": "lavarse", "english": "to wash (oneself)"},
+      {"spanish": "levantarse", "english": "to get up"},
+      {"spanish": "acostarse", "english": "to go to bed", "type": "O→UE stem change"},
+      {"spanish": "vestirse", "english": "to get dressed", "type": "E→I stem change"},
+      {"spanish": "sentarse", "english": "to sit down", "type": "E→IE stem change"},
+      {"spanish": "afeitarse", "english": "to shave (oneself)"},
+      {"spanish": "despertarse", "english": "to wake up", "type": "E→IE stem change"},
+      {"spanish": "ducharse", "english": "to shower"},
+      {"spanish": "peinarse", "english": "to comb one's hair"},
+      {"spanish": "maquillarse", "english": "to put on makeup"},
+      {"spanish": "cepillarse (los dientes)", "english": "to brush (one's teeth)"},
+      {"spanish": "quitarse", "english": "to take off (clothing)"},
+      {"spanish": "ponerse", "english": "to put on (clothing)"},
+      {"spanish": "preocuparse", "english": "to worry"},
+      {"spanish": "sorprenderse", "english": "to be surprised"},
+      {"spanish": "sentirse", "english": "to feel (an emotion/state)", "type": "E→IE stem change"},
+      {"spanish": "acostumbrarse (a)", "english": "to get used to"}
+    ],
+    "reciprocal_verbs": {
+      "note": "Reflexive pronouns can also express reciprocal actions (each other) in plural forms",
+      "examples": [
+        {
+          "spanish": "Se abrazan.",
+          "english": "They hug each other."
+        },
+        {
+          "spanish": "Nos ayudamos.",
+          "english": "We help each other."
+        }
+      ]
+    }
+  }
+}

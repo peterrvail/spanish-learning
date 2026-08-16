@@ -1,0 +1,799 @@
+{
+  "verbs": [
+    {
+      "id": "hablar_001",
+      "infinitive": "hablar",
+      "translation": "to speak",
+      "stem": "habl",
+      "regular": true,
+      "conjugation_pattern": "-ar",
+      "irregularities": [],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "habla",
+            "usted": "hable",
+            "nosotros": "hablemos",
+            "vosotros": "hablad",
+            "ustedes": "hablen"
+          },
+          "negative": {
+            "tú": "no hables",
+            "usted": "no hable",
+            "nosotros": "no hablemos",
+            "vosotros": "no habléis",
+            "ustedes": "no hablen"
+          }
+        },
+        "present_indicative": {
+          "yo": "hablo",
+          "tú": "hablas",
+          "él": "habla",
+          "nosotros": "hablamos",
+          "vosotros": "habláis",
+          "ellos": "hablan"
+        },
+        "present_subjunctive": {
+          "yo": "hable",
+          "tú": "hables",
+          "él": "hable",
+          "nosotros": "hablemos",
+          "vosotros": "habléis",
+          "ellos": "hablen"
+        }
+      },
+      "gerund": "hablando",
+      "past_participle": "hablado",
+      "with_clitics": [
+        {
+          "form": "Háblame",
+          "type": "affirmative_imperative_tú_indirect_object",
+          "english": "Talk to me",
+          "clitic_breakdown": "Habla + me"
+        },
+        {
+          "form": "No me hables",
+          "type": "negative_imperative_tú_indirect_object",
+          "english": "Don't talk to me",
+          "clitic_breakdown": "no hables + me (prefix position)"
+        },
+        {
+          "form": "Hablémosle",
+          "type": "affirmative_imperative_nosotros",
+          "english": "Let's talk to him/her",
+          "clitic_breakdown": "Hablemos + le"
+        }
+      ],
+      "example_sentences": [
+        {
+          "spanish": "Háblame de tu día.",
+          "english": "Tell me about your day.",
+          "mood": "imperative",
+          "register": "informal",
+          "clitic": true
+        },
+        {
+          "spanish": "No me hables así.",
+          "english": "Don't talk to me like that.",
+          "mood": "imperative_negative",
+          "register": "informal",
+          "clitic": true
+        },
+        {
+          "spanish": "Hablemos del problema.",
+          "english": "Let's talk about the problem.",
+          "mood": "imperative",
+          "register": "neutral",
+          "clitic": false
+        }
+      ],
+      "teaching_notes": "Regular -ar verb. In affirmative imperative, clitics attach to the verb. In negative, they precede."
+    },
+    {
+      "id": "comer_001",
+      "infinitive": "comer",
+      "translation": "to eat",
+      "stem": "com",
+      "regular": true,
+      "conjugation_pattern": "-er",
+      "irregularities": [],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "come",
+            "usted": "coma",
+            "nosotros": "comamos",
+            "vosotros": "comed",
+            "ustedes": "coman"
+          },
+          "negative": {
+            "tú": "no comas",
+            "usted": "no coma",
+            "nosotros": "no comamos",
+            "vosotros": "no comáis",
+            "ustedes": "no coman"
+          }
+        },
+        "present_subjunctive": {
+          "yo": "coma",
+          "tú": "comas",
+          "él": "coma",
+          "nosotros": "comamos",
+          "vosotros": "comáis",
+          "ellos": "coman"
+        }
+      },
+      "gerund": "comiendo",
+      "past_participle": "comido",
+      "example_sentences": [
+        {
+          "spanish": "Come más verduras.",
+          "english": "Eat more vegetables.",
+          "mood": "imperative",
+          "register": "informal"
+        },
+        {
+          "spanish": "No comas tan rápido.",
+          "english": "Don't eat so fast.",
+          "mood": "imperative_negative",
+          "register": "informal"
+        }
+      ]
+    },
+    {
+      "id": "vivir_001",
+      "infinitive": "vivir",
+      "translation": "to live",
+      "stem": "viv",
+      "regular": true,
+      "conjugation_pattern": "-ir",
+      "irregularities": [],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "vive",
+            "usted": "viva",
+            "nosotros": "vivamos",
+            "vosotros": "vivid",
+            "ustedes": "vivan"
+          },
+          "negative": {
+            "tú": "no vivas",
+            "usted": "no viva",
+            "nosotros": "no vivamos",
+            "vosotros": "no viváis",
+            "ustedes": "no vivan"
+          }
+        },
+        "present_subjunctive": {
+          "yo": "viva",
+          "tú": "vivas",
+          "él": "viva",
+          "nosotros": "vivamos",
+          "vosotros": "viváis",
+          "ellos": "vivan"
+        }
+      },
+      "gerund": "viviendo",
+      "past_participle": "vivido"
+    },
+    {
+      "id": "decir_001",
+      "infinitive": "decir",
+      "translation": "to say, to tell",
+      "stem": "dic",
+      "regular": false,
+      "conjugation_pattern": "-ir (irregular)",
+      "irregularities": ["yo_irregular_present", "stem_change_e_i", "imperative_irregular"],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "di",
+            "usted": "diga",
+            "nosotros": "digamos",
+            "vosotros": "decid",
+            "ustedes": "digan"
+          },
+          "negative": {
+            "tú": "no digas",
+            "usted": "no diga",
+            "nosotros": "no digamos",
+            "vosotros": "no digáis",
+            "ustedes": "no digan"
+          }
+        },
+        "present_indicative": {
+          "yo": "digo",
+          "tú": "dices",
+          "él": "dice",
+          "nosotros": "decimos",
+          "vosotros": "decís",
+          "ellos": "dicen"
+        },
+        "present_subjunctive": {
+          "yo": "diga",
+          "tú": "digas",
+          "él": "diga",
+          "nosotros": "digamos",
+          "vosotros": "digáis",
+          "ellos": "digan"
+        }
+      },
+      "gerund": "diciendo",
+      "past_participle": "dicho",
+      "with_clitics": [
+        {
+          "form": "Dímelo",
+          "type": "affirmative_imperative_tú_double_object",
+          "english": "Tell me that",
+          "clitic_breakdown": "di + me + lo (indirect before direct)"
+        },
+        {
+          "form": "No me lo digas",
+          "type": "negative_imperative_tú_double_object",
+          "english": "Don't tell me that",
+          "clitic_breakdown": "no digas + me + lo (prefix position, indirect before direct)"
+        }
+      ],
+      "example_sentences": [
+        {
+          "spanish": "Dímelo todo.",
+          "english": "Tell me everything.",
+          "mood": "imperative",
+          "register": "informal",
+          "clitic": true
+        },
+        {
+          "spanish": "No me lo digas a él.",
+          "english": "Don't tell him about it.",
+          "mood": "imperative_negative",
+          "register": "informal",
+          "clitic": true
+        }
+      ],
+      "teaching_notes": "Highly irregular. Note the stem change in tú affirmative (di-, not dic-). Double clitics follow: indirect + direct."
+    },
+    {
+      "id": "hacer_001",
+      "infinitive": "hacer",
+      "translation": "to make, to do",
+      "stem": "hac",
+      "regular": false,
+      "conjugation_pattern": "-er (irregular)",
+      "irregularities": ["yo_irregular_present", "imperative_irregular"],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "haz",
+            "usted": "haga",
+            "nosotros": "hagamos",
+            "vosotros": "haced",
+            "ustedes": "hagan"
+          },
+          "negative": {
+            "tú": "no hagas",
+            "usted": "no haga",
+            "nosotros": "no hagamos",
+            "vosotros": "no hagáis",
+            "ustedes": "no hagan"
+          }
+        },
+        "present_indicative": {
+          "yo": "hago",
+          "tú": "haces",
+          "él": "hace",
+          "nosotros": "hacemos",
+          "vosotros": "hacéis",
+          "ellos": "hacen"
+        },
+        "present_subjunctive": {
+          "yo": "haga",
+          "tú": "hagas",
+          "él": "haga",
+          "nosotros": "hagamos",
+          "vosotros": "hagáis",
+          "ellos": "hagan"
+        }
+      },
+      "gerund": "haciendo",
+      "past_participle": "hecho",
+      "example_sentences": [
+        {
+          "spanish": "Haz la tarea ahora.",
+          "english": "Do the homework now.",
+          "mood": "imperative",
+          "register": "informal"
+        },
+        {
+          "spanish": "No hagas ruido.",
+          "english": "Don't make noise.",
+          "mood": "imperative_negative",
+          "register": "informal"
+        }
+      ],
+      "teaching_notes": "Irregular tú affirmative: haz (not hac). Regular in subjunctive."
+    },
+    {
+      "id": "ir_001",
+      "infinitive": "ir",
+      "translation": "to go",
+      "stem": "v",
+      "regular": false,
+      "conjugation_pattern": "completely irregular",
+      "irregularities": ["completely_irregular"],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "ve",
+            "usted": "vaya",
+            "nosotros": "vamos",
+            "vosotros": "id",
+            "ustedes": "vayan"
+          },
+          "negative": {
+            "tú": "no vayas",
+            "usted": "no vaya",
+            "nosotros": "no vayamos",
+            "vosotros": "no vayáis",
+            "ustedes": "no vayan"
+          }
+        },
+        "present_indicative": {
+          "yo": "voy",
+          "tú": "vas",
+          "él": "va",
+          "nosotros": "vamos",
+          "vosotros": "vais",
+          "ellos": "van"
+        },
+        "present_subjunctive": {
+          "yo": "vaya",
+          "tú": "vayas",
+          "él": "vaya",
+          "nosotros": "vayamos",
+          "vosotros": "vayáis",
+          "ellos": "vayan"
+        }
+      },
+      "gerund": "yendo",
+      "past_participle": "ido",
+      "example_sentences": [
+        {
+          "spanish": "¡Ve con cuidado!",
+          "english": "Go carefully!",
+          "mood": "imperative",
+          "register": "informal"
+        },
+        {
+          "spanish": "No vayas solo.",
+          "english": "Don't go alone.",
+          "mood": "imperative_negative",
+          "register": "informal"
+        }
+      ],
+      "teaching_notes": "Highly irregular. Tú affirmative is just 've' (very short)."
+    },
+    {
+      "id": "pedir_001",
+      "infinitive": "pedir",
+      "translation": "to ask for, to request",
+      "stem": "pid",
+      "regular": false,
+      "conjugation_pattern": "-ir (stem-changing e→i)",
+      "irregularities": ["stem_change_e_i"],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "pide",
+            "usted": "pida",
+            "nosotros": "pidamos",
+            "vosotros": "pedid",
+            "ustedes": "pidan"
+          },
+          "negative": {
+            "tú": "no pidas",
+            "usted": "no pida",
+            "nosotros": "no pidamos",
+            "vosotros": "no pidáis",
+            "ustedes": "no pidan"
+          }
+        },
+        "present_indicative": {
+          "yo": "pido",
+          "tú": "pides",
+          "él": "pide",
+          "nosotros": "pedimos",
+          "vosotros": "pedís",
+          "ellos": "piden"
+        },
+        "present_subjunctive": {
+          "yo": "pida",
+          "tú": "pidas",
+          "él": "pida",
+          "nosotros": "pidamos",
+          "vosotros": "pidáis",
+          "ellos": "pidan"
+        }
+      },
+      "gerund": "pidiendo",
+      "past_participle": "pedido",
+      "example_sentences": [
+        {
+          "spanish": "Pide lo que necesitas.",
+          "english": "Ask for what you need.",
+          "mood": "imperative",
+          "register": "informal"
+        },
+        {
+          "spanish": "No pidas dinero prestado.",
+          "english": "Don't ask for money to borrow.",
+          "mood": "imperative_negative",
+          "register": "informal"
+        }
+      ],
+      "teaching_notes": "Stem-changing e→i. This affects tú, él, and ellos even in affirmative imperative."
+    },
+    {
+      "id": "tener_001",
+      "infinitive": "tener",
+      "translation": "to have",
+      "stem": "ten",
+      "regular": false,
+      "conjugation_pattern": "-er (stem-changing + irregular yo)",
+      "irregularities": ["stem_change_e_ie", "yo_irregular_present", "imperative_irregular"],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "ten",
+            "usted": "tenga",
+            "nosotros": "tengamos",
+            "vosotros": "tened",
+            "ustedes": "tengan"
+          },
+          "negative": {
+            "tú": "no tengas",
+            "usted": "no tenga",
+            "nosotros": "no tengamos",
+            "vosotros": "no tengáis",
+            "ustedes": "no tengan"
+          }
+        },
+        "present_indicative": {
+          "yo": "tengo",
+          "tú": "tienes",
+          "él": "tiene",
+          "nosotros": "tenemos",
+          "vosotros": "tenéis",
+          "ellos": "tienen"
+        },
+        "present_subjunctive": {
+          "yo": "tenga",
+          "tú": "tengas",
+          "él": "tenga",
+          "nosotros": "tengamos",
+          "vosotros": "tengáis",
+          "ellos": "tengan"
+        }
+      },
+      "gerund": "teniendo",
+      "past_participle": "tenido",
+      "example_sentences": [
+        {
+          "spanish": "Ten paciencia.",
+          "english": "Be patient (have patience).",
+          "mood": "imperative",
+          "register": "informal"
+        },
+        {
+          "spanish": "No tengas miedo.",
+          "english": "Don't be afraid.",
+          "mood": "imperative_negative",
+          "register": "informal"
+        }
+      ],
+      "teaching_notes": "Tú affirmative is 'ten' (shortened). Stem-change e→ie in non-nosotros forms."
+    },
+    {
+      "id": "venir_001",
+      "infinitive": "venir",
+      "translation": "to come",
+      "stem": "ven",
+      "regular": false,
+      "conjugation_pattern": "-ir (stem-changing + irregular yo)",
+      "irregularities": ["stem_change_e_ie", "yo_irregular_present", "imperative_irregular"],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "ven",
+            "usted": "venga",
+            "nosotros": "vengamos",
+            "vosotros": "venid",
+            "ustedes": "vengan"
+          },
+          "negative": {
+            "tú": "no vengas",
+            "usted": "no venga",
+            "nosotros": "no vengamos",
+            "vosotros": "no vengáis",
+            "ustedes": "no vengan"
+          }
+        },
+        "present_indicative": {
+          "yo": "vengo",
+          "tú": "vienes",
+          "él": "viene",
+          "nosotros": "venimos",
+          "vosotros": "venís",
+          "ellos": "vienen"
+        },
+        "present_subjunctive": {
+          "yo": "venga",
+          "tú": "vengas",
+          "él": "venga",
+          "nosotros": "vengamos",
+          "vosotros": "vengáis",
+          "ellos": "vengan"
+        }
+      },
+      "gerund": "viniendo",
+      "past_participle": "venido",
+      "example_sentences": [
+        {
+          "spanish": "¡Ven aquí!",
+          "english": "Come here!",
+          "mood": "imperative",
+          "register": "informal"
+        },
+        {
+          "spanish": "No vengas tarde.",
+          "english": "Don't come late.",
+          "mood": "imperative_negative",
+          "register": "informal"
+        }
+      ],
+      "teaching_notes": "Similar pattern to 'tener'. Tú affirmative is 'ven'."
+    },
+    {
+      "id": "salir_001",
+      "infinitive": "salir",
+      "translation": "to leave, to go out",
+      "stem": "sal",
+      "regular": false,
+      "conjugation_pattern": "-ir (irregular yo)",
+      "irregularities": ["yo_irregular_present", "imperative_irregular"],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "sal",
+            "usted": "salga",
+            "nosotros": "salgamos",
+            "vosotros": "salid",
+            "ustedes": "salgan"
+          },
+          "negative": {
+            "tú": "no salgas",
+            "usted": "no salga",
+            "nosotros": "no salgamos",
+            "vosotros": "no salgáis",
+            "ustedes": "no salgan"
+          }
+        },
+        "present_indicative": {
+          "yo": "salgo",
+          "tú": "sales",
+          "él": "sale",
+          "nosotros": "salimos",
+          "vosotros": "salís",
+          "ellos": "salen"
+        },
+        "present_subjunctive": {
+          "yo": "salga",
+          "tú": "salgas",
+          "él": "salga",
+          "nosotros": "salgamos",
+          "vosotros": "salgáis",
+          "ellos": "salgan"
+        }
+      },
+      "gerund": "saliendo",
+      "past_participle": "salido",
+      "example_sentences": [
+        {
+          "spanish": "Sal de aquí.",
+          "english": "Get out of here.",
+          "mood": "imperative",
+          "register": "informal"
+        },
+        {
+          "spanish": "No salgas sin paraguas.",
+          "english": "Don't go out without an umbrella.",
+          "mood": "imperative_negative",
+          "register": "informal"
+        }
+      ],
+      "teaching_notes": "Tú affirmative is 'sal' (shortened). Irregular yo→salgo."
+    },
+    {
+      "id": "ser_001",
+      "infinitive": "ser",
+      "translation": "to be (permanent/identity)",
+      "stem": "s",
+      "regular": false,
+      "conjugation_pattern": "completely irregular",
+      "irregularities": ["completely_irregular"],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "sé",
+            "usted": "sea",
+            "nosotros": "seamos",
+            "vosotros": "sed",
+            "ustedes": "sean"
+          },
+          "negative": {
+            "tú": "no seas",
+            "usted": "no sea",
+            "nosotros": "no seamos",
+            "vosotros": "no seáis",
+            "ustedes": "no sean"
+          }
+        },
+        "present_indicative": {
+          "yo": "soy",
+          "tú": "eres",
+          "él": "es",
+          "nosotros": "somos",
+          "vosotros": "sois",
+          "ellos": "son"
+        },
+        "preterite": {
+          "yo": "fui",
+          "tú": "fuiste",
+          "él": "fue",
+          "nosotros": "fuimos",
+          "vosotros": "fuisteis",
+          "ellos": "fueron"
+        },
+        "imperfect": {
+          "yo": "era",
+          "tú": "eras",
+          "él": "era",
+          "nosotros": "éramos",
+          "vosotros": "erais",
+          "ellos": "eran"
+        },
+        "future": {
+          "yo": "seré",
+          "tú": "serás",
+          "él": "será",
+          "nosotros": "seremos",
+          "vosotros": "seréis",
+          "ellos": "serán"
+        },
+        "conditional": {
+          "yo": "sería",
+          "tú": "serías",
+          "él": "sería",
+          "nosotros": "seríamos",
+          "vosotros": "seríais",
+          "ellos": "serían"
+        },
+        "present_subjunctive": {
+          "yo": "sea",
+          "tú": "seas",
+          "él": "sea",
+          "nosotros": "seamos",
+          "vosotros": "seáis",
+          "ellos": "sean"
+        }
+      },
+      "gerund": "siendo",
+      "past_participle": "sido",
+      "example_sentences": [
+        {
+          "spanish": "Yo soy ingeniero.",
+          "english": "I am an engineer.",
+          "mood": "present_indicative",
+          "register": "neutral"
+        },
+        {
+          "spanish": "Fue un día memorable.",
+          "english": "It was a memorable day.",
+          "mood": "preterite",
+          "register": "neutral"
+        }
+      ]
+    },
+    {
+      "id": "estar_001",
+      "infinitive": "estar",
+      "translation": "to be (location/condition/state)",
+      "stem": "est",
+      "regular": false,
+      "conjugation_pattern": "-ar (irregular)",
+      "irregularities": ["preterite_irregular", "present_indicative_regular"],
+      "moods": {
+        "imperative": {
+          "affirmative": {
+            "tú": "está",
+            "usted": "esté",
+            "nosotros": "estemos",
+            "vosotros": "estad",
+            "ustedes": "estén"
+          },
+          "negative": {
+            "tú": "no estés",
+            "usted": "no esté",
+            "nosotros": "no estemos",
+            "vosotros": "no estéis",
+            "ustedes": "no estén"
+          }
+        },
+        "present_indicative": {
+          "yo": "estoy",
+          "tú": "estás",
+          "él": "está",
+          "nosotros": "estamos",
+          "vosotros": "estáis",
+          "ellos": "están"
+        },
+        "preterite": {
+          "yo": "estuve",
+          "tú": "estuviste",
+          "él": "estuvo",
+          "nosotros": "estuvimos",
+          "vosotros": "estuvisteis",
+          "ellos": "estuvieron"
+        },
+        "imperfect": {
+          "yo": "estaba",
+          "tú": "estabas",
+          "él": "estaba",
+          "nosotros": "estábamos",
+          "vosotros": "estabais",
+          "ellos": "estaban"
+        },
+        "future": {
+          "yo": "estaré",
+          "tú": "estarás",
+          "él": "estará",
+          "nosotros": "estaremos",
+          "vosotros": "estaréis",
+          "ellos": "estarán"
+        },
+        "conditional": {
+          "yo": "estaría",
+          "tú": "estarías",
+          "él": "estaría",
+          "nosotros": "estaríamos",
+          "vosotros": "estaríais",
+          "ellos": "estarían"
+        },
+        "present_subjunctive": {
+          "yo": "esté",
+          "tú": "estés",
+          "él": "esté",
+          "nosotros": "estemos",
+          "vosotros": "estéis",
+          "ellos": "estén"
+        }
+      },
+      "gerund": "estando",
+      "past_participle": "estado",
+      "example_sentences": [
+        {
+          "spanish": "Estoy en Madrid.",
+          "english": "I am in Madrid.",
+          "mood": "present_indicative",
+          "register": "neutral"
+        },
+        {
+          "spanish": "El café está caliente.",
+          "english": "The coffee is hot.",
+          "mood": "present_indicative",
+          "register": "neutral"
+        }
+      ]
+    }
+  ]
+}

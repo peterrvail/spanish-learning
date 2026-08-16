@@ -1,0 +1,151 @@
+{
+  "stem_changing_present_tense": {
+    "overview": "Present tense stem-changing verbs (verbos con cambio de raíz) change their stem vowel in all forms EXCEPT nosotros and vosotros. There are 3 main groups.",
+    "grupo_1_e_ie": {
+      "name": "Grupo #1: E → IE",
+      "rule": "La letra E cambia por IE (applies to -ar, -er, -ir verbs)",
+      "pattern_verb": "pensar",
+      "conjugation": {
+        "yo": "pienso",
+        "tú": "piensas",
+        "él_ella_usted": "piensa",
+        "nosotros": "pensamos",
+        "vosotros": "pensáis",
+        "ellos_ustedes": "piensan"
+      },
+      "note": "Nosotros/vosotros forms do NOT change (pensamos, not piensamos)",
+      "verb_list": [
+        {"infinitive": "pensar", "english": "to think", "yo_form": "pienso"},
+        {"infinitive": "calentar", "english": "to heat", "yo_form": "caliento"},
+        {"infinitive": "cerrar", "english": "to close", "yo_form": "cierro"},
+        {"infinitive": "comenzar", "english": "to begin", "yo_form": "comienzo"},
+        {"infinitive": "empezar", "english": "to begin", "yo_form": "empiezo"},
+        {"infinitive": "despertarse", "english": "to wake up", "yo_form": "me despierto"},
+        {"infinitive": "recomendar", "english": "to recommend", "yo_form": "recomiendo"},
+        {"infinitive": "tropezar", "english": "to trip, stumble", "yo_form": "tropiezo"},
+        {"infinitive": "querer", "english": "to want, love", "yo_form": "quiero"},
+        {"infinitive": "perder", "english": "to lose", "yo_form": "pierdo"},
+        {"infinitive": "atender", "english": "to attend to", "yo_form": "atiendo"},
+        {"infinitive": "defender", "english": "to defend", "yo_form": "defiendo"},
+        {"infinitive": "encender", "english": "to light, turn on", "yo_form": "enciendo"},
+        {"infinitive": "entender", "english": "to understand", "yo_form": "entiendo"},
+        {"infinitive": "sentir", "english": "to feel", "yo_form": "siento"},
+        {"infinitive": "sugerir", "english": "to suggest", "yo_form": "sugiero"},
+        {"infinitive": "divertir(se)", "english": "to have fun, entertain", "yo_form": "divierto"}
+      ],
+      "querer_full_conjugation": {
+        "yo": "quiero",
+        "tú": "quieres",
+        "él_ella_usted": "quiere",
+        "nosotros": "queremos",
+        "ellos_ustedes": "quieren"
+      },
+      "sentir_full_conjugation": {
+        "yo": "siento",
+        "tú": "sientes",
+        "él_ella_usted": "siente",
+        "nosotros": "sentimos",
+        "ellos_ustedes": "sienten"
+      },
+      "example_sentences": [
+        {
+          "spanish": "Yo cierro las ventanas cuando salimos de la casa.",
+          "english": "I close the windows when we leave the house."
+        },
+        {
+          "spanish": "Nosotros no pensamos que es una buena idea ahora tener una mascota.",
+          "english": "We don't think it's a good idea to have a pet right now."
+        },
+        {
+          "spanish": "Yo quiero un perro.",
+          "english": "I want a dog."
+        },
+        {
+          "spanish": "Yo caliento la comida de anoche.",
+          "english": "I heat up last night's food."
+        },
+        {
+          "spanish": "Anoche soñé contigo.",
+          "english": "Last night I dreamed about you."
+        },
+        {
+          "spanish": "Yo siempre pierdo las llaves de la casa.",
+          "english": "I always lose the house keys."
+        },
+        {
+          "spanish": "Yo defiendo a los niños.",
+          "english": "I defend the children."
+        },
+        {
+          "spanish": "Yo enciendo la luz.",
+          "english": "I turn on the light."
+        },
+        {
+          "spanish": "El payaso divierte a los niños.",
+          "english": "The clown entertains the children."
+        },
+        {
+          "spanish": "Espero te sientas mejor.",
+          "english": "I hope you feel better."
+        }
+      ]
+    },
+    "grupo_2_e_i": {
+      "name": "Grupo #2: E → I",
+      "rule": "Applies only to -IR verbs",
+      "pattern_verb": "pedir",
+      "conjugation": {
+        "yo": "pido",
+        "tú": "pides",
+        "él_ella_usted": "pide",
+        "nosotros": "pedimos",
+        "vosotros": "pedís",
+        "ellos_ustedes": "piden"
+      },
+      "verb_list": [
+        {"infinitive": "pedir", "english": "to ask for, request"},
+        {"infinitive": "servir", "english": "to serve"},
+        {"infinitive": "repetir", "english": "to repeat"},
+        {"infinitive": "seguir", "english": "to follow, continue"},
+        {"infinitive": "conseguir", "english": "to get, obtain"},
+        {"infinitive": "vestir(se)", "english": "to dress"},
+        {"infinitive": "reír(se)", "english": "to laugh"},
+        {"infinitive": "sonreír", "english": "to smile"},
+        {"infinitive": "elegir", "english": "to choose"},
+        {"infinitive": "corregir", "english": "to correct"}
+      ]
+    },
+    "grupo_3_o_ue": {
+      "name": "Grupo #3: O → UE",
+      "rule": "Applies to -ar, -er, -ir verbs",
+      "pattern_verb": "poder",
+      "conjugation": {
+        "yo": "puedo",
+        "tú": "puedes",
+        "él_ella_usted": "puede",
+        "nosotros": "podemos",
+        "vosotros": "podéis",
+        "ellos_ustedes": "pueden"
+      },
+      "verb_list": [
+        {"infinitive": "poder", "english": "can, to be able to"},
+        {"infinitive": "dormir", "english": "to sleep"},
+        {"infinitive": "morir", "english": "to die"},
+        {"infinitive": "volver", "english": "to return"},
+        {"infinitive": "devolver", "english": "to give back"},
+        {"infinitive": "envolver", "english": "to wrap"},
+        {"infinitive": "resolver", "english": "to resolve"},
+        {"infinitive": "contar", "english": "to count, tell"},
+        {"infinitive": "encontrar", "english": "to find"},
+        {"infinitive": "recordar", "english": "to remember"},
+        {"infinitive": "mostrar", "english": "to show"},
+        {"infinitive": "probar", "english": "to try, test"},
+        {"infinitive": "almorzar", "english": "to have lunch"},
+        {"infinitive": "costar", "english": "to cost"},
+        {"infinitive": "acostar(se)", "english": "to go to bed"},
+        {"infinitive": "soñar", "english": "to dream"},
+        {"infinitive": "jugar", "english": "to play", "note": "Special: U→UE, not O→UE"}
+      ]
+    }
+  }
+}

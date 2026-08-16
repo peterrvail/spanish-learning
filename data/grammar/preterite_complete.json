@@ -1,0 +1,114 @@
+{
+  "preterite_tense": {
+    "overview": "El Pretérito Indefinido (Pasado Simple) expresa acciones completadas en el pasado, con principio y fin definidos. Se organiza en grupos según su patrón de irregularidad.",
+    "spanish_name": "El Pretérito Indefinido / Pasado Simple",
+    "regular_conjugation": {
+      "ar_endings": {"yo": "-é", "tú": "-aste", "él": "-ó", "nosotros": "-amos", "vosotros": "-asteis", "ellos": "-aron"},
+      "er_ir_endings": {"yo": "-í", "tú": "-iste", "él": "-ió", "nosotros": "-imos", "vosotros": "-isteis", "ellos": "-ieron"}
+    },
+    "grupo_completamente_irregulares": {
+      "name": "Grupo 1: Verbos totalmente irregulares (casos individuales)",
+      "description": "These verbs don't follow any predictable pattern and must be memorized individually",
+      "verbs": [
+        {
+          "infinitive": "dar",
+          "english": "to give",
+          "conjugation": {
+            "yo": "di", "tú": "diste", "él_ella_usted": "dio",
+            "nosotros": "dimos", "ellos_ustedes": "dieron"
+          },
+          "note": "Uses -ER/-IR endings despite being an -AR verb, and without accents"
+        },
+        {
+          "infinitive": "ser",
+          "english": "to be",
+          "conjugation": {
+            "yo": "fui", "tú": "fuiste", "él_ella_usted": "fue",
+            "nosotros": "fuimos", "ellos_ustedes": "fueron"
+          },
+          "note": "IDENTICAL to IR in preterite; context determines meaning"
+        },
+        {
+          "infinitive": "ir",
+          "english": "to go",
+          "conjugation": {
+            "yo": "fui", "tú": "fuiste", "él_ella_usted": "fue",
+            "nosotros": "fuimos", "ellos_ustedes": "fueron"
+          },
+          "note": "IDENTICAL to SER in preterite; context determines meaning"
+        }
+      ],
+      "example_sentences": [
+        {"spanish": "Patty no me dió una respuesta.", "english": "Patty didn't give me an answer."},
+        {"spanish": "El guía fue amable.", "english": "The guide was kind. (ser)"},
+        {"spanish": "El guía fue a la fiesta con su esposa.", "english": "The guide went to the party with his wife. (ir)"},
+        {"spanish": "Fue un día increíble.", "english": "It was an incredible day."},
+        {"spanish": "Yo fui una buena estudiante en la clase de francés.", "english": "I was a good student in French class."},
+        {"spanish": "Anoche fui a la casa de mi amiga Cheryl.", "english": "Last night I went to my friend Cheryl's house."},
+        {"spanish": "Yo fui feliz.", "english": "I was happy. (completed emotional state)"}
+      ]
+    },
+    "grupo_2_clave_irregular": {
+      "name": "Grupo 2: Verbos irregulares con clave (stem-changing consonant group)",
+      "description": "These verbs change their stem consonant (clave) and share a common set of endings: -e, -iste, -o, -imos, -ieron/-eron",
+      "shared_endings": {"yo": "-e", "tú": "-iste", "él": "-o", "nosotros": "-imos", "ellos": "-ieron/-eron"},
+      "stem_changes": [
+        {"infinitive": "querer", "clave": "qu", "stem": "quis", "note": "e→i in stem, qu clave"},
+        {"infinitive": "venir", "clave": "v", "stem": "vin", "note": "e→i in stem"},
+        {"infinitive": "hacer", "clave": "h", "stem": "hic/hiz", "note": "c→z before 'o' (hizo, not hico)"}
+      ],
+      "hacer_full_conjugation": {
+        "yo": "hice", "tú": "hiciste", "él_ella_usted": "hizo",
+        "nosotros": "hicimos", "ellos_ustedes": "hicieron"
+      },
+      "related_compound_verbs": [
+        {"spanish": "prevenir", "english": "to prevent", "base": "venir"},
+        {"spanish": "intervenir", "english": "to intervene", "base": "venir"},
+        {"spanish": "deshacer", "english": "to undo", "base": "hacer"},
+        {"spanish": "satisfacer", "english": "to satisfy", "base": "hacer", "note": "satisfizo, not satisfació"}
+      ],
+      "example_sentences": [
+        {"spanish": "Ella no quiso ir a la fiesta.", "english": "She refused to go to the party.", "note": "Preterite of querer often means 'refused' in negative"},
+        {"spanish": "Emma vino con un vino.", "english": "Emma came with a wine.", "note": "Wordplay: vino (came) / vino (wine)"},
+        {"spanish": "Peter hizo muy bien la tarea de español y ganó una estrella de oro.", "english": "Peter did the Spanish homework very well and won a gold star."},
+        {"spanish": "El niño no hizo caso.", "english": "The child didn't pay attention/obey."},
+        {"spanish": "Él no quiso venir con nosotros.", "english": "He refused to come with us."}
+      ]
+    },
+    "grupo_3_estar_tener_poder": {
+      "name": "Grupo 3: Verbos con raíz irregular (UV stem group)",
+      "description": "These verbs use a UV-based irregular stem",
+      "verbs": [
+        {
+          "infinitive": "estar",
+          "stem": "estuv",
+          "english": "to be (location/state)",
+          "example": "Yo estuve feliz en ese momento.",
+          "example_english": "I was happy in that moment."
+        },
+        {
+          "infinitive": "tener",
+          "stem": "tuv",
+          "english": "to have"
+        },
+        {
+          "infinitive": "poder",
+          "stem": "pud",
+          "english": "to be able to"
+        }
+      ],
+      "example_sentences": [
+        {"spanish": "No puedo escucharte.", "english": "I can't hear you."},
+        {"spanish": "Yo no estuve caminando porque estaba lloviendo.", "english": "I wasn't walking because it was raining.", "note": "Contrast: estuve (preterite) vs. estaba (imperfect background)"},
+        {"spanish": "pero estuve ocupado.", "english": "but I was busy."},
+        {"spanish": "estuvo en la sala de estar.", "english": "he/she was in the living room."}
+      ]
+    },
+    "additional_practice_sentences": [
+      {"spanish": "Anoche estaba caminando y me caí en el camino.", "english": "Last night I was walking and I fell on the road.", "note": "Imperfect (estaba caminando) sets background; preterite (caí) marks the event"},
+      {"spanish": "En la noche estuve muy cansado, él corría por todos lados.", "english": "At night I was very tired, he was running everywhere."},
+      {"spanish": "decidimos acostarnos temprano.", "english": "we decided to go to bed early."},
+      {"spanish": "La pizarra antigua era mejor.", "english": "The old whiteboard was better."}
+    ]
+  }
+}

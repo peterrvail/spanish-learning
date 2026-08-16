@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Streamlit
+.streamlit/
+streamlit_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Local environment
+.env
+.env.local
+settings.local.json
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+*.log
+
+# Session state (local Streamlit cache)
+.streamlit/cache/
+
+# Personal lesson materials (not needed for the app; keep out of the repo)
+/*.jpg
+/*.jpeg
+/*.png
+/*.pdf
+/Summaries/

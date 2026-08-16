@@ -1,0 +1,432 @@
+{
+  "verbs": {
+    "communication": [
+      {
+        "spanish": "hablar",
+        "english": "to speak, to talk",
+        "infinitive_stem": "habl",
+        "type": "regular -AR",
+        "example": "Habla español.",
+        "example_english": "He speaks Spanish.",
+        "collocations": ["hablar español", "hablar por teléfono", "hablar de", "hablar con"]
+      },
+      {
+        "spanish": "decir",
+        "english": "to say, to tell",
+        "infinitive_stem": "dec",
+        "type": "irregular",
+        "example": "¿Qué dice?",
+        "example_english": "What does he say?",
+        "collocations": ["decir la verdad", "decir que", "decir adiós", "me dice"]
+      },
+      {
+        "spanish": "preguntar",
+        "english": "to ask (a question)",
+        "infinitive_stem": "pregunt",
+        "type": "regular -AR",
+        "example": "Pregunta mi nombre.",
+        "example_english": "He asks my name.",
+        "collocations": ["preguntar por", "preguntar qué", "preguntar a"]
+      },
+      {
+        "spanish": "escuchar",
+        "english": "to listen (to)",
+        "infinitive_stem": "escuch",
+        "type": "regular -AR",
+        "example": "Escucha música.",
+        "example_english": "She listens to music.",
+        "collocations": ["escuchar a", "escuchar música", "escuchar un podcast"]
+      },
+      {
+        "spanish": "entender",
+        "english": "to understand",
+        "infinitive_stem": "entend",
+        "type": "irregular (E→IE)",
+        "example": "¿Entiendes?",
+        "example_english": "Do you understand?",
+        "collocations": ["entender a", "no entiendo", "entender bien"]
+      },
+      {
+        "spanish": "comprender",
+        "english": "to understand, to comprehend",
+        "infinitive_stem": "comprend",
+        "type": "regular -ER",
+        "example": "No comprendo.",
+        "example_english": "I don't understand.",
+        "collocations": ["comprender bien", "no comprendo"]
+      }
+    ],
+    "movement": [
+      {
+        "spanish": "ir",
+        "english": "to go",
+        "infinitive_stem": "v",
+        "type": "completely irregular",
+        "example": "Voy a Madrid.",
+        "example_english": "I'm going to Madrid.",
+        "collocations": ["ir a", "ir al", "ir con", "irse"]
+      },
+      {
+        "spanish": "venir",
+        "english": "to come",
+        "infinitive_stem": "ven",
+        "type": "irregular (E→IE)",
+        "example": "¿Vienes mañana?",
+        "example_english": "Are you coming tomorrow?",
+        "collocations": ["venir a", "venir con", "venir de"]
+      },
+      {
+        "spanish": "caminar",
+        "english": "to walk",
+        "infinitive_stem": "camin",
+        "type": "regular -AR",
+        "example": "Camino por el parque.",
+        "example_english": "I walk through the park.",
+        "collocations": ["caminar hacia", "caminar por", "caminar rápido"]
+      },
+      {
+        "spanish": "correr",
+        "english": "to run",
+        "infinitive_stem": "corr",
+        "type": "regular -ER",
+        "example": "Corre en el maratón.",
+        "example_english": "He runs in the marathon.",
+        "collocations": ["correr rápido", "correr hacia"]
+      },
+      {
+        "spanish": "viajar",
+        "english": "to travel",
+        "infinitive_stem": "viaj",
+        "type": "regular -AR",
+        "example": "Viaja a Italia.",
+        "example_english": "She travels to Italy.",
+        "collocations": ["viajar a", "viajar por", "viajar en"]
+      },
+      {
+        "spanish": "subir",
+        "english": "to go up, to climb, to board",
+        "infinitive_stem": "sub",
+        "type": "regular -IR",
+        "example": "Sube al bus.",
+        "example_english": "He gets on the bus.",
+        "collocations": ["subir a", "subir las escaleras", "subir de"]
+      },
+      {
+        "spanish": "bajar",
+        "english": "to go down, to descend, to get off",
+        "infinitive_stem": "baj",
+        "type": "regular -AR",
+        "example": "Baja del autobús.",
+        "example_english": "She gets off the bus.",
+        "collocations": ["bajar de", "bajar las escaleras"]
+      }
+    ],
+    "daily_activities": [
+      {
+        "spanish": "trabajar",
+        "english": "to work",
+        "infinitive_stem": "trabaj",
+        "type": "regular -AR",
+        "example": "Trabajo en una oficina.",
+        "example_english": "I work in an office.",
+        "collocations": ["trabajar en", "trabajar de", "trabajar para"]
+      },
+      {
+        "spanish": "estudiar",
+        "english": "to study",
+        "infinitive_stem": "estudi",
+        "type": "regular -AR",
+        "example": "Estudio español.",
+        "example_english": "I study Spanish.",
+        "collocations": ["estudiar para", "estudiar con"]
+      },
+      {
+        "spanish": "comer",
+        "english": "to eat",
+        "infinitive_stem": "com",
+        "type": "regular -ER",
+        "example": "Como pan.",
+        "example_english": "I eat bread.",
+        "collocations": ["comer bien", "comer en", "comer algo"]
+      },
+      {
+        "spanish": "beber",
+        "english": "to drink",
+        "infinitive_stem": "beb",
+        "type": "regular -ER",
+        "example": "Bebo agua.",
+        "example_english": "I drink water.",
+        "collocations": ["beber agua", "beber café", "beber algo"]
+      },
+      {
+        "spanish": "dormir",
+        "english": "to sleep",
+        "infinitive_stem": "dorm",
+        "type": "irregular (O→UE)",
+        "example": "Duermo ocho horas.",
+        "example_english": "I sleep eight hours.",
+        "collocations": ["dormir bien", "dormir mal", "dormir poco"]
+      },
+      {
+        "spanish": "levantarse",
+        "english": "to get up, to rise",
+        "infinitive_stem": "levant",
+        "type": "regular -AR (reflexive)",
+        "example": "Me levanto a las 7.",
+        "example_english": "I get up at 7.",
+        "collocations": ["levantarse temprano", "levantarse tarde"]
+      },
+      {
+        "spanish": "acostarse",
+        "english": "to go to bed",
+        "infinitive_stem": "acost",
+        "type": "regular -AR (reflexive, O→UE)",
+        "example": "Se acuesta a las 10.",
+        "example_english": "He goes to bed at 10.",
+        "collocations": ["acostarse temprano", "acostarse tarde"]
+      },
+      {
+        "spanish": "desayunar",
+        "english": "to have breakfast",
+        "infinitive_stem": "desayun",
+        "type": "regular -AR",
+        "example": "Desayuno a las 8.",
+        "example_english": "I have breakfast at 8.",
+        "collocations": ["desayunar bien", "desayunar rápido"]
+      },
+      {
+        "spanish": "almorzar",
+        "english": "to have lunch",
+        "infinitive_stem": "almuerz",
+        "type": "regular -AR (O→UE)",
+        "example": "Almuerzo en casa.",
+        "example_english": "I have lunch at home.",
+        "collocations": ["almorzar bien", "almorzar rápido"]
+      },
+      {
+        "spanish": "cenar",
+        "english": "to have dinner",
+        "infinitive_stem": "cen",
+        "type": "regular -AR",
+        "example": "Cenamos a las 8.",
+        "example_english": "We have dinner at 8.",
+        "collocations": ["cenar bien", "cenar juntos"]
+      }
+    ],
+    "mental_emotional": [
+      {
+        "spanish": "pensar",
+        "english": "to think",
+        "infinitive_stem": "piens",
+        "type": "irregular (E→IE)",
+        "example": "Pienso en ti.",
+        "example_english": "I think about you.",
+        "collocations": ["pensar en", "pensar que", "pensar de"]
+      },
+      {
+        "spanish": "creer",
+        "english": "to believe",
+        "infinitive_stem": "cre",
+        "type": "regular -ER",
+        "example": "Creo que sí.",
+        "example_english": "I believe so.",
+        "collocations": ["creer que", "creer en"]
+      },
+      {
+        "spanish": "saber",
+        "english": "to know (facts, information)",
+        "infinitive_stem": "sab",
+        "type": "irregular",
+        "example": "Sé dónde está.",
+        "example_english": "I know where it is.",
+        "collocations": ["saber que", "saber dónde", "saber cómo"]
+      },
+      {
+        "spanish": "querer",
+        "english": "to want, to love",
+        "infinitive_stem": "quier",
+        "type": "irregular (E→IE)",
+        "example": "Quiero café.",
+        "example_english": "I want coffee.",
+        "collocations": ["querer a", "querer bien", "quererse"]
+      },
+      {
+        "spanish": "poder",
+        "english": "can, to be able to, may",
+        "infinitive_stem": "pued",
+        "type": "irregular (O→UE)",
+        "example": "Puedo venir.",
+        "example_english": "I can come.",
+        "collocations": ["poder hacer", "no poder"]
+      },
+      {
+        "spanish": "amar",
+        "english": "to love",
+        "infinitive_stem": "am",
+        "type": "regular -AR",
+        "example": "La amo.",
+        "example_english": "I love her.",
+        "collocations": ["amar a", "amarse"]
+      },
+      {
+        "spanish": "odiar",
+        "english": "to hate",
+        "infinitive_stem": "odi",
+        "type": "regular -AR",
+        "example": "Odio esperar.",
+        "example_english": "I hate waiting.",
+        "collocations": ["odiar a", "odiar hacer"]
+      },
+      {
+        "spanish": "sentir",
+        "english": "to feel",
+        "infinitive_stem": "sient",
+        "type": "irregular (E→I)",
+        "example": "Siento tristeza.",
+        "example_english": "I feel sadness.",
+        "collocations": ["sentir que", "sentirse", "sentir bien"]
+      }
+    ],
+    "giving_receiving": [
+      {
+        "spanish": "dar",
+        "english": "to give",
+        "infinitive_stem": "d",
+        "type": "completely irregular",
+        "example": "Le doy un regalo.",
+        "example_english": "I give him a gift.",
+        "collocations": ["dar a", "dar de", "darse"]
+      },
+      {
+        "spanish": "recibir",
+        "english": "to receive",
+        "infinitive_stem": "recib",
+        "type": "regular -IR",
+        "example": "Recibo un paquete.",
+        "example_english": "I receive a package.",
+        "collocations": ["recibir de", "recibir a"]
+      },
+      {
+        "spanish": "comprar",
+        "english": "to buy",
+        "infinitive_stem": "compr",
+        "type": "regular -AR",
+        "example": "Compro libros.",
+        "example_english": "I buy books.",
+        "collocations": ["comprar a", "comprar en", "comprar de"]
+      },
+      {
+        "spanish": "vender",
+        "english": "to sell",
+        "infinitive_stem": "vend",
+        "type": "regular -ER",
+        "example": "Vendo mi coche.",
+        "example_english": "I sell my car.",
+        "collocations": ["vender a", "vender por"]
+      },
+      {
+        "spanish": "prestar",
+        "english": "to lend",
+        "infinitive_stem": "prest",
+        "type": "regular -AR",
+        "example": "Te presto dinero.",
+        "example_english": "I lend you money.",
+        "collocations": ["prestar a", "prestar dinero"]
+      },
+      {
+        "spanish": "tomar",
+        "english": "to take",
+        "infinitive_stem": "tom",
+        "type": "regular -AR",
+        "example": "Tomo el autobús.",
+        "example_english": "I take the bus.",
+        "collocations": ["tomar a", "tomar por"]
+      },
+      {
+        "spanish": "llevar",
+        "english": "to carry, to take, to wear",
+        "infinitive_stem": "llev",
+        "type": "regular -AR",
+        "example": "Llevo una bolsa.",
+        "example_english": "I carry a bag.",
+        "collocations": ["llevar a", "llevar puesto"]
+      }
+    ],
+    "making_creating": [
+      {
+        "spanish": "hacer",
+        "english": "to do, to make",
+        "infinitive_stem": "hac",
+        "type": "completely irregular",
+        "example": "Hago un pastel.",
+        "example_english": "I make a cake.",
+        "collocations": ["hacer bien", "hacer mal", "hacer algo"]
+      },
+      {
+        "spanish": "crear",
+        "english": "to create",
+        "infinitive_stem": "cre",
+        "type": "regular -AR",
+        "example": "Creo arte.",
+        "example_english": "I create art.",
+        "collocations": ["crear algo"]
+      },
+      {
+        "spanish": "escribir",
+        "english": "to write",
+        "infinitive_stem": "escrib",
+        "type": "regular -IR",
+        "example": "Escribo una carta.",
+        "example_english": "I write a letter.",
+        "collocations": ["escribir a", "escribir de"]
+      },
+      {
+        "spanish": "cocinar",
+        "english": "to cook",
+        "infinitive_stem": "cocin",
+        "type": "regular -AR",
+        "example": "Cocino pasta.",
+        "example_english": "I cook pasta.",
+        "collocations": ["cocinar bien", "cocinar para"]
+      }
+    ],
+    "state_and_being": [
+      {
+        "spanish": "ser",
+        "english": "to be (permanent identity)",
+        "infinitive_stem": "s",
+        "type": "completely irregular",
+        "example": "Soy ingeniero.",
+        "example_english": "I am an engineer.",
+        "collocations": ["ser de", "ser bien", "ser malo"]
+      },
+      {
+        "spanish": "estar",
+        "english": "to be (location, state, condition)",
+        "infinitive_stem": "est",
+        "type": "irregular",
+        "example": "Estoy en Madrid.",
+        "example_english": "I am in Madrid.",
+        "collocations": ["estar en", "estar bien", "estar mal"]
+      },
+      {
+        "spanish": "parecer",
+        "english": "to seem, to appear",
+        "infinitive_stem": "parec",
+        "type": "regular -ER",
+        "example": "Parece cansado.",
+        "example_english": "He seems tired.",
+        "collocations": ["parecer que", "parecerse"]
+      },
+      {
+        "spanish": "tener",
+        "english": "to have",
+        "infinitive_stem": "ten",
+        "type": "irregular (E→IE)",
+        "example": "Tengo un gato.",
+        "example_english": "I have a cat.",
+        "collocations": ["tener que", "tener que ver"]
+      }
+    ]
+  }
+}

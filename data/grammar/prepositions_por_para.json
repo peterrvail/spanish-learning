@@ -1,0 +1,221 @@
+{
+  "por_vs_para": {
+    "overview": "POR and PARA both translate to 'for' in English but have distinct uses. PARA generally indicates purpose/destination/deadline; POR generally indicates cause/means/exchange/duration.",
+    "para": {
+      "core_meaning": "Indica objetivo, propósito, meta (Indicates goal, purpose, objective)",
+      "key_question": "¿Para qué? (For what purpose?)",
+      "uses": [
+        {
+          "use": "Purpose or Objective",
+          "spanish_pattern": "para + infinitivo",
+          "example": "Para comunicarme con mi familia.",
+          "english": "To communicate with my family.",
+          "explanation": "Answers 'for what purpose'"
+        },
+        {
+          "use": "Value or Usefulness",
+          "example": "La zanahoria es buena para la vista.",
+          "english": "Carrots are good for eyesight.",
+          "example2": "Las nueces son buenas para el cerebro.",
+          "english2": "Walnuts are good for the brain."
+        },
+        {
+          "use": "Deadline or Fixed Time Limit",
+          "example": "El proyecto es para el martes de la próxima semana.",
+          "english": "The project is due for next Tuesday.",
+          "explanation": "Indicates a deadline (fecha límite, plazo fijo)"
+        },
+        {
+          "use": "Recipient / Destination of Persons or Things",
+          "example": "Compro un chal para ti.",
+          "english": "I'm buying a shawl for you.",
+          "explanation": "Indicates who/what receives something"
+        },
+        {
+          "use": "Disproportion / Unexpected Contrast",
+          "example": "Luis para ser un entrenador, no está en forma, Luis está gordo.",
+          "english": "For being a trainer, Luis isn't in shape, Luis is fat.",
+          "explanation": "Contrast between expectation and reality (para ser un/a...)"
+        },
+        {
+          "use": "In Benefit Of",
+          "example": "Las donaciones son para los niños de África.",
+          "english": "The donations are for the children of Africa."
+        },
+        {
+          "use": "In Someone's Opinion",
+          "example": "Para mí, todo es posible.",
+          "english": "In my opinion, everything is possible.",
+          "explanation": "Para + pronoun = 'in [someone]'s opinion'"
+        },
+        {
+          "use": "Direction Toward",
+          "example": "El bus va para Cuenca.",
+          "english": "The bus is heading to Cuenca.",
+          "explanation": "'En dirección a' - direction of movement (contrast: 'desde' = departure point)"
+        }
+      ],
+      "idiomatic_expressions": [
+        {"spanish": "No es para tanto, relájate.", "english": "It's not a big deal, relax."},
+        {"spanish": "No estoy para nadie.", "english": "I'm not available for anyone (right now)."},
+        {"spanish": "No estoy para bromas.", "english": "I'm not in the mood for jokes."},
+        {"spanish": "Para ser honesto/a.", "english": "To be honest."},
+        {"spanish": "Para ser sincero/a.", "english": "To be sincere."},
+        {"spanish": "Para siempre.", "english": "Forever."},
+        {"spanish": "Para decir la verdad...", "english": "To tell the truth..."}
+      ]
+    },
+    "por": {
+      "core_meaning": "Indica causa, medio, intercambio, duración (Indicates cause, means, exchange, duration)",
+      "note": "Homework note: 'Tiene sentido' - Focus on making sentences with POR that make logical sense",
+      "uses": [
+        {
+          "use": "Cause or Reason",
+          "example": "Él concluyó el trabajo tarde porque el feriado viene.",
+          "english": "He finished the work late because the holiday is coming.",
+          "explanation": "Note: 'porque' (because) is related but distinct from 'por qué' (why)"
+        },
+        {
+          "use": "Movement Through/Along",
+          "example": "El niño sube las escaleras con cuidado.",
+          "english": "The child goes up the stairs carefully.",
+          "note": "Also see CON for manner"
+        },
+        {
+          "use": "Departure Point (contrast with para)",
+          "example": "El bus sale desde Cuenca.",
+          "english": "The bus departs from Cuenca.",
+          "explanation": "Contrasts with 'para Cuenca' which shows destination"
+        },
+        {
+          "use": "Exchange / Price",
+          "example": "Compré el libro por diez dólares.",
+          "english": "I bought the book for ten dollars.",
+          "explanation": "POR indicates exchange of value"
+        },
+        {
+          "use": "Duration of Time",
+          "example": "Estudié por dos horas.",
+          "english": "I studied for two hours.",
+          "explanation": "POR indicates a span of time"
+        },
+        {
+          "use": "Means or Method",
+          "example": "Hablé con ella por teléfono.",
+          "english": "I spoke with her by phone.",
+          "explanation": "POR indicates the medium/means used"
+        }
+      ]
+    },
+    "practice_sentences_por": [
+      {
+        "spanish": "La zebra huyó del león.",
+        "english": "The zebra fled from the lion."
+      },
+      {
+        "spanish": "Los niños leyeron el libro de dinosaurios.",
+        "english": "The children read the dinosaur book."
+      },
+      {
+        "spanish": "Yo toqué el saxofón en la escuela.",
+        "english": "I played the saxophone at school."
+      },
+      {
+        "spanish": "Yo busqué mis llaves.",
+        "english": "I looked for my keys."
+      },
+      {
+        "spanish": "Paso a paso y poco a poco.",
+        "english": "Step by step and little by little.",
+        "note": "Idiomatic expression"
+      },
+      {
+        "spanish": "Yo abracé el perro negro.",
+        "english": "I hugged the black dog."
+      },
+      {
+        "spanish": "Yo jugué fútbol con mis amigos en el parque.",
+        "english": "I played soccer with my friends in the park."
+      }
+    ]
+  },
+  "other_prepositions": {
+    "a": {
+      "meanings": [
+        {
+          "use": "Indicates place/direction",
+          "example": "Voy a la tienda.",
+          "english": "I'm going to the store."
+        },
+        {
+          "use": "Indicates specific time",
+          "example": "A las 4 de la tarde, tengo una reunión.",
+          "english": "At 4 in the afternoon, I have a meeting."
+        },
+        {
+          "use": "Indicates age",
+          "example": "Yo estudié piano a los 11 años de edad.",
+          "english": "I studied piano at 11 years of age."
+        }
+      ],
+      "idiomatic_expressions": [
+        {"spanish": "a la fuerza", "english": "by force"},
+        {"spanish": "a ver", "english": "let's see"},
+        {"spanish": "a mano", "english": "by hand"},
+        {"spanish": "a máquina", "english": "by machine"},
+        {"spanish": "a tiempo", "english": "on time", "example": "Llegué a tiempo."},
+        {"spanish": "a la izquierda, a la derecha", "english": "to the left, to the right"},
+        {"spanish": "a propósito", "english": "on purpose"},
+        {"spanish": "a regañadientes", "english": "reluctantly, grudgingly"}
+      ]
+    },
+    "ante": {
+      "meaning": "delante de / en presencia de (in front of / in the presence of)",
+      "example": "Ante esta situación, vamos a suspender las clases presenciales.",
+      "english": "Given this situation, we're going to suspend in-person classes."
+    },
+    "bajo": {
+      "meaning": "indica localización o duración (indicates location under/below, or duration)",
+      "examples": [
+        {
+          "spanish": "Bajo el mar.",
+          "english": "Under the sea."
+        },
+        {
+          "spanish": "Quiero una mesa para 4 personas.",
+          "english": "I want a table for 4 people.",
+          "note": "Context: restaurant vocabulary alongside bajo"
+        },
+        {
+          "spanish": "¿Bajo qué nombre?",
+          "english": "Under what name?",
+          "note": "Common restaurant/reservation phrase"
+        }
+      ]
+    },
+    "con": {
+      "meanings": [
+        {
+          "use": "In company of",
+          "example": "Voy al parque con mis amigos.",
+          "english": "I'm going to the park with my friends."
+        },
+        {
+          "use": "Indicates content/ingredients",
+          "example": "Chile con carne.",
+          "english": "Chili with meat."
+        },
+        {
+          "use": "Indicates manner",
+          "example": "El niño sube las escaleras con cuidado.",
+          "english": "The child goes up the stairs carefully."
+        },
+        {
+          "use": "Indicates means/instrument",
+          "example": "Me corté el dedo con el cuchillo.",
+          "english": "I cut my finger with the knife."
+        }
+      ]
+    }
+  }
+}

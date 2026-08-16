@@ -1,0 +1,70 @@
+{
+  "demonstratives": {
+    "overview": "Demonstrative adjectives/pronouns (this/that/these/those) agree in gender and number with the noun they modify or replace.",
+    "este_this": {
+      "meaning": "this (near speaker)",
+      "forms": {
+        "masculine_singular": "este",
+        "feminine_singular": "esta",
+        "masculine_plural": "estos",
+        "feminine_plural": "estas",
+        "neuter": "esto"
+      },
+      "examples": [
+        {"spanish": "Esta semana.", "english": "This week."},
+        {"spanish": "Este año es muy bonito.", "english": "This year is very nice."},
+        {"spanish": "¿Qué es esto?", "english": "What is this?", "note": "Neuter form - used for unidentified/abstract objects"},
+        {"spanish": "Estos niños son traviesos.", "english": "These children are mischievous."},
+        {"spanish": "Estas sillas son de madera.", "english": "These chairs are made of wood."},
+        {"spanish": "Esta silla. Estos libros.", "english": "This chair. These books."}
+      ]
+    },
+    "ese_that": {
+      "meaning": "that (near listener / moderate distance)",
+      "forms": {
+        "masculine_singular": "ese",
+        "feminine_singular": "esa",
+        "masculine_plural": "esos",
+        "feminine_plural": "esas",
+        "neuter": "eso"
+      },
+      "examples": [
+        {"spanish": "Ese vaso es de vidrio.", "english": "That glass is made of glass."},
+        {"spanish": "Esos vasos.", "english": "Those glasses."},
+        {"spanish": "Esa mujer es alta.", "english": "That woman is tall."},
+        {"spanish": "Esas chicas son inteligentes.", "english": "Those girls are intelligent."},
+        {"spanish": "¿Qué es eso?", "english": "What is that?", "note": "Neuter form"},
+        {"spanish": "Esas sillas. Esa ventana.", "english": "Those chairs. That window."}
+      ]
+    },
+    "aquel_that_over_there": {
+      "meaning": "that (far from both speaker and listener)",
+      "note": "Less commonly drilled in these lessons but follows same pattern: aquel, aquella, aquellos, aquellas, aquello"
+    }
+  },
+  "place_adverbs_pairs": {
+    "note": "These correspond to the three-tier distance system (this/that/that-over-there)",
+    "pairs": [
+      {"spanish": "aquí / acá", "english": "here", "distance": "near speaker"},
+      {"spanish": "ahí", "english": "there", "distance": "near listener"},
+      {"spanish": "allá / allí", "english": "over there", "distance": "far from both"}
+    ]
+  },
+  "contractions": {
+    "del": {
+      "formation": "de + el",
+      "meaning": "from the / of the",
+      "example": "del auto",
+      "example_english": "from the car / of the car"
+    },
+    "al": {
+      "formation": "a + el",
+      "meaning": "to the / towards the",
+      "example": "al día",
+      "example_english": "per day",
+      "usage_example": "¿Cuántas tazas de café tomas al día?",
+      "usage_example_english": "How many cups of coffee do you drink per day?"
+    },
+    "note": "These are the ONLY two mandatory contractions in Spanish. They never uncontract (never say 'a el' or 'de el' for masculine singular 'el')."
+  }
+}

@@ -1,0 +1,455 @@
+{
+  "imperative_system": {
+    "overview": "Spanish imperatives (commands) take different forms based on formality (tú, usted, nosotros, ustedes) and polarity (affirmative, negative). The system uses present indicative, subjunctive, and special irregulars.",
+    "forms": {
+      "affirmative_tu": {
+        "description": "Informal singular commands (speaking to someone you know well)",
+        "formation": "Use the 3rd person singular present indicative form (él/ella form)",
+        "regular_examples": [
+          {
+            "infinitive": "hablar",
+            "present_3rd": "él habla",
+            "imperative": "¡habla!",
+            "english": "Speak!"
+          },
+          {
+            "infinitive": "comer",
+            "present_3rd": "él come",
+            "imperative": "¡come!",
+            "english": "Eat!"
+          },
+          {
+            "infinitive": "vivir",
+            "present_3rd": "él vive",
+            "imperative": "¡vive!",
+            "english": "Live!"
+          }
+        ],
+        "irregular_examples": [
+          {
+            "infinitive": "decir",
+            "present_3rd": "él dice",
+            "imperative": "¡di!",
+            "english": "Say! Tell!",
+            "note": "Highly irregular; stem changes to di-"
+          },
+          {
+            "infinitive": "hacer",
+            "present_3rd": "él hace",
+            "imperative": "¡haz!",
+            "english": "Do! Make!",
+            "note": "Drops the 'ce' part"
+          },
+          {
+            "infinitive": "ir",
+            "present_3rd": "él va",
+            "imperative": "¡ve!",
+            "english": "Go!",
+            "note": "Completely different form"
+          },
+          {
+            "infinitive": "poner",
+            "present_3rd": "él pone",
+            "imperative": "¡pon!",
+            "english": "Put! Place!",
+            "note": "Shortens to just pon"
+          },
+          {
+            "infinitive": "salir",
+            "present_3rd": "él sale",
+            "imperative": "¡sal!",
+            "english": "Leave! Go out!",
+            "note": "Shortens to just sal"
+          },
+          {
+            "infinitive": "ser",
+            "present_3rd": "él es",
+            "imperative": "¡sé!",
+            "english": "Be!",
+            "note": "Completely different; accent distinguishes from pronoun 'se'"
+          },
+          {
+            "infinitive": "tener",
+            "present_3rd": "él tiene",
+            "imperative": "¡ten!",
+            "english": "Have! Possess!",
+            "note": "Shortens to just ten"
+          },
+          {
+            "infinitive": "venir",
+            "present_3rd": "él viene",
+            "imperative": "¡ven!",
+            "english": "Come!",
+            "note": "Shortens to just ven"
+          }
+        ]
+      },
+      "negative_tu": {
+        "description": "Informal singular negative commands (don't do this)",
+        "formation": "Use present subjunctive 2nd singular form (no + tú subjunctive)",
+        "regular_examples": [
+          {
+            "infinitive": "hablar",
+            "subjunctive_form": "hables",
+            "imperative": "¡no hables!",
+            "english": "Don't speak!"
+          },
+          {
+            "infinitive": "comer",
+            "subjunctive_form": "comas",
+            "imperative": "¡no comas!",
+            "english": "Don't eat!"
+          },
+          {
+            "infinitive": "vivir",
+            "subjunctive_form": "vivas",
+            "imperative": "¡no vivas!",
+            "english": "Don't live!"
+          }
+        ],
+        "irregular_examples": [
+          {
+            "infinitive": "decir",
+            "subjunctive_form": "digas",
+            "imperative": "¡no digas!",
+            "english": "Don't say/tell!"
+          },
+          {
+            "infinitive": "hacer",
+            "subjunctive_form": "hagas",
+            "imperative": "¡no hagas!",
+            "english": "Don't do/make!"
+          },
+          {
+            "infinitive": "ir",
+            "subjunctive_form": "vayas",
+            "imperative": "¡no vayas!",
+            "english": "Don't go!"
+          }
+        ]
+      },
+      "affirmative_usted": {
+        "description": "Formal singular commands (speaking to someone you don't know well or superior)",
+        "formation": "Use present subjunctive 3rd singular form (usted form)",
+        "note": "This is the SUBJUNCTIVE form, not the indicative",
+        "regular_examples": [
+          {
+            "infinitive": "hablar",
+            "subjunctive_form": "hable",
+            "imperative": "¡hable!",
+            "english": "Speak! (formal)"
+          },
+          {
+            "infinitive": "comer",
+            "subjunctive_form": "coma",
+            "imperative": "¡coma!",
+            "english": "Eat! (formal)"
+          },
+          {
+            "infinitive": "vivir",
+            "subjunctive_form": "viva",
+            "imperative": "¡viva!",
+            "english": "Live! (formal)"
+          }
+        ],
+        "irregular_examples": [
+          {
+            "infinitive": "ser",
+            "subjunctive_form": "sea",
+            "imperative": "¡sea!",
+            "english": "Be! (formal)"
+          },
+          {
+            "infinitive": "dar",
+            "subjunctive_form": "dé",
+            "imperative": "¡dé!",
+            "english": "Give! (formal)",
+            "note": "Accent on 'é' to distinguish from preposition 'de'"
+          },
+          {
+            "infinitive": "estar",
+            "subjunctive_form": "esté",
+            "imperative": "¡esté!",
+            "english": "Be (location)! (formal)"
+          }
+        ]
+      },
+      "negative_usted": {
+        "description": "Formal singular negative commands",
+        "formation": "No + present subjunctive 3rd singular form",
+        "examples": [
+          {
+            "imperative": "¡no hable!",
+            "english": "Don't speak! (formal)"
+          },
+          {
+            "imperative": "¡no coma!",
+            "english": "Don't eat! (formal)"
+          },
+          {
+            "imperative": "¡no sea!",
+            "english": "Don't be! (formal)"
+          }
+        ]
+      },
+      "affirmative_nosotros": {
+        "description": "Plural inclusive commands (let's do this) — includes the speaker",
+        "formation": "Use nosotros form (present subjunctive or infinitive + mos)",
+        "regular_examples": [
+          {
+            "infinitive": "hablar",
+            "form": "hablemos",
+            "imperative": "¡hablemos!",
+            "english": "Let's speak!"
+          },
+          {
+            "infinitive": "comer",
+            "form": "comamos",
+            "imperative": "¡comamos!",
+            "english": "Let's eat!"
+          },
+          {
+            "infinitive": "vivir",
+            "form": "vivamos",
+            "imperative": "¡vivamos!",
+            "english": "Let's live!"
+          }
+        ],
+        "irregular_examples": [
+          {
+            "infinitive": "ir",
+            "form": "vayamos",
+            "imperative": "¡vayamos!",
+            "english": "Let's go!"
+          },
+          {
+            "infinitive": "ser",
+            "form": "seamos",
+            "imperative": "¡seamos!",
+            "english": "Let's be!"
+          }
+        ]
+      },
+      "negative_nosotros": {
+        "description": "Plural inclusive negative commands (let's not do this)",
+        "formation": "No + nosotros subjunctive form",
+        "examples": [
+          {
+            "imperative": "¡no hablemos!",
+            "english": "Let's not speak!"
+          },
+          {
+            "imperative": "¡no comamos!",
+            "english": "Let's not eat!"
+          },
+          {
+            "imperative": "¡no vayamos!",
+            "english": "Let's not go!"
+          }
+        ]
+      },
+      "affirmative_ustedes": {
+        "description": "Plural formal commands (Spain and Latin America)",
+        "formation": "Use present subjunctive 3rd plural form (ustedes form)",
+        "regular_examples": [
+          {
+            "infinitive": "hablar",
+            "subjunctive_form": "hablen",
+            "imperative": "¡hablen!",
+            "english": "Speak! (you all, formal)"
+          },
+          {
+            "infinitive": "comer",
+            "subjunctive_form": "coman",
+            "imperative": "¡coman!",
+            "english": "Eat! (you all, formal)"
+          },
+          {
+            "infinitive": "jugar",
+            "subjunctive_form": "jueguen",
+            "imperative": "¡Jueguen en el parque!",
+            "english": "Play in the park! (you all)",
+            "note": "u→ue stem change + g→gu spelling change before e"
+          },
+          {
+            "infinitive": "pedir",
+            "subjunctive_form": "pidan",
+            "imperative": "¡Pidan comida!",
+            "english": "Order food! (you all)",
+            "note": "e→i stem change carries into subjunctive/imperative"
+          }
+        ]
+      },
+      "negative_ustedes": {
+        "description": "Plural formal negative commands",
+        "formation": "No + present subjunctive 3rd plural form",
+        "examples": [
+          {
+            "imperative": "¡no hablen!",
+            "english": "Don't speak! (you all, formal)"
+          },
+          {
+            "imperative": "¡no coman!",
+            "english": "Don't eat! (you all, formal)"
+          },
+          {
+            "imperative": "¡No jueguen aquí!",
+            "english": "Don't play here! (you all)"
+          },
+          {
+            "imperative": "¡No pidan dinero!",
+            "english": "Don't ask for money! (you all)"
+          }
+        ]
+      }
+    },
+    "imperative_with_pronouns": {
+      "rule": "Clitics (pronouns) can be attached to affirmative imperatives or placed before negative imperatives.",
+      "affirmative_attachment": {
+        "rule": "Clitics attach to the end of the verb in affirmative imperatives",
+        "word_stress": "Accents are often required to preserve original stress",
+        "examples": [
+          {
+            "base": "Compra + me + lo",
+            "result": "¡Cómpramelo!",
+            "english": "Buy it for me!",
+            "note": "Accent added to preserve stress on first syllable"
+          },
+          {
+            "base": "Di + me + lo",
+            "result": "¡Dímelo!",
+            "english": "Tell me it!",
+            "note": "Short verb, accent on first syllable"
+          },
+          {
+            "base": "Muestra + me + la",
+            "result": "¡Muestramela!",
+            "english": "Show it to me!",
+            "note": "Accent preserves stress"
+          },
+          {
+            "base": "Habla + me",
+            "result": "¡Háblame!",
+            "english": "Talk to me!",
+            "note": "Accent on 'á' to preserve stress on first syllable"
+          }
+        ]
+      },
+      "negative_preverbal": {
+        "rule": "Clitics go BEFORE the verb in negative imperatives (same as regular conjugation)",
+        "examples": [
+          {
+            "structure": "No + me + lo + digas",
+            "result": "¡No me lo digas!",
+            "english": "Don't tell me it!",
+            "note": "Uses subjunctive form (digas)"
+          },
+          {
+            "structure": "No + me + compres",
+            "result": "¡No me compres!",
+            "english": "Don't buy me (it)!",
+            "note": "Single clitic before verb"
+          },
+          {
+            "structure": "No + se + lo + muestres",
+            "result": "¡No se lo muestres!",
+            "english": "Don't show it to him!",
+            "note": "Double pronouns in preverbal position"
+          }
+        ]
+      }
+    },
+    "reflexive_imperatives": {
+      "rule": "Reflexive pronouns follow the same attachment/preverbal rules as other clitics",
+      "affirmative_examples": [
+        {
+          "infinitive": "bañarse (to bathe oneself)",
+          "imperative": "¡Báñate!",
+          "english": "Bathe yourself! (tú)",
+          "formation": "Baña + te"
+        },
+        {
+          "infinitive": "levantarse (to get up)",
+          "imperative": "¡Levántate!",
+          "english": "Get up! (tú)",
+          "formation": "Levanta + te"
+        },
+        {
+          "infinitive": "acostarse (to go to bed)",
+          "imperative": "¡Acuéstate!",
+          "english": "Go to bed! (tú)",
+          "formation": "Acuesta + te"
+        },
+        {
+          "infinitive": "lavarse (to wash oneself)",
+          "imperative_usted": "¡Lávese!",
+          "english": "Wash yourself! (usted)",
+          "formation": "Lave + se (subjunctive)"
+        }
+      ],
+      "negative_examples": [
+        {
+          "imperative": "¡No te bañes!",
+          "english": "Don't bathe yourself! (tú)",
+          "structure": "No + te + bañes (subjunctive)"
+        },
+        {
+          "imperative": "¡No se levante!",
+          "english": "Don't get up! (usted)",
+          "structure": "No + se + levante (subjunctive)"
+        }
+      ],
+      "nosotros_reflexive": {
+        "note": "When nosotros reflexive attaches pronouns, the final 's' of nosotros is dropped",
+        "examples": [
+          {
+            "base": "Bañemos + nos",
+            "intermediate": "Bañemosn",
+            "result": "¡Bañémonos!",
+            "english": "Let's bathe ourselves!",
+            "note": "Final s dropped; becomes monosyllabic, accent added"
+          },
+          {
+            "base": "Lavemos + nos",
+            "result": "¡Lavémonos!",
+            "english": "Let's wash ourselves!"
+          },
+          {
+            "base": "Vayamos + nos",
+            "result": "¡Vayámonos!",
+            "english": "Let's go (ourselves)!"
+          }
+        ]
+      }
+    },
+    "summary_chart": {
+      "headers": ["Formality", "Affirmative", "Negative", "Formation"],
+      "rows": [
+        {
+          "formality": "Tú (informal singular)",
+          "affirmative": "¡Habla!",
+          "negative": "¡No hables!",
+          "formation": "3rd person present / subjunctive"
+        },
+        {
+          "formality": "Usted (formal singular)",
+          "affirmative": "¡Hable!",
+          "negative": "¡No hable!",
+          "formation": "3rd person subjunctive"
+        },
+        {
+          "formality": "Nosotros (let's)",
+          "affirmative": "¡Hablemos!",
+          "negative": "¡No hablemos!",
+          "formation": "Nosotros subjunctive"
+        },
+        {
+          "formality": "Ustedes (formal plural)",
+          "affirmative": "¡Hablen!",
+          "negative": "¡No hablen!",
+          "formation": "3rd plural subjunctive"
+        }
+      ]
+    }
+  }
+}

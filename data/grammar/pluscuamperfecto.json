@@ -1,0 +1,72 @@
+{
+  "pluscuamperfecto": {
+    "overview": "El Pretérito Pluscuamperfecto (Past Perfect) expresa una acción pasada que ocurrió ANTES de otra acción pasada. Es el 'pasado del pasado' — establece una secuencia clara de dos eventos pasados.",
+    "spanish_name": "El Pretérito Pluscuamperfecto",
+    "english_name": "Past Perfect / Pluperfect",
+    "construction": {
+      "rule": "HABER (imperfecto) + PARTICIPIO PASADO",
+      "haber_imperfect_conjugation": {
+        "yo": "había", "tú": "habías", "él_ella_usted": "había",
+        "nosotros": "habíamos", "vosotros": "habíais", "ellos_ustedes": "habían"
+      },
+      "example": {
+        "spanish": "Yo había hablado.",
+        "english": "I had spoken."
+      },
+      "note": "Uses the same irregular participles as the present perfect (dicho, hecho, escrito, etc.) — see perfect_complete.json"
+    },
+    "uses": [
+      {
+        "use_number": 3,
+        "name": "Estructura 'Antes de' (Before-clause structure)",
+        "description": "ANTES DE + verbo infinitivo + Pretérito Pluscuamperfecto — describes what had already happened before another past action",
+        "pattern": "ANTES DE + [infinitive], [subject] había/habían + [participle]",
+        "examples": [
+          {
+            "spanish": "Luis, antes de ingresar a la clase, él había fumado una caja de 12 cigarrillos.",
+            "english": "Luis, before entering class, had smoked a pack of 12 cigarettes.",
+            "explanation": "The smoking (pluscuamperfecto) happened before entering class"
+          },
+          {
+            "spanish": "Los niños antes de almorzar habían rezado con la abuela.",
+            "english": "The children, before having lunch, had prayed with grandma.",
+            "explanation": "Praying happened before lunch"
+          }
+        ]
+      },
+      {
+        "use_number": 4,
+        "name": "Causa con Pluscuamperfecto (Cause using pluperfect)",
+        "description": "PRET. INDEFINIDO/IMPERFECTO + PORQUE + PRET. PLUSCUAMPERFECTO — explains a past event/state by referencing an even earlier past action",
+        "pattern": "[Preterite/Imperfect result] + PORQUE + [Pluperfect cause]",
+        "examples": [
+          {
+            "spanish": "Miguel se desmayó en la ceremonia porque no había desayunado.",
+            "english": "Miguel fainted at the ceremony because he hadn't had breakfast.",
+            "explanation": "Preterite (se desmayó) = result; Pluperfect (había desayunado) = earlier cause"
+          },
+          {
+            "spanish": "El niño estaba feliz porque había ganado el premio mayor.",
+            "english": "The child was happy because he had won the grand prize.",
+            "explanation": "Imperfect (estaba) = ongoing state; Pluperfect (había ganado) = earlier cause"
+          },
+          {
+            "spanish": "El niño había ganado el premio mayor, por eso estaba feliz.",
+            "english": "The child had won the grand prize, that's why he was happy.",
+            "explanation": "Reversed order: Pluperfect cause stated first, then 'por eso' (that's why) + imperfect result"
+          }
+        ]
+      }
+    ],
+    "sequence_of_past_tenses": {
+      "explanation": "When narrating multiple past events, Spanish uses different tenses to show WHICH happened first",
+      "order": [
+        {"tense": "Pluscuamperfecto", "timing": "Earliest — happened before everything else", "example": "había desayunado (had eaten breakfast)"},
+        {"tense": "Pretérito/Imperfecto", "timing": "Main past narrative — the 'main' past events", "example": "se desmayó (fainted) / estaba feliz (was happy)"}
+      ]
+    },
+    "related_expressions": [
+      {"spanish": "acabar de + infinitivo", "english": "to have just done something", "example": "Los turistas acaban de salir para la playa.", "example_english": "The tourists have just left for the beach.", "note": "Present tense acabar de = immediate past; different from pluscuamperfecto"}
+    ]
+  }
+}

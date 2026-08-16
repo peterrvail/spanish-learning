@@ -1,0 +1,258 @@
+{
+  "pronouns": {
+    "subject_pronouns": [
+      {
+        "person": "1st singular",
+        "spanish": "yo",
+        "english": "I",
+        "example": "Yo hablo español.",
+        "note": "Always capitalized in writing: Yo..."
+      },
+      {
+        "person": "2nd singular informal",
+        "spanish": "tú",
+        "english": "you (informal)",
+        "example": "Tú hablas español.",
+        "note": "Used with friends, family, peers"
+      },
+      {
+        "person": "2nd singular formal",
+        "spanish": "usted",
+        "english": "you (formal)",
+        "example": "Usted habla español.",
+        "note": "Abbreviated 'Ud.' or 'Vd.'; used with strangers, superiors"
+      },
+      {
+        "person": "3rd singular",
+        "spanish": "él/ella",
+        "english": "he/she",
+        "example": "Él/Ella habla español.",
+        "note": "él = he, ella = she; both use él/ella form"
+      },
+      {
+        "person": "1st plural",
+        "spanish": "nosotros/nosotras",
+        "english": "we",
+        "example": "Nosotros hablamos español.",
+        "note": "nosotros = mixed/all male; nosotras = all female"
+      },
+      {
+        "person": "2nd plural (Spain)",
+        "spanish": "vosotros/vosotras",
+        "english": "you all (informal)",
+        "example": "Vosotros habláis español.",
+        "note": "Used in Spain; replaced by ustedes in Latin America"
+      },
+      {
+        "person": "2nd plural formal",
+        "spanish": "ustedes",
+        "english": "you all (formal)",
+        "example": "Ustedes hablan español.",
+        "note": "Abbreviated 'Uds.' or 'Vds.'; used universally in Latin America"
+      },
+      {
+        "person": "3rd plural",
+        "spanish": "ellos/ellas",
+        "english": "they",
+        "example": "Ellos/Ellas hablan español.",
+        "note": "ellos = mixed/all male; ellas = all female"
+      }
+    ],
+    "direct_object_pronouns": [
+      {
+        "person": "1st singular",
+        "spanish": "me",
+        "english": "me",
+        "example": "Me ves.",
+        "position": "before conjugated verb",
+        "note": "Receives the direct action"
+      },
+      {
+        "person": "2nd singular",
+        "spanish": "te",
+        "english": "you (informal)",
+        "example": "Te veo.",
+        "position": "before conjugated verb",
+        "note": "Informal; used with tú"
+      },
+      {
+        "person": "3rd singular masculine",
+        "spanish": "lo",
+        "english": "him/it (masc.)",
+        "example": "Lo compré.",
+        "position": "before conjugated verb",
+        "note": "Can refer to person or object"
+      },
+      {
+        "person": "3rd singular feminine",
+        "spanish": "la",
+        "english": "her/it (fem.)",
+        "example": "La compré.",
+        "position": "before conjugated verb",
+        "note": "Can refer to person or object"
+      },
+      {
+        "person": "1st plural",
+        "spanish": "nos",
+        "english": "us",
+        "example": "Nos llamó.",
+        "position": "before conjugated verb",
+        "note": "Used for both informal and formal in plural"
+      },
+      {
+        "person": "2nd plural (Spain)",
+        "spanish": "os",
+        "english": "you all (informal, Spain)",
+        "example": "Os veo.",
+        "position": "before conjugated verb",
+        "note": "Spain only; replaced by los/las in Latin America"
+      },
+      {
+        "person": "3rd plural masculine",
+        "spanish": "los",
+        "english": "them (masc.)",
+        "example": "Los conozco.",
+        "position": "before conjugated verb",
+        "note": "Mixed group or all male"
+      },
+      {
+        "person": "3rd plural feminine",
+        "spanish": "las",
+        "english": "them (fem.)",
+        "example": "Las vendí.",
+        "position": "before conjugated verb",
+        "note": "All female group"
+      }
+    ],
+    "indirect_object_pronouns": [
+      {
+        "person": "1st singular",
+        "spanish": "me",
+        "english": "to/for me",
+        "example": "Me dio un regalo.",
+        "position": "before conjugated verb",
+        "note": "Same form as DO pronoun"
+      },
+      {
+        "person": "2nd singular",
+        "spanish": "te",
+        "english": "to/for you (informal)",
+        "example": "Te conté la verdad.",
+        "position": "before conjugated verb",
+        "note": "Same form as DO pronoun"
+      },
+      {
+        "person": "3rd singular",
+        "spanish": "le",
+        "english": "to/for him/her/you (formal)",
+        "example": "Le escribí.",
+        "position": "before conjugated verb",
+        "note": "Same form for all 3rd singular persons"
+      },
+      {
+        "person": "1st plural",
+        "spanish": "nos",
+        "english": "to/for us",
+        "example": "Nos habló.",
+        "position": "before conjugated verb",
+        "note": "Same form as DO pronoun"
+      },
+      {
+        "person": "2nd plural (Spain)",
+        "spanish": "os",
+        "english": "to/for you all (informal, Spain)",
+        "example": "Os mostré.",
+        "position": "before conjugated verb",
+        "note": "Spain only"
+      },
+      {
+        "person": "3rd plural",
+        "spanish": "les",
+        "english": "to/for them/you all (formal)",
+        "example": "Les enviamos un correo.",
+        "position": "before conjugated verb",
+        "note": "Same form for all 3rd plural persons"
+      }
+    ],
+    "reflexive_pronouns": [
+      {
+        "person": "1st singular",
+        "spanish": "me",
+        "english": "myself",
+        "example": "Me levanto.",
+        "position": "before verb or attached to infinitive/gerund",
+        "note": "Subject and object are the same person"
+      },
+      {
+        "person": "2nd singular",
+        "spanish": "te",
+        "english": "yourself",
+        "example": "Te despiertas.",
+        "position": "before verb or attached to infinitive/gerund",
+        "note": "Used with tú"
+      },
+      {
+        "person": "3rd singular/plural",
+        "spanish": "se",
+        "english": "himself/herself/yourself/themselves",
+        "example": "Se baña.",
+        "position": "before verb or attached to infinitive/gerund",
+        "note": "Used for él, ella, usted, ellos, ellas, ustedes"
+      },
+      {
+        "person": "1st plural",
+        "spanish": "nos",
+        "english": "ourselves",
+        "example": "Nos dormimos.",
+        "position": "before verb or attached to infinitive/gerund",
+        "note": "Used with nosotros"
+      },
+      {
+        "person": "2nd plural (Spain)",
+        "spanish": "os",
+        "english": "yourselves (Spain)",
+        "example": "Os sentáis.",
+        "position": "before verb or attached to infinitive/gerund",
+        "note": "Spain only; used with vosotros"
+      }
+    ],
+    "clitic_positioning_rules": [
+      {
+        "structure": "Affirmative Imperative",
+        "position": "ATTACHED to the end of verb",
+        "example": "¡Háblame!",
+        "note": "Clitics form one word with the verb; accents may be required"
+      },
+      {
+        "structure": "Negative Imperative",
+        "position": "BEFORE the verb (preverbal)",
+        "example": "¡No me hables!",
+        "note": "Uses subjunctive form; clitics precede the verb"
+      },
+      {
+        "structure": "Infinitive",
+        "position": "ATTACHED to the end of infinitive",
+        "example": "Quiero comprarlo.",
+        "note": "Clitics form one word with infinitive; accents required with 2+ clitics"
+      },
+      {
+        "structure": "Gerund",
+        "position": "ATTACHED to the end of gerund",
+        "example": "Viéndolo claramente...",
+        "note": "Always requires accent on gerund when clitics attached"
+      },
+      {
+        "structure": "Indicative Mood",
+        "position": "BEFORE conjugated verb",
+        "example": "Lo vimos ayer.",
+        "note": "Standard preverbal position in most cases"
+      },
+      {
+        "structure": "Progressive (estar + gerund)",
+        "position": "BEFORE estar OR ATTACHED to gerund",
+        "example": "Está mirándolo. OR Lo está mirando.",
+        "note": "Both positions are correct"
+      }
+    ]
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "exercise_set": {
+    "id": "preterite_review_leccion111",
+    "title": "Pasado Simple Review — Ejercicio",
+    "source": "Leccion 111 - Pasado Simple Review",
+    "tense": "pretérito indefinido",
+    "sections": [
+      {
+        "section_name": "Verbos regulares",
+        "instructions": "Conjuga los verbos entre paréntesis en pretérito indefinido.",
+        "items": [
+          {
+            "prompt": "Ayer Marta y Luis (perder) ___ el autobús.",
+            "infinitive": "perder",
+            "answer": "perdieron",
+            "english": "Yesterday Marta and Luis missed the bus."
+          },
+          {
+            "prompt": "Hace cinco años (ganar/yo) ___ en el bingo.",
+            "infinitive": "ganar",
+            "answer": "gané",
+            "english": "Five years ago I won at bingo."
+          },
+          {
+            "prompt": "Ni Paco ni tú (salir) ___ a la ceremonia.",
+            "infinitive": "salir",
+            "answer": "salisteis",
+            "english": "Neither Paco nor you went out to the ceremony.",
+            "note": "Compound subject (Paco + tú) takes vosotros form in Spain register; Latin America would use 'salieron' addressing a plural group contextually, but grammatically this pairing is 2nd-person plural informal."
+          },
+          {
+            "prompt": "Alex y yo (mover) ___ todos los muebles de sitio.",
+            "infinitive": "mover",
+            "answer": "movimos",
+            "english": "Alex and I moved all the furniture around."
+          },
+          {
+            "prompt": "Rafael Azcona (vivir) ___ de 1926 a 2008.",
+            "infinitive": "vivir",
+            "answer": "vivió",
+            "english": "Rafael Azcona lived from 1926 to 2008."
+          }
+        ]
+      },
+      {
+        "section_name": "Verbos irregulares",
+        "instructions": "Conjuga los verbos entre paréntesis en pretérito indefinido.",
+        "items": [
+          {
+            "prompt": "Raquel y Vicente (tener) ___ que cancelar sus vacaciones.",
+            "infinitive": "tener",
+            "answer": "tuvieron",
+            "english": "Raquel and Vicente had to cancel their vacation.",
+            "irregular_group": "estar/tener/poder (uv stem)"
+          },
+          {
+            "prompt": "(andar/yo) ___ por la sombra porque hacía mucho calor.",
+            "infinitive": "andar",
+            "answer": "anduve",
+            "english": "I walked in the shade because it was very hot.",
+            "irregular_group": "estar/tener/poder (uv stem) — andar behaves like estar: anduv-"
+          },
+          {
+            "prompt": "Lo que Manuela y tú (hacer) ___ es imperdonable.",
+            "infinitive": "hacer",
+            "answer": "hicisteis",
+            "english": "What Manuela and you did is unforgivable.",
+            "irregular_group": "clave (qu/v/h)",
+            "note": "vosotros form; hiciste would be tú singular"
+          },
+          {
+            "prompt": "¿Tú no (traer) ___ nada a la fiesta?",
+            "infinitive": "traer",
+            "answer": "trajiste",
+            "english": "Didn't you bring anything to the party?",
+            "irregular_group": "j-stem irregular (traje, trajiste, trajo, trajimos, trajeron)",
+            "note": "New irregular pattern: traer → traj-; note NO 'i' in ellos form (trajeron, not trajieron)"
+          },
+          {
+            "prompt": "Nunca (saber/nosotros) ___ la verdad.",
+            "infinitive": "saber",
+            "answer": "supimos",
+            "english": "We never found out the truth.",
+            "irregular_group": "clave-adjacent (sup-)",
+            "note": "saber in preterite often means 'found out' rather than 'knew'"
+          }
+        ]
+      },
+      {
+        "section_name": "Todo tipo de verbos",
+        "instructions": "Conjuga los verbos entre paréntesis en pretérito indefinido.",
+        "items": [
+          {
+            "prompt": "El taxista (dar) ___ una gran vuelta en lugar de ir directamente al hotel.",
+            "infinitive": "dar",
+            "answer": "dio",
+            "english": "The taxi driver took a long way around instead of going straight to the hotel.",
+            "irregular_group": "completamente irregular"
+          },
+          {
+            "prompt": "La semana pasada (estar/yo) ___ de baja.",
+            "infinitive": "estar",
+            "answer": "estuve",
+            "english": "Last week I was on sick leave.",
+            "irregular_group": "estar/tener/poder (uv stem)"
+          },
+          {
+            "prompt": "El año pasado, todos los alumnos (aprobar) ___ los exámenes finales.",
+            "infinitive": "aprobar",
+            "answer": "aprobaron",
+            "english": "Last year, all the students passed their final exams.",
+            "irregular_group": "regular -ar"
+          },
+          {
+            "prompt": "La artista (pedir) ___ silencio al público.",
+            "infinitive": "pedir",
+            "answer": "pidió",
+            "english": "The artist asked the audience for silence.",
+            "irregular_group": "e→i stem change (3rd person only in preterite)"
+          },
+          {
+            "prompt": "Anoche los niños se (dormir) ___ enseguida.",
+            "infinitive": "dormir",
+            "answer": "durmieron",
+            "english": "Last night the children fell asleep right away.",
+            "irregular_group": "o→u stem change (3rd person only in preterite)"
+          }
+        ]
+      }
+    ],
+    "new_irregular_pattern_introduced": {
+      "verb": "traer",
+      "english": "to bring",
+      "conjugation": {
+        "yo": "traje", "tú": "trajiste", "él_ella_usted": "trajo",
+        "nosotros": "trajimos", "ellos_ustedes": "trajeron"
+      },
+      "note": "J-stem verbs (traer, decir, conducir, traducir) drop the 'i' in the ellos/ustedes ending: trajeron NOT trajieron; dijeron NOT dijieron"
+    }
+  }
+}

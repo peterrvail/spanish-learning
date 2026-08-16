@@ -1,0 +1,85 @@
+{
+  "verb_infinitive_structures": {
+    "overview": "ESTRUCTURAS GRAMATICALES — Common Spanish sentence patterns combining a conjugated verb with an infinitive. These are foundational structures used constantly in conversation.",
+    "structures": [
+      {
+        "pattern": "verbo conjugado + verbo infinitivo",
+        "english": "conjugated verb + infinitive",
+        "example": "Quiero comer.",
+        "example_english": "I want to eat.",
+        "note": "Direct combination; no connector needed with querer, poder, necesitar, desear"
+      },
+      {
+        "pattern": "IR (conjugado) + a + verbo infinitivo",
+        "english": "IR + a + infinitive = 'going to do something' (immediate future)",
+        "example": "Voy a estudiar.",
+        "example_english": "I'm going to study.",
+        "conjugation_of_ir": {"yo": "voy", "tú": "vas", "él": "va", "nosotros": "vamos", "ellos": "van"}
+      },
+      {
+        "pattern": "TENER (conjugado) + que + verbo infinitivo",
+        "english": "TENER + que + infinitive = 'to have to do something' (obligation)",
+        "example": "Tengo que beber más agua.",
+        "example_english": "I have to drink more water.",
+        "conjugation_of_tener": {"yo": "tengo", "tú": "tienes", "él": "tiene", "nosotros": "tenemos", "ellos": "tienen"},
+        "additional_example": {"spanish": "Tuve que limpiar la casa.", "english": "I had to clean the house. (preterite)"}
+      },
+      {
+        "pattern": "DEBER (conjugado) + verbo infinitivo",
+        "english": "DEBER + infinitive = 'should/must do something' (soft obligation)",
+        "example": "Debo estudiar más.",
+        "example_english": "I should study more.",
+        "conjugation_of_deber": {"yo": "debo", "tú": "debes", "él": "debe", "nosotros": "debemos", "ellos": "deben"}
+      },
+      {
+        "pattern": "HAY QUE + verbo infinitivo",
+        "english": "impersonal obligation = 'one must / it's necessary to'",
+        "example": "Hay que limpiar la casa.",
+        "example_english": "One must clean the house. / The house needs cleaning.",
+        "note": "Impersonal - no specific subject; general necessity"
+      },
+      {
+        "pattern": "ESTAR (conjugado) + gerundio (-ando, -iendo)",
+        "english": "present progressive = 'to be doing something'",
+        "example": "Tú estás sudando.",
+        "example_english": "You are sweating.",
+        "conjugation_of_estar": {"yo": "estoy", "tú": "estás", "él": "está", "nosotros": "estamos", "ellos": "están"}
+      },
+      {
+        "pattern": "ES + adjetivo + verbo infinitivo",
+        "english": "impersonal evaluation = 'it's [adjective] to do something'",
+        "example": "Es saludable comer vegetales.",
+        "example_english": "It's healthy to eat vegetables."
+      }
+    ],
+    "common_modal_verbs": [
+      {"spanish": "necesitar", "english": "to need", "example": "Necesito beber agua."},
+      {"spanish": "querer", "english": "to want", "example": "Quieres café?"},
+      {"spanish": "poder", "english": "to be able to, can", "example": "Yo puedo ir a la tienda."},
+      {"spanish": "desear", "english": "to desire, wish"}
+    ]
+  },
+  "common_questions": [
+    {"spanish": "¿Qué quieres hacer?", "english": "What do you want to do?"},
+    {"spanish": "¿Qué haces?", "english": "What are you doing?"},
+    {"spanish": "¿De dónde eres?", "english": "Where are you from?", "example_answer": "De Colombia."},
+    {"spanish": "¿Qué hora es?", "english": "What time is it?"},
+    {"spanish": "¿Qué día es hoy?", "english": "What day is it today?"},
+    {"spanish": "¿Quién es?", "english": "Who is it?"},
+    {"spanish": "¿Tiene hambre? ¿Tiene sed?", "english": "Are you hungry? Are you thirsty?", "note": "Uses TENER, not ESTAR"},
+    {"spanish": "¿Dónde trabaja?", "english": "Where do you work?"},
+    {"spanish": "¿Tiene cambio/suelto?", "english": "Do you have change?"},
+    {"spanish": "¿Puedo pagar con tarjeta?", "english": "Can I pay with card?"},
+    {"spanish": "¿A dónde vamos?", "english": "Where are we going?"},
+    {"spanish": "¿Cuál es su número de teléfono?", "english": "What is your phone number?"},
+    {"spanish": "¿Qué significa [tu nombre]?", "english": "What does [your name] mean?", "example": "Mi nombre significa roca.", "example_english": "My name means rock."},
+    {"spanish": "¿Habla usted inglés?", "english": "Do you speak English? (formal)"},
+    {"spanish": "¿A qué se dedica?", "english": "What do you do (for work)?"},
+    {"spanish": "¿A qué hora abren/cierran?", "english": "What time do you open/close?"}
+  ],
+  "expressions_of_opinion": [
+    {"spanish": "¡Muy divertido!", "english": "Very fun!"},
+    {"spanish": "¡Qué divertido!", "english": "How fun!"},
+    {"spanish": "¡Qué lindo!", "english": "How cute/nice!"}
+  ]
+}

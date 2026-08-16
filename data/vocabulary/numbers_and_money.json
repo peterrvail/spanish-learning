@@ -1,0 +1,127 @@
+{
+  "numbers": {
+    "0_20": [
+      {"number": 0, "spanish": "cero"}, {"number": 1, "spanish": "uno"},
+      {"number": 2, "spanish": "dos"}, {"number": 3, "spanish": "tres"},
+      {"number": 4, "spanish": "cuatro"}, {"number": 5, "spanish": "cinco"},
+      {"number": 6, "spanish": "seis"}, {"number": 7, "spanish": "siete"},
+      {"number": 8, "spanish": "ocho"}, {"number": 9, "spanish": "nueve"},
+      {"number": 10, "spanish": "diez"}, {"number": 11, "spanish": "once"},
+      {"number": 12, "spanish": "doce"}, {"number": 13, "spanish": "trece"},
+      {"number": 14, "spanish": "catorce"}, {"number": 15, "spanish": "quince"},
+      {"number": 16, "spanish": "dieciséis"}, {"number": 17, "spanish": "diecisiete"},
+      {"number": 18, "spanish": "dieciocho"}, {"number": 19, "spanish": "diecinueve"},
+      {"number": 20, "spanish": "veinte"}
+    ],
+    "tens": [
+      {"number": 20, "spanish": "veinte"}, {"number": 30, "spanish": "treinta"},
+      {"number": 40, "spanish": "cuarenta"}, {"number": 50, "spanish": "cincuenta"},
+      {"number": 60, "spanish": "sesenta"}, {"number": 70, "spanish": "setenta"},
+      {"number": 80, "spanish": "ochenta"}, {"number": 90, "spanish": "noventa"},
+      {"number": 100, "spanish": "cien"}
+    ],
+    "compound_21_30": {
+      "pattern": "veinte + i + [unit] (fused into one word)",
+      "examples": [
+        {"number": 21, "spanish": "veintiuno"}, {"number": 22, "spanish": "veintidós"},
+        {"number": 23, "spanish": "veintitrés"}, {"number": 24, "spanish": "veinticuatro"},
+        {"number": 25, "spanish": "veinticinco"}, {"number": 26, "spanish": "veintiséis"},
+        {"number": 27, "spanish": "veintisiete"}, {"number": 28, "spanish": "veintiocho"},
+        {"number": 29, "spanish": "veintinueve"}
+      ]
+    },
+    "compound_31_plus": {
+      "pattern": "[tens] + y + [unit] (three separate words)",
+      "examples": [
+        {"number": 31, "spanish": "treinta y uno"}, {"number": 32, "spanish": "treinta y dos"},
+        {"number": 41, "spanish": "cuarenta y uno"}, {"number": 51, "spanish": "cincuenta y uno"},
+        {"number": 61, "spanish": "sesenta y uno"}, {"number": 71, "spanish": "setenta y uno"},
+        {"number": 83, "spanish": "ochenta y tres"}, {"number": 91, "spanish": "noventa y uno"}
+      ],
+      "note": "Only 21-29 use the fused veinti- form; 31+ always use 'y' (treinta y uno, not treintayuno)"
+    },
+    "hundreds": [
+      {"number": 100, "spanish": "cien"},
+      {"number": 101, "spanish": "ciento uno"},
+      {"number": 103, "spanish": "ciento tres"},
+      {"number": 110, "spanish": "ciento diez"},
+      {"number": 200, "spanish": "doscientos"},
+      {"number": 205, "spanish": "doscientos cinco"},
+      {"number": 300, "spanish": "trescientos"},
+      {"number": 400, "spanish": "cuatrocientos"},
+      {"number": 500, "spanish": "quinientos", "note": "Irregular! Not 'cincocientos'"},
+      {"number": 600, "spanish": "seiscientos"},
+      {"number": 700, "spanish": "setecientos"},
+      {"number": 800, "spanish": "ochocientos"},
+      {"number": 900, "spanish": "novecientos"},
+      {"number": 1000, "spanish": "mil"}
+    ],
+    "years": [
+      {"year": 1983, "spanish": "mil novecientos ochenta y tres"},
+      {"year": 1990, "spanish": "mil novecientos noventa"},
+      {"year": 2025, "spanish": "dos mil veinticinco"}
+    ],
+    "usage_examples": [
+      {
+        "spanish": "¿En qué año tú naciste?",
+        "english": "What year were you born?"
+      },
+      {
+        "spanish": "Yo nací en mil novecientos noventa.",
+        "english": "I was born in 1990."
+      },
+      {
+        "spanish": "Mi fecha de nacimiento es el 8 de septiembre de 1990.",
+        "english": "My birthdate is September 8, 1990."
+      }
+    ]
+  },
+  "money_vocabulary": {
+    "key_phrases": [
+      {
+        "spanish": "¿Cuánto cuesta?",
+        "english": "How much does it cost?",
+        "alternate": "¿Cuánto vale?"
+      },
+      {
+        "spanish": "¿Cuánto es por todo?",
+        "english": "How much is it all together?"
+      },
+      {
+        "spanish": "la cuenta",
+        "english": "the bill/check"
+      },
+      {
+        "spanish": "los dólares",
+        "english": "dollars"
+      },
+      {
+        "spanish": "los centavos",
+        "english": "cents"
+      },
+      {
+        "spanish": "doce con cincuenta",
+        "english": "twelve fifty ($12.50)",
+        "note": "Use 'con' to connect dollars and cents when speaking prices"
+      }
+    ],
+    "price_examples": [
+      {"amount": "$12.50", "spanish": "doce con cincuenta / doce dólares con cincuenta centavos"},
+      {"amount": "$58.30", "spanish": "cincuenta y ocho con treinta"},
+      {"amount": "$140.25", "spanish": "ciento cuarenta con veinticinco"},
+      {"amount": "$150", "spanish": "ciento cincuenta"},
+      {"amount": "$500", "spanish": "quinientos"}
+    ]
+  },
+  "basic_math": {
+    "operations": [
+      {"spanish": "más", "english": "plus", "example": "2 más 3 igual 5", "example_english": "2 plus 3 equals 5"},
+      {"spanish": "menos", "english": "minus", "example": "5 menos 3 igual 2", "example_english": "5 minus 3 equals 2"},
+      {"spanish": "por", "english": "times", "example": "3 por 4 igual 12", "example_english": "3 times 4 equals 12"},
+      {"spanish": "dividido para / entre", "english": "divided by", "example": "25 dividido para 5 igual 5", "example_english": "25 divided by 5 equals 5"},
+      {"spanish": "igual", "english": "equals"},
+      {"spanish": "la tabla de multiplicar", "english": "multiplication table"},
+      {"spanish": "la tabla de división", "english": "division table"}
+    ]
+  }
+}

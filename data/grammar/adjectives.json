@@ -1,0 +1,93 @@
+{
+  "adjective_placement": {
+    "standard_pattern": {
+      "rule": "Artículo + Sustantivo + Adjetivo (Article + Noun + Adjective)",
+      "example": "El chico bueno.",
+      "english": "The good boy.",
+      "note": "Standard word order places most adjectives AFTER the noun in Spanish"
+    }
+  },
+  "shortened_adjectives": {
+    "rule": "ADJETIVOS CORTOS (Apocope) — Certain adjectives drop their final '-o' when placed BEFORE a masculine singular noun",
+    "affected_adjectives": [
+      {
+        "full_form": "bueno",
+        "shortened_form": "buen",
+        "context": "before masculine singular noun",
+        "example": "El buen chico. / ¡Qué tenga un buen día!",
+        "english": "The good boy. / Have a good day!"
+      },
+      {
+        "full_form": "malo",
+        "shortened_form": "mal",
+        "context": "before masculine singular noun",
+        "example": "un mal día",
+        "english": "a bad day"
+      },
+      {
+        "full_form": "primero",
+        "shortened_form": "primer",
+        "context": "before masculine singular noun",
+        "example": "Hoy es mi primer día de clases de español.",
+        "english": "Today is my first day of Spanish classes."
+      },
+      {
+        "full_form": "tercero",
+        "shortened_form": "tercer",
+        "context": "before masculine singular noun",
+        "example": "el tercer piso",
+        "english": "the third floor"
+      },
+      {
+        "full_form": "alguno",
+        "shortened_form": "algún",
+        "context": "before masculine singular noun",
+        "example": "algún día",
+        "english": "some day"
+      },
+      {
+        "full_form": "ninguno",
+        "shortened_form": "ningún",
+        "context": "before masculine singular noun",
+        "example": "ningún problema",
+        "english": "no problem"
+      }
+    ],
+    "note": "These shortened forms only apply before MASCULINE SINGULAR nouns. Feminine forms (buena, mala, primera, tercera, alguna, ninguna) are NOT shortened."
+  },
+  "example_sentences": [
+    {
+      "spanish": "Los pájaros están cantando.",
+      "english": "The birds are singing.",
+      "grammar_note": "Present progressive with descriptive context"
+    },
+    {
+      "spanish": "El gallo no ha cantado todavía.",
+      "english": "The rooster hasn't sung yet.",
+      "grammar_note": "Present perfect + todavía (yet/still)"
+    },
+    {
+      "spanish": "Había mucha gente.",
+      "english": "There were a lot of people.",
+      "grammar_note": "Imperfect of haber (había) for existence in the past"
+    },
+    {
+      "spanish": "Es un buen día para el partido.",
+      "english": "It's a good day for the match.",
+      "grammar_note": "Shortened adjective 'buen' before masculine noun 'día'"
+    },
+    {
+      "spanish": "bien hecho",
+      "english": "well done"
+    }
+  ],
+  "common_descriptive_adjectives": [
+    {"spanish": "lindo/a", "english": "pretty, cute", "example": "¡Qué lindo/a!"},
+    {"spanish": "bonito/a", "english": "pretty, nice", "example": "¡Qué bonito!"},
+    {"spanish": "largo/a", "english": "long", "example": "Un día largo."},
+    {"spanish": "cansado/a", "english": "tired", "example": "¿Estás cansado?"},
+    {"spanish": "enojado/a / enfadado/a", "english": "angry", "note": "enfadado is more common in Spain"},
+    {"spanish": "macho", "english": "male (animal)"},
+    {"spanish": "hembra", "english": "female (animal)"}
+  ]
+}

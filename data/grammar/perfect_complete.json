@@ -1,0 +1,342 @@
+{
+  "perfect_tense": {
+    "overview": "El Pretérito Perfecto (Present Perfect) expresa una acción pasada que tiene relevancia al presente. La acción ocurrió en el pasado pero sus resultados o efectos continúan en el presente. Es muy común en España; en América Latina se usa más el pretérito simple.",
+    "spanish_name": "El Pretérito Perfecto / Presente Perfecto",
+    "english_name": "Present Perfect",
+    "construction": {
+      "rule": "HABER (in present) + PAST PARTICIPLE",
+      "haber_conjugation": {
+        "yo": "he",
+        "tú": "has",
+        "él_ella_usted": "ha",
+        "nosotros": "hemos",
+        "vosotros": "habéis",
+        "ellos_ustedes": "han"
+      }
+    },
+    "past_participles": {
+      "regular_participles": [
+        {
+          "infinitive": "hablar",
+          "stem": "habl",
+          "ending": "-ado",
+          "participle": "hablado"
+        },
+        {
+          "infinitive": "comer",
+          "stem": "com",
+          "ending": "-ido",
+          "participle": "comido"
+        },
+        {
+          "infinitive": "vivir",
+          "stem": "viv",
+          "ending": "-ido",
+          "participle": "vivido"
+        }
+      ],
+      "irregular_participles": [
+        {
+          "infinitive": "abrir",
+          "participle": "abierto",
+          "english": "opened"
+        },
+        {
+          "infinitive": "decir",
+          "participle": "dicho",
+          "english": "said"
+        },
+        {
+          "infinitive": "deshacer",
+          "participle": "deshecho",
+          "english": "undone"
+        },
+        {
+          "infinitive": "describir",
+          "participle": "descrito",
+          "english": "described"
+        },
+        {
+          "infinitive": "descubierto",
+          "related_infinitive": "descubrir",
+          "english": "discovered"
+        },
+        {
+          "infinitive": "devolver",
+          "participle": "devuelto",
+          "english": "returned"
+        },
+        {
+          "infinitive": "disolver",
+          "participle": "disuelto",
+          "english": "dissolved"
+        },
+        {
+          "infinitive": "disuelto",
+          "related_infinitive": "disolver",
+          "english": "dissolved"
+        },
+        {
+          "infinitive": "envolver",
+          "participle": "envuelto",
+          "english": "wrapped"
+        },
+        {
+          "infinitive": "escribir",
+          "participle": "escrito",
+          "english": "written"
+        },
+        {
+          "infinitive": "esculpir",
+          "participle": "esculpido",
+          "english": "sculpted"
+        },
+        {
+          "infinitive": "hacer",
+          "participle": "hecho",
+          "english": "made/done"
+        },
+        {
+          "infinitive": "impresionar",
+          "participle": "impreso",
+          "english": "impressed/printed"
+        },
+        {
+          "infinitive": "inscribir",
+          "participle": "inscrito",
+          "english": "inscribed"
+        },
+        {
+          "infinitive": "maldecir",
+          "participle": "maldito",
+          "english": "cursed"
+        },
+        {
+          "infinitive": "morir",
+          "participle": "muerto",
+          "english": "died"
+        },
+        {
+          "infinitive": "oír",
+          "participle": "oído",
+          "english": "heard"
+        },
+        {
+          "infinitive": "poner",
+          "participle": "puesto",
+          "english": "put/placed"
+        },
+        {
+          "infinitive": "prescribir",
+          "participle": "prescrito",
+          "english": "prescribed"
+        },
+        {
+          "infinitive": "proscribir",
+          "participle": "proscrito",
+          "english": "proscribed"
+        },
+        {
+          "infinitive": "proveedor",
+          "related_infinitive": "proveer",
+          "participle": "provisto",
+          "english": "provided"
+        },
+        {
+          "infinitive": "reabrir",
+          "participle": "reabierto",
+          "english": "reopened"
+        },
+        {
+          "infinitive": "recibir",
+          "participle": "recibido",
+          "english": "received"
+        },
+        {
+          "infinitive": "reescribir",
+          "participle": "reescrito",
+          "english": "rewritten"
+        },
+        {
+          "infinitive": "rehacer",
+          "participle": "rehecho",
+          "english": "remade"
+        },
+        {
+          "infinitive": "resolver",
+          "participle": "resuelto",
+          "english": "resolved"
+        },
+        {
+          "infinitive": "revolver",
+          "participle": "revuelto",
+          "english": "stirred/turned over"
+        },
+        {
+          "infinitive": "romper",
+          "participle": "roto",
+          "english": "broken"
+        },
+        {
+          "infinitive": "satisfacer",
+          "participle": "satisfecho",
+          "english": "satisfied"
+        },
+        {
+          "infinitive": "suscribir",
+          "participle": "suscrito",
+          "english": "subscribed"
+        },
+        {
+          "infinitive": "transcribir",
+          "participle": "transcrito",
+          "english": "transcribed"
+        },
+        {
+          "infinitive": "ver",
+          "participle": "visto",
+          "english": "seen"
+        },
+        {
+          "infinitive": "volver",
+          "participle": "vuelto",
+          "english": "returned"
+        }
+      ]
+    },
+    "uses": [
+      {
+        "use_number": 1,
+        "name": "Recent Past Actions with Present Relevance",
+        "description": "Actions that happened recently and have a connection to the present; the action is finished but the results affect the now",
+        "examples": [
+          {
+            "spanish": "Hasta ahora he vivido 5 años en Ecuador.",
+            "english": "Until now, I have lived 5 years in Ecuador.",
+            "explanation": "An action that started in the past and continues/has relevance to the present. Used with 'hasta ahora' (until now)"
+          },
+          {
+            "spanish": "He visto la película Jumanji.",
+            "english": "I have seen the Jumanji movie.",
+            "explanation": "Past action (watching the movie) with present relevance (I know what it's like)"
+          },
+          {
+            "spanish": "He comido comida española.",
+            "english": "I have eaten Spanish food.",
+            "explanation": "Past experience that affects current knowledge"
+          }
+        ]
+      },
+      {
+        "use_number": 2,
+        "name": "This Week, Month, Year",
+        "description": "Actions that occurred within a time period that hasn't finished yet",
+        "examples": [
+          {
+            "spanish": "Esta semana he trabajado mucho.",
+            "english": "This week I have worked a lot.",
+            "explanation": "The week is still ongoing; used with time periods that are 'open'"
+          },
+          {
+            "spanish": "Hoy he visto tres películas.",
+            "english": "Today I have seen three movies.",
+            "explanation": "Today hasn't ended yet; we're still in it"
+          },
+          {
+            "spanish": "Este año hemos viajado a tres países.",
+            "english": "This year we have traveled to three countries.",
+            "explanation": "The year is still ongoing"
+          }
+        ]
+      },
+      {
+        "use_number": 3,
+        "name": "Personal Life Experiences",
+        "description": "Things you have done or experienced at some point in your life",
+        "examples": [
+          {
+            "spanish": "Nunca he viajado a Asia.",
+            "english": "I have never traveled to Asia.",
+            "explanation": "Life experience; never been there"
+          },
+          {
+            "spanish": "¿Has estado en París?",
+            "english": "Have you been to Paris?",
+            "explanation": "Asking about life experience"
+          },
+          {
+            "spanish": "He vivido en cinco ciudades diferentes.",
+            "english": "I have lived in five different cities.",
+            "explanation": "Life experience across different locations"
+          }
+        ]
+      },
+      {
+        "use_number": 4,
+        "name": "News or Recent Events",
+        "description": "Reporting something that just happened or news that is still 'fresh'",
+        "examples": [
+          {
+            "spanish": "Se ha ido sin decir nada.",
+            "english": "He has left without saying anything.",
+            "explanation": "Recent event; just happened"
+          },
+          {
+            "spanish": "Ha habido un accidente en la carretera.",
+            "english": "There has been an accident on the road.",
+            "explanation": "Recent news"
+          }
+        ]
+      }
+    ],
+    "perfect_vs_preterite": {
+      "note": "In Spain, perfect is very common for recent past. In Latin America, preterite is more common. They can often be interchangeable.",
+      "spanish_usage": "Spain uses perfect more; Latin America uses preterite more",
+      "example_comparison": {
+        "perfect": "Esta mañana he comido pan.",
+        "perfect_english": "This morning I have eaten bread. (Spain - more common)",
+        "preterite": "Esta mañana comí pan.",
+        "preterite_english": "This morning I ate bread. (Latin America - more common)",
+        "note": "Both are grammatically correct; preference varies by region"
+      }
+    },
+    "example_sentences": [
+      {
+        "spanish": "Voy a merendar Pasta en bolsas de carne",
+        "english": "I'm going to have an afternoon snack: Pasta with meat sacks"
+      },
+      {
+        "spanish": "Yo comprobaré",
+        "english": "I will verify/check"
+      },
+      {
+        "spanish": "Tienes la máquina para hacer la pasta",
+        "english": "You have the machine to make pasta"
+      },
+      {
+        "spanish": "Porque tengo sueño",
+        "english": "Because I'm sleepy"
+      },
+      {
+        "spanish": "Menos desdichado",
+        "english": "Less unfortunate"
+      },
+      {
+        "spanish": "Yo me siento emocionado cuando los vela en el cine",
+        "english": "I feel emotional when I see them at the cinema"
+      },
+      {
+        "spanish": "Los vela en el cine",
+        "english": "I see them at the cinema"
+      },
+      {
+        "spanish": "Mi sobrino cumple hoy veinte años",
+        "english": "My nephew turns twenty today"
+      },
+      {
+        "spanish": "Mi cuaderno",
+        "english": "My notebook"
+      }
+    ]
+  }
+}

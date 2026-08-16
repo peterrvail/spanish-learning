@@ -1,0 +1,341 @@
+{
+  "double_pronouns": {
+    "rule_summary": "When both indirect and direct object pronouns appear together, the INDIRECT OBJECT PRONOUN always comes FIRST, followed by the DIRECT OBJECT PRONOUN. When the IO is 'le' or 'les', it changes to 'se' before a DO pronoun.",
+    "ordering": "IO + DO (Indirect before Direct)",
+    "position_in_sentence": "Before the conjugated verb (standard); attached to affirmative imperative; attached to infinitive/gerund",
+    "combinations": [
+      {
+        "io": "me",
+        "do": "lo",
+        "combined": "me lo",
+        "english": "it to me",
+        "example": "Me lo compró.",
+        "english_translation": "He bought it for me.",
+        "example_imperative": "¡Cómelo!",
+        "imperative_english": "Eat it (for me)!"
+      },
+      {
+        "io": "me",
+        "do": "la",
+        "combined": "me la",
+        "english": "it (fem.) to me",
+        "example": "Me la prestó.",
+        "english_translation": "He lent it to me."
+      },
+      {
+        "io": "me",
+        "do": "los",
+        "combined": "me los",
+        "english": "them to me",
+        "example": "Me los mostró.",
+        "english_translation": "He showed them to me."
+      },
+      {
+        "io": "me",
+        "do": "las",
+        "combined": "me las",
+        "english": "them (fem.) to me",
+        "example": "Me las vendió.",
+        "english_translation": "He sold them to me."
+      },
+      {
+        "io": "te",
+        "do": "lo",
+        "combined": "te lo",
+        "english": "it to you",
+        "example": "Te lo di.",
+        "english_translation": "I gave it to you."
+      },
+      {
+        "io": "te",
+        "do": "la",
+        "combined": "te la",
+        "english": "it (fem.) to you",
+        "example": "Te la traigo.",
+        "english_translation": "I'm bringing it to you."
+      },
+      {
+        "io": "te",
+        "do": "los",
+        "combined": "te los",
+        "english": "them to you",
+        "example": "Te los envié.",
+        "english_translation": "I sent them to you."
+      },
+      {
+        "io": "te",
+        "do": "las",
+        "combined": "te las",
+        "english": "them (fem.) to you",
+        "example": "Te las mostré.",
+        "english_translation": "I showed them to you."
+      },
+      {
+        "io": "le",
+        "do": "lo",
+        "combined": "se lo",
+        "english": "it to him/her/you (formal)",
+        "example": "Se lo expliqué.",
+        "english_translation": "I explained it to him/her.",
+        "note": "LE changes to SE before DO pronoun"
+      },
+      {
+        "io": "le",
+        "do": "la",
+        "combined": "se la",
+        "english": "it (fem.) to him/her/you (formal)",
+        "example": "Se la compré.",
+        "english_translation": "I bought it for him/her.",
+        "note": "LE changes to SE before DO pronoun"
+      },
+      {
+        "io": "le",
+        "do": "los",
+        "combined": "se los",
+        "english": "them to him/her/you (formal)",
+        "example": "Se los mostré.",
+        "english_translation": "I showed them to him/her.",
+        "note": "LE changes to SE before DO pronoun"
+      },
+      {
+        "io": "le",
+        "do": "las",
+        "combined": "se las",
+        "english": "them (fem.) to him/her/you (formal)",
+        "example": "Se las vendí.",
+        "english_translation": "I sold them to him/her.",
+        "note": "LE changes to SE before DO pronoun"
+      },
+      {
+        "io": "nos",
+        "do": "lo",
+        "combined": "nos lo",
+        "english": "it to us",
+        "example": "Nos lo dijeron.",
+        "english_translation": "They told us it."
+      },
+      {
+        "io": "nos",
+        "do": "la",
+        "combined": "nos la",
+        "english": "it (fem.) to us",
+        "example": "Nos la regalaron.",
+        "english_translation": "They gave it to us as a gift."
+      },
+      {
+        "io": "nos",
+        "do": "los",
+        "combined": "nos los",
+        "english": "them to us",
+        "example": "Nos los enviaron.",
+        "english_translation": "They sent them to us."
+      },
+      {
+        "io": "nos",
+        "do": "las",
+        "combined": "nos las",
+        "english": "them (fem.) to us",
+        "example": "Nos las traen mañana.",
+        "english_translation": "They're bringing them to us tomorrow."
+      },
+      {
+        "io": "os",
+        "do": "lo",
+        "combined": "os lo",
+        "english": "it to you all (Spain)",
+        "example": "Os lo digo.",
+        "english_translation": "I tell it to you all.",
+        "note": "Spain only; uses vosotros"
+      },
+      {
+        "io": "os",
+        "do": "la",
+        "combined": "os la",
+        "english": "it (fem.) to you all (Spain)",
+        "example": "Os la presento.",
+        "english_translation": "I introduce her to you all.",
+        "note": "Spain only"
+      },
+      {
+        "io": "os",
+        "do": "los",
+        "combined": "os los",
+        "english": "them to you all (Spain)",
+        "example": "Os los muestro.",
+        "english_translation": "I show them to you all.",
+        "note": "Spain only"
+      },
+      {
+        "io": "os",
+        "do": "las",
+        "combined": "os las",
+        "english": "them (fem.) to you all (Spain)",
+        "example": "Os las explico.",
+        "english_translation": "I explain them to you all.",
+        "note": "Spain only"
+      },
+      {
+        "io": "les",
+        "do": "lo",
+        "combined": "se lo",
+        "english": "it to them/you all (formal)",
+        "example": "Se lo enviamos.",
+        "english_translation": "We sent it to them.",
+        "note": "LES changes to SE before DO pronoun"
+      },
+      {
+        "io": "les",
+        "do": "la",
+        "combined": "se la",
+        "english": "it (fem.) to them/you all (formal)",
+        "example": "Se la expliqué.",
+        "english_translation": "I explained it to them.",
+        "note": "LES changes to SE before DO pronoun"
+      },
+      {
+        "io": "les",
+        "do": "los",
+        "combined": "se los",
+        "english": "them to them/you all (formal)",
+        "example": "Se los compré.",
+        "english_translation": "I bought them for them.",
+        "note": "LES changes to SE before DO pronoun"
+      },
+      {
+        "io": "les",
+        "do": "las",
+        "combined": "se las",
+        "english": "them (fem.) to them/you all (formal)",
+        "example": "Se las vendieron.",
+        "english_translation": "They sold them to them.",
+        "note": "LES changes to SE before DO pronoun"
+      }
+    ],
+    "key_rule_le_to_se": {
+      "rule": "When the indirect object pronoun is LE (him/her/you formal singular) or LES (them/you all formal), it MUST change to SE before a direct object pronoun.",
+      "examples": [
+        {
+          "wrong": "~~Le lo expliqué.~~",
+          "correct": "Se lo expliqué.",
+          "english": "I explained it to him/her."
+        },
+        {
+          "wrong": "~~Les la vendí.~~",
+          "correct": "Se la vendí.",
+          "english": "I sold it to them."
+        },
+        {
+          "wrong": "~~Le los compré.~~",
+          "correct": "Se los compré.",
+          "english": "I bought them for him/her."
+        }
+      ],
+      "note": "This is one of the most common errors; always remember: LE/LES → SE when followed by lo/la/los/las"
+    },
+    "affirmative_imperative_double_pronouns": {
+      "rule": "In affirmative imperative, both clitics attach to the verb in the same order (IO + DO). Accents are required to preserve stress.",
+      "examples": [
+        {
+          "verb": "Comprar (to buy)",
+          "command": "¡Cómpramelo!",
+          "breakdown": "Compra + me + lo",
+          "english": "Buy it for me!"
+        },
+        {
+          "verb": "Decir (to tell)",
+          "command": "¡Dímelo!",
+          "breakdown": "Di + me + lo",
+          "english": "Tell me it!"
+        },
+        {
+          "verb": "Mostrar (to show)",
+          "command": "¡Muestramela!",
+          "breakdown": "Muestra + me + la",
+          "english": "Show it to me!"
+        },
+        {
+          "verb": "Enviar (to send)",
+          "command": "¡Envíaselo!",
+          "breakdown": "Envía + se + lo",
+          "english": "Send it to him/her!"
+        },
+        {
+          "verb": "Pedir (to ask for)",
+          "command": "¡Pídeme lo que quieras!",
+          "breakdown": "Pide + me + lo que quieras",
+          "english": "Ask me for whatever you want!",
+          "note": "'lo que quieras' is a relative clause object, not a simple clitic, but still attaches after me"
+        },
+        {
+          "verb": "Pedir (to ask for)",
+          "command": "¡Pídeme 3 deseos!",
+          "breakdown": "Pide + me + 3 deseos",
+          "english": "Ask me for 3 wishes!",
+          "note": "e→i stem change (pedir → pide) combined with clitic attachment"
+        }
+      ]
+    },
+    "pedir_full_paradigm_reference": {
+      "note": "pedir (e→i stem change) is a common source of imperative + clitic errors",
+      "present_indicative": {
+        "yo": "pido", "tú": "pides", "él_ella": "pide",
+        "nosotros": "pedimos", "ellos": "piden"
+      },
+      "example_sentences": [
+        {"spanish": "I ask you a favor. Te pido un favor a ti.", "english": "I ask you for a favor."},
+        {"spanish": "Tú me pides un favor a mí.", "english": "You ask me for a favor."},
+        {"spanish": "Te pedí un favor.", "english": "I asked you for a favor. (preterite)"},
+        {"spanish": "Tú me pediste un favor.", "english": "You asked me for a favor. (preterite)"}
+      ]
+    },
+    "negative_imperative_double_pronouns": {
+      "rule": "In negative imperative, both clitics appear before the verb in the same order (IO + DO). Uses subjunctive form.",
+      "examples": [
+        {
+          "verb": "Decir (to tell)",
+          "command": "¡No me lo digas!",
+          "breakdown": "No + me + lo + digas (subjunctive)",
+          "english": "Don't tell me it!"
+        },
+        {
+          "verb": "Comprar (to buy)",
+          "command": "¡No me los compres!",
+          "breakdown": "No + me + los + compres (subjunctive)",
+          "english": "Don't buy them for me!"
+        },
+        {
+          "verb": "Mostrar (to show)",
+          "command": "¡No se la muestres!",
+          "breakdown": "No + se + la + muestres (subjunctive)",
+          "english": "Don't show her to him!"
+        }
+      ]
+    },
+    "practice_transformations": [
+      {
+        "original_sentence": "Le expliqué el problema.",
+        "with_pronoun": "Se lo expliqué.",
+        "english": "I explained the problem to him. → I explained it to him.",
+        "rule_applied": "LE→SE transformation; problem (lo) is DO"
+      },
+      {
+        "original_sentence": "Les compré los libros.",
+        "with_pronoun": "Se los compré.",
+        "english": "I bought the books for them. → I bought them for them.",
+        "rule_applied": "LES→SE transformation; books (los) is DO"
+      },
+      {
+        "original_sentence": "Te presté la bicicleta.",
+        "with_pronoun": "Te la presté.",
+        "english": "I lent you the bicycle. → I lent it to you.",
+        "rule_applied": "No transformation; TE stays TE; bicycle (la) is DO"
+      },
+      {
+        "original_sentence": "Nos enviaron el paquete.",
+        "with_pronoun": "Nos lo enviaron.",
+        "english": "They sent us the package. → They sent it to us.",
+        "rule_applied": "No transformation; NOS stays NOS; package (lo) is DO"
+      }
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "restaurant_phrases": [
+    {
+      "spanish": "¿Tiene una mesa para 4 personas?",
+      "english": "Do you have a table for 4 people?"
+    },
+    {
+      "spanish": "Déme uno-dos por favor.",
+      "english": "Give me one-two please.",
+      "note": "Ordering pattern with 'déme' (give me - formal imperative + clitic)"
+    },
+    {
+      "spanish": "Déme un café con leche.",
+      "english": "Give me a coffee with milk."
+    },
+    {
+      "spanish": "Aparte la leche caliente.",
+      "english": "Separately, the hot milk.",
+      "note": "Requesting an item on the side"
+    },
+    {
+      "spanish": "Ahora tengo hambre / sed.",
+      "english": "Now I'm hungry / thirsty.",
+      "note": "Note: use TENER not ESTAR with hambre/sed"
+    },
+    {
+      "spanish": "¿Cuánto cuesta?",
+      "english": "How much does it cost?"
+    },
+    {
+      "spanish": "Qué tenga un buen día.",
+      "english": "Have a good day."
+    },
+    {
+      "spanish": "Gracias, igualmente.",
+      "english": "Thanks, likewise."
+    }
+  ],
+  "food_items": [
+    {"spanish": "la hamburguesa", "english": "hamburger", "gender": "feminine"},
+    {"spanish": "la lechuga", "english": "lettuce", "gender": "feminine"},
+    {"spanish": "la cebolla", "english": "onion", "gender": "feminine"},
+    {"spanish": "el tomate", "english": "tomato", "gender": "masculine"},
+    {"spanish": "el pepinillo", "english": "pickle", "gender": "masculine"},
+    {"spanish": "la mostaza", "english": "mustard", "gender": "feminine"},
+    {"spanish": "la mayonesa", "english": "mayonnaise", "gender": "feminine"},
+    {"spanish": "la salsa de tomate", "english": "ketchup / tomato sauce", "gender": "feminine"},
+    {"spanish": "el huevo", "english": "egg", "gender": "masculine"},
+    {"spanish": "el jamón", "english": "ham", "gender": "masculine"},
+    {"spanish": "las galletas", "english": "cookies", "gender": "feminine"},
+    {"spanish": "el paquete", "english": "package", "gender": "masculine"},
+    {"spanish": "el café con leche", "english": "coffee with milk", "gender": "masculine"},
+    {"spanish": "el té verde", "english": "green tea", "gender": "masculine"},
+    {"spanish": "el helado de chocolate", "english": "chocolate ice cream", "gender": "masculine"},
+    {"spanish": "el postre", "english": "dessert", "gender": "masculine"},
+    {"spanish": "la merienda", "english": "afternoon snack", "gender": "feminine", "related_verb": "merendar"},
+    {"spanish": "la copa de vino tinto", "english": "glass of red wine", "gender": "feminine"},
+    {"spanish": "el pastel", "english": "cake", "gender": "masculine"},
+    {"spanish": "la pasta", "english": "pasta", "gender": "feminine"},
+    {"spanish": "las bolas de carne", "english": "meatballs", "gender": "feminine"}
+  ],
+  "restaurant_verbs": [
+    {"spanish": "cocinar", "english": "to cook", "example": "¿Quién cocinó?"},
+    {"spanish": "merendar", "english": "to have an afternoon snack", "example": "Voy a merendar."},
+    {"spanish": "desayunar", "english": "to have breakfast"},
+    {"spanish": "almorzar", "english": "to have lunch"},
+    {"spanish": "cenar", "english": "to have dinner", "example": "Antes de cenar, yo bebí una copa de vino tinto."}
+  ],
+  "time_expressions_dining": [
+    {"spanish": "antes de la clase", "english": "before class"},
+    {"spanish": "después de la clase", "english": "after class"},
+    {"spanish": "hace media hora", "english": "half an hour ago"},
+    {"spanish": "veinte minutos", "english": "twenty minutes"}
+  ],
+  "polite_expressions": [
+    {"spanish": "por favor", "english": "please"},
+    {"spanish": "gracias", "english": "thank you"},
+    {"spanish": "de nada", "english": "you're welcome"},
+    {"spanish": "¡Qué tenga un buen día!", "english": "Have a good day!"},
+    {"spanish": "¡Qué tenga un buen fin de semana!", "english": "Have a good weekend!"},
+    {"spanish": "¡Qué tenga una linda semana!", "english": "Have a nice week!"}
+  ]
+}

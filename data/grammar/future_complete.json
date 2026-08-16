@@ -1,0 +1,227 @@
+{
+  "future_simple": {
+    "overview": "El Futuro Simple expresa una acción que se realizará en algún momento del futuro. Se forma con el infinitivo completo más terminaciones (no se quita ninguna letra del infinitivo, a diferencia de otros tiempos).",
+    "spanish_name": "El Futuro Simple",
+    "construction": {
+      "rule": "INFINITIVO + terminaciones (é, ás, á, emos, éis, án)",
+      "note": "Same endings for -AR, -ER, -IR verbs; unlike other tenses, the full infinitive is preserved",
+      "conjugation_pattern": {
+        "yo": "-é",
+        "tú": "-ás",
+        "él_ella_usted": "-á",
+        "nosotros": "-emos",
+        "vosotros": "-éis",
+        "ellos_ustedes": "-án"
+      },
+      "example_hablar": {
+        "yo": "hablaré",
+        "tú": "hablarás",
+        "él_ella_usted": "hablará",
+        "nosotros": "hablaremos",
+        "vosotros": "hablaréis",
+        "ellos_ustedes": "hablarán"
+      },
+      "example_comer": {
+        "yo": "comeré",
+        "tú": "comerás",
+        "él_ella_usted": "comerá",
+        "nosotros": "comeremos",
+        "vosotros": "comeréis",
+        "ellos_ustedes": "comerán"
+      },
+      "example_vivir": {
+        "yo": "viviré",
+        "tú": "vivirás",
+        "él_ella_usted": "vivirá",
+        "nosotros": "viviremos",
+        "vosotros": "viviréis",
+        "ellos_ustedes": "vivirán"
+      }
+    },
+    "irregular_stems": [
+      {
+        "infinitive": "poder",
+        "irregular_stem": "podr-",
+        "example": "podré, podrás, podrá, podremos, podréis, podrán",
+        "english": "will be able to"
+      },
+      {
+        "infinitive": "salir",
+        "irregular_stem": "saldr-",
+        "example": "saldré, saldrás, saldrá, saldremos, saldréis, saldrán",
+        "english": "will leave"
+      },
+      {
+        "infinitive": "valer",
+        "irregular_stem": "valdr-",
+        "example": "valdré, valdrás, valdrá, valdremos, valdréis, valdrán",
+        "english": "will be worth"
+      },
+      {
+        "infinitive": "poner",
+        "irregular_stem": "pondr-",
+        "example": "pondré, pondrás, pondrá, pondremos, pondréis, pondrán",
+        "english": "will put"
+      },
+      {
+        "infinitive": "venir",
+        "irregular_stem": "vendr-",
+        "example": "vendré, vendrás, vendrá, vendremos, vendréis, vendrán",
+        "english": "will come"
+      },
+      {
+        "infinitive": "tener",
+        "irregular_stem": "tendr-",
+        "example": "tendré, tendrás, tendrá, tendremos, tendréis, tendrán",
+        "english": "will have"
+      },
+      {
+        "infinitive": "saber",
+        "irregular_stem": "sabr-",
+        "example": "sabré, sabrás, sabrá, sabremos, sabréis, sabrán",
+        "english": "will know"
+      },
+      {
+        "infinitive": "haber",
+        "irregular_stem": "habr-",
+        "example": "habré, habrás, habrá, habremos, habréis, habrán",
+        "english": "will have (auxiliary)"
+      },
+      {
+        "infinitive": "decir",
+        "irregular_stem": "dir-",
+        "example": "diré, dirás, dirá, diremos, diréis, dirán",
+        "english": "will say/tell"
+      },
+      {
+        "infinitive": "hacer",
+        "irregular_stem": "har-",
+        "example": "haré, harás, hará, haremos, haréis, harán",
+        "english": "will do/make"
+      },
+      {
+        "infinitive": "querer",
+        "irregular_stem": "querr-",
+        "example": "querré, querrás, querrá, querremos, querréis, querrán",
+        "english": "will want"
+      }
+    ],
+    "alternative_future_forms": {
+      "ir_a_infinitivo": {
+        "name": "Futuro Inmediato (Immediate Future)",
+        "construction": "IR (conjugated) + a + infinitivo",
+        "usage": "More common in spoken Spanish; expresses near/planned future",
+        "examples": [
+          {
+            "spanish": "Voy a estudiar esta noche.",
+            "english": "I'm going to study tonight."
+          },
+          {
+            "spanish": "Vamos a viajar a España.",
+            "english": "We are going to travel to Spain."
+          }
+        ]
+      }
+    },
+    "uses": [
+      {
+        "use_number": 1,
+        "name": "Future Actions",
+        "description": "Expressing what will happen at a future point",
+        "examples": [
+          {
+            "spanish": "Yo iré a las Islas Galápagos.",
+            "english": "I will go to the Galápagos Islands."
+          },
+          {
+            "spanish": "En 3 años, tendré 2 hijos.",
+            "english": "In 3 years, I will have 2 children."
+          },
+          {
+            "spanish": "Hablaré perfecto el español más fluido.",
+            "english": "I will speak Spanish more fluently, perfectly."
+          },
+          {
+            "spanish": "Seré más sabio.",
+            "english": "I will be wiser."
+          }
+        ]
+      },
+      {
+        "use_number": 2,
+        "name": "Probability or Conjecture about the Present",
+        "description": "Expressing a guess or probability about something happening right now",
+        "examples": [
+          {
+            "spanish": "¿Dónde estará Juan?",
+            "english": "I wonder where Juan is. (Where could Juan be?)",
+            "explanation": "Future tense used to express uncertainty about the present"
+          },
+          {
+            "spanish": "Serán las tres de la tarde.",
+            "english": "It's probably three in the afternoon.",
+            "explanation": "Conjecture about current time"
+          }
+        ]
+      },
+      {
+        "use_number": 3,
+        "name": "Promises or Commitments",
+        "description": "Making a promise or firm commitment about future action",
+        "examples": [
+          {
+            "spanish": "Te prometo que vendré mañana.",
+            "english": "I promise you I will come tomorrow."
+          }
+        ]
+      }
+    ]
+  },
+  "future_perfect": {
+    "overview": "El Futuro Perfecto expresa una acción que habrá terminado antes de otra acción o momento futuro específico.",
+    "spanish_name": "El Futuro Perfecto",
+    "construction": {
+      "rule": "HABER (future) + PARTICIPIO PASADO",
+      "haber_future_conjugation": {
+        "yo": "habré",
+        "tú": "habrás",
+        "él_ella_usted": "habrá",
+        "nosotros": "habremos",
+        "vosotros": "habréis",
+        "ellos_ustedes": "habrán"
+      },
+      "example": {
+        "spanish": "Yo habré hablado.",
+        "english": "I will have spoken."
+      }
+    },
+    "uses": [
+      {
+        "use_number": 1,
+        "name": "Action Completed Before a Future Point",
+        "description": "An action that will be finished by a specific time in the future",
+        "examples": [
+          {
+            "spanish": "Para las 5, habré terminado el trabajo.",
+            "english": "By 5 o'clock, I will have finished the work."
+          },
+          {
+            "spanish": "Cuando llegues, ya habré cenado.",
+            "english": "When you arrive, I will have already had dinner."
+          }
+        ]
+      },
+      {
+        "use_number": 2,
+        "name": "Probability about the Past",
+        "description": "Speculation about something that may have happened",
+        "examples": [
+          {
+            "spanish": "Habrá llegado tarde por el tráfico.",
+            "english": "He probably arrived late because of traffic."
+          }
+        ]
+      }
+    ]
+  }
+}
