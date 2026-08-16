@@ -12,6 +12,80 @@ GRAMMAR_DIR = os.path.join(DATA_DIR, "grammar")
 SCENARIOS_FILE = os.path.join(DATA_DIR, "scenarios", "scenarios.json")
 EXERCISES_DIR = os.path.join(DATA_DIR, "exercises")
 
+# Commands available from both the mobile button menu and the desktop sidebar
+DRILL_COMMANDS = [
+    ("⚡ Imperativo", "!drill imperativo"),
+    ("🔀 Pronombres", "!drill pronombres"),
+    ("🔄 Cambios", "!drill cambios"),
+    ("⏳ Pasado (imperfecto)", "!drill pasado"),
+    ("📜 Pretérito", "!drill preterito"),
+    ("⏮ Pluscuam", "!drill pluscuam"),
+    ("📝 Ejercicio", "!drill ejercicio"),
+]
+ROL_COMMANDS = [
+    ("🍽 Restaurante", "!rol restaurante"),
+    ("🚌 Transporte", "!rol transporte"),
+    ("🏠 Vecinos", "!rol vecinos"),
+    ("🏥 Salud", "!rol salud"),
+    ("📖 Narrativa", "!rol narrativa"),
+    ("🏨 Viajes", "!rol viajes"),
+    ("🛍 Compras", "!rol compras"),
+    ("🤝 Convivencia", "!rol convivencia"),
+]
+
+def is_mobile():
+    """Detect iOS/mobile via the request's User-Agent (server-side, no JS needed)."""
+    try:
+        ua = st.context.headers.get("User-Agent", "") or ""
+    except Exception:
+        ua = ""
+    ua = ua.lower()
+    return any(token in ua for token in ["iphone", "ipad", "ipod", "android", "mobile"])
+
+def inject_responsive_css():
+    """Touch-friendly sizing on narrow viewports; no-op visually on desktop widths."""
+    st.markdown(
+        """
+        <style>
+        @media (max-width: 768px) {
+            div.stButton > button {
+                min-height: 48px;
+                font-size: 1.05rem;
+                padding: 0.6rem 1rem;
+            }
+            div.stTextInput input {
+                min-height: 44px;
+                font-size: 1.05rem;
+            }
+            h1 { font-size: 1.6rem !important; }
+            h2 { font-size: 1.3rem !important; }
+            h3 { font-size: 1.1rem !important; }
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+def render_command_menu(columns=2):
+    """Tap-friendly grid of drill/roleplay buttons. Sets st.session_state.active_command."""
+    st.markdown("#### ⚡ Drills")
+    cols = st.columns(columns)
+    for i, (label, cmd) in enumerate(DRILL_COMMANDS):
+        with cols[i % columns]:
+            if st.button(label, use_container_width=True, key=f"menu_{cmd}"):
+                st.session_state.active_command = cmd
+                st.session_state.drill_active = False
+                st.rerun()
+
+    st.markdown("#### 🎭 Roleplay")
+    cols = st.columns(columns)
+    for i, (label, cmd) in enumerate(ROL_COMMANDS):
+        with cols[i % columns]:
+            if st.button(label, use_container_width=True, key=f"menu_{cmd}"):
+                st.session_state.active_command = cmd
+                st.session_state.drill_active = False
+                st.rerun()
+
 def load_verbs():
     with open(VERBS_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -442,72 +516,101 @@ def parse_command(command_input):
 
     return None
 
-def main():
-    """Main CLI interface."""
-    st.set_page_config(page_title="Spanish Learning System", layout="wide")
+def dispatch_command(command_str):
+    """Run whichever command string is active (from typing or a button tap)."""
+    parsed = parse_command(command_str)
 
-    # Sidebar: Command input
-    st.sidebar.title("🎯 Spanish Learning System")
-    st.sidebar.markdown("**Quick Commands:**")
-    st.sidebar.markdown("""
-    - `!drill imperativo` — Imperative conjugation
-    - `!drill pronombres` — Double object pronouns
-    - `!drill cambios` — Stem-changing verbs
-    - `!drill pasado` — Imperfect tense usage
-    - `!drill preterito` — Irregular preterite verbs
-    - `!drill pluscuam` — Past perfect (pluscuamperfecto)
-    - `!drill ejercicio` — Preterite fill-in-the-blank homework
-    - `!hablar` — Conversational partner mode
-    - `!rol [tema]` — Roleplay scenario (restaurante, transporte, vecinos, salud, narrativa, viajes, compras, convivencia)
-    - `!pausa` — Step out for English explanation
-    - `!resumen` — Session summary
+    if not parsed:
+        st.error("❌ Command not recognized. Try: `!drill imperativo`")
+        return
+
+    command_type, arg = parsed
+
+    if command_type == "drill":
+        run_drill(module_type=arg)
+    elif command_type == "hablar":
+        st.info("🎤 Conversational Partner mode coming soon...")
+    elif command_type == "rol":
+        run_rol(tema=arg)
+    elif command_type == "pausa":
+        st.info("⏸️ Paused. Explanation mode enabled.")
+    elif command_type == "resumen":
+        st.info("📋 Session summary coming soon...")
+
+def render_landing():
+    st.markdown("""
+    # 🚀 Spanish Learning System
+
+    Welcome to your personalized B1→B2 Spanish learning environment.
+
+    ## Module Overview
+
+    - **Imperatives** — Formal/informal commands, clitic attachment
+    - **Pronoun Mechanics** — Direct/indirect object pronouns, reflexives
+    - **Aspect & Tense** — Preterite vs. Imperfect storytelling
+    - **Vocabulary** — Thematic word lists by domain
+    - **Scenarios** — Real-world roleplay with task objectives
+    - **Readings** — Annotated short stories and dialogues
     """)
 
-    # Command input
-    command_input = st.sidebar.text_input("Enter command:", placeholder="!drill imperativo")
+def main():
+    """Main entrypoint. Layout adapts to device: a tap-friendly button menu
+    on mobile (iOS/Android), a compact CLI-style sidebar on desktop."""
+    mobile = is_mobile()
 
-    # Check for command
-    if command_input:
-        parsed = parse_command(command_input)
+    st.set_page_config(
+        page_title="Spanish Learning System",
+        page_icon="🎯",
+        layout="centered" if mobile else "wide",
+    )
+    inject_responsive_css()
 
-        if parsed:
-            command_type, arg = parsed
+    if "active_command" not in st.session_state:
+        st.session_state.active_command = None
 
-            if command_type == "drill":
-                run_drill(module_type=arg)
-            elif command_type == "hablar":
-                st.info("🎤 Conversational Partner mode coming soon...")
-            elif command_type == "rol":
-                run_rol(tema=arg)
-            elif command_type == "pausa":
-                st.info("⏸️ Paused. Explanation mode enabled.")
-            elif command_type == "resumen":
-                st.info("📋 Session summary coming soon...")
+    if mobile:
+        st.title("🎯 Spanish Learning System")
+
+        if st.session_state.active_command:
+            if st.button("🏠 Home", use_container_width=True):
+                st.session_state.active_command = None
+                st.session_state.drill_active = False
+                st.session_state.pop("mobile_typed_cmd", None)
+                st.rerun()
+            dispatch_command(st.session_state.active_command)
         else:
-            st.error("❌ Command not recognized. Try: `!drill imperativo`")
+            render_landing()
+            render_command_menu(columns=1)
+
+            with st.expander("⌨️ Advanced: type a command"):
+                typed = st.text_input("Command:", placeholder="!drill imperativo", key="mobile_typed_cmd")
+                if typed:
+                    st.session_state.active_command = typed
+                    st.rerun()
+
     else:
-        # Default landing page
-        st.markdown("""
-        # 🚀 Spanish Learning System
+        st.sidebar.title("🎯 Spanish Learning System")
 
-        Welcome to your personalized B1→B2 Spanish learning environment.
+        if st.session_state.active_command:
+            if st.sidebar.button("🏠 Home"):
+                st.session_state.active_command = None
+                st.session_state.drill_active = False
+                st.session_state.pop("desktop_typed_cmd", None)
+                st.rerun()
 
-        ## Getting Started
+        st.sidebar.markdown("**Quick Commands:**")
+        with st.sidebar:
+            render_command_menu(columns=2)
 
-        1. **Enter a command** in the sidebar to start practicing
-        2. Try: `!drill imperativo` for a 5-minute imperative conjugation drill
-        3. Or explore other modes: `!hablar`, `!rol`, etc.
+        st.sidebar.markdown("---")
+        command_input = st.sidebar.text_input("Or type a command:", placeholder="!drill imperativo", key="desktop_typed_cmd")
+        if command_input:
+            st.session_state.active_command = command_input
 
-        ## Module Overview
-
-        - **Imperatives** — Formal/informal commands, clitic attachment
-        - **Pronoun Mechanics** — Direct/indirect object pronouns, reflexives
-        - **Aspect & Tense** — Preterite vs. Imperfect storytelling
-        - **Vocabulary** — Thematic word lists by domain
-        - **Scenarios** — Real-world roleplay with task objectives
-        - **Readings** — Annotated short stories and dialogues
-
-        """)
+        if st.session_state.active_command:
+            dispatch_command(st.session_state.active_command)
+        else:
+            render_landing()
 
 if __name__ == "__main__":
     main()
