@@ -1,0 +1,69 @@
+{
+  "places": {
+    "everyday_errands": [
+      {"spanish": "la farmacia", "english": "pharmacy", "gender": "feminine"},
+      {"spanish": "el banco", "english": "bank", "gender": "masculine"},
+      {"spanish": "el supermercado", "english": "supermarket", "gender": "masculine"},
+      {"spanish": "la panadería", "english": "bakery", "gender": "feminine"},
+      {"spanish": "la carnicería", "english": "butcher shop", "gender": "feminine"},
+      {"spanish": "la peluquería", "english": "hair salon", "gender": "feminine"},
+      {"spanish": "la lavandería", "english": "laundromat", "gender": "feminine"},
+      {"spanish": "la tienda", "english": "store/shop", "gender": "feminine"},
+      {"spanish": "el correo", "english": "post office", "gender": "masculine"},
+      {"spanish": "la gasolinera", "english": "gas station", "gender": "feminine"}
+    ],
+    "civic_institutional": [
+      {"spanish": "el hospital", "english": "hospital", "gender": "masculine"},
+      {"spanish": "la comisaría", "english": "police station", "gender": "feminine"},
+      {"spanish": "el ayuntamiento", "english": "city hall", "gender": "masculine"},
+      {"spanish": "la biblioteca", "english": "library", "gender": "feminine"},
+      {"spanish": "la escuela", "english": "school", "gender": "feminine"},
+      {"spanish": "la universidad", "english": "university", "gender": "feminine"},
+      {"spanish": "la iglesia", "english": "church", "gender": "feminine"},
+      {"spanish": "el aeropuerto", "english": "airport", "gender": "masculine"},
+      {"spanish": "la estación de tren", "english": "train station", "gender": "feminine"},
+      {"spanish": "la parada de autobús", "english": "bus stop", "gender": "feminine"}
+    ],
+    "leisure_dining": [
+      {"spanish": "el parque", "english": "park", "gender": "masculine"},
+      {"spanish": "el cine", "english": "movie theater", "gender": "masculine"},
+      {"spanish": "el museo", "english": "museum", "gender": "masculine"},
+      {"spanish": "la playa", "english": "beach", "gender": "feminine"},
+      {"spanish": "el gimnasio", "english": "gym", "gender": "masculine"},
+      {"spanish": "el bar", "english": "bar", "gender": "masculine"},
+      {"spanish": "el restaurante", "english": "restaurant", "gender": "masculine"},
+      {"spanish": "la plaza", "english": "town square", "gender": "feminine"},
+      {"spanish": "el centro comercial", "english": "shopping mall", "gender": "masculine"},
+      {"spanish": "el estadio", "english": "stadium", "gender": "masculine"}
+    ],
+    "home_and_city_structure": [
+      {"spanish": "el barrio", "english": "neighborhood", "gender": "masculine"},
+      {"spanish": "la calle", "english": "street", "gender": "feminine"},
+      {"spanish": "la avenida", "english": "avenue", "gender": "feminine"},
+      {"spanish": "la esquina", "english": "corner", "gender": "feminine"},
+      {"spanish": "el edificio", "english": "building", "gender": "masculine"},
+      {"spanish": "el apartamento/piso", "english": "apartment", "gender": "masculine", "note": "piso is common in Spain, apartamento in Latin America"},
+      {"spanish": "el centro (de la ciudad)", "english": "downtown", "gender": "masculine"},
+      {"spanish": "las afueras", "english": "the outskirts/suburbs", "gender": "feminine"}
+    ],
+    "direction_prepositions": [
+      {"spanish": "a la izquierda", "english": "to the left"},
+      {"spanish": "a la derecha", "english": "to the right"},
+      {"spanish": "todo recto / derecho", "english": "straight ahead"},
+      {"spanish": "cerca de", "english": "close to"},
+      {"spanish": "lejos de", "english": "far from"},
+      {"spanish": "al lado de", "english": "next to"},
+      {"spanish": "enfrente de", "english": "in front of / facing"},
+      {"spanish": "detrás de", "english": "behind"},
+      {"spanish": "entre", "english": "between"},
+      {"spanish": "en la esquina de", "english": "on the corner of"}
+    ],
+    "useful_questions_and_phrases": [
+      {"spanish": "¿Dónde está...?", "english": "Where is...?"},
+      {"spanish": "¿Cómo llego a...?", "english": "How do I get to...?"},
+      {"spanish": "¿Está lejos de aquí?", "english": "Is it far from here?"},
+      {"spanish": "Siga todo recto y luego gire a la derecha.", "english": "Go straight and then turn right."},
+      {"spanish": "Está a dos cuadras de aquí.", "english": "It's two blocks from here.", "note": "cuadra = city block (Latin America); manzana used in Spain"}
+    ]
+  }
+}

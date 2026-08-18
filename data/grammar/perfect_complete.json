@@ -57,8 +57,8 @@
           "english": "described"
         },
         {
-          "infinitive": "descubierto",
-          "related_infinitive": "descubrir",
+          "infinitive": "descubrir",
+          "participle": "descubierto",
           "english": "discovered"
         },
         {
@@ -69,11 +69,6 @@
         {
           "infinitive": "disolver",
           "participle": "disuelto",
-          "english": "dissolved"
-        },
-        {
-          "infinitive": "disuelto",
-          "related_infinitive": "disolver",
           "english": "dissolved"
         },
         {

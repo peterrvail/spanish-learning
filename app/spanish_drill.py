@@ -13,15 +13,33 @@ SCENARIOS_FILE = os.path.join(DATA_DIR, "scenarios", "scenarios.json")
 EXERCISES_DIR = os.path.join(DATA_DIR, "exercises")
 
 # Commands available from both the mobile button menu and the desktop sidebar
-DRILL_COMMANDS = [
-    ("⚡ Imperativo", "!drill imperativo"),
-    ("🔀 Pronombres", "!drill pronombres"),
-    ("🔄 Cambios", "!drill cambios"),
-    ("⏳ Pasado (imperfecto)", "!drill pasado"),
-    ("📜 Pretérito", "!drill preterito"),
-    ("⏮ Pluscuam", "!drill pluscuam"),
-    ("📝 Ejercicio", "!drill ejercicio"),
-]
+DRILL_CATEGORIES = {
+    "Verbos y Tiempos": [
+        ("⚡ Imperativo", "!drill imperativo"),
+        ("🔄 Cambios de raíz", "!drill cambios"),
+        ("⏳ Pasado (imperfecto)", "!drill pasado"),
+        ("📜 Pretérito irregular", "!drill preterito"),
+        ("⏮ Pluscuamperfecto", "!drill pluscuam"),
+        ("🔮 Futuro irregular", "!drill futuro"),
+        ("✅ Participios", "!drill participios"),
+        ("📝 Ejercicio (homework)", "!drill ejercicio"),
+    ],
+    "Gramática": [
+        ("🔀 Pronombres dobles", "!drill pronombres"),
+        ("↔️ Por vs. Para", "!drill por_para"),
+        ("👉 Demostrativos", "!drill demostrativos"),
+        ("🔤 Adjetivos cortos", "!drill adjetivos"),
+        ("🪞 Reflexivos", "!drill reflexivos"),
+        ("🗣️ Estructuras + preguntas", "!drill estructuras"),
+    ],
+    "Vocabulario": [
+        ("🔢 Números", "!drill numeros"),
+        ("🧭 Adverbios", "!drill adverbios"),
+        ("📍 Lugares", "!drill lugares"),
+    ],
+}
+# Flat list kept for backward-compatible lookups (parse_command etc.)
+DRILL_COMMANDS = [item for group in DRILL_CATEGORIES.values() for item in group]
 ROL_COMMANDS = [
     ("🍽 Restaurante", "!rol restaurante"),
     ("🚌 Transporte", "!rol transporte"),
@@ -66,25 +84,23 @@ def inject_responsive_css():
         unsafe_allow_html=True,
     )
 
-def render_command_menu(columns=2):
-    """Tap-friendly grid of drill/roleplay buttons. Sets st.session_state.active_command."""
-    st.markdown("#### ⚡ Drills")
+def _render_button_grid(commands, columns, key_prefix):
     cols = st.columns(columns)
-    for i, (label, cmd) in enumerate(DRILL_COMMANDS):
+    for i, (label, cmd) in enumerate(commands):
         with cols[i % columns]:
-            if st.button(label, use_container_width=True, key=f"menu_{cmd}"):
+            if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
                 st.session_state.active_command = cmd
                 st.session_state.drill_active = False
                 st.rerun()
 
+def render_command_menu(columns=2):
+    """Tap-friendly, categorized grid of drill/roleplay buttons. Sets st.session_state.active_command."""
+    for category_name, commands in DRILL_CATEGORIES.items():
+        st.markdown(f"#### {category_name}")
+        _render_button_grid(commands, columns, key_prefix="menu")
+
     st.markdown("#### 🎭 Roleplay")
-    cols = st.columns(columns)
-    for i, (label, cmd) in enumerate(ROL_COMMANDS):
-        with cols[i % columns]:
-            if st.button(label, use_container_width=True, key=f"menu_{cmd}"):
-                st.session_state.active_command = cmd
-                st.session_state.drill_active = False
-                st.rerun()
+    _render_button_grid(ROL_COMMANDS, columns, key_prefix="menu")
 
 def load_verbs():
     with open(VERBS_FILE, "r", encoding="utf-8") as f:
@@ -97,6 +113,11 @@ def load_grammar(filename):
 
 def load_exercise(filename):
     path = os.path.join(EXERCISES_DIR, filename)
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def load_vocabulary(filename):
+    path = os.path.join(DATA_DIR, "vocabulary", filename)
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -235,6 +256,219 @@ def get_ejercicio_drill_items(count=15):
     random.shuffle(items)
     return items[:count]
 
+def get_por_para_drill_items(count=15):
+    """Generate POR vs PARA choice items from the practice sentences and idioms."""
+    data = load_grammar("prepositions_por_para.json")
+    ppp = data["por_vs_para"]
+    items = []
+
+    for use in ppp["para"]["uses"]:
+        for key in ("example", "example2"):
+            if key in use:
+                items.append({
+                    "id": len(items),
+                    "prompt": f"Fill in POR or PARA: {use[key].replace('Para', '___', 1) if use[key].startswith('Para') else use[key]}",
+                    "target_form": "para",
+                    "exercise_type": "por_para",
+                    "explanation": f"{use['use']}: {use[key]} — {use.get('english', '')}"
+                })
+    for use in ppp["por"]["uses"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Fill in POR or PARA: {use['example']}",
+            "target_form": "por",
+            "exercise_type": "por_para",
+            "explanation": f"{use['use']}: {use['example']} — {use['english']}"
+        })
+    for expr in ppp["para"]["idiomatic_expressions"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish (uses PARA): {expr['english']}",
+            "target_form": expr["spanish"],
+            "exercise_type": "por_para",
+            "explanation": f"{expr['spanish']} — {expr['english']}"
+        })
+
+    random.shuffle(items)
+    return items[:count]
+
+def get_demostrativos_drill_items(count=12):
+    """Generate demonstrative (este/ese/aquel) and distance-adverb drill items."""
+    data = load_grammar("demonstratives.json")
+    d = data["demonstratives"]
+    items = []
+
+    for group_key in ["este_this", "ese_that"]:
+        group = data["demonstratives"][group_key]
+        for ex in group["examples"]:
+            items.append({
+                "id": len(items),
+                "prompt": f"Translate to Spanish ({group['meaning']}): {ex['english']}",
+                "target_form": ex["spanish"],
+                "exercise_type": "demostrativos",
+                "explanation": f"{ex['spanish']} — {ex.get('note', group['meaning'])}"
+            })
+
+    for pair in data["place_adverbs_pairs"]["pairs"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Which place adverb means '{pair['english']}' ({pair['distance']})?",
+            "target_form": pair["spanish"].split(" / ")[0],
+            "exercise_type": "demostrativos",
+            "explanation": f"{pair['spanish']} — {pair['english']} ({pair['distance']})"
+        })
+
+    random.shuffle(items)
+    return items[:count]
+
+def get_adverbios_drill_items(count=15):
+    """Generate adverb translation items across cantidad/lugar/tiempo categories."""
+    data = load_vocabulary("adverbs.json")
+    items = []
+    for category_key in ["adverbios_de_cantidad", "adverbios_de_lugar", "adverbios_de_tiempo"]:
+        category = data[category_key]
+        for w in category["words"]:
+            items.append({
+                "id": len(items),
+                "prompt": f"Translate to Spanish ({category['english_category']}): {w['english']}",
+                "target_form": w["spanish"].split(" / ")[0].split(" (")[0],
+                "exercise_type": "adverbios",
+                "explanation": f"{w['spanish']} — {w['english']}"
+            })
+    random.shuffle(items)
+    return items[:count]
+
+def get_adjetivos_drill_items(count=10):
+    """Generate shortened-adjective (apocope) drill items: buen/bueno, mal/malo, etc."""
+    data = load_grammar("adjectives.json")
+    items = []
+    for adj in data["shortened_adjectives"]["affected_adjectives"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Shortened form of '{adj['full_form']}' before a masculine singular noun?",
+            "target_form": adj["shortened_form"],
+            "exercise_type": "adjetivos",
+            "explanation": f"{adj['full_form']} → {adj['shortened_form']} — {adj['example']} ({adj['english'] if 'english' in adj else ''})"
+        })
+    random.shuffle(items)
+    return items[:count]
+
+def get_numeros_drill_items(count=15):
+    """Generate number-writing drill items (digits -> Spanish words)."""
+    data = load_vocabulary("numbers_and_money.json")
+    numbers = data["numbers"]
+    items = []
+    pools = numbers["0_20"] + numbers["compound_21_30"]["examples"] + numbers["compound_31_plus"]["examples"] + numbers["hundreds"]
+    for n in pools:
+        items.append({
+            "id": len(items),
+            "prompt": f"Write this number in Spanish: {n['number']}",
+            "target_form": n["spanish"],
+            "exercise_type": "numeros",
+            "explanation": f"{n['number']} → {n['spanish']}" + (f" ({n['note']})" if 'note' in n else "")
+        })
+    random.shuffle(items)
+    return items[:count]
+
+def get_reflexivos_drill_items(count=12):
+    """Generate reflexive verb drill items: pronoun choice (always mechanically
+    correct regardless of stem changes) plus the fully-conjugated bañarse paradigm."""
+    data = load_grammar("reflexive_verbs.json")
+    rv = data["reflexive_verbs"]
+    items = []
+
+    pronoun_by_person = {
+        "yo": "me", "tú": "te", "él/ella/usted": "se",
+        "nosotros": "nos", "ellos/ellas/ustedes": "se"
+    }
+    verb_list = rv["common_reflexive_verbs"]
+    for _ in range(count - 4):
+        v = random.choice(verb_list)
+        person = random.choice(list(pronoun_by_person.keys()))
+        items.append({
+            "id": len(items),
+            "prompt": f"Which reflexive pronoun goes with '{person}' for '{v['spanish']}' ({v['english']})?",
+            "target_form": pronoun_by_person[person],
+            "exercise_type": "reflexivos",
+            "explanation": f"{person} → {pronoun_by_person[person]} + {v['spanish'].replace('se', '', 1) if v['spanish'].endswith('se') else v['spanish']}"
+        })
+
+    for person, details in rv["conjugation"].items():
+        items.append({
+            "id": len(items),
+            "prompt": f"Conjugate 'bañarse' (to bathe) for '{person}' (pronoun + verb form).",
+            "target_form": f"{details['pronoun']} {details['form']}",
+            "exercise_type": "reflexivos",
+            "explanation": f"{person}: {details['pronoun']} {details['form']}"
+        })
+
+    random.shuffle(items)
+    return items[:count]
+
+def get_participios_drill_items(count=15):
+    """Generate irregular past participle drill items (perfect tense)."""
+    data = load_grammar("perfect_complete.json")
+    parts = data["perfect_tense"]["past_participles"]["irregular_participles"]
+    items = []
+    for p in parts:
+        items.append({
+            "id": len(items),
+            "prompt": f"Irregular past participle of '{p['infinitive']}' ({p.get('english', '')})?",
+            "target_form": p["participle"],
+            "exercise_type": "participios",
+            "explanation": f"{p['infinitive']} → {p['participle']} — {p.get('english', '')}"
+        })
+    random.shuffle(items)
+    return items[:count]
+
+def get_futuro_irregular_drill_items(count=12):
+    """Generate irregular future/conditional stem drill items."""
+    data = load_grammar("future_complete.json")
+    stems = data["future_simple"]["irregular_stems"]
+    items = []
+    for s in stems:
+        items.append({
+            "id": len(items),
+            "prompt": f"Irregular future stem of '{s['infinitive']}' ({s['english']})?",
+            "target_form": s["irregular_stem"].rstrip("-"),
+            "exercise_type": "futuro_irregular",
+            "explanation": f"{s['infinitive']} → {s['irregular_stem']} — e.g. {s['example']}"
+        })
+    random.shuffle(items)
+    return items[:count]
+
+def get_estructuras_drill_items(count=15):
+    """Generate verb+infinitive structure and common question drill items."""
+    data = load_grammar("verb_infinitive_structures.json")
+    items = []
+    for q in data["common_questions"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish: {q['english']}",
+            "target_form": q["spanish"],
+            "exercise_type": "estructuras",
+            "explanation": f"{q['spanish']} — {q['english']}" + (f" ({q['note']})" if 'note' in q else "")
+        })
+    random.shuffle(items)
+    return items[:count]
+
+def get_lugares_drill_items(count=15):
+    """Generate places/locations vocabulary drill items."""
+    data = load_vocabulary("places.json")
+    places = data["places"]
+    items = []
+    for category_key in ["everyday_errands", "civic_institutional", "leisure_dining", "home_and_city_structure"]:
+        for p in places[category_key]:
+            items.append({
+                "id": len(items),
+                "prompt": f"Translate to Spanish: {p['english']}",
+                "target_form": p["spanish"].split("/")[0],
+                "exercise_type": "lugares",
+                "explanation": f"{p['spanish']} — {p['english']}" + (f" ({p.get('gender', '')})" if p.get('gender') else "")
+            })
+    random.shuffle(items)
+    return items[:count]
+
 def initialize_session():
     """Initialize or reset session state."""
     if "drill_active" not in st.session_state:
@@ -343,6 +577,26 @@ def run_drill(module_type="imperativo", duration_seconds=300):
             st.session_state.drill_items = get_pluscuamperfecto_drill_items()
         elif module_type == "ejercicio" or module_type == "review111":
             st.session_state.drill_items = get_ejercicio_drill_items()
+        elif module_type == "por_para" or module_type == "porpara":
+            st.session_state.drill_items = get_por_para_drill_items()
+        elif module_type == "demostrativos" or module_type == "distancias":
+            st.session_state.drill_items = get_demostrativos_drill_items()
+        elif module_type == "adverbios":
+            st.session_state.drill_items = get_adverbios_drill_items()
+        elif module_type == "adjetivos":
+            st.session_state.drill_items = get_adjetivos_drill_items()
+        elif module_type == "numeros":
+            st.session_state.drill_items = get_numeros_drill_items()
+        elif module_type == "reflexivos":
+            st.session_state.drill_items = get_reflexivos_drill_items()
+        elif module_type == "participios":
+            st.session_state.drill_items = get_participios_drill_items()
+        elif module_type == "futuro_irregular" or module_type == "futuro":
+            st.session_state.drill_items = get_futuro_irregular_drill_items()
+        elif module_type == "estructuras" or module_type == "preguntas":
+            st.session_state.drill_items = get_estructuras_drill_items()
+        elif module_type == "lugares":
+            st.session_state.drill_items = get_lugares_drill_items()
         else:
             verbs_data = load_verbs()
             st.session_state.drill_items = get_imperative_drill_items(verbs_data)
