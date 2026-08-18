@@ -32,12 +32,14 @@ DRILL_CATEGORIES = {
         ("🔤 Adjetivos cortos", "!drill adjetivos"),
         ("🪞 Reflexivos", "!drill reflexivos"),
         ("🗣️ Estructuras + preguntas", "!drill estructuras"),
-        ("🚂 Ir + Gerundio", "!drill gerundio"),
     ],
     "Vocabulario": [
         ("🔢 Números", "!drill numeros"),
         ("🧭 Adverbios", "!drill adverbios"),
         ("📍 Lugares", "!drill lugares"),
+    ],
+    "👵 De mi Suegra": [
+        ("🚂 Ir + Gerundio", "!drill gerundio"),
     ],
 }
 # Flat list kept for backward-compatible lookups (parse_command etc.)
