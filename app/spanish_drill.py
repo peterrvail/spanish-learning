@@ -15,6 +15,7 @@ EXERCISES_DIR = os.path.join(DATA_DIR, "exercises")
 # Commands available from both the mobile button menu and the desktop sidebar
 DRILL_CATEGORIES = {
     "Verbos y Tiempos": [
+        ("☀️ Rutina diaria (presente)", "!drill rutina"),
         ("⚡ Imperativo", "!drill imperativo"),
         ("🔄 Cambios de raíz", "!drill cambios"),
         ("⏳ Pasado (imperfecto)", "!drill pasado"),
@@ -469,6 +470,22 @@ def get_lugares_drill_items(count=15):
     random.shuffle(items)
     return items[:count]
 
+def get_rutina_drill_items(count=15):
+    """Generate daily-routine present-tense drill items (yo form)."""
+    data = load_grammar("present_tense_routine.json")
+    ptr = data["present_tense_routine"]
+    items = []
+    for ex in ptr["source_examples"] + ptr["additional_routine_verbs"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish (present tense, daily routine): {ex['english']}",
+            "target_form": ex["spanish"],
+            "exercise_type": "rutina",
+            "explanation": f"{ex['spanish']} — {ex['infinitive']}" + (f" ({ex['note']})" if 'note' in ex else "")
+        })
+    random.shuffle(items)
+    return items[:count]
+
 def initialize_session():
     """Initialize or reset session state."""
     if "drill_active" not in st.session_state:
@@ -597,6 +614,8 @@ def run_drill(module_type="imperativo", duration_seconds=300):
             st.session_state.drill_items = get_estructuras_drill_items()
         elif module_type == "lugares":
             st.session_state.drill_items = get_lugares_drill_items()
+        elif module_type == "rutina":
+            st.session_state.drill_items = get_rutina_drill_items()
         else:
             verbs_data = load_verbs()
             st.session_state.drill_items = get_imperative_drill_items(verbs_data)

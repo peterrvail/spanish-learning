@@ -1,0 +1,41 @@
+{
+  "present_tense_routine": {
+    "overview": "El Presente Indicativo expresa lo que haces de forma habitual/repetitiva cada día, o la acción en el momento exacto en que ocurre. Es el tiempo verbal para describir rutinas diarias.",
+    "spanish_name": "El Presente (rutina diaria)",
+    "english_name": "Present Tense (daily routine)",
+    "rule": "Used for repetitive, everyday actions ('lo que tienes que repetir todos los días') and for the exact moment an action happens ('el momento que haces la acción').",
+    "source_examples": [
+      {"spanish": "Yo camino.", "english": "I walk.", "infinitive": "caminar"},
+      {"spanish": "Yo aprendo.", "english": "I learn.", "infinitive": "aprender"},
+      {"spanish": "Yo viajo.", "english": "I travel.", "infinitive": "viajar"},
+      {"spanish": "Yo leo.", "english": "I read.", "infinitive": "leer"},
+      {"spanish": "Yo pienso.", "english": "I think.", "infinitive": "pensar", "note": "E→IE stem change"},
+      {"spanish": "Yo toco mi instrumento.", "english": "I play my instrument.", "infinitive": "tocar"},
+      {"spanish": "Yo canto.", "english": "I sing.", "infinitive": "cantar"},
+      {"spanish": "Yo como.", "english": "I eat.", "infinitive": "comer"},
+      {"spanish": "Yo voy en el tren.", "english": "I go by train.", "infinitive": "ir", "note": "irregular: voy"}
+    ],
+    "additional_routine_verbs": [
+      {"spanish": "Yo trabajo.", "english": "I work.", "infinitive": "trabajar"},
+      {"spanish": "Yo estudio.", "english": "I study.", "infinitive": "estudiar"},
+      {"spanish": "Yo duermo.", "english": "I sleep.", "infinitive": "dormir", "note": "O→UE stem change"},
+      {"spanish": "Yo escucho música.", "english": "I listen to music.", "infinitive": "escuchar"},
+      {"spanish": "Yo escribo.", "english": "I write.", "infinitive": "escribir"},
+      {"spanish": "Yo bebo agua.", "english": "I drink water.", "infinitive": "beber"},
+      {"spanish": "Yo corro.", "english": "I run.", "infinitive": "correr"},
+      {"spanish": "Yo cocino.", "english": "I cook.", "infinitive": "cocinar"},
+      {"spanish": "Yo hablo español.", "english": "I speak Spanish.", "infinitive": "hablar"},
+      {"spanish": "Yo hago ejercicio.", "english": "I exercise.", "infinitive": "hacer", "note": "irregular: hago"},
+      {"spanish": "Yo digo la verdad.", "english": "I tell the truth.", "infinitive": "decir", "note": "irregular: digo"},
+      {"spanish": "Yo tengo un perro.", "english": "I have a dog.", "infinitive": "tener", "note": "irregular: tengo"},
+      {"spanish": "Yo salgo temprano.", "english": "I leave early.", "infinitive": "salir", "note": "irregular: salgo"},
+      {"spanish": "Yo vengo a casa.", "english": "I come home.", "infinitive": "venir", "note": "irregular: vengo"},
+      {"spanish": "Yo pido ayuda.", "english": "I ask for help.", "infinitive": "pedir", "note": "E→I stem change"},
+      {"spanish": "Yo quiero café.", "english": "I want coffee.", "infinitive": "querer", "note": "E→IE stem change"},
+      {"spanish": "Yo puedo nadar.", "english": "I can swim.", "infinitive": "poder", "note": "O→UE stem change"},
+      {"spanish": "Yo sé la respuesta.", "english": "I know the answer.", "infinitive": "saber", "note": "irregular: sé"},
+      {"spanish": "Yo veo la televisión.", "english": "I watch television.", "infinitive": "ver", "note": "irregular: veo"},
+      {"spanish": "Yo juego fútbol.", "english": "I play soccer.", "infinitive": "jugar", "note": "U→UE stem change"}
+    ]
+  }
+}
