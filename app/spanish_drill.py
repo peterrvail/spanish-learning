@@ -32,6 +32,7 @@ DRILL_CATEGORIES = {
         ("🔤 Adjetivos cortos", "!drill adjetivos"),
         ("🪞 Reflexivos", "!drill reflexivos"),
         ("🗣️ Estructuras + preguntas", "!drill estructuras"),
+        ("🚂 Ir + Gerundio", "!drill gerundio"),
     ],
     "Vocabulario": [
         ("🔢 Números", "!drill numeros"),
@@ -486,6 +487,33 @@ def get_rutina_drill_items(count=15):
     random.shuffle(items)
     return items[:count]
 
+def get_ir_gerundio_drill_items(count=12):
+    """Generate IR (conjugated) + gerundio drill items (action while in motion)."""
+    data = load_grammar("ir_gerundio.json")
+    ig = data["ir_gerundio"]
+    items = []
+
+    for ex in ig["source_examples"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish (voy + gerundio — action while traveling): {ex['english']}",
+            "target_form": ex["spanish"],
+            "exercise_type": "ir_gerundio",
+            "explanation": f"{ex['spanish']} — {ex['base_verb']} → {ex['gerund']}"
+        })
+
+    for ex in ig["additional_examples_other_persons"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish (ir + gerundio, '{ex['person']}' form): {ex['english']}",
+            "target_form": ex["spanish"],
+            "exercise_type": "ir_gerundio",
+            "explanation": f"{ex['spanish']} — {ex.get('use', 'simultaneous action while moving')}"
+        })
+
+    random.shuffle(items)
+    return items[:count]
+
 def initialize_session():
     """Initialize or reset session state."""
     if "drill_active" not in st.session_state:
@@ -616,6 +644,8 @@ def run_drill(module_type="imperativo", duration_seconds=300):
             st.session_state.drill_items = get_lugares_drill_items()
         elif module_type == "rutina":
             st.session_state.drill_items = get_rutina_drill_items()
+        elif module_type == "ir_gerundio" or module_type == "gerundio":
+            st.session_state.drill_items = get_ir_gerundio_drill_items()
         else:
             verbs_data = load_verbs()
             st.session_state.drill_items = get_imperative_drill_items(verbs_data)

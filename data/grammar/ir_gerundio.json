@@ -1,0 +1,110 @@
+{
+  "ir_gerundio": {
+    "overview": "La perífrasis IR (conjugado) + GERUNDIO expresa una acción que ocurre simultáneamente con el desplazamiento/movimiento, o el desarrollo gradual y progresivo de una acción. Es distinta de ESTAR + GERUNDIO (presente progresivo simple).",
+    "spanish_name": "Perífrasis: Ir + Gerundio",
+    "english_name": "IR + Gerund construction (doing something while going/along the way)",
+    "construction": {
+      "rule": "IR (conjugado en el tiempo que corresponda) + GERUNDIO",
+      "note": "'Voy' es la primera persona del singular del presente indicativo del verbo IR.",
+      "ir_present_indicative": {
+        "yo": "voy",
+        "tú": "vas",
+        "él_ella_usted": "va",
+        "nosotros": "vamos",
+        "vosotros": "vais",
+        "ellos_ustedes": "van"
+      }
+    },
+    "meaning_and_use": [
+      {
+        "use": "Acción simultánea con el desplazamiento",
+        "description": "Algo que haces MIENTRAS te trasladas de un lugar a otro (caminando, en tren, en coche, etc.)",
+        "example": "Voy en el tren leyendo.",
+        "example_english": "I read while I go on the train. / I'm on the train, reading.",
+        "explanation": "La acción de leer ocurre simultáneamente con el viaje en tren."
+      },
+      {
+        "use": "Desarrollo gradual/progresivo",
+        "description": "Una acción que avanza poco a poco, paso a paso",
+        "example": "Voy aprendiendo español poco a poco.",
+        "example_english": "I'm gradually learning Spanish, little by little.",
+        "explanation": "Énfasis en el progreso gradual, no solo en el momento presente."
+      }
+    ],
+    "contrast_with_estar_gerundio": {
+      "estar_gerundio": {
+        "rule": "ESTAR + GERUNDIO",
+        "meaning": "Acción en progreso en este momento (presente progresivo simple)",
+        "example": "Estoy leyendo.",
+        "example_english": "I am reading (right now)."
+      },
+      "ir_gerundio": {
+        "rule": "IR + GERUNDIO",
+        "meaning": "Acción simultánea al movimiento, o progreso gradual",
+        "example": "Voy leyendo en el tren.",
+        "example_english": "I'm reading along the way / while riding the train."
+      },
+      "note": "ESTAR + gerundio describe el momento presente sin implicar movimiento; IR + gerundio añade la idea de desplazamiento o avance gradual."
+    },
+    "source_examples": [
+      {
+        "spanish": "Voy en el tren leyendo.",
+        "english": "I'm on the train reading.",
+        "gerund": "leyendo",
+        "base_verb": "leer"
+      },
+      {
+        "spanish": "Voy en el tren aprendiendo.",
+        "english": "I'm on the train learning.",
+        "gerund": "aprendiendo",
+        "base_verb": "aprender"
+      },
+      {
+        "spanish": "Voy en el tren cantando.",
+        "english": "I'm on the train singing.",
+        "gerund": "cantando",
+        "base_verb": "cantar"
+      },
+      {
+        "spanish": "Voy en el tren memorizando.",
+        "english": "I'm on the train memorizing.",
+        "gerund": "memorizando",
+        "base_verb": "memorizar"
+      },
+      {
+        "spanish": "Voy en el tren pensando.",
+        "english": "I'm on the train thinking.",
+        "gerund": "pensando",
+        "base_verb": "pensar"
+      }
+    ],
+    "additional_examples_other_persons": [
+      {
+        "spanish": "Tú vas caminando y escuchando música.",
+        "english": "You go along walking and listening to music.",
+        "person": "tú"
+      },
+      {
+        "spanish": "Él va conduciendo y hablando por teléfono.",
+        "english": "He drives along while talking on the phone.",
+        "person": "él"
+      },
+      {
+        "spanish": "Nosotros vamos mejorando nuestro español cada día.",
+        "english": "We are gradually improving our Spanish every day.",
+        "person": "nosotros",
+        "use": "gradual progress"
+      },
+      {
+        "spanish": "Ellos van corriendo por el parque.",
+        "english": "They go running through the park.",
+        "person": "ellos"
+      }
+    ],
+    "gerund_formation_reminder": {
+      "ar_verbs": "-ando (caminar → caminando, cantar → cantando)",
+      "er_ir_verbs": "-iendo (leer → leyendo, aprender → aprendiendo)",
+      "note": "leer → leyendo (i → y between vowels), an irregular spelling change, not an irregular gerund"
+    }
+  }
+}
