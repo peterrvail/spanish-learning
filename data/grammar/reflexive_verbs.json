@@ -56,10 +56,39 @@
       {"spanish": "preocuparse", "english": "to worry"},
       {"spanish": "sorprenderse", "english": "to be surprised"},
       {"spanish": "sentirse", "english": "to feel (an emotion/state)", "type": "E→IE stem change"},
-      {"spanish": "acostumbrarse (a)", "english": "to get used to"}
+      {"spanish": "acostumbrarse (a)", "english": "to get used to"},
+      {"spanish": "dormirse", "english": "to fall asleep", "type": "O→UE stem change", "note": "distinct from dormir (to sleep, ongoing)"},
+      {"spanish": "secarse", "english": "to dry oneself"},
+      {"spanish": "acordarse (de)", "english": "to remember", "type": "O→UE stem change"},
+      {"spanish": "quejarse (de)", "english": "to complain"},
+      {"spanish": "quedarse", "english": "to stay"},
+      {"spanish": "probarse", "english": "to try on (clothes)", "type": "O→UE stem change"},
+      {"spanish": "acercarse (a)", "english": "to approach/get close"},
+      {"spanish": "alejarse (de)", "english": "to move away/distance oneself"},
+      {"spanish": "darse cuenta (de)", "english": "to realize"},
+      {"spanish": "irse", "english": "to leave/go away"}
     ],
     "reciprocal_verbs": {
       "note": "Reflexive pronouns can also express reciprocal actions (each other) in plural forms",
+      "common_reciprocal_verbs": [
+        {"spanish": "verse", "english": "to see each other"},
+        {"spanish": "amarse", "english": "to love each other"},
+        {"spanish": "besarse", "english": "to kiss (each other)"},
+        {"spanish": "abrazarse", "english": "to hug (each other)"},
+        {"spanish": "casarse", "english": "to get married"},
+        {"spanish": "divorciarse", "english": "to get divorced"},
+        {"spanish": "separarse", "english": "to separate"},
+        {"spanish": "encontrarse", "english": "to meet up", "type": "O→UE stem change"},
+        {"spanish": "conocerse", "english": "to meet/get to know each other"},
+        {"spanish": "saludarse", "english": "to greet each other"},
+        {"spanish": "despedirse", "english": "to say goodbye (to each other)", "type": "E→I stem change"},
+        {"spanish": "enamorarse (de)", "english": "to fall in love"},
+        {"spanish": "entenderse", "english": "to understand each other", "type": "E→IE stem change"},
+        {"spanish": "comunicarse", "english": "to communicate (with each other)"},
+        {"spanish": "ayudarse", "english": "to help each other"},
+        {"spanish": "escribirse", "english": "to write to each other"},
+        {"spanish": "llamarse (reciprocal)", "english": "to call each other (by phone)", "note": "distinct from llamarse meaning 'to be named'"}
+      ],
       "examples": [
         {
           "spanish": "Se abrazan.",
@@ -68,6 +97,14 @@
         {
           "spanish": "Nos ayudamos.",
           "english": "We help each other."
+        },
+        {
+          "spanish": "Nos encontramos en el parque.",
+          "english": "We meet up at the park."
+        },
+        {
+          "spanish": "Ellos se conocieron en la universidad.",
+          "english": "They met each other at university."
         }
       ]
     }

@@ -1,0 +1,44 @@
+{
+  "technology_and_money": [
+    {"spanish": "el dinero", "english": "money", "gender": "masculine"},
+    {"spanish": "la tarjeta", "english": "card", "gender": "feminine"},
+    {"spanish": "el efectivo", "english": "cash", "gender": "masculine"},
+    {"spanish": "el cambio", "english": "change (money)", "gender": "masculine"},
+    {"spanish": "el correo electrónico", "english": "email", "gender": "masculine"},
+    {"spanish": "la música", "english": "music", "gender": "feminine"}
+  ],
+  "transportation": [
+    {"spanish": "el avión", "english": "airplane", "gender": "masculine"},
+    {"spanish": "el tren", "english": "train", "gender": "masculine"},
+    {"spanish": "el auto / el carro", "english": "car", "gender": "masculine"},
+    {"spanish": "la camioneta", "english": "pickup truck", "gender": "feminine"},
+    {"spanish": "el metro", "english": "subway", "gender": "masculine"},
+    {"spanish": "las escaleras", "english": "stairs", "gender": "feminine"}
+  ],
+  "other_common_nouns": [
+    {"spanish": "las noticias", "english": "news", "gender": "feminine"},
+    {"spanish": "el nombre", "english": "name", "gender": "masculine"},
+    {"spanish": "el color", "english": "color", "gender": "masculine"},
+    {"spanish": "el cuento", "english": "story", "gender": "masculine"},
+    {"spanish": "la piedra", "english": "stone", "gender": "feminine"},
+    {"spanish": "el humo", "english": "smoke", "gender": "masculine"},
+    {"spanish": "el trabajo", "english": "work/job", "gender": "masculine"},
+    {"spanish": "la idea", "english": "idea", "gender": "feminine"},
+    {"spanish": "el problema", "english": "problem", "gender": "masculine"},
+    {"spanish": "el idioma", "english": "language", "gender": "masculine"},
+    {"spanish": "los deportes", "english": "sports", "gender": "masculine"},
+    {"spanish": "la piscina", "english": "pool", "gender": "feminine"},
+    {"spanish": "el ruido", "english": "noise", "gender": "masculine"},
+    {"spanish": "el silencio", "english": "silence", "gender": "masculine"},
+    {"spanish": "los regalos", "english": "gifts", "gender": "masculine"},
+    {"spanish": "el proyecto", "english": "project", "gender": "masculine"},
+    {"spanish": "la respuesta", "english": "answer", "gender": "feminine"},
+    {"spanish": "el momento", "english": "moment", "gender": "masculine"},
+    {"spanish": "el fuego", "english": "fire", "gender": "masculine"},
+    {"spanish": "el rey", "english": "king", "gender": "masculine"},
+    {"spanish": "la sombra", "english": "shadow", "gender": "feminine"},
+    {"spanish": "el olor", "english": "smell", "gender": "masculine"},
+    {"spanish": "la paciencia", "english": "patience", "gender": "feminine"},
+    {"spanish": "la dirección", "english": "address", "gender": "feminine"}
+  ]
+}

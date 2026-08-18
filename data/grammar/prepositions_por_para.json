@@ -216,6 +216,73 @@
           "english": "I cut my finger with the knife."
         }
       ]
-    }
+    },
+    "contra": {
+      "meaning": "against",
+      "example": "Está contra la pared.",
+      "english": "It's against the wall."
+    },
+    "de": {
+      "meanings": [
+        {"use": "Origin", "example": "Soy de Ecuador.", "english": "I'm from Ecuador."},
+        {"use": "Possession", "example": "El libro de Juan.", "english": "Juan's book."},
+        {"use": "Material", "example": "Una mesa de madera.", "english": "A wooden table."},
+        {"use": "Time/age", "example": "Un niño de diez años.", "english": "A ten-year-old child."}
+      ]
+    },
+    "en": {
+      "meanings": [
+        {"use": "Location", "example": "Estoy en casa.", "english": "I'm at home."},
+        {"use": "Time", "example": "En marzo.", "english": "In March."},
+        {"use": "Means", "example": "Viajo en tren.", "english": "I travel by train."}
+      ]
+    },
+    "hacia": {
+      "meaning": "toward",
+      "example": "Camina hacia la puerta.",
+      "english": "He walks toward the door."
+    },
+    "hasta": {
+      "meaning": "until/up to",
+      "example": "Desde la página 5 hasta la página 20.",
+      "english": "From page 5 to page 20."
+    },
+    "desde": {
+      "meaning": "from (a starting point)",
+      "example": "Desde la página 5 hasta la página 20.",
+      "english": "From page 5 to page 20."
+    },
+    "según": {
+      "meaning": "according to",
+      "example": "Según el pronóstico, va a llover.",
+      "english": "According to the forecast, it's going to rain."
+    },
+    "tras": {
+      "meaning": "after/behind",
+      "example": "Corrió tras el autobús.",
+      "english": "He ran after the bus."
+    },
+    "sin": {
+      "meaning": "without",
+      "example": "Café sin azúcar.",
+      "english": "Coffee without sugar."
+    },
+    "idiomatic_expressions_with_prepositions": [
+      {"spanish": "en serio", "english": "seriously"},
+      {"spanish": "en broma", "english": "jokingly"},
+      {"spanish": "en confianza", "english": "in confidence"},
+      {"spanish": "en privado", "english": "privately"},
+      {"spanish": "en general", "english": "generally"},
+      {"spanish": "en realidad", "english": "actually/in reality"},
+      {"spanish": "en secreto", "english": "secretly"},
+      {"spanish": "en verdad", "english": "truly"},
+      {"spanish": "en voz alta", "english": "out loud"},
+      {"spanish": "en voz baja", "english": "quietly/in a low voice"},
+      {"spanish": "en cambio", "english": "on the other hand"},
+      {"spanish": "en síntesis", "english": "in summary"},
+      {"spanish": "estoy de acuerdo", "english": "I agree"},
+      {"spanish": "tiene sentido", "english": "it makes sense"},
+      {"spanish": "claro que sí", "english": "of course"}
+    ]
   }
 }

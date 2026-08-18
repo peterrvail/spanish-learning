@@ -1,0 +1,45 @@
+{
+  "indefinite_and_negative_pronouns": {
+    "overview": "Pronombres indefinidos y negativos: se refieren a personas o cosas sin especificar. Cada afirmativo tiene un negativo correspondiente.",
+    "pairs": [
+      {
+        "affirmative": "alguien",
+        "negative": "nadie",
+        "english_affirmative": "someone/somebody",
+        "english_negative": "no one/nobody",
+        "example_affirmative": "¿Hay alguien en casa?",
+        "example_affirmative_english": "Is there someone home?",
+        "example_negative": "No hay nadie en casa.",
+        "example_negative_english": "There's no one home."
+      },
+      {
+        "affirmative": "algo",
+        "negative": "nada",
+        "english_affirmative": "something",
+        "english_negative": "nothing",
+        "example_affirmative": "Quiero algo de comer.",
+        "example_negative": "No quiero nada."
+      },
+      {
+        "affirmative": "alguno/a(s)",
+        "negative": "ninguno/a(s)",
+        "english_affirmative": "some, any (one)",
+        "english_negative": "none, not any",
+        "example_affirmative": "¿Tienes alguna pregunta?",
+        "example_negative": "No tengo ninguna pregunta."
+      }
+    ],
+    "adjective_forms_before_noun": {
+      "note": "Algún and ningún are the shortened adjective forms used directly before a masculine singular noun (see also data/grammar/adjectives.json for the broader apocope rule).",
+      "examples": [
+        {"spanish": "algún día", "english": "some day"},
+        {"spanish": "ningún problema", "english": "no problem"}
+      ]
+    },
+    "cualquiera": {
+      "meaning": "whoever/anyone/any one at all",
+      "example": "Cualquiera puede hacerlo.",
+      "example_english": "Anyone can do it."
+    }
+  }
+}

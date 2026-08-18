@@ -1,0 +1,36 @@
+{
+  "body_parts": [
+    {"spanish": "la espalda", "english": "back", "gender": "feminine"},
+    {"spanish": "la cabeza", "english": "head", "gender": "feminine"},
+    {"spanish": "el oído", "english": "(inner) ear", "gender": "masculine"},
+    {"spanish": "las orejas", "english": "ears (outer)", "gender": "feminine"},
+    {"spanish": "la rodilla", "english": "knee", "gender": "feminine"},
+    {"spanish": "el cuello", "english": "neck", "gender": "masculine"},
+    {"spanish": "el estómago", "english": "stomach", "gender": "masculine"},
+    {"spanish": "el pelo / el cabello", "english": "hair", "gender": "masculine"},
+    {"spanish": "el pie", "english": "foot", "gender": "masculine"},
+    {"spanish": "la garganta", "english": "throat", "gender": "feminine"},
+    {"spanish": "los músculos", "english": "muscles", "gender": "masculine"},
+    {"spanish": "el dedo", "english": "finger", "gender": "masculine"},
+    {"spanish": "la cara", "english": "face", "gender": "feminine"},
+    {"spanish": "el cerebro", "english": "brain", "gender": "masculine"},
+    {"spanish": "la nariz", "english": "nose", "gender": "feminine"},
+    {"spanish": "los dientes", "english": "teeth", "gender": "masculine"},
+    {"spanish": "la sangre", "english": "blood", "gender": "feminine"},
+    {"spanish": "la barriga / la panza", "english": "belly", "gender": "feminine"}
+  ],
+  "health_and_symptoms": [
+    {"spanish": "la fiebre", "english": "fever", "gender": "feminine"},
+    {"spanish": "el miedo", "english": "fear", "gender": "masculine"},
+    {"spanish": "el sueño", "english": "sleepiness", "gender": "masculine"},
+    {"spanish": "los escalofríos", "english": "chills", "gender": "masculine"},
+    {"spanish": "la infección", "english": "infection", "gender": "feminine"},
+    {"spanish": "los antibióticos", "english": "antibiotics", "gender": "masculine"},
+    {"spanish": "saludable", "english": "healthy"},
+    {"spanish": "el dolor", "english": "pain", "gender": "masculine"},
+    {"spanish": "la tos", "english": "cough", "gender": "feminine"},
+    {"spanish": "el jarabe", "english": "(cough) syrup", "gender": "masculine"},
+    {"spanish": "la vacuna", "english": "vaccine", "gender": "feminine"},
+    {"spanish": "la gripe", "english": "flu", "gender": "feminine"}
+  ]
+}

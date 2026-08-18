@@ -28,12 +28,15 @@ DRILL_CATEGORIES = {
     "Gramática": [
         ("🔀 Pronombres dobles", "!drill pronombres"),
         ("↔️ Por vs. Para", "!drill por_para"),
+        ("🧩 Otras preposiciones", "!drill preposiciones"),
         ("👉 Demostrativos", "!drill demostrativos"),
         ("🔤 Adjetivos cortos", "!drill adjetivos"),
-        ("🪞 Reflexivos", "!drill reflexivos"),
+        ("🪞 Reflexivos/Recíprocos", "!drill reflexivos"),
+        ("🚫 Indefinidos/Negativos", "!drill indefinidos"),
         ("🗣️ Estructuras + preguntas", "!drill estructuras"),
     ],
     "Vocabulario": [
+        ("🌎 Vocabulario mixto", "!drill vocabulario"),
         ("🔢 Números", "!drill numeros"),
         ("🧭 Adverbios", "!drill adverbios"),
         ("📍 Lugares", "!drill lugares"),
@@ -516,6 +519,96 @@ def get_ir_gerundio_drill_items(count=12):
     random.shuffle(items)
     return items[:count]
 
+# Vocabulary files sampled by the mixed vocabulary drill: (filename, [top-level keys to pull entries from])
+_VOCABULARIO_MIXTO_SOURCES = [
+    ("household_and_rooms.json", ["rooms", "furniture_and_objects"]),
+    ("family_and_people.json", ["family", "professions_and_roles", "titles_and_marital_status"]),
+    ("body_and_health.json", ["body_parts", "health_and_symptoms"]),
+    ("emotions_and_adjectives.json", ["emotions_and_states", "descriptive_adjectives", "colors"]),
+    ("food_extended.json", ["food_items"]),
+    ("clothing.json", ["clothing"]),
+    ("nature_weather_animals.json", ["weather", "seasons", "nature", "animals"]),
+    ("time_and_calendar.json", ["days_of_the_week", "time_expressions"]),
+    ("misc_common_nouns.json", ["technology_and_money", "transportation", "other_common_nouns"]),
+    ("additional_verbs.json", ["everyday_action_verbs", "story_and_emotion_verbs"]),
+]
+
+def get_vocabulario_mixto_drill_items(count=20):
+    """Generate a broad mixed-vocabulary drill sampling across all lesson-derived
+    vocabulary categories (household, family, body, emotions, food, clothing,
+    nature, time, misc nouns, common verbs) — a general 'common words' review."""
+    pool = []
+    for filename, keys in _VOCABULARIO_MIXTO_SOURCES:
+        data = load_vocabulary(filename)
+        for key in keys:
+            for entry in data[key]:
+                pool.append((entry, key))
+
+    items = []
+    sample = random.sample(pool, min(count, len(pool)))
+    for entry, category in sample:
+        spanish = entry["spanish"].split(" / ")[0].split(" (")[0]
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish ({category.replace('_', ' ')}): {entry['english']}",
+            "target_form": spanish,
+            "exercise_type": "vocabulario_mixto",
+            "explanation": f"{entry['spanish']} — {entry['english']}" + (f" ({entry['gender']})" if entry.get('gender') else "")
+        })
+    return items[:count]
+
+def get_indefinidos_drill_items(count=8):
+    """Generate indefinite/negative pronoun drill items (alguien/nadie, algo/nada, etc.)."""
+    data = load_grammar("indefinite_pronouns.json")
+    ip = data["indefinite_and_negative_pronouns"]
+    items = []
+    for pair in ip["pairs"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish: {pair['english_affirmative']}",
+            "target_form": pair["affirmative"].split("/")[0].split("(")[0].strip(),
+            "exercise_type": "indefinidos",
+            "explanation": f"{pair['affirmative']} ↔ {pair['negative']} — {pair['example_affirmative']}"
+        })
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish: {pair['english_negative']}",
+            "target_form": pair["negative"].split("/")[0].split("(")[0].strip(),
+            "exercise_type": "indefinidos",
+            "explanation": f"{pair['negative']} ↔ {pair['affirmative']} — {pair['example_negative']}"
+        })
+    random.shuffle(items)
+    return items[:count]
+
+def get_preposiciones_drill_items(count=12):
+    """Generate drill items for the extended preposition set (contra, hacia,
+    hasta, desde, según, tras, sin) plus idiomatic prepositional expressions."""
+    data = load_grammar("prepositions_por_para.json")
+    other = data["other_prepositions"]
+    items = []
+
+    for prep_key in ["contra", "hacia", "hasta", "desde", "según", "tras", "sin"]:
+        p = other[prep_key]
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish (using '{prep_key}'): {p['english']}",
+            "target_form": p["example"],
+            "exercise_type": "preposiciones",
+            "explanation": f"{prep_key} = {p['meaning']} — {p['example']}"
+        })
+
+    for expr in other["idiomatic_expressions_with_prepositions"]:
+        items.append({
+            "id": len(items),
+            "prompt": f"Translate to Spanish (idiom): {expr['english']}",
+            "target_form": expr["spanish"],
+            "exercise_type": "preposiciones",
+            "explanation": f"{expr['spanish']} — {expr['english']}"
+        })
+
+    random.shuffle(items)
+    return items[:count]
+
 def initialize_session():
     """Initialize or reset session state."""
     if "drill_active" not in st.session_state:
@@ -648,6 +741,12 @@ def run_drill(module_type="imperativo", duration_seconds=300):
             st.session_state.drill_items = get_rutina_drill_items()
         elif module_type == "ir_gerundio" or module_type == "gerundio":
             st.session_state.drill_items = get_ir_gerundio_drill_items()
+        elif module_type == "vocabulario" or module_type == "comunes":
+            st.session_state.drill_items = get_vocabulario_mixto_drill_items()
+        elif module_type == "indefinidos":
+            st.session_state.drill_items = get_indefinidos_drill_items()
+        elif module_type == "preposiciones":
+            st.session_state.drill_items = get_preposiciones_drill_items()
         else:
             verbs_data = load_verbs()
             st.session_state.drill_items = get_imperative_drill_items(verbs_data)

@@ -1,0 +1,46 @@
+{
+  "family": [
+    {"spanish": "el esposo / la esposa", "english": "husband / wife", "gender": "masculine/feminine"},
+    {"spanish": "el sobrino / la sobrina", "english": "nephew / niece", "gender": "masculine/feminine"},
+    {"spanish": "el hermano / la hermana", "english": "brother / sister", "gender": "masculine/feminine"},
+    {"spanish": "el amigo / la amiga", "english": "friend", "gender": "masculine/feminine"},
+    {"spanish": "el vecino / la vecina", "english": "neighbor", "gender": "masculine/feminine"},
+    {"spanish": "el tío / la tía", "english": "uncle / aunt", "gender": "masculine/feminine"},
+    {"spanish": "el primo / la prima", "english": "cousin", "gender": "masculine/feminine"},
+    {"spanish": "los suegros / la suegra", "english": "in-laws / mother-in-law", "gender": "masculine/feminine"},
+    {"spanish": "mamá / papá", "english": "mom / dad", "gender": "feminine/masculine"},
+    {"spanish": "la abuela / el abuelo", "english": "grandmother / grandfather", "gender": "feminine/masculine"},
+    {"spanish": "el hombre", "english": "man", "gender": "masculine"},
+    {"spanish": "la mujer", "english": "woman", "gender": "feminine"},
+    {"spanish": "el niño / la niña", "english": "boy / girl", "gender": "masculine/feminine"},
+    {"spanish": "la pareja", "english": "couple / partner", "gender": "feminine"},
+    {"spanish": "el hijo / la hija", "english": "son / daughter", "gender": "masculine/feminine"},
+    {"spanish": "la novia / el novio", "english": "girlfriend / boyfriend", "gender": "feminine/masculine"},
+    {"spanish": "el cuñado / la cuñada", "english": "brother-/sister-in-law", "gender": "masculine/feminine"},
+    {"spanish": "la familia", "english": "family", "gender": "feminine"}
+  ],
+  "professions_and_roles": [
+    {"spanish": "el jefe / la jefa", "english": "boss", "gender": "masculine/feminine"},
+    {"spanish": "el guardia", "english": "guard", "gender": "masculine"},
+    {"spanish": "el gerente", "english": "manager", "gender": "masculine"},
+    {"spanish": "la secretaria", "english": "secretary", "gender": "feminine"},
+    {"spanish": "el mesero / la mesera", "english": "waiter / waitress", "gender": "masculine/feminine"},
+    {"spanish": "la enfermera", "english": "nurse", "gender": "feminine"},
+    {"spanish": "la policía", "english": "police", "gender": "feminine"},
+    {"spanish": "el guía", "english": "guide", "gender": "masculine"},
+    {"spanish": "el granjero", "english": "farmer", "gender": "masculine"},
+    {"spanish": "el ingeniero / la ingeniera", "english": "engineer", "gender": "masculine/feminine"},
+    {"spanish": "el arquitecto / la arquitecta", "english": "architect", "gender": "masculine/feminine"},
+    {"spanish": "el doctor / la doctora", "english": "doctor", "gender": "masculine/feminine"},
+    {"spanish": "el profesor / la profesora", "english": "professor/teacher", "gender": "masculine/feminine"},
+    {"spanish": "el abogado / la abogada", "english": "lawyer", "gender": "masculine/feminine"}
+  ],
+  "titles_and_marital_status": [
+    {"spanish": "Señora / Señor / Señorita", "english": "Mrs. / Mr. / Miss"},
+    {"spanish": "casado/a", "english": "married"},
+    {"spanish": "divorciado/a", "english": "divorced"},
+    {"spanish": "separado/a", "english": "separated"},
+    {"spanish": "viudo/a", "english": "widowed"},
+    {"spanish": "soltero/a", "english": "single"}
+  ]
+}

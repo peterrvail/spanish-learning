@@ -1,0 +1,15 @@
+{
+  "clothing": [
+    {"spanish": "la camisa", "english": "shirt", "gender": "feminine"},
+    {"spanish": "los zapatos", "english": "shoes", "gender": "masculine"},
+    {"spanish": "la chaqueta", "english": "jacket", "gender": "feminine"},
+    {"spanish": "el sombrero", "english": "hat", "gender": "masculine"},
+    {"spanish": "la bufanda", "english": "scarf", "gender": "feminine"},
+    {"spanish": "las botas", "english": "boots", "gender": "feminine"},
+    {"spanish": "el traje (de baño)", "english": "suit / swimsuit", "gender": "masculine"},
+    {"spanish": "los guantes", "english": "gloves", "gender": "masculine"},
+    {"spanish": "las medias", "english": "socks/stockings", "gender": "feminine"},
+    {"spanish": "las sandalias", "english": "sandals", "gender": "feminine"},
+    {"spanish": "la ropa", "english": "clothing", "gender": "feminine"}
+  ]
+}

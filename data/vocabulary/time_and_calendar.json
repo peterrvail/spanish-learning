@@ -1,0 +1,21 @@
+{
+  "days_of_the_week": [
+    {"spanish": "lunes", "english": "Monday"},
+    {"spanish": "martes", "english": "Tuesday"},
+    {"spanish": "miércoles", "english": "Wednesday"},
+    {"spanish": "jueves", "english": "Thursday"},
+    {"spanish": "viernes", "english": "Friday"},
+    {"spanish": "sábado", "english": "Saturday"},
+    {"spanish": "domingo", "english": "Sunday"}
+  ],
+  "time_expressions": [
+    {"spanish": "también / tampoco", "english": "also / neither"},
+    {"spanish": "el feriado", "english": "holiday", "gender": "masculine"},
+    {"spanish": "el cumpleaños", "english": "birthday", "gender": "masculine"},
+    {"spanish": "las vacaciones", "english": "vacation", "gender": "feminine"},
+    {"spanish": "la fiesta", "english": "party", "gender": "feminine"},
+    {"spanish": "la reunión", "english": "meeting", "gender": "feminine"},
+    {"spanish": "la siesta", "english": "nap", "gender": "feminine"},
+    {"spanish": "el tiempo libre", "english": "free time", "gender": "masculine"}
+  ]
+}

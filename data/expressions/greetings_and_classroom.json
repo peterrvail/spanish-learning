@@ -65,5 +65,17 @@
     {"spanish": "Hable más lento, por favor.", "english": "Speak more slowly, please."},
     {"spanish": "¿Puede repetir?", "english": "Can you repeat that?"},
     {"spanish": "Preste atención.", "english": "Pay attention."}
+  ],
+  "meta_language_questions": [
+    {"spanish": "¿Cómo se dice...?", "english": "How do you say...?"},
+    {"spanish": "¿Qué significa...?", "english": "What does...mean?"},
+    {"spanish": "¿Cómo se escribe? / ¿Cómo se deletrea?", "english": "How do you write it? / How do you spell it?"},
+    {"spanish": "¿Cómo se pronuncia?", "english": "How do you pronounce it?"}
+  ],
+  "exclamations": [
+    {"spanish": "Así es la vida.", "english": "That's life."},
+    {"spanish": "¡Qué envidia!", "english": "So jealous! / How I envy you!"},
+    {"spanish": "¡Es un milagro!", "english": "It's a miracle!"},
+    {"spanish": "¡Qué risa!", "english": "How funny! / What a laugh!"}
   ]
 }

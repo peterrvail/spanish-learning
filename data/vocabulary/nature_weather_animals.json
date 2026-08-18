@@ -1,0 +1,48 @@
+{
+  "weather": [
+    {"spanish": "el sol", "english": "sun", "gender": "masculine"},
+    {"spanish": "nublado/a", "english": "cloudy"},
+    {"spanish": "las nubes", "english": "clouds", "gender": "feminine"},
+    {"spanish": "el clima", "english": "climate/weather", "gender": "masculine"},
+    {"spanish": "la lluvia", "english": "rain", "gender": "feminine"},
+    {"spanish": "llover / lloviendo", "english": "to rain / raining"}
+  ],
+  "seasons": [
+    {"spanish": "la primavera", "english": "spring", "gender": "feminine"},
+    {"spanish": "el verano", "english": "summer", "gender": "masculine"},
+    {"spanish": "el otoño", "english": "fall/autumn", "gender": "masculine"},
+    {"spanish": "el invierno", "english": "winter", "gender": "masculine"}
+  ],
+  "nature": [
+    {"spanish": "la luna (llena)", "english": "(full) moon", "gender": "feminine"},
+    {"spanish": "las estrellas", "english": "stars", "gender": "feminine"},
+    {"spanish": "el cielo", "english": "sky", "gender": "masculine"},
+    {"spanish": "la montaña", "english": "mountain", "gender": "feminine"},
+    {"spanish": "el bosque", "english": "forest", "gender": "masculine"},
+    {"spanish": "el mar", "english": "sea", "gender": "masculine"},
+    {"spanish": "las olas", "english": "waves", "gender": "feminine"},
+    {"spanish": "la arena", "english": "sand", "gender": "feminine"}
+  ],
+  "animals": [
+    {"spanish": "el perro / la perra", "english": "dog", "gender": "masculine/feminine"},
+    {"spanish": "el gato / la gata", "english": "cat", "gender": "masculine/feminine"},
+    {"spanish": "el pájaro", "english": "bird", "gender": "masculine"},
+    {"spanish": "el conejo", "english": "rabbit", "gender": "masculine"},
+    {"spanish": "el león", "english": "lion", "gender": "masculine"},
+    {"spanish": "la serpiente", "english": "snake", "gender": "feminine"},
+    {"spanish": "el mono", "english": "monkey", "gender": "masculine"},
+    {"spanish": "la tortuga", "english": "turtle", "gender": "feminine"},
+    {"spanish": "el tigre", "english": "tiger", "gender": "masculine"},
+    {"spanish": "la araña", "english": "spider", "gender": "feminine"},
+    {"spanish": "la rata", "english": "rat", "gender": "feminine"},
+    {"spanish": "el lobo / la loba", "english": "wolf", "gender": "masculine/feminine"},
+    {"spanish": "el oso", "english": "bear", "gender": "masculine"},
+    {"spanish": "el zorro", "english": "fox", "gender": "masculine"},
+    {"spanish": "la mariposa", "english": "butterfly", "gender": "feminine"},
+    {"spanish": "el venado / el ciervo", "english": "deer", "gender": "masculine"},
+    {"spanish": "la vaca", "english": "cow", "gender": "feminine"},
+    {"spanish": "el gallo / la gallina", "english": "rooster / hen", "gender": "masculine/feminine"},
+    {"spanish": "el asno", "english": "donkey", "gender": "masculine"},
+    {"spanish": "el mosquito", "english": "mosquito", "gender": "masculine"}
+  ]
+}
