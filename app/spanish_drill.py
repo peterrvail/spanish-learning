@@ -895,7 +895,7 @@ def run_drill(module_type="imperativo", duration_seconds=300):
                 st.error(f"❌ Incorrect. The correct form is: '{item['target_form']}'")
                 st.info(f"💡 {item['explanation']}")
 
-            time.sleep(2)
+            time.sleep(3.5)
             st.session_state.current_item_index += 1
             st.rerun()
 
@@ -908,7 +908,7 @@ def run_drill(module_type="imperativo", duration_seconds=300):
                     if item.get("explanation"):
                         reveal += f" — {item['explanation']}"
                     st.info(reveal)
-                    time.sleep(2)
+                    time.sleep(3.5)
                     st.session_state.current_item_index += 1
                     st.rerun()
             else:
