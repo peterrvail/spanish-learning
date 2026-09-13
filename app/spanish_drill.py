@@ -91,20 +91,35 @@ def inject_responsive_css():
         unsafe_allow_html=True,
     )
 
-def _render_button_grid(commands, columns, key_prefix):
+def _set_active_command(cmd):
+    st.session_state.active_command = cmd
+    st.session_state.drill_active = False
+    st.rerun()
+
+def _render_button_grid(commands, columns, key_prefix, with_review=False):
     cols = st.columns(columns)
     for i, (label, cmd) in enumerate(commands):
         with cols[i % columns]:
-            if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
-                st.session_state.active_command = cmd
-                st.session_state.drill_active = False
-                st.rerun()
+            if with_review:
+                bcol, rcol = st.columns([4, 1])
+                with bcol:
+                    if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
+                        _set_active_command(cmd)
+                with rcol:
+                    module = cmd.split(" ", 1)[1] if " " in cmd else "imperativo"
+                    if st.button("📖", use_container_width=True, key=f"{key_prefix}_repasar_{cmd}",
+                                 help="Repasar (sin quiz, a tu ritmo)"):
+                        _set_active_command(f"!repasar {module}")
+            else:
+                if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
+                    _set_active_command(cmd)
 
 def render_command_menu(columns=2):
-    """Tap-friendly, categorized grid of drill/roleplay buttons. Sets st.session_state.active_command."""
+    """Tap-friendly, categorized grid of drill/roleplay buttons. Sets st.session_state.active_command.
+    Each drill also gets a 📖 button for self-paced review instead of the timed quiz."""
     for category_name, commands in DRILL_CATEGORIES.items():
         st.markdown(f"#### {category_name}")
-        _render_button_grid(commands, columns, key_prefix="menu")
+        _render_button_grid(commands, columns, key_prefix="menu", with_review=True)
 
     st.markdown("#### 🎭 Roleplay")
     _render_button_grid(ROL_COMMANDS, columns, key_prefix="menu")
@@ -688,6 +703,56 @@ def get_imperative_drill_items(verbs_data, count=20):
 
     return items
 
+def get_drill_items(module_type):
+    """Generate the item list for a given module type. Shared by the quiz
+    drill runner and the self-paced review (repaso) runner."""
+    if module_type == "imperativo":
+        return get_imperative_drill_items(load_verbs())
+    elif module_type == "pronombres":
+        return get_pronombres_drill_items()
+    elif module_type == "stem_changes" or module_type == "cambios":
+        return get_stem_change_drill_items()
+    elif module_type == "imperfecto" or module_type == "pasado":
+        return get_imperfect_drill_items()
+    elif module_type == "preterito" or module_type == "preterite":
+        return get_preterite_drill_items()
+    elif module_type == "pluscuamperfecto" or module_type == "pluscuam":
+        return get_pluscuamperfecto_drill_items()
+    elif module_type == "ejercicio" or module_type == "review111":
+        return get_ejercicio_drill_items()
+    elif module_type == "por_para" or module_type == "porpara":
+        return get_por_para_drill_items()
+    elif module_type == "demostrativos" or module_type == "distancias":
+        return get_demostrativos_drill_items()
+    elif module_type == "adverbios":
+        return get_adverbios_drill_items()
+    elif module_type == "adjetivos":
+        return get_adjetivos_drill_items()
+    elif module_type == "numeros":
+        return get_numeros_drill_items()
+    elif module_type == "reflexivos":
+        return get_reflexivos_drill_items()
+    elif module_type == "participios":
+        return get_participios_drill_items()
+    elif module_type == "futuro_irregular" or module_type == "futuro":
+        return get_futuro_irregular_drill_items()
+    elif module_type == "estructuras" or module_type == "preguntas":
+        return get_estructuras_drill_items()
+    elif module_type == "lugares":
+        return get_lugares_drill_items()
+    elif module_type == "rutina":
+        return get_rutina_drill_items()
+    elif module_type == "ir_gerundio" or module_type == "gerundio":
+        return get_ir_gerundio_drill_items()
+    elif module_type == "vocabulario" or module_type == "comunes":
+        return get_vocabulario_mixto_drill_items()
+    elif module_type == "indefinidos":
+        return get_indefinidos_drill_items()
+    elif module_type == "preposiciones":
+        return get_preposiciones_drill_items()
+    else:
+        return get_imperative_drill_items(load_verbs())
+
 def run_drill(module_type="imperativo", duration_seconds=300):
     """Main drill runner."""
     initialize_session()
@@ -701,56 +766,7 @@ def run_drill(module_type="imperativo", duration_seconds=300):
         st.session_state.drill_active = True
         st.session_state.drill_module = module_type
         st.session_state.drill_start_time = datetime.now()
-
-        if module_type == "imperativo":
-            verbs_data = load_verbs()
-            st.session_state.drill_items = get_imperative_drill_items(verbs_data)
-        elif module_type == "pronombres":
-            st.session_state.drill_items = get_pronombres_drill_items()
-        elif module_type == "stem_changes" or module_type == "cambios":
-            st.session_state.drill_items = get_stem_change_drill_items()
-        elif module_type == "imperfecto" or module_type == "pasado":
-            st.session_state.drill_items = get_imperfect_drill_items()
-        elif module_type == "preterito" or module_type == "preterite":
-            st.session_state.drill_items = get_preterite_drill_items()
-        elif module_type == "pluscuamperfecto" or module_type == "pluscuam":
-            st.session_state.drill_items = get_pluscuamperfecto_drill_items()
-        elif module_type == "ejercicio" or module_type == "review111":
-            st.session_state.drill_items = get_ejercicio_drill_items()
-        elif module_type == "por_para" or module_type == "porpara":
-            st.session_state.drill_items = get_por_para_drill_items()
-        elif module_type == "demostrativos" or module_type == "distancias":
-            st.session_state.drill_items = get_demostrativos_drill_items()
-        elif module_type == "adverbios":
-            st.session_state.drill_items = get_adverbios_drill_items()
-        elif module_type == "adjetivos":
-            st.session_state.drill_items = get_adjetivos_drill_items()
-        elif module_type == "numeros":
-            st.session_state.drill_items = get_numeros_drill_items()
-        elif module_type == "reflexivos":
-            st.session_state.drill_items = get_reflexivos_drill_items()
-        elif module_type == "participios":
-            st.session_state.drill_items = get_participios_drill_items()
-        elif module_type == "futuro_irregular" or module_type == "futuro":
-            st.session_state.drill_items = get_futuro_irregular_drill_items()
-        elif module_type == "estructuras" or module_type == "preguntas":
-            st.session_state.drill_items = get_estructuras_drill_items()
-        elif module_type == "lugares":
-            st.session_state.drill_items = get_lugares_drill_items()
-        elif module_type == "rutina":
-            st.session_state.drill_items = get_rutina_drill_items()
-        elif module_type == "ir_gerundio" or module_type == "gerundio":
-            st.session_state.drill_items = get_ir_gerundio_drill_items()
-        elif module_type == "vocabulario" or module_type == "comunes":
-            st.session_state.drill_items = get_vocabulario_mixto_drill_items()
-        elif module_type == "indefinidos":
-            st.session_state.drill_items = get_indefinidos_drill_items()
-        elif module_type == "preposiciones":
-            st.session_state.drill_items = get_preposiciones_drill_items()
-        else:
-            verbs_data = load_verbs()
-            st.session_state.drill_items = get_imperative_drill_items(verbs_data)
-
+        st.session_state.drill_items = get_drill_items(module_type)
         st.session_state.current_item_index = 0
         st.session_state.answers = []
         st.session_state.score = 0
@@ -841,6 +857,79 @@ def run_drill(module_type="imperativo", duration_seconds=300):
                 st.session_state.current_item_index += 1
                 st.rerun()
 
+def run_repaso(module_type="imperativo"):
+    """Self-paced review: browse a module's content (prompt, answer, explanation)
+    with no timer, no typing, and no scoring — for reviewing rather than quizzing."""
+    st.title("📖 Repaso")
+    st.markdown(f"**Módulo:** `!repasar {module_type}`")
+
+    items_key = f"repaso_items_{module_type}"
+    if items_key not in st.session_state:
+        st.session_state[items_key] = get_drill_items(module_type)
+    items = st.session_state[items_key]
+
+    if not items:
+        st.warning("No hay elementos para repasar en este módulo.")
+        return
+
+    view = st.radio(
+        "Vista:", ["🃏 Tarjetas", "📋 Lista completa"],
+        horizontal=True, key=f"repaso_view_{module_type}"
+    )
+
+    if view == "📋 Lista completa":
+        for i, item in enumerate(items, start=1):
+            st.markdown(f"**{i}. {item['prompt']}**")
+            st.success(f"✅ {item['target_form']}")
+            if item.get("explanation"):
+                st.caption(f"💡 {item['explanation']}")
+            st.markdown("---")
+        return
+
+    # Flashcard mode
+    idx_key = f"repaso_idx_{module_type}"
+    show_key = f"repaso_show_{module_type}"
+    st.session_state.setdefault(idx_key, 0)
+    st.session_state.setdefault(show_key, False)
+
+    idx = st.session_state[idx_key] % len(items)
+    item = items[idx]
+
+    st.progress((idx + 1) / len(items))
+    st.caption(f"Tarjeta {idx + 1} de {len(items)}")
+
+    st.markdown(f"### {item['prompt']}")
+
+    if st.session_state[show_key]:
+        st.success(f"✅ {item['target_form']}")
+        if item.get("explanation"):
+            st.info(f"💡 {item['explanation']}")
+    else:
+        st.markdown("*(pulsa \"Mostrar respuesta\" para revelarla)*")
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("⬅️ Anterior", use_container_width=True):
+            st.session_state[idx_key] = (idx - 1) % len(items)
+            st.session_state[show_key] = False
+            st.rerun()
+    with col2:
+        toggle_label = "🙈 Ocultar" if st.session_state[show_key] else "👁️ Mostrar respuesta"
+        if st.button(toggle_label, use_container_width=True):
+            st.session_state[show_key] = not st.session_state[show_key]
+            st.rerun()
+    with col3:
+        if st.button("Siguiente ➡️", use_container_width=True):
+            st.session_state[idx_key] = (idx + 1) % len(items)
+            st.session_state[show_key] = False
+            st.rerun()
+
+    if st.button("🔀 Barajar de nuevo"):
+        st.session_state[items_key] = get_drill_items(module_type)
+        st.session_state[idx_key] = 0
+        st.session_state[show_key] = False
+        st.rerun()
+
 def run_rol(tema=None):
     """Display a scenario card for roleplay. The conversation itself happens
     in chat with Claude, using this card as context — Streamlit only selects
@@ -908,6 +997,9 @@ def parse_command(command_input):
     if parts[0] == "!drill":
         module = parts[1] if len(parts) > 1 else "imperativo"
         return ("drill", module)
+    elif parts[0] == "!repasar":
+        module = parts[1] if len(parts) > 1 else "imperativo"
+        return ("repasar", module)
     elif parts[0] == "!hablar":
         return ("hablar", None)
     elif parts[0] == "!rol":
@@ -932,6 +1024,8 @@ def dispatch_command(command_str):
 
     if command_type == "drill":
         run_drill(module_type=arg)
+    elif command_type == "repasar":
+        run_repaso(module_type=arg)
     elif command_type == "hablar":
         st.info("🎤 Conversational Partner mode coming soon...")
     elif command_type == "rol":

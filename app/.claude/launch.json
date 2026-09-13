@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "spanish-app",
+      "runtimeExecutable": "/Users/peterrvail/Library/Python/3.9/bin/streamlit",
+      "runtimeArgs": ["run", "spanish_drill.py", "--server.headless=true"],
+      "port": 8501
+    }
+  ]
+}
