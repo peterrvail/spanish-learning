@@ -1,13 +1,55 @@
 {
   "preterite_tense": {
-    "overview": "El Pretérito Indefinido (Pasado Simple) expresa acciones completadas en el pasado, con principio y fin definidos. Se organiza en grupos según su patrón de irregularidad.",
+    "overview": "El Pretérito Indefinido (Pasado Simple) expresa acciones completadas en el pasado, con principio y fin definidos. La mayoría de los verbos son regulares; los irregulares se organizan en grupos según su patrón.",
     "spanish_name": "El Pretérito Indefinido / Pasado Simple",
     "regular_conjugation": {
-      "ar_endings": {"yo": "-é", "tú": "-aste", "él": "-ó", "nosotros": "-amos", "vosotros": "-asteis", "ellos": "-aron"},
-      "er_ir_endings": {"yo": "-í", "tú": "-iste", "él": "-ió", "nosotros": "-imos", "vosotros": "-isteis", "ellos": "-ieron"}
+      "description": "Regular -AR verbs take one set of endings; regular -ER and -IR verbs share a second set.",
+      "ar_endings": {
+        "yo": "-é",
+        "tú": "-aste",
+        "él_ella_usted": "-ó",
+        "nosotros": "-amos",
+        "vosotros": "-asteis",
+        "ellos_ustedes": "-aron"
+      },
+      "er_ir_endings": {
+        "yo": "-í",
+        "tú": "-iste",
+        "él_ella_usted": "-ió",
+        "nosotros": "-imos",
+        "vosotros": "-isteis",
+        "ellos_ustedes": "-ieron"
+      },
+      "example_verbs": {
+        "hablar": {"yo": "hablé", "tú": "hablaste", "él_ella_usted": "habló", "nosotros": "hablamos", "vosotros": "hablasteis", "ellos_ustedes": "hablaron"},
+        "comer": {"yo": "comí", "tú": "comiste", "él_ella_usted": "comió", "nosotros": "comimos", "vosotros": "comisteis", "ellos_ustedes": "comieron"},
+        "vivir": {"yo": "viví", "tú": "viviste", "él_ella_usted": "vivió", "nosotros": "vivimos", "vosotros": "vivisteis", "ellos_ustedes": "vivieron"}
+      },
+      "common_regular_verbs": [
+        {"infinitive": "hablar", "english": "to speak"},
+        {"infinitive": "comer", "english": "to eat"},
+        {"infinitive": "vivir", "english": "to live"},
+        {"infinitive": "trabajar", "english": "to work"},
+        {"infinitive": "comprar", "english": "to buy"},
+        {"infinitive": "escribir", "english": "to write"},
+        {"infinitive": "vender", "english": "to sell"},
+        {"infinitive": "estudiar", "english": "to study"},
+        {"infinitive": "aprender", "english": "to learn"},
+        {"infinitive": "abrir", "english": "to open"},
+        {"infinitive": "caminar", "english": "to walk"},
+        {"infinitive": "bailar", "english": "to dance"},
+        {"infinitive": "cocinar", "english": "to cook"},
+        {"infinitive": "limpiar", "english": "to clean"},
+        {"infinitive": "viajar", "english": "to travel"},
+        {"infinitive": "romper", "english": "to break"},
+        {"infinitive": "subir", "english": "to go up"},
+        {"infinitive": "recibir", "english": "to receive"},
+        {"infinitive": "decidir", "english": "to decide"},
+        {"infinitive": "permitir", "english": "to allow"}
+      ]
     },
     "grupo_completamente_irregulares": {
-      "name": "Grupo 1: Verbos totalmente irregulares (casos individuales)",
+      "name": "Verbos totalmente irregulares (casos individuales)",
       "description": "These verbs don't follow any predictable pattern and must be memorized individually",
       "verbs": [
         {
@@ -48,61 +90,157 @@
         {"spanish": "Yo fui feliz.", "english": "I was happy. (completed emotional state)"}
       ]
     },
-    "grupo_2_clave_irregular": {
-      "name": "Grupo 2: Verbos irregulares con clave (stem-changing consonant group)",
-      "description": "These verbs change their stem consonant (clave) and share a common set of endings: -e, -iste, -o, -imos, -ieron/-eron",
-      "shared_endings": {"yo": "-e", "tú": "-iste", "él": "-o", "nosotros": "-imos", "ellos": "-ieron/-eron"},
-      "stem_changes": [
-        {"infinitive": "querer", "clave": "qu", "stem": "quis", "note": "e→i in stem, qu clave"},
-        {"infinitive": "venir", "clave": "v", "stem": "vin", "note": "e→i in stem"},
-        {"infinitive": "hacer", "clave": "h", "stem": "hic/hiz", "note": "c→z before 'o' (hizo, not hico)"}
-      ],
-      "hacer_full_conjugation": {
-        "yo": "hice", "tú": "hiciste", "él_ella_usted": "hizo",
-        "nosotros": "hicimos", "ellos_ustedes": "hicieron"
+    "verbos_patron_fuerte": {
+      "description": "Strong irregular verbs that share an irregular stem plus one common set of endings: -e, -iste, -o, -imos, -isteis, -ieron (never accented).",
+      "shared_endings": {"yo": "-e", "tú": "-iste", "él_ella_usted": "-o", "nosotros": "-imos", "vosotros": "-isteis", "ellos_ustedes": "-ieron"},
+      "grupo_1_uv": {
+        "name": "Grupo 1: raíz en -UV",
+        "verbs": [
+          {"infinitive": "estar", "stem": "estuv", "english": "to be (location/state)"},
+          {"infinitive": "tener", "stem": "tuv", "english": "to have"},
+          {"infinitive": "andar", "stem": "anduv", "english": "to walk"}
+        ],
+        "example_sentences": [
+          {"spanish": "Yo estuve feliz en ese momento.", "english": "I was happy in that moment."},
+          {"spanish": "Yo no estuve caminando porque estaba lloviendo.", "english": "I wasn't walking because it was raining.", "note": "Contrast: estuve (preterite) vs. estaba (imperfect background)"},
+          {"spanish": "pero estuve ocupado.", "english": "but I was busy."},
+          {"spanish": "estuvo en la sala de estar.", "english": "he/she was in the living room."}
+        ]
       },
-      "related_compound_verbs": [
-        {"spanish": "prevenir", "english": "to prevent", "base": "venir"},
-        {"spanish": "intervenir", "english": "to intervene", "base": "venir"},
-        {"spanish": "deshacer", "english": "to undo", "base": "hacer"},
-        {"spanish": "satisfacer", "english": "to satisfy", "base": "hacer", "note": "satisfizo, not satisfació"}
-      ],
+      "grupo_2_i": {
+        "name": "Grupo 2: raíz en -I (clave irregular)",
+        "verbs": [
+          {"infinitive": "querer", "stem": "quis", "english": "to want"},
+          {"infinitive": "venir", "stem": "vin", "english": "to come"},
+          {"infinitive": "hacer", "stem": "hic", "english": "to do / make", "irregular_el_form": "hizo", "note": "3rd person singular is 'hizo' (c→z), not 'hico'"}
+        ],
+        "related_compound_verbs": [
+          {"spanish": "prevenir", "english": "to prevent", "base": "venir"},
+          {"spanish": "intervenir", "english": "to intervene", "base": "venir"},
+          {"spanish": "deshacer", "english": "to undo", "base": "hacer"},
+          {"spanish": "satisfacer", "english": "to satisfy", "base": "hacer", "note": "satisfizo, not satisfació"}
+        ],
+        "example_sentences": [
+          {"spanish": "Ella no quiso ir a la fiesta.", "english": "She refused to go to the party.", "note": "Preterite of querer often means 'refused' in negative"},
+          {"spanish": "Emma vino con un vino.", "english": "Emma came with a wine."},
+          {"spanish": "Peter hizo muy bien la tarea de español y ganó una estrella de oro.", "english": "Peter did the Spanish homework very well and won a gold star."},
+          {"spanish": "El niño no hizo caso.", "english": "The child didn't pay attention/obey."},
+          {"spanish": "Él no quiso venir con nosotros.", "english": "He refused to come with us."}
+        ]
+      },
+      "grupo_3_u": {
+        "name": "Grupo 3: raíz en -U",
+        "verbs": [
+          {"infinitive": "poner", "stem": "pus", "english": "to put"},
+          {"infinitive": "poder", "stem": "pud", "english": "to be able to"},
+          {"infinitive": "saber", "stem": "sup", "english": "to know", "note": "Preterite of saber often means 'found out'"},
+          {"infinitive": "caber", "stem": "cup", "english": "to fit"},
+          {"infinitive": "haber", "stem": "hub", "english": "to have (auxiliary)"}
+        ],
+        "example_sentences": [
+          {"spanish": "No puedo escucharte.", "english": "I can't hear you."},
+          {"spanish": "Yo supe la verdad ayer.", "english": "I found out the truth yesterday."}
+        ]
+      },
+      "grupo_4_j": {
+        "name": "Grupo 4: raíz en -J",
+        "ellos_ending": "eron",
+        "note": "After the 'j', the 3rd person plural drops the 'i': -eron instead of -ieron (dijeron, not dijieron)",
+        "verbs": [
+          {"infinitive": "decir", "stem": "dij", "english": "to say / tell"},
+          {"infinitive": "traer", "stem": "traj", "english": "to bring"},
+          {"infinitive": "traducir", "stem": "traduj", "english": "to translate"}
+        ]
+      }
+    },
+    "verbos_ortograficos": {
+      "description": "Regular verbs with a spelling (not sound) change — only in the YO form — to preserve the infinitive's pronunciation.",
+      "car_to_que": {
+        "change": "c → qu",
+        "example": {"infinitive": "practicar", "yo_form": "practiqué"},
+        "verbs": ["acercar(se)", "atacar", "buscar", "dedicar", "diagnosticar", "equivocar(se)", "explicar", "identificar", "justificar", "provocar", "sacar", "secar", "tocar", "ubicar", "unificar"]
+      },
+      "gar_to_gue": {
+        "change": "g → gu",
+        "example": {"infinitive": "pagar", "yo_form": "pagué"},
+        "verbs": ["apagar", "castigar", "colgar", "conjugar", "entregar", "jugar", "juzgar", "llegar", "navegar", "negar", "obligar", "otorgar", "pegar", "rogar"]
+      },
+      "zar_to_ce": {
+        "change": "z → c",
+        "example": {"infinitive": "almorzar", "yo_form": "almorcé"},
+        "verbs": ["abrazar", "analizar", "cazar", "comenzar", "cruzar", "empezar", "esforzar(se)", "lanzar", "localizar", "organizar", "realizar", "rechazar", "rezar", "simpatizar", "utilizar"]
+      },
       "example_sentences": [
-        {"spanish": "Ella no quiso ir a la fiesta.", "english": "She refused to go to the party.", "note": "Preterite of querer often means 'refused' in negative"},
-        {"spanish": "Emma vino con un vino.", "english": "Emma came with a wine.", "note": "Wordplay: vino (came) / vino (wine)"},
-        {"spanish": "Peter hizo muy bien la tarea de español y ganó una estrella de oro.", "english": "Peter did the Spanish homework very well and won a gold star."},
-        {"spanish": "El niño no hizo caso.", "english": "The child didn't pay attention/obey."},
-        {"spanish": "Él no quiso venir con nosotros.", "english": "He refused to come with us."}
+        {"spanish": "Yo practiqué alpinismo para disfrutar nuevas sensaciones.", "english": "I practiced climbing to enjoy new sensations."}
       ]
     },
-    "grupo_3_estar_tener_poder": {
-      "name": "Grupo 3: Verbos con raíz irregular (UV stem group)",
-      "description": "These verbs use a UV-based irregular stem",
-      "verbs": [
-        {
-          "infinitive": "estar",
-          "stem": "estuv",
-          "english": "to be (location/state)",
-          "example": "Yo estuve feliz en ese momento.",
-          "example_english": "I was happy in that moment."
+    "verbos_semi_irregulares": {
+      "description": "Regular in every form EXCEPT the 3rd person (singular and plural), which has one small vowel/consonant change.",
+      "grupo_1_e_o": {
+        "name": "Grupo 1: -IR verbs, e→i or o→u, 3rd person only",
+        "e_to_i": {
+          "note": "Same e→i change as the present-tense stem-changers, but here it only shows up in the 3rd person of the preterite.",
+          "verbs": [
+            {"infinitive": "preferir", "english": "to prefer", "él_ella_usted": "prefirió", "ellos_ustedes": "prefirieron"},
+            {"infinitive": "pedir", "english": "to ask for", "él_ella_usted": "pidió", "ellos_ustedes": "pidieron"},
+            {"infinitive": "advertir", "english": "to warn", "él_ella_usted": "advirtió", "ellos_ustedes": "advirtieron"},
+            {"infinitive": "competir", "english": "to compete", "él_ella_usted": "compitió", "ellos_ustedes": "compitieron"},
+            {"infinitive": "conseguir", "english": "to get / manage to", "él_ella_usted": "consiguió", "ellos_ustedes": "consiguieron"},
+            {"infinitive": "consentir", "english": "to consent", "él_ella_usted": "consintió", "ellos_ustedes": "consintieron"},
+            {"infinitive": "corregir", "english": "to correct", "él_ella_usted": "corrigió", "ellos_ustedes": "corrigieron"},
+            {"infinitive": "despedir(se)", "english": "to say goodbye / fire", "él_ella_usted": "despidió", "ellos_ustedes": "despidieron"},
+            {"infinitive": "desvestir(se)", "english": "to undress", "él_ella_usted": "desvistió", "ellos_ustedes": "desvistieron"},
+            {"infinitive": "divertir(se)", "english": "to have fun", "él_ella_usted": "divirtió", "ellos_ustedes": "divirtieron"},
+            {"infinitive": "elegir", "english": "to choose / elect", "él_ella_usted": "eligió", "ellos_ustedes": "eligieron"},
+            {"infinitive": "freír", "english": "to fry", "él_ella_usted": "frió", "ellos_ustedes": "frieron"},
+            {"infinitive": "impedir", "english": "to prevent", "él_ella_usted": "impidió", "ellos_ustedes": "impidieron"},
+            {"infinitive": "medir", "english": "to measure", "él_ella_usted": "midió", "ellos_ustedes": "midieron"},
+            {"infinitive": "mentir", "english": "to lie", "él_ella_usted": "mintió", "ellos_ustedes": "mintieron"},
+            {"infinitive": "perseguir", "english": "to pursue / chase", "él_ella_usted": "persiguió", "ellos_ustedes": "persiguieron"},
+            {"infinitive": "reír", "english": "to laugh", "él_ella_usted": "rió", "ellos_ustedes": "rieron"},
+            {"infinitive": "seguir", "english": "to follow / continue", "él_ella_usted": "siguió", "ellos_ustedes": "siguieron"},
+            {"infinitive": "sentir", "english": "to feel", "él_ella_usted": "sintió", "ellos_ustedes": "sintieron"},
+            {"infinitive": "servir", "english": "to serve", "él_ella_usted": "sirvió", "ellos_ustedes": "sirvieron"},
+            {"infinitive": "sonreír", "english": "to smile", "él_ella_usted": "sonrió", "ellos_ustedes": "sonrieron"},
+            {"infinitive": "sugerir", "english": "to suggest", "él_ella_usted": "sugirió", "ellos_ustedes": "sugirieron"},
+            {"infinitive": "vestirse", "english": "to get dressed", "él_ella_usted": "vistió", "ellos_ustedes": "vistieron"}
+          ]
         },
-        {
-          "infinitive": "tener",
-          "stem": "tuv",
-          "english": "to have"
-        },
-        {
-          "infinitive": "poder",
-          "stem": "pud",
-          "english": "to be able to"
+        "o_to_u": {
+          "note": "Same idea, but the stem vowel is o→u instead of e→i.",
+          "verbs": [
+            {"infinitive": "morir", "english": "to die", "él_ella_usted": "murió", "ellos_ustedes": "murieron"},
+            {"infinitive": "dormir", "english": "to sleep", "él_ella_usted": "durmió", "ellos_ustedes": "durmieron"}
+          ]
         }
-      ],
-      "example_sentences": [
-        {"spanish": "No puedo escucharte.", "english": "I can't hear you."},
-        {"spanish": "Yo no estuve caminando porque estaba lloviendo.", "english": "I wasn't walking because it was raining.", "note": "Contrast: estuve (preterite) vs. estaba (imperfect background)"},
-        {"spanish": "pero estuve ocupado.", "english": "but I was busy."},
-        {"spanish": "estuvo en la sala de estar.", "english": "he/she was in the living room."}
-      ]
+      },
+      "grupo_2_i_a_y": {
+        "name": "Grupo 2: i→y, 3rd person only",
+        "note": "When an -ER/-IR verb's stem ends in a vowel, the unstressed 'i' of -ió/-ieron becomes 'y'.",
+        "verbs": [
+          {"infinitive": "caer", "english": "to fall", "él_ella_usted": "cayó", "ellos_ustedes": "cayeron"},
+          {"infinitive": "leer", "english": "to read", "él_ella_usted": "leyó", "ellos_ustedes": "leyeron"},
+          {"infinitive": "huir", "english": "to flee", "él_ella_usted": "huyó", "ellos_ustedes": "huyeron"},
+          {"infinitive": "atribuir", "english": "to attribute", "él_ella_usted": "atribuyó", "ellos_ustedes": "atribuyeron"},
+          {"infinitive": "concluir", "english": "to conclude", "él_ella_usted": "concluyó", "ellos_ustedes": "concluyeron"},
+          {"infinitive": "construir", "english": "to build", "él_ella_usted": "construyó", "ellos_ustedes": "construyeron"},
+          {"infinitive": "contribuir", "english": "to contribute", "él_ella_usted": "contribuyó", "ellos_ustedes": "contribuyeron"},
+          {"infinitive": "creer", "english": "to believe", "él_ella_usted": "creyó", "ellos_ustedes": "creyeron"},
+          {"infinitive": "decaer", "english": "to decline / weaken", "él_ella_usted": "decayó", "ellos_ustedes": "decayeron"},
+          {"infinitive": "destruir", "english": "to destroy", "él_ella_usted": "destruyó", "ellos_ustedes": "destruyeron"},
+          {"infinitive": "distribuir", "english": "to distribute", "él_ella_usted": "distribuyó", "ellos_ustedes": "distribuyeron"},
+          {"infinitive": "fluir", "english": "to flow", "él_ella_usted": "fluyó", "ellos_ustedes": "fluyeron"},
+          {"infinitive": "incluir", "english": "to include", "él_ella_usted": "incluyó", "ellos_ustedes": "incluyeron"},
+          {"infinitive": "influir", "english": "to influence", "él_ella_usted": "influyó", "ellos_ustedes": "influyeron"},
+          {"infinitive": "oír", "english": "to hear", "él_ella_usted": "oyó", "ellos_ustedes": "oyeron"},
+          {"infinitive": "poseer", "english": "to possess", "él_ella_usted": "poseyó", "ellos_ustedes": "poseyeron"},
+          {"infinitive": "proveer", "english": "to provide", "él_ella_usted": "proveyó", "ellos_ustedes": "proveyeron"},
+          {"infinitive": "retribuir", "english": "to repay / reward", "él_ella_usted": "retribuyó", "ellos_ustedes": "retribuyeron"}
+        ],
+        "example_sentences": [
+          {"spanish": "Gustavo Eiffel construyó la Torre Eiffel.", "english": "Gustavo Eiffel built the Eiffel Tower."}
+        ]
+      }
     },
     "additional_practice_sentences": [
       {"spanish": "Anoche estaba caminando y me caí en el camino.", "english": "Last night I was walking and I fell on the road.", "note": "Imperfect (estaba caminando) sets background; preterite (caí) marks the event"},

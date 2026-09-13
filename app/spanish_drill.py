@@ -239,13 +239,34 @@ def get_imperfect_drill_items(count=15):
     random.shuffle(items)
     return items[:count]
 
-def get_preterite_drill_items(count=15):
-    """Generate irregular preterite conjugation drill items."""
+_PRETERITE_PERSONS = ["yo", "tú", "él_ella_usted", "nosotros", "ellos_ustedes"]
+
+def get_preterite_drill_items(count=20):
+    """Generate preterite (pasado simple) drill items covering regular -ar/-er/-ir
+    verbs, fully irregular verbs (dar/ser/ir), the four strong-irregular-stem
+    pattern groups, -car/-gar/-zar spelling-change verbs, and 3rd-person-only
+    semi-irregular verbs."""
     data = load_grammar("preterite_complete.json")
     tense = data["preterite_tense"]
     items = []
 
-    # Group 1: completely irregular
+    # Regular -ar/-er/-ir verbs
+    reg = tense["regular_conjugation"]
+    for v in reg["common_regular_verbs"]:
+        infinitive, english = v["infinitive"], v["english"]
+        person = random.choice(_PRETERITE_PERSONS)
+        stem = infinitive[:-2]
+        endings = reg["ar_endings"] if infinitive.endswith("ar") else reg["er_ir_endings"]
+        target = stem + endings[person].lstrip("-")
+        items.append({
+            "id": len(items),
+            "prompt": f"Conjugate '{infinitive}' ({english}) in preterite, {person} form.",
+            "target_form": target,
+            "exercise_type": "preterite_regular",
+            "explanation": f"{infinitive} ({person}) → {target}. Regular {'-ar' if infinitive.endswith('ar') else '-er/-ir'} preterite ending."
+        })
+
+    # Completely irregular: dar, ser, ir
     for v in tense["grupo_completamente_irregulares"]["verbs"]:
         conj = v["conjugation"]
         person = random.choice(list(conj.keys()))
@@ -253,18 +274,61 @@ def get_preterite_drill_items(count=15):
             "id": len(items),
             "prompt": f"Conjugate '{v['infinitive']}' ({v['english']}) in preterite, {person} form.",
             "target_form": conj[person],
-            "exercise_type": "preterite",
+            "exercise_type": "preterite_irregular",
             "explanation": f"{v['infinitive']} ({person}) → {conj[person]}. {v.get('note', '')}"
         })
 
-    # Group 3: estar/tener/poder
-    for v in tense["grupo_3_estar_tener_poder"]["verbs"]:
+    # Strong irregular verbs with a stem pattern (4 groups)
+    patron = tense["verbos_patron_fuerte"]
+    for group_key in ["grupo_1_uv", "grupo_2_i", "grupo_3_u", "grupo_4_j"]:
+        group = patron[group_key]
+        ellos_ending = group.get("ellos_ending", "ieron")
+        for v in group["verbs"]:
+            person = random.choice(_PRETERITE_PERSONS)
+            if person == "él_ella_usted" and v.get("irregular_el_form"):
+                target = v["irregular_el_form"]
+            else:
+                endings = {"yo": "e", "tú": "iste", "él_ella_usted": "o", "nosotros": "imos", "ellos_ustedes": ellos_ending}
+                target = v["stem"] + endings[person]
+            items.append({
+                "id": len(items),
+                "prompt": f"Conjugate '{v['infinitive']}' ({v['english']}) in preterite, {person} form.",
+                "target_form": target,
+                "exercise_type": "preterite_patron",
+                "explanation": f"Irregular stem: {v['infinitive']} → {v['stem']}- ({person}: {target})" + (f". {v['note']}" if v.get("note") else "")
+            })
+
+    # Spelling-change verbs: -car/-gar/-zar, YO form only
+    ortho = tense["verbos_ortograficos"]
+    for key, change_desc in [("car_to_que", "c→qu"), ("gar_to_gue", "g→gu"), ("zar_to_ce", "z→c")]:
+        group = ortho[key]
+        verb = random.choice(group["verbs"])
+        base = verb.replace("(se)", "")
+        suffix = {"car_to_que": "qué", "gar_to_gue": "gué", "zar_to_ce": "cé"}[key]
+        target = base[:-3] + suffix
         items.append({
             "id": len(items),
-            "prompt": f"What is the irregular preterite stem of '{v['infinitive']}' ({v['english']})?",
-            "target_form": v["stem"],
-            "exercise_type": "preterite",
-            "explanation": f"{v['infinitive']} → stem: {v['stem']}-"
+            "prompt": f"Conjugate '{verb}' in preterite, yo form. (Spelling change: {change_desc})",
+            "target_form": target,
+            "exercise_type": "preterite_ortografico",
+            "explanation": f"{verb} → {target} (yo). Spelling change {change_desc} keeps the sound of the infinitive."
+        })
+
+    # Semi-irregular verbs: 3rd person only (e→i, o→u, i→y)
+    semi = tense["verbos_semi_irregulares"]
+    semi_pools = (
+        semi["grupo_1_e_o"]["e_to_i"]["verbs"]
+        + semi["grupo_1_e_o"]["o_to_u"]["verbs"]
+        + semi["grupo_2_i_a_y"]["verbs"]
+    )
+    for v in random.sample(semi_pools, min(6, len(semi_pools))):
+        person = random.choice(["él_ella_usted", "ellos_ustedes"])
+        items.append({
+            "id": len(items),
+            "prompt": f"Conjugate '{v['infinitive']}' ({v['english']}) in preterite, {person} form.",
+            "target_form": v[person],
+            "exercise_type": "preterite_semi_irregular",
+            "explanation": f"{v['infinitive']} is regular except in the 3rd person: {person} → {v[person]}."
         })
 
     random.shuffle(items)
@@ -946,7 +1010,29 @@ def get_module_concept(module_type):
             return {"overview": d["overview"], "uses": d["uses"]}
         elif module_type in ("preterito", "preterite"):
             d = load_grammar("preterite_complete.json")["preterite_tense"]
-            return {"overview": d["overview"], "uses": []}
+            patron = d["verbos_patron_fuerte"]
+            semi = d["verbos_semi_irregulares"]
+            uses = [
+                {"name": "Verbos regulares", "description": "hablar → hablé/hablaste/habló/hablamos/hablasteis/hablaron. comer/vivir → -í/-iste/-ió/-imos/-isteis/-ieron.",
+                 "example": "hablé", "english": "I spoke"},
+                {"name": "Totalmente irregulares", "description": "dar, ser, ir don't follow any pattern and share no ending family with regular verbs.",
+                 "example": "fui", "english": "I was / I went"},
+                {"name": patron["grupo_1_uv"]["name"], "description": "estar, tener, andar: stem ends in -uv, then the shared endings -e/-iste/-o/-imos/-isteis/-ieron.",
+                 "example": "estuve", "english": "I was (location/state)"},
+                {"name": patron["grupo_2_i"]["name"], "description": "querer, venir, hacer: stem ends in -i (hacer's él/ella/usted form is the irregular 'hizo').",
+                 "example": "quise", "english": "I wanted"},
+                {"name": patron["grupo_3_u"]["name"], "description": "poner, poder, saber, caber, haber: stem ends in -u.",
+                 "example": "supe", "english": "I found out / knew"},
+                {"name": patron["grupo_4_j"]["name"], "description": patron["grupo_4_j"]["note"],
+                 "example": "dijeron", "english": "they said"},
+                {"name": "Cambios ortográficos (-car/-gar/-zar)", "description": "Spelling-only change in the YO form to keep the infinitive's sound: c→qu, g→gu, z→c.",
+                 "example": "practiqué", "english": "I practiced"},
+                {"name": semi["grupo_1_e_o"]["name"], "description": "e→i or o→u, but ONLY in the 3rd person (both singular and plural) — every other form is fully regular.",
+                 "example": "pidió / durmieron", "english": "he asked for / they slept"},
+                {"name": semi["grupo_2_i_a_y"]["name"], "description": semi["grupo_2_i_a_y"]["note"],
+                 "example": "leyó / construyeron", "english": "he read / they built"},
+            ]
+            return {"overview": d["overview"], "uses": uses}
         elif module_type in ("pluscuamperfecto", "pluscuam"):
             d = load_grammar("pluscuamperfecto.json")["pluscuamperfecto"]
             return {"overview": d["overview"], "uses": d["uses"]}
