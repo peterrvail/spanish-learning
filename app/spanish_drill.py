@@ -901,6 +901,107 @@ def run_drill(module_type="imperativo", duration_seconds=300):
                 st.session_state.current_item_index += 1
                 st.rerun()
 
+def get_module_concept(module_type):
+    """Return {'overview': str, 'uses': [...]} explaining the grammar concept
+    behind a module, pulled straight from the underlying grammar JSON (the
+    lesson data already contains rule write-ups, not just drill items).
+    Returns None for pure-vocabulary modules with no grammar rule to explain."""
+    try:
+        if module_type == "imperativo":
+            d = load_grammar("imperative_complete.json")["imperative_system"]
+            return {"overview": d["overview"], "uses": []}
+        elif module_type == "pronombres":
+            d = load_grammar("double_pronouns.json")["double_pronouns"]
+            extra = d["key_rule_le_to_se"]
+            ex = extra["examples"][0]
+            overview = d["rule_summary"] + " " + extra["rule"]
+            uses = [{"name": "Ejemplo", "description": f"{ex['correct']} — {ex['english']} (en vez de: {ex['wrong']})"}]
+            return {"overview": overview, "uses": uses}
+        elif module_type in ("stem_changes", "cambios"):
+            d = load_grammar("stem_changing_verbs.json")["stem_changing_present_tense"]
+            uses = [{"name": g["name"], "description": g["rule"]}
+                    for g in [d["grupo_1_e_ie"], d["grupo_2_e_i"], d["grupo_3_o_ue"]]]
+            return {"overview": d["overview"], "uses": uses}
+        elif module_type in ("imperfecto", "pasado"):
+            d = load_grammar("imperfect_complete.json")["imperfect_tense"]
+            return {"overview": d["overview"], "uses": d["uses"]}
+        elif module_type in ("preterito", "preterite"):
+            d = load_grammar("preterite_complete.json")["preterite_tense"]
+            return {"overview": d["overview"], "uses": []}
+        elif module_type in ("pluscuamperfecto", "pluscuam"):
+            d = load_grammar("pluscuamperfecto.json")["pluscuamperfecto"]
+            return {"overview": d["overview"], "uses": d["uses"]}
+        elif module_type in ("por_para", "porpara"):
+            d = load_grammar("prepositions_por_para.json")["por_vs_para"]
+            return {"overview": d["overview"], "uses": d["para"]["uses"] + d["por"]["uses"]}
+        elif module_type in ("demostrativos", "distancias"):
+            d = load_grammar("demonstratives.json")["demonstratives"]
+            uses = []
+            for key in ["este_this", "ese_that", "aquel_that_over_there"]:
+                g = d.get(key)
+                if g:
+                    detail = f"Formas: {', '.join(g['forms'].values())}" if g.get("forms") else g.get("note", "")
+                    uses.append({"name": g["meaning"], "description": detail})
+            overview = ("Los demostrativos indican la distancia entre el hablante y el objeto: "
+                        "this/these (aquí), that/those (ahí), that/those over there (allá).")
+            return {"overview": overview, "uses": uses}
+        elif module_type == "adjetivos":
+            d = load_grammar("adjectives.json")["shortened_adjectives"]
+            overview = d["rule"] + (" " + d["note"] if "note" in d else "")
+            return {"overview": overview, "uses": []}
+        elif module_type == "reflexivos":
+            d = load_grammar("reflexive_verbs.json")["reflexive_verbs"]
+            return {"overview": d["definition"], "uses": []}
+        elif module_type == "participios":
+            d = load_grammar("perfect_complete.json")["perfect_tense"]
+            return {"overview": d["overview"], "uses": d["uses"]}
+        elif module_type in ("futuro_irregular", "futuro"):
+            d = load_grammar("future_complete.json")["future_simple"]
+            return {"overview": d["overview"], "uses": d["uses"]}
+        elif module_type in ("estructuras", "preguntas"):
+            d = load_grammar("verb_infinitive_structures.json")["verb_infinitive_structures"]
+            return {"overview": d["overview"], "uses": []}
+        elif module_type == "rutina":
+            d = load_grammar("present_tense_routine.json")["present_tense_routine"]
+            return {"overview": d["overview"], "uses": [{"name": "Uso", "description": d["rule"]}]}
+        elif module_type in ("ir_gerundio", "gerundio"):
+            d = load_grammar("ir_gerundio.json")["ir_gerundio"]
+            return {"overview": d["overview"], "uses": d["meaning_and_use"]}
+        elif module_type == "indefinidos":
+            d = load_grammar("indefinite_pronouns.json")["indefinite_and_negative_pronouns"]
+            return {"overview": d["overview"], "uses": []}
+        elif module_type == "preposiciones":
+            overview = ("Preposiciones adicionales (más allá de por/para), cada una con un "
+                        "significado espacial, temporal o lógico específico.")
+            return {"overview": overview, "uses": []}
+        else:
+            return None
+    except (KeyError, IndexError, FileNotFoundError):
+        return None
+
+def _render_module_concept(module_type):
+    """Render the grammar-concept explanation block at the top of Repaso, if this
+    module has one (pure-vocabulary modules like números/lugares/vocabulario don't)."""
+    concept = get_module_concept(module_type)
+    if not concept:
+        return
+    st.markdown("### 📚 El concepto")
+    st.markdown(concept["overview"])
+    for use in concept.get("uses", []):
+        title = use.get("name") or use.get("use") or ""
+        spanish_name = use.get("spanish_name") or use.get("spanish_pattern") or ""
+        desc = use.get("description") or use.get("explanation") or ""
+        st.markdown(f"**• {title}**" + (f" _({spanish_name})_" if spanish_name else ""))
+        if desc:
+            st.caption(desc)
+        examples = use.get("examples")
+        example = examples[0] if examples else use
+        sp = example.get("spanish") or example.get("example")
+        en = example.get("english") or example.get("example_english")
+        if sp:
+            st.markdown(f"  *{sp}*" + (f" — {en}" if en else ""))
+    st.markdown("---")
+
 def _render_repaso_entry(item, heading=None):
     """Render one item as a fully-visible bilingual explanation card — no
     hide/reveal, no right-or-wrong framing. Just the material laid out."""
@@ -917,6 +1018,8 @@ def run_repaso(module_type="imperativo"):
     no scoring, no guess-then-reveal step — this is study material, not a quiz."""
     st.title("📖 Repaso")
     st.markdown(f"**Módulo:** `!repasar {module_type}`")
+
+    _render_module_concept(module_type)
 
     items_key = f"repaso_items_{module_type}"
     if items_key not in st.session_state:
