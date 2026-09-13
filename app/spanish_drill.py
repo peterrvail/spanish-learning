@@ -49,6 +49,9 @@ DRILL_CATEGORIES = {
 }
 # Flat list kept for backward-compatible lookups (parse_command etc.)
 DRILL_COMMANDS = [item for group in DRILL_CATEGORIES.values() for item in group]
+# Pure-vocabulary drills: recalling one exact word is the whole exercise, so
+# "I don't know" should reveal the answer and move on rather than nudge with a hint.
+VOCAB_MODULE_TYPES = {"vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "numeros", "adverbios", "lugares"}
 ROL_COMMANDS = [
     ("🍽 Restaurante", "!rol restaurante"),
     ("🚌 Transporte", "!rol transporte"),
@@ -899,8 +902,18 @@ def run_drill(module_type="imperativo", duration_seconds=300):
         col2, col3 = st.columns(2)
 
         with col2:
-            if st.button("💡 Hint", use_container_width=True):
-                st.info(f"💡 Hint: {item['explanation']}")
+            if module_type in VOCAB_MODULE_TYPES:
+                if st.button("👁️ Revelar y siguiente", use_container_width=True):
+                    reveal = f"✅ {item['target_form']}"
+                    if item.get("explanation"):
+                        reveal += f" — {item['explanation']}"
+                    st.info(reveal)
+                    time.sleep(2)
+                    st.session_state.current_item_index += 1
+                    st.rerun()
+            else:
+                if st.button("💡 Hint", use_container_width=True):
+                    st.info(f"💡 Hint: {item['explanation']}")
 
         with col3:
             if st.button("⏭️ Skip", use_container_width=True):
