@@ -69,6 +69,22 @@ def is_mobile():
     ua = ua.lower()
     return any(token in ua for token in ["iphone", "ipad", "ipod", "android", "mobile"])
 
+def inject_wide_sidebar_css():
+    """Widen the desktop sidebar so category names and buttons aren't cramped."""
+    st.markdown(
+        """
+        <style>
+        section[data-testid="stSidebar"] {
+            width: 420px !important;
+        }
+        section[data-testid="stSidebar"] > div {
+            width: 420px !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
 def inject_responsive_css():
     """Touch-friendly sizing on narrow viewports; no-op visually on desktop widths."""
     st.markdown(
@@ -1108,6 +1124,7 @@ def main():
                     st.rerun()
 
     else:
+        inject_wide_sidebar_css()
         st.sidebar.title("🎯 Spanish Learning System")
 
         if st.session_state.active_command:
