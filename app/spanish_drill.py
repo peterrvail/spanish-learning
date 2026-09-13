@@ -864,37 +864,39 @@ def run_drill(module_type="imperativo", duration_seconds=300):
 
         st.markdown(f"### {item['prompt']}")
 
-        # Answer input
-        user_answer = st.text_input("Your answer:", key=f"answer_{item['id']}")
+        # Answer input — wrapped in a form so pressing Enter submits it,
+        # same as clicking "Submit Answer".
+        with st.form(key=f"answer_form_{item['id']}"):
+            user_answer = st.text_input("Your answer:", key=f"answer_{item['id']}")
+            submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
 
-        col1, col2, col3 = st.columns(3)
+        if submitted:
+            # Simple feedback
+            is_correct = user_answer.strip().lower() == item['target_form'].lower()
 
-        with col1:
-            if st.button("✅ Submit Answer", use_container_width=True):
-                # Simple feedback
-                is_correct = user_answer.strip().lower() == item['target_form'].lower()
+            st.session_state.answers.append({
+                "item_id": item['id'],
+                "user_answer": user_answer,
+                "correct_answer": item['target_form'],
+                "is_correct": is_correct
+            })
 
-                st.session_state.answers.append({
-                    "item_id": item['id'],
-                    "user_answer": user_answer,
-                    "correct_answer": item['target_form'],
-                    "is_correct": is_correct
-                })
+            st.session_state.total_questions += 1
+            if is_correct:
+                st.session_state.score += 1
 
-                st.session_state.total_questions += 1
-                if is_correct:
-                    st.session_state.score += 1
+            # Show feedback
+            if is_correct:
+                st.success(f"✅ Correct! '{item['target_form']}'")
+            else:
+                st.error(f"❌ Incorrect. The correct form is: '{item['target_form']}'")
+                st.info(f"💡 {item['explanation']}")
 
-                # Show feedback
-                if is_correct:
-                    st.success(f"✅ Correct! '{item['target_form']}'")
-                else:
-                    st.error(f"❌ Incorrect. The correct form is: '{item['target_form']}'")
-                    st.info(f"💡 {item['explanation']}")
+            time.sleep(2)
+            st.session_state.current_item_index += 1
+            st.rerun()
 
-                time.sleep(2)
-                st.session_state.current_item_index += 1
-                st.rerun()
+        col2, col3 = st.columns(2)
 
         with col2:
             if st.button("💡 Hint", use_container_width=True):
