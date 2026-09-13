@@ -901,9 +901,20 @@ def run_drill(module_type="imperativo", duration_seconds=300):
                 st.session_state.current_item_index += 1
                 st.rerun()
 
+def _render_repaso_entry(item, heading=None):
+    """Render one item as a fully-visible bilingual explanation card — no
+    hide/reveal, no right-or-wrong framing. Just the material laid out."""
+    if heading:
+        st.markdown(heading)
+    st.caption(f"Contexto: {item['prompt']}")
+    st.markdown(f"🇪🇸 **Español:** {item['target_form']}")
+    if item.get("explanation"):
+        st.markdown(f"📝 **Explicación:** {item['explanation']}")
+
 def run_repaso(module_type="imperativo"):
-    """Self-paced review: browse a module's content (prompt, answer, explanation)
-    with no timer, no typing, and no scoring — for reviewing rather than quizzing."""
+    """Self-paced review: read through a module's material — Spanish, its
+    English/grammar explanation, always fully visible. No timer, no typing,
+    no scoring, no guess-then-reveal step — this is study material, not a quiz."""
     st.title("📖 Repaso")
     st.markdown(f"**Módulo:** `!repasar {module_type}`")
 
@@ -917,61 +928,41 @@ def run_repaso(module_type="imperativo"):
         return
 
     view = st.radio(
-        "Vista:", ["🃏 Tarjetas", "📋 Lista completa"],
+        "Vista:", ["🗂️ Una por una", "📋 Lista completa"],
         horizontal=True, key=f"repaso_view_{module_type}"
     )
 
     if view == "📋 Lista completa":
         for i, item in enumerate(items, start=1):
-            st.markdown(f"**{i}. {item['prompt']}**")
-            st.success(f"✅ {item['target_form']}")
-            if item.get("explanation"):
-                st.caption(f"💡 {item['explanation']}")
+            _render_repaso_entry(item, heading=f"**{i}.**")
             st.markdown("---")
         return
 
-    # Flashcard mode
+    # One-at-a-time mode — everything visible immediately, just paged.
     idx_key = f"repaso_idx_{module_type}"
-    show_key = f"repaso_show_{module_type}"
     st.session_state.setdefault(idx_key, 0)
-    st.session_state.setdefault(show_key, False)
 
     idx = st.session_state[idx_key] % len(items)
     item = items[idx]
 
     st.progress((idx + 1) / len(items))
-    st.caption(f"Tarjeta {idx + 1} de {len(items)}")
+    st.caption(f"{idx + 1} de {len(items)}")
 
-    st.markdown(f"### {item['prompt']}")
+    _render_repaso_entry(item)
 
-    if st.session_state[show_key]:
-        st.success(f"✅ {item['target_form']}")
-        if item.get("explanation"):
-            st.info(f"💡 {item['explanation']}")
-    else:
-        st.markdown("*(pulsa \"Mostrar respuesta\" para revelarla)*")
-
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     with col1:
         if st.button("⬅️ Anterior", use_container_width=True):
             st.session_state[idx_key] = (idx - 1) % len(items)
-            st.session_state[show_key] = False
             st.rerun()
     with col2:
-        toggle_label = "🙈 Ocultar" if st.session_state[show_key] else "👁️ Mostrar respuesta"
-        if st.button(toggle_label, use_container_width=True):
-            st.session_state[show_key] = not st.session_state[show_key]
-            st.rerun()
-    with col3:
         if st.button("Siguiente ➡️", use_container_width=True):
             st.session_state[idx_key] = (idx + 1) % len(items)
-            st.session_state[show_key] = False
             st.rerun()
 
     if st.button("🔀 Barajar de nuevo"):
         st.session_state[items_key] = get_drill_items(module_type)
         st.session_state[idx_key] = 0
-        st.session_state[show_key] = False
         st.rerun()
 
 def run_rol(tema=None):
