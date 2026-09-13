@@ -135,6 +135,7 @@ def _render_button_grid(commands, columns, key_prefix, with_review=False):
 def render_command_menu(columns=2):
     """Tap-friendly, categorized grid of drill/roleplay buttons. Sets st.session_state.active_command.
     Each drill also gets a 📖 button for self-paced review instead of the timed quiz."""
+    st.caption("📖 = Repasar (revisar sin cronómetro ni puntuación)")
     for category_name, commands in DRILL_CATEGORIES.items():
         st.markdown(f"#### {category_name}")
         _render_button_grid(commands, columns, key_prefix="menu", with_review=True)
