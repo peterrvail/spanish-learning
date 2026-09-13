@@ -36,7 +36,9 @@ DRILL_CATEGORIES = {
         ("🗣️ Estructuras + preguntas", "!drill estructuras"),
     ],
     "Vocabulario": [
-        ("🌎 Vocabulario mixto", "!drill vocabulario"),
+        ("📚 Vocab: Mis lecciones", "!drill vocabulario"),
+        ("🌍 Vocab: Común (general)", "!drill vocab_comun"),
+        ("🔀 Vocab: Mezcla", "!drill vocab_mezcla"),
         ("🔢 Números", "!drill numeros"),
         ("🧭 Adverbios", "!drill adverbios"),
         ("📍 Lugares", "!drill lugares"),
@@ -548,16 +550,37 @@ _VOCABULARIO_MIXTO_SOURCES = [
     ("additional_verbs.json", ["everyday_action_verbs", "story_and_emotion_verbs"]),
 ]
 
-def get_vocabulario_mixto_drill_items(count=20):
-    """Generate a broad mixed-vocabulary drill sampling across all lesson-derived
-    vocabulary categories (household, family, body, emotions, food, clothing,
-    nature, time, misc nouns, common verbs) — a general 'common words' review."""
+def _lesson_vocabulario_pool():
+    """Vocabulary extracted from the user's own lesson materials."""
     pool = []
     for filename, keys in _VOCABULARIO_MIXTO_SOURCES:
         data = load_vocabulary(filename)
         for key in keys:
             for entry in data[key]:
                 pool.append((entry, key))
+    return pool
+
+def _common_vocabulario_pool():
+    """General high-frequency Spanish vocabulary, independent of the lesson corpus."""
+    data = load_vocabulary("common_words.json")
+    pool = []
+    for category_key, entries in data.items():
+        if category_key.startswith("_"):
+            continue
+        for entry in entries:
+            pool.append((entry, category_key))
+    return pool
+
+def get_vocabulario_drill_items(count=20, source="mio"):
+    """Generate vocabulary drill items from lesson-specific words ("mio"),
+    general high-frequency words not tied to the lessons ("comun"), or a
+    combined pool of both ("mezcla")."""
+    if source == "comun":
+        pool = _common_vocabulario_pool()
+    elif source == "mezcla":
+        pool = _lesson_vocabulario_pool() + _common_vocabulario_pool()
+    else:
+        pool = _lesson_vocabulario_pool()
 
     items = []
     sample = random.sample(pool, min(count, len(pool)))
@@ -567,7 +590,7 @@ def get_vocabulario_mixto_drill_items(count=20):
             "id": len(items),
             "prompt": f"Translate to Spanish ({category.replace('_', ' ')}): {entry['english']}",
             "target_form": spanish,
-            "exercise_type": "vocabulario_mixto",
+            "exercise_type": f"vocabulario_{source}",
             "explanation": f"{entry['spanish']} — {entry['english']}" + (f" ({entry['gender']})" if entry.get('gender') else "")
         })
     return items[:count]
@@ -745,7 +768,11 @@ def get_drill_items(module_type):
     elif module_type == "ir_gerundio" or module_type == "gerundio":
         return get_ir_gerundio_drill_items()
     elif module_type == "vocabulario" or module_type == "comunes":
-        return get_vocabulario_mixto_drill_items()
+        return get_vocabulario_drill_items(source="mio")
+    elif module_type == "vocab_comun":
+        return get_vocabulario_drill_items(source="comun")
+    elif module_type == "vocab_mezcla":
+        return get_vocabulario_drill_items(source="mezcla")
     elif module_type == "indefinidos":
         return get_indefinidos_drill_items()
     elif module_type == "preposiciones":
