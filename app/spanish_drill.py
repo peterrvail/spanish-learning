@@ -118,13 +118,19 @@ def _render_button_grid(commands, columns, key_prefix, with_review=False):
     cols = st.columns(columns)
     for i, (label, cmd) in enumerate(commands):
         with cols[i % columns]:
-            if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
-                _set_active_command(cmd)
             if with_review:
-                module = cmd.split(" ", 1)[1] if " " in cmd else "imperativo"
-                if st.button("📖 Repasar", use_container_width=True, key=f"{key_prefix}_repasar_{cmd}",
-                             help="Repasar (sin quiz, a tu ritmo)"):
-                    _set_active_command(f"!repasar {module}")
+                bcol, rcol = st.columns([6, 1])
+                with bcol:
+                    if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
+                        _set_active_command(cmd)
+                with rcol:
+                    module = cmd.split(" ", 1)[1] if " " in cmd else "imperativo"
+                    if st.button("📖", use_container_width=True, key=f"{key_prefix}_repasar_{cmd}",
+                                 help="Repasar (sin quiz, a tu ritmo)"):
+                        _set_active_command(f"!repasar {module}")
+            else:
+                if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
+                    _set_active_command(cmd)
 
 def render_command_menu(columns=2):
     """Tap-friendly, categorized grid of drill/roleplay buttons. Sets st.session_state.active_command.
