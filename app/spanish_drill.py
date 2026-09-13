@@ -114,17 +114,22 @@ def _set_active_command(cmd):
     st.session_state.drill_active = False
     st.rerun()
 
-def _render_button_grid(commands, columns, key_prefix, with_review=False):
+def _render_button_grid(commands, columns, key_prefix):
+    """Render a grid of drill/roleplay buttons. Drills whose module has a grammar
+    concept to explain (see get_module_concept) also get a 📖 Repasar icon;
+    pure-vocabulary drills and roleplay commands don't, since there's nothing to
+    review beyond the quiz itself."""
     cols = st.columns(columns)
     for i, (label, cmd) in enumerate(commands):
         with cols[i % columns]:
-            if with_review:
+            module = cmd.split(" ", 1)[1] if cmd.startswith("!drill ") else None
+            has_concept = module is not None and get_module_concept(module) is not None
+            if has_concept:
                 bcol, rcol = st.columns([6, 1])
                 with bcol:
                     if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
                         _set_active_command(cmd)
                 with rcol:
-                    module = cmd.split(" ", 1)[1] if " " in cmd else "imperativo"
                     if st.button("📖", use_container_width=True, key=f"{key_prefix}_repasar_{cmd}",
                                  help="Repasar (sin quiz, a tu ritmo)"):
                         _set_active_command(f"!repasar {module}")
@@ -133,12 +138,11 @@ def _render_button_grid(commands, columns, key_prefix, with_review=False):
                     _set_active_command(cmd)
 
 def render_command_menu(columns=2):
-    """Tap-friendly, categorized grid of drill/roleplay buttons. Sets st.session_state.active_command.
-    Each drill also gets a 📖 button for self-paced review instead of the timed quiz."""
+    """Tap-friendly, categorized grid of drill/roleplay buttons. Sets st.session_state.active_command."""
     st.caption("📖 = Repasar (revisar sin cronómetro ni puntuación)")
     for category_name, commands in DRILL_CATEGORIES.items():
         st.markdown(f"#### {category_name}")
-        _render_button_grid(commands, columns, key_prefix="menu", with_review=True)
+        _render_button_grid(commands, columns, key_prefix="menu")
 
     st.markdown("#### 🎭 Roleplay")
     _render_button_grid(ROL_COMMANDS, columns, key_prefix="menu")
