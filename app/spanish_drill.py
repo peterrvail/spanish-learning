@@ -63,6 +63,9 @@ ROL_COMMANDS = [
     ("🛍 Compras", "!rol compras"),
     ("🤝 Convivencia", "!rol convivencia"),
 ]
+HABLAR_COMMANDS = [
+    ("🗣️ Conversación libre", "!hablar"),
+]
 
 def is_mobile():
     """Detect iOS/mobile via the request's User-Agent (server-side, no JS needed)."""
@@ -147,6 +150,9 @@ def render_command_menu(columns=2):
     for category_name, commands in DRILL_CATEGORIES.items():
         st.markdown(f"#### {category_name}")
         _render_button_grid(commands, columns, key_prefix="menu")
+
+    st.markdown("#### 🗣️ Conversación")
+    _render_button_grid(HABLAR_COMMANDS, columns, key_prefix="menu")
 
     st.markdown("#### 🎭 Roleplay")
     _render_button_grid(ROL_COMMANDS, columns, key_prefix="menu")
@@ -969,6 +975,16 @@ def run_drill(module_type="imperativo", duration_seconds=300):
     with col2:
         st.metric("Time Left", f"{minutes}:{seconds:02d}")
 
+    pausa_col, resumen_col = st.columns(2)
+    with pausa_col:
+        if st.button("⏸️ Pausa (explicar)", use_container_width=True):
+            st.session_state.active_command = "!pausa"
+            st.rerun()
+    with resumen_col:
+        if st.button("📋 Resumen", use_container_width=True):
+            st.session_state.active_command = "!resumen"
+            st.rerun()
+
     # Check if drill is complete
     if time_remaining <= 0 or st.session_state.current_item_index >= len(st.session_state.drill_items):
         st.success("✅ Drill Complete!")
@@ -1327,6 +1343,114 @@ def run_rol(tema=None):
     if st.button("🔄 Otro escenario aleatorio"):
         st.rerun()
 
+_HABLAR_STARTERS = [
+    "Cuéntame sobre tu día. ¿Qué has hecho hasta ahora?",
+    "¿Qué planes tienes para el fin de semana?",
+    "Describe tu comida favorita y por qué te gusta.",
+    "Habla sobre un viaje que hiciste, o uno que quieres hacer.",
+    "¿Cómo era tu rutina diaria cuando eras niño/a?",
+    "Cuéntame sobre alguien importante en tu familia.",
+    "¿Qué hiciste el fin de semana pasado?",
+    "Si pudieras vivir en cualquier ciudad del mundo, ¿cuál elegirías y por qué?",
+]
+
+def run_hablar():
+    """Freeform conversational-partner mode. Like !rol, the conversation
+    itself happens in chat with Claude — this screen just sets the stage
+    with a topic to start from, instead of a scripted scenario."""
+    st.title("🗣️ Compañero de Conversación")
+    st.markdown(
+        "Conversación libre en español, sin guion ni objetivo fijo. "
+        "Escribe directamente en el chat con Claude — responderá **100% en "
+        "español**, en turnos de 2 a 4 frases, y corregirá tus errores de "
+        "gramática al final de cada respuesta."
+    )
+
+    st.markdown("### 💬 Si no sabes por dónde empezar")
+    idx_key = "hablar_starter_idx"
+    st.session_state.setdefault(idx_key, random.randrange(len(_HABLAR_STARTERS)))
+    st.info(_HABLAR_STARTERS[st.session_state[idx_key]])
+
+    if st.button("🔀 Otro tema aleatorio"):
+        st.session_state[idx_key] = random.randrange(len(_HABLAR_STARTERS))
+        st.rerun()
+
+    st.markdown("---")
+    st.markdown(
+        "**Cómo usar esto:** copia el tema de arriba (o escribe el tuyo) "
+        "directamente en el chat. Claude seguirá la conversación en español "
+        "de forma dinámica. Para algo más estructurado, con un objetivo y "
+        "vocabulario específicos, usa `!rol [tema]` en su lugar."
+    )
+
+def run_pausa():
+    """Step out of the current drill to see its grammar rule explained —
+    reuses the same concept lookup that powers Repaso."""
+    st.title("⏸️ Pausa")
+    module_type = st.session_state.get("drill_module")
+
+    if not module_type or not st.session_state.get("drill_active"):
+        st.info(
+            "No hay ningún drill activo ahora mismo. Empieza uno con "
+            "`!drill [módulo]` y, mientras lo haces, escribe `!pausa` para "
+            "salir del modo inmersión y ver la regla explicada en inglés."
+        )
+        return
+
+    st.caption(f"Pausando `!drill {module_type}` — el cronómetro del drill sigue corriendo mientras lees esto.")
+
+    concept = get_module_concept(module_type)
+    if concept:
+        _render_module_concept(module_type)
+    else:
+        st.info(
+            f"'{module_type}' es un módulo de vocabulario — no hay una regla "
+            f"gramatical que explicar, solo palabras para repasar. Prueba "
+            f"`!repasar {module_type}` para verlas todas con su traducción."
+        )
+
+    if st.button("▶️ Volver al drill"):
+        st.session_state.active_command = f"!drill {module_type}"
+        st.rerun()
+
+def run_resumen():
+    """End-of-session diagnostic: how the current drill has gone so far and
+    which items to go back and review."""
+    st.title("📋 Resumen de la Sesión")
+
+    if not st.session_state.get("drill_active") or not st.session_state.get("answers"):
+        st.info(
+            "Todavía no has respondido ninguna pregunta en esta sesión. "
+            "Empieza un drill con `!drill [módulo]`, contesta algunas "
+            "preguntas, y luego escribe `!resumen` para ver tu progreso."
+        )
+        return
+
+    total = st.session_state.get("total_questions", 0)
+    score = st.session_state.get("score", 0)
+    accuracy = (score / total * 100) if total else 0
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Correctas", score)
+    with col2:
+        st.metric("Total", total)
+    with col3:
+        st.metric("Precisión", f"{accuracy:.0f}%")
+
+    misses = [a for a in st.session_state.answers if not a["is_correct"]]
+    if misses:
+        st.markdown("### ❌ Para repasar")
+        for m in misses:
+            shown_answer = m["user_answer"].strip() or "(en blanco)"
+            st.markdown(f"- Tu respuesta: *{shown_answer}* → Correcta: **{m['correct_answer']}**")
+    else:
+        st.success("¡Sin errores todavía en esta sesión!")
+
+    if st.button("▶️ Volver al drill"):
+        st.session_state.active_command = f"!drill {st.session_state.drill_module}"
+        st.rerun()
+
 def parse_command(command_input):
     """Parse CLI-style commands."""
     parts = command_input.strip().split()
@@ -1367,13 +1491,13 @@ def dispatch_command(command_str):
     elif command_type == "repasar":
         run_repaso(module_type=arg)
     elif command_type == "hablar":
-        st.info("🎤 Conversational Partner mode coming soon...")
+        run_hablar()
     elif command_type == "rol":
         run_rol(tema=arg)
     elif command_type == "pausa":
-        st.info("⏸️ Paused. Explanation mode enabled.")
+        run_pausa()
     elif command_type == "resumen":
-        st.info("📋 Session summary coming soon...")
+        run_resumen()
 
 def render_landing():
     st.markdown("""
