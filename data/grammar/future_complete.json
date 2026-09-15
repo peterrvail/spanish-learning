@@ -88,6 +88,12 @@
         "english": "will have (auxiliary)"
       },
       {
+        "infinitive": "caber",
+        "irregular_stem": "cabr-",
+        "example": "cabré, cabrás, cabrá, cabremos, cabréis, cabrán",
+        "english": "will fit"
+      },
+      {
         "infinitive": "decir",
         "irregular_stem": "dir-",
         "example": "diré, dirás, dirá, diremos, diréis, dirán",

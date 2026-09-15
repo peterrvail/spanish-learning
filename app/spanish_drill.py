@@ -263,34 +263,35 @@ def get_pronombres_drill_items(count=15):
     return items
 
 def get_stem_change_drill_items(count=15):
-    """Generate stem-changing verb drill items."""
+    """Generate stem-changing verb drill items, drawing each verb within a
+    group at most once per session so a short drill doesn't repeat itself."""
     data = load_grammar("stem_changing_verbs.json")
     groups = data["stem_changing_present_tense"]
     items = []
-    persons = ["yo", "tú", "él_ella_usted", "nosotros", "ellos_ustedes"]
     for group_key in ["grupo_1_e_ie", "grupo_2_e_i", "grupo_3_o_ue"]:
         group = groups[group_key]
         verb_list = group.get("verb_list", [])
-        for _ in range(count // 3):
-            if not verb_list:
-                continue
-            v = random.choice(verb_list)
+        if not verb_list:
+            continue
+        sample = random.sample(verb_list, min(max(count // 3, 1), len(verb_list)))
+        for v in sample:
             items.append({
                 "id": len(items),
                 "prompt": f"Conjugate '{v['infinitive']}' ({v['english']}) in the YO form. Pattern: {group['rule']}",
-                "target_form": v.get("yo_form", "(see reference)"),
+                "target_form": v["yo_form"],
                 "exercise_type": "stem_change",
-                "explanation": f"{group['name']}: {v['infinitive']} → {v.get('yo_form', '')}"
+                "explanation": f"{group['name']}: {v['infinitive']} → {v['yo_form']}" + (f" ({v['note']})" if v.get("note") else "")
             })
     random.shuffle(items)
     return items[:count]
 
 def get_imperfect_drill_items(count=15):
-    """Generate imperfect vs preterite contrast drill items."""
-    data = load_grammar("imperfect_complete.json")
-    practice = data["imperfect_tense"]["practice_sentences"]
+    """Generate imperfect vs preterite contrast drill items, drawing on both
+    the dedicated practice sentences and the (much larger) worked-example set
+    already authored under each of the 8 imperfect "uses" categories."""
+    tense = load_grammar("imperfect_complete.json")["imperfect_tense"]
     items = []
-    for p in practice:
+    for p in tense["practice_sentences"]:
         items.append({
             "id": len(items),
             "prompt": f"Translate to Spanish (imperfect): {p['english']} [Use type: {p['use_type']}]",
@@ -298,6 +299,15 @@ def get_imperfect_drill_items(count=15):
             "exercise_type": "imperfect",
             "explanation": f"{p['spanish']} — {p['use_type']}"
         })
+    for use in tense["uses"]:
+        for ex in use["examples"]:
+            items.append({
+                "id": len(items),
+                "prompt": f"Translate to Spanish (imperfect): {ex['english']} [Use type: {use['name']}]",
+                "target_form": ex["spanish"],
+                "exercise_type": "imperfect",
+                "explanation": f"{ex['spanish']} — {ex.get('explanation', use['name'])}"
+            })
     random.shuffle(items)
     return items[:count]
 
@@ -430,6 +440,13 @@ def get_ejercicio_drill_items(count=15):
     random.shuffle(items)
     return items[:count]
 
+def _blank_out(sentence, word):
+    """Replace the first whole-word, case-insensitive occurrence of `word` in
+    `sentence` with a blank — used to turn a worked example into a fill-in-
+    the-blank prompt without leaking the answer if the word isn't capitalized
+    or isn't the first word."""
+    return re.sub(rf"\b{re.escape(word)}\b", "___", sentence, count=1, flags=re.IGNORECASE)
+
 def get_por_para_drill_items(count=15):
     """Generate POR vs PARA choice items from the practice sentences and idioms."""
     data = load_grammar("prepositions_por_para.json")
@@ -441,7 +458,7 @@ def get_por_para_drill_items(count=15):
             if key in use:
                 items.append({
                     "id": len(items),
-                    "prompt": f"Fill in POR or PARA: {use[key].replace('Para', '___', 1) if use[key].startswith('Para') else use[key]}",
+                    "prompt": f"Fill in POR or PARA: {_blank_out(use[key], 'para')}",
                     "target_form": "para",
                     "exercise_type": "por_para",
                     "explanation": f"{use['use']}: {use[key]} — {use.get('english', '')}"
@@ -449,7 +466,7 @@ def get_por_para_drill_items(count=15):
     for use in ppp["por"]["uses"]:
         items.append({
             "id": len(items),
-            "prompt": f"Fill in POR or PARA: {use['example']}",
+            "prompt": f"Fill in POR or PARA: {_blank_out(use['example'], 'por')}",
             "target_form": "por",
             "exercise_type": "por_para",
             "explanation": f"{use['use']}: {use['example']} — {use['english']}"
@@ -523,10 +540,10 @@ def get_adjetivos_drill_items(count=10):
     for adj in data["shortened_adjectives"]["affected_adjectives"]:
         items.append({
             "id": len(items),
-            "prompt": f"Shortened form of '{adj['full_form']}' before a masculine singular noun?",
+            "prompt": f"Shortened form of '{adj['full_form']}' ({adj['context']})?",
             "target_form": adj["shortened_form"],
             "exercise_type": "adjetivos",
-            "explanation": f"{adj['full_form']} → {adj['shortened_form']} — {adj['example']} ({adj['english'] if 'english' in adj else ''})"
+            "explanation": f"{adj['full_form']} → {adj['shortened_form']} — {adj['example']} ({adj.get('english', '')})" + (f" {adj['note']}" if adj.get("note") else "")
         })
     random.shuffle(items)
     return items[:count]
@@ -560,9 +577,8 @@ def get_reflexivos_drill_items(count=12):
         "nosotros": "nos", "ellos/ellas/ustedes": "se"
     }
     verb_list = rv["common_reflexive_verbs"]
-    for _ in range(count - 4):
-        v = random.choice(verb_list)
-        person = random.choice(list(pronoun_by_person.keys()))
+    combos = [(v, person) for v in verb_list for person in pronoun_by_person]
+    for v, person in random.sample(combos, min(max(count - 4, 1), len(combos))):
         items.append({
             "id": len(items),
             "prompt": f"Which reflexive pronoun goes with '{person}' for '{v['spanish']}' ({v['english']})?",
@@ -821,38 +837,26 @@ def initialize_session():
         st.session_state.total_questions = 0
 
 def get_imperative_drill_items(verbs_data, count=20):
-    """Generate conjugation drill items focused on imperatives."""
-    items = []
+    """Generate conjugation drill items focused on imperatives, sampling each
+    (verb, person, polarity) combination at most once per session."""
     verbs = verbs_data["verbs"]
-
     persons = ["tú", "usted", "nosotros", "ustedes"]
     polarities = ["affirmative", "negative"]
 
-    for _ in range(count):
-        verb = random.choice(verbs)
-        person = random.choice(persons)
-        polarity = random.choice(polarities)
-
-        # Get the correct conjugation
+    combos = []
+    for verb in verbs:
         imperative_forms = verb["moods"]["imperative"]
-        target_form = imperative_forms[polarity].get(person, "")
+        for polarity in polarities:
+            for person in persons:
+                target_form = imperative_forms.get(polarity, {}).get(person, "")
+                if target_form:
+                    combos.append((verb, person, polarity, target_form))
 
-        if not target_form:
-            continue
-
-        # Create prompt
-        pronouns = {
-            "tú": "you (informal)",
-            "usted": "you (formal)",
-            "nosotros": "we",
-            "ustedes": "you all"
-        }
-
+    items = []
+    for verb, person, polarity, target_form in random.sample(combos, min(count, len(combos))):
         prompt = f"Conjugate '{verb['infinitive']}' ({person}, {polarity}): "
 
-        # Decide exercise type
         exercise_type = random.choice(["fill_blank", "conjugate"])
-
         if exercise_type == "fill_blank":
             if polarity == "affirmative":
                 if person == "tú":
@@ -861,8 +865,7 @@ def get_imperative_drill_items(verbs_data, count=20):
                     prompt += f"{verb['infinitive']} ahora."
             else:
                 prompt += f"No ___ así. (Don't do it like that.)"
-
-        elif exercise_type == "conjugate":
+        else:
             prompt += f"What is the {person} {polarity} form?"
 
         items.append({

@@ -103,16 +103,16 @@
         "ellos_ustedes": "piden"
       },
       "verb_list": [
-        {"infinitive": "pedir", "english": "to ask for, request"},
-        {"infinitive": "servir", "english": "to serve"},
-        {"infinitive": "repetir", "english": "to repeat"},
-        {"infinitive": "seguir", "english": "to follow, continue"},
-        {"infinitive": "conseguir", "english": "to get, obtain"},
-        {"infinitive": "vestir(se)", "english": "to dress"},
-        {"infinitive": "reír(se)", "english": "to laugh"},
-        {"infinitive": "sonreír", "english": "to smile"},
-        {"infinitive": "elegir", "english": "to choose"},
-        {"infinitive": "corregir", "english": "to correct"}
+        {"infinitive": "pedir", "english": "to ask for, request", "yo_form": "pido"},
+        {"infinitive": "servir", "english": "to serve", "yo_form": "sirvo"},
+        {"infinitive": "repetir", "english": "to repeat", "yo_form": "repito"},
+        {"infinitive": "seguir", "english": "to follow, continue", "yo_form": "sigo"},
+        {"infinitive": "conseguir", "english": "to get, obtain", "yo_form": "consigo"},
+        {"infinitive": "vestir(se)", "english": "to dress", "yo_form": "me visto"},
+        {"infinitive": "reír(se)", "english": "to laugh", "yo_form": "me río"},
+        {"infinitive": "sonreír", "english": "to smile", "yo_form": "sonrío"},
+        {"infinitive": "elegir", "english": "to choose", "yo_form": "elijo", "note": "g→j before o to keep the soft sound"},
+        {"infinitive": "corregir", "english": "to correct", "yo_form": "corrijo", "note": "g→j before o to keep the soft sound"}
       ]
     },
     "grupo_3_o_ue": {
@@ -128,23 +128,23 @@
         "ellos_ustedes": "pueden"
       },
       "verb_list": [
-        {"infinitive": "poder", "english": "can, to be able to"},
-        {"infinitive": "dormir", "english": "to sleep"},
-        {"infinitive": "morir", "english": "to die"},
-        {"infinitive": "volver", "english": "to return"},
-        {"infinitive": "devolver", "english": "to give back"},
-        {"infinitive": "envolver", "english": "to wrap"},
-        {"infinitive": "resolver", "english": "to resolve"},
-        {"infinitive": "contar", "english": "to count, tell"},
-        {"infinitive": "encontrar", "english": "to find"},
-        {"infinitive": "recordar", "english": "to remember"},
-        {"infinitive": "mostrar", "english": "to show"},
-        {"infinitive": "probar", "english": "to try, test"},
-        {"infinitive": "almorzar", "english": "to have lunch"},
-        {"infinitive": "costar", "english": "to cost"},
-        {"infinitive": "acostar(se)", "english": "to go to bed"},
-        {"infinitive": "soñar", "english": "to dream"},
-        {"infinitive": "jugar", "english": "to play", "note": "Special: U→UE, not O→UE"}
+        {"infinitive": "poder", "english": "can, to be able to", "yo_form": "puedo"},
+        {"infinitive": "dormir", "english": "to sleep", "yo_form": "duermo"},
+        {"infinitive": "morir", "english": "to die", "yo_form": "muero"},
+        {"infinitive": "volver", "english": "to return", "yo_form": "vuelvo"},
+        {"infinitive": "devolver", "english": "to give back", "yo_form": "devuelvo"},
+        {"infinitive": "envolver", "english": "to wrap", "yo_form": "envuelvo"},
+        {"infinitive": "resolver", "english": "to resolve", "yo_form": "resuelvo"},
+        {"infinitive": "contar", "english": "to count, tell", "yo_form": "cuento"},
+        {"infinitive": "encontrar", "english": "to find", "yo_form": "encuentro"},
+        {"infinitive": "recordar", "english": "to remember", "yo_form": "recuerdo"},
+        {"infinitive": "mostrar", "english": "to show", "yo_form": "muestro"},
+        {"infinitive": "probar", "english": "to try, test", "yo_form": "pruebo"},
+        {"infinitive": "almorzar", "english": "to have lunch", "yo_form": "almuerzo"},
+        {"infinitive": "costar", "english": "to cost", "yo_form": "cuesto"},
+        {"infinitive": "acostar(se)", "english": "to go to bed", "yo_form": "me acuesto"},
+        {"infinitive": "soñar", "english": "to dream", "yo_form": "sueño"},
+        {"infinitive": "jugar", "english": "to play", "yo_form": "juego", "note": "Special: U→UE, not O→UE"}
       ]
     }
   }

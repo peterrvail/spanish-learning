@@ -51,9 +51,25 @@
         "context": "before masculine singular noun",
         "example": "ningún problema",
         "english": "no problem"
+      },
+      {
+        "full_form": "grande",
+        "shortened_form": "gran",
+        "context": "before ANY singular noun, masculine or feminine",
+        "example": "un gran hombre / una gran mujer",
+        "english": "a great man / a great woman",
+        "note": "Unlike the others, 'grande' shortens before singular nouns of either gender, and the meaning shifts from 'big' (after the noun) to 'great' (before it): un hombre grande (a big man) vs. un gran hombre (a great man)."
+      },
+      {
+        "full_form": "santo",
+        "shortened_form": "san",
+        "context": "before a masculine saint's name",
+        "example": "San Pedro / San Francisco",
+        "english": "Saint Peter / Saint Francis",
+        "note": "Exception: names starting with 'To-' or 'Do-' keep 'santo' (Santo Tomás, Santo Domingo)."
       }
     ],
-    "note": "These shortened forms only apply before MASCULINE SINGULAR nouns. Feminine forms (buena, mala, primera, tercera, alguna, ninguna) are NOT shortened."
+    "note": "Most of these shortened forms only apply before MASCULINE SINGULAR nouns — feminine forms (buena, mala, primera, tercera, alguna, ninguna) are NOT shortened. 'Grande/gran' is the exception: it shortens before a singular noun of either gender."
   },
   "example_sentences": [
     {

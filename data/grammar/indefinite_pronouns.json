@@ -30,7 +30,7 @@
       }
     ],
     "adjective_forms_before_noun": {
-      "note": "Algún and ningún are the shortened adjective forms used directly before a masculine singular noun (see also data/grammar/adjectives.json for the broader apocope rule).",
+      "note": "Algún and ningún are the shortened (apocope) forms used directly before a masculine singular noun — the same pattern as buen/bueno, mal/malo, primer/primero (see the Adjetivos cortos drill for the full apocope rule).",
       "examples": [
         {"spanish": "algún día", "english": "some day"},
         {"spanish": "ningún problema", "english": "no problem"}

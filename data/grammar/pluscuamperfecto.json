@@ -13,7 +13,7 @@
         "spanish": "Yo había hablado.",
         "english": "I had spoken."
       },
-      "note": "Uses the same irregular participles as the present perfect (dicho, hecho, escrito, etc.) — see perfect_complete.json"
+      "note": "Uses the same irregular participles as the present perfect: dicho (decir), hecho (hacer), escrito (escribir), puesto (poner), visto (ver), vuelto (volver), roto (romper), muerto (morir), abierto (abrir) — the full list is in the Participios drill."
     },
     "uses": [
       {
@@ -31,6 +31,16 @@
             "spanish": "Los niños antes de almorzar habían rezado con la abuela.",
             "english": "The children, before having lunch, had prayed with grandma.",
             "explanation": "Praying happened before lunch"
+          },
+          {
+            "spanish": "Antes de salir de casa, yo había apagado todas las luces.",
+            "english": "Before leaving the house, I had turned off all the lights.",
+            "explanation": "Turning off the lights (pluscuamperfecto) happened before leaving"
+          },
+          {
+            "spanish": "Ana, antes de dormir, había terminado su tarea.",
+            "english": "Ana, before going to sleep, had finished her homework.",
+            "explanation": "Finishing homework happened before going to sleep"
           }
         ]
       },
@@ -54,6 +64,16 @@
             "spanish": "El niño había ganado el premio mayor, por eso estaba feliz.",
             "english": "The child had won the grand prize, that's why he was happy.",
             "explanation": "Reversed order: Pluperfect cause stated first, then 'por eso' (that's why) + imperfect result"
+          },
+          {
+            "spanish": "Nosotros llegamos tarde porque habíamos perdido el autobús.",
+            "english": "We arrived late because we had missed the bus.",
+            "explanation": "Preterite (llegamos) = result; Pluperfect (habíamos perdido) = earlier cause"
+          },
+          {
+            "spanish": "Ella no quiso comer porque ya había cenado.",
+            "english": "She didn't want to eat because she had already had dinner.",
+            "explanation": "Preterite (no quiso) = result; Pluperfect (había cenado) = earlier cause"
           }
         ]
       }

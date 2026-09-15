@@ -71,21 +71,21 @@
       "uses": [
         {
           "use": "Cause or Reason",
-          "example": "Él concluyó el trabajo tarde porque el feriado viene.",
-          "english": "He finished the work late because the holiday is coming.",
-          "explanation": "Note: 'porque' (because) is related but distinct from 'por qué' (why)"
+          "example": "No fui a la fiesta por el mal tiempo.",
+          "english": "I didn't go to the party because of the bad weather.",
+          "explanation": "POR + noun = 'because of'; distinct from the conjunction 'porque', which is followed by a full clause, not a noun"
         },
         {
           "use": "Movement Through/Along",
-          "example": "El niño sube las escaleras con cuidado.",
-          "english": "The child goes up the stairs carefully.",
-          "note": "Also see CON for manner"
+          "example": "Caminé por el parque esta mañana.",
+          "english": "I walked through the park this morning.",
+          "note": "POR = through/along a place; contrast with A/HACIA for movement toward a destination"
         },
         {
-          "use": "Departure Point (contrast with para)",
-          "example": "El bus sale desde Cuenca.",
-          "english": "The bus departs from Cuenca.",
-          "explanation": "Contrasts with 'para Cuenca' which shows destination"
+          "use": "Passing Through vs. Heading To (contrast with para)",
+          "example": "El bus pasa por Cuenca antes de llegar a Quito.",
+          "english": "The bus passes through Cuenca before arriving in Quito.",
+          "explanation": "Contrasts with 'El bus va para Cuenca' (destination) — POR marks a place passed through, PARA marks the place you're headed to"
         },
         {
           "use": "Exchange / Price",
@@ -249,8 +249,8 @@
     },
     "desde": {
       "meaning": "from (a starting point)",
-      "example": "Desde la página 5 hasta la página 20.",
-      "english": "From page 5 to page 20."
+      "example": "Vivo en esta ciudad desde 2015.",
+      "english": "I've lived in this city since 2015."
     },
     "según": {
       "meaning": "according to",
