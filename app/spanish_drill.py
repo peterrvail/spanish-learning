@@ -1,7 +1,8 @@
 import streamlit as st
 import json
 import random
-import time
+import re
+import unicodedata
 from datetime import datetime, timedelta
 import os
 
@@ -149,6 +150,67 @@ def render_command_menu(columns=2):
 
     st.markdown("#### 🎭 Roleplay")
     _render_button_grid(ROL_COMMANDS, columns, key_prefix="menu")
+
+_ARTICLES = ("el ", "la ", "los ", "las ", "un ", "una ")
+
+def _expand_segment(seg):
+    """Expand one '/'-bearing chunk of a vocab 'spanish' field into the list of
+    literal forms it represents. Handles three shapes seen in the data:
+    - masculine/a shorthand: 'cansado/a' -> ['cansado', 'cansada'],
+      'controlador/a' -> ['controlador', 'controladora']
+    - a reflexive suffix glued on: 'cortar(se)' -> ['cortarse']
+    - a bare-slash alternate with no spaces: 'el apartamento/piso' -> both
+    Anything else has a trailing descriptive parenthetical stripped, e.g.
+    'el centro (de la ciudad)' -> ['el centro']."""
+    seg = seg.strip()
+    m = re.match(r"^(\S+)/a(\(s\))?$", seg)
+    if m:
+        masc = m.group(1)
+        fem = masc[:-1] + "a" if masc.endswith("o") else masc + "a"
+        return [masc, fem]
+    m = re.match(r"^(\S+)\(se\)$", seg)
+    if m:
+        return [m.group(1) + "se"]
+    if "/" in seg:
+        return [p.strip() for p in seg.split("/") if p.strip()]
+    seg = re.sub(r"\s*\([^)]*\)\s*$", "", seg).strip()
+    return [seg] if seg else []
+
+def split_alternates(raw):
+    """Turn a vocab/grammar 'spanish' field into every form that should count
+    as a correct answer, e.g. 'el esposo / la esposa' -> both genders,
+    'gruñón / gruñona' -> both, 'aquí / acá' -> both, 'al lado (mío)' ->
+    just 'al lado'. The first form returned is the canonical one to display."""
+    if not raw:
+        return [raw]
+    segments = [s.strip() for s in raw.split(" / ") if s.strip()] or [raw.strip()]
+    forms = []
+    for seg in segments:
+        forms.extend(_expand_segment(seg))
+    if not forms:
+        return [raw]
+    article = next((a for a in _ARTICLES if forms[0].lower().startswith(a)), None)
+    if article:
+        forms = [f if any(f.lower().startswith(a) for a in _ARTICLES) else article + f for f in forms]
+    seen, out = set(), []
+    for f in forms:
+        if f.lower() not in seen:
+            seen.add(f.lower())
+            out.append(f)
+    return out
+
+def _normalize_for_grading(s):
+    """Lowercase and strip accents so grading doesn't fail on a missing á/ñ."""
+    s = unicodedata.normalize("NFD", s.strip().lower())
+    return "".join(c for c in s if unicodedata.category(c) != "Mn")
+
+def is_correct_answer(user_answer, item):
+    """Check a typed answer against every accepted form for this item,
+    accent-insensitive. Falls back to target_form alone when an item has no
+    accepted_forms list."""
+    accepted = item.get("accepted_forms") or [item["target_form"]]
+    normalized_user = _normalize_for_grading(user_answer)
+    return any(normalized_user == _normalize_for_grading(a) for a in accepted)
 
 def load_verbs():
     with open(VERBS_FILE, "r", encoding="utf-8") as f:
@@ -422,10 +484,12 @@ def get_demostrativos_drill_items(count=12):
             })
 
     for pair in data["place_adverbs_pairs"]["pairs"]:
+        forms = split_alternates(pair["spanish"])
         items.append({
             "id": len(items),
             "prompt": f"Which place adverb means '{pair['english']}' ({pair['distance']})?",
-            "target_form": pair["spanish"].split(" / ")[0],
+            "target_form": forms[0],
+            "accepted_forms": forms,
             "exercise_type": "demostrativos",
             "explanation": f"{pair['spanish']} — {pair['english']} ({pair['distance']})"
         })
@@ -440,10 +504,12 @@ def get_adverbios_drill_items(count=15):
     for category_key in ["adverbios_de_cantidad", "adverbios_de_lugar", "adverbios_de_tiempo"]:
         category = data[category_key]
         for w in category["words"]:
+            forms = split_alternates(w["spanish"])
             items.append({
                 "id": len(items),
                 "prompt": f"Translate to Spanish ({category['english_category']}): {w['english']}",
-                "target_form": w["spanish"].split(" / ")[0].split(" (")[0],
+                "target_form": forms[0],
+                "accepted_forms": forms,
                 "exercise_type": "adverbios",
                 "explanation": f"{w['spanish']} — {w['english']}"
             })
@@ -571,10 +637,12 @@ def get_lugares_drill_items(count=15):
     items = []
     for category_key in ["everyday_errands", "civic_institutional", "leisure_dining", "home_and_city_structure"]:
         for p in places[category_key]:
+            forms = split_alternates(p["spanish"])
             items.append({
                 "id": len(items),
                 "prompt": f"Translate to Spanish: {p['english']}",
-                "target_form": p["spanish"].split("/")[0],
+                "target_form": forms[0],
+                "accepted_forms": forms,
                 "exercise_type": "lugares",
                 "explanation": f"{p['spanish']} — {p['english']}" + (f" ({p.get('gender', '')})" if p.get('gender') else "")
             })
@@ -673,11 +741,12 @@ def get_vocabulario_drill_items(count=20, source="mio"):
     items = []
     sample = random.sample(pool, min(count, len(pool)))
     for entry, category in sample:
-        spanish = entry["spanish"].split(" / ")[0].split(" (")[0]
+        forms = split_alternates(entry["spanish"])
         items.append({
             "id": len(items),
             "prompt": f"Translate to Spanish ({category.replace('_', ' ')}): {entry['english']}",
-            "target_form": spanish,
+            "target_form": forms[0],
+            "accepted_forms": forms,
             "exercise_type": f"vocabulario_{source}",
             "explanation": f"{entry['spanish']} — {entry['english']}" + (f" ({entry['gender']})" if entry.get('gender') else "")
         })
@@ -689,17 +758,21 @@ def get_indefinidos_drill_items(count=8):
     ip = data["indefinite_and_negative_pronouns"]
     items = []
     for pair in ip["pairs"]:
+        forms = split_alternates(pair["affirmative"])
         items.append({
             "id": len(items),
             "prompt": f"Translate to Spanish: {pair['english_affirmative']}",
-            "target_form": pair["affirmative"].split("/")[0].split("(")[0].strip(),
+            "target_form": forms[0],
+            "accepted_forms": forms,
             "exercise_type": "indefinidos",
             "explanation": f"{pair['affirmative']} ↔ {pair['negative']} — {pair['example_affirmative']}"
         })
+        neg_forms = split_alternates(pair["negative"])
         items.append({
             "id": len(items),
             "prompt": f"Translate to Spanish: {pair['english_negative']}",
-            "target_form": pair["negative"].split("/")[0].split("(")[0].strip(),
+            "target_form": neg_forms[0],
+            "accepted_forms": neg_forms,
             "exercise_type": "indefinidos",
             "explanation": f"{pair['negative']} ↔ {pair['affirmative']} — {pair['example_negative']}"
         })
@@ -778,7 +851,7 @@ def get_imperative_drill_items(verbs_data, count=20):
         prompt = f"Conjugate '{verb['infinitive']}' ({person}, {polarity}): "
 
         # Decide exercise type
-        exercise_type = random.choice(["fill_blank", "conjugate", "error_parsing"])
+        exercise_type = random.choice(["fill_blank", "conjugate"])
 
         if exercise_type == "fill_blank":
             if polarity == "affirmative":
@@ -791,15 +864,6 @@ def get_imperative_drill_items(verbs_data, count=20):
 
         elif exercise_type == "conjugate":
             prompt += f"What is the {person} {polarity} form?"
-
-        elif exercise_type == "error_parsing":
-            # Generate a common error
-            wrong_form = target_form
-            if polarity == "affirmative" and person == "tú":
-                # Common error: using present instead of imperative
-                wrong_form = verb["moods"]["present_indicative"].get("tú", target_form)
-
-            prompt += f"Is this correct? '{wrong_form}' ✓ or ✗?"
 
         items.append({
             "id": len(items),
@@ -886,6 +950,7 @@ def run_drill(module_type="imperativo", duration_seconds=300):
         st.session_state.answers = []
         st.session_state.score = 0
         st.session_state.total_questions = 0
+        st.session_state.pending_feedback = None
 
     # Calculate time remaining
     elapsed = (datetime.now() - st.session_state.drill_start_time).total_seconds()
@@ -931,15 +996,47 @@ def run_drill(module_type="imperativo", duration_seconds=300):
 
         st.markdown(f"### {item['prompt']}")
 
-        # Answer input — wrapped in a form so pressing Enter submits it,
-        # same as clicking "Submit Answer".
+        pending = st.session_state.get("pending_feedback")
+
+        if pending and pending.get("item_id") == item["id"]:
+            # Feedback phase: show the result and wait for the user to move on,
+            # at their own pace, instead of a hardcoded sleep.
+            if pending["is_correct"] is True:
+                st.success(f"✅ Correct! '{pending['target_form']}'")
+            elif pending["is_correct"] is False:
+                st.error(f"❌ Incorrect. The correct form is: '{pending['target_form']}'")
+                if pending.get("explanation"):
+                    st.info(f"💡 {pending['explanation']}")
+            else:
+                reveal = f"✅ {pending['target_form']}"
+                if pending.get("explanation"):
+                    reveal += f" — {pending['explanation']}"
+                st.info(reveal)
+
+            if st.button("➡️ Continuar", use_container_width=True):
+                st.session_state.pending_feedback = None
+                st.session_state.current_item_index += 1
+                st.rerun()
+            return
+
+        # Answering phase
+        answer_key = f"answer_{item['id']}"
+
+        st.caption("Acentos rápidos:")
+        accent_cols = st.columns(7)
+        for i, ch in enumerate(["á", "é", "í", "ó", "ú", "ñ", "ü"]):
+            with accent_cols[i]:
+                if st.button(ch, key=f"accent_{item['id']}_{ch}", use_container_width=True):
+                    st.session_state[answer_key] = st.session_state.get(answer_key, "") + ch
+                    st.rerun()
+
+        # Wrapped in a form so pressing Enter submits it, same as clicking "Submit Answer".
         with st.form(key=f"answer_form_{item['id']}"):
-            user_answer = st.text_input("Your answer:", key=f"answer_{item['id']}")
+            user_answer = st.text_input("Your answer:", key=answer_key)
             submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
 
         if submitted:
-            # Simple feedback
-            is_correct = user_answer.strip().lower() == item['target_form'].lower()
+            is_correct = is_correct_answer(user_answer, item)
 
             st.session_state.answers.append({
                 "item_id": item['id'],
@@ -952,15 +1049,12 @@ def run_drill(module_type="imperativo", duration_seconds=300):
             if is_correct:
                 st.session_state.score += 1
 
-            # Show feedback
-            if is_correct:
-                st.success(f"✅ Correct! '{item['target_form']}'")
-            else:
-                st.error(f"❌ Incorrect. The correct form is: '{item['target_form']}'")
-                st.info(f"💡 {item['explanation']}")
-
-            time.sleep(3.5)
-            st.session_state.current_item_index += 1
+            st.session_state.pending_feedback = {
+                "item_id": item['id'],
+                "is_correct": is_correct,
+                "target_form": item['target_form'],
+                "explanation": item.get('explanation', ''),
+            }
             st.rerun()
 
         col2, col3 = st.columns(2)
@@ -968,12 +1062,12 @@ def run_drill(module_type="imperativo", duration_seconds=300):
         with col2:
             if module_type in VOCAB_MODULE_TYPES:
                 if st.button("👁️ Revelar y siguiente", use_container_width=True):
-                    reveal = f"✅ {item['target_form']}"
-                    if item.get("explanation"):
-                        reveal += f" — {item['explanation']}"
-                    st.info(reveal)
-                    time.sleep(3.5)
-                    st.session_state.current_item_index += 1
+                    st.session_state.pending_feedback = {
+                        "item_id": item['id'],
+                        "is_correct": None,
+                        "target_form": item['target_form'],
+                        "explanation": item.get('explanation', ''),
+                    }
                     st.rerun()
             else:
                 if st.button("💡 Hint", use_container_width=True):
