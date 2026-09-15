@@ -1,4 +1,5 @@
 import streamlit as st
+import difflib
 import json
 import random
 import re
@@ -15,6 +16,9 @@ EXERCISES_DIR = os.path.join(DATA_DIR, "exercises")
 
 # Commands available from both the mobile button menu and the desktop sidebar
 DRILL_CATEGORIES = {
+    "🎲 Repaso interleaved": [
+        ("🎲 Mixto (todos los temas)", "!drill mixto"),
+    ],
     "Verbos y Tiempos": [
         ("☀️ Rutina diaria (presente)", "!drill rutina"),
         ("⚡ Imperativo", "!drill imperativo"),
@@ -210,13 +214,30 @@ def _normalize_for_grading(s):
     s = unicodedata.normalize("NFD", s.strip().lower())
     return "".join(c for c in s if unicodedata.category(c) != "Mn")
 
-def is_correct_answer(user_answer, item):
-    """Check a typed answer against every accepted form for this item,
-    accent-insensitive. Falls back to target_form alone when an item has no
-    accepted_forms list."""
+def check_answer(user_answer, item):
+    """Grade an answer against every accepted form for this item.
+
+    Returns (is_correct, matched_form, needs_accent_fix). Accents are
+    forgiven so a missing tilde isn't scored as a wrong answer, but the
+    match is reported back so the drill can still show the correctly
+    accented spelling instead of quietly teaching the wrong one."""
     accepted = item.get("accepted_forms") or [item["target_form"]]
-    normalized_user = _normalize_for_grading(user_answer)
-    return any(normalized_user == _normalize_for_grading(a) for a in accepted)
+    typed = user_answer.strip()
+
+    for form in accepted:
+        if typed.lower() == form.lower():
+            return True, form, False
+
+    normalized = _normalize_for_grading(typed)
+    for form in accepted:
+        if normalized == _normalize_for_grading(form):
+            return True, form, True
+
+    return False, None, False
+
+def is_correct_answer(user_answer, item):
+    """Boolean-only view of check_answer, for callers that just need a verdict."""
+    return check_answer(user_answer, item)[0]
 
 def load_verbs():
     with open(VERBS_FILE, "r", encoding="utf-8") as f:
@@ -887,9 +908,8 @@ def get_imperative_drill_items(verbs_data, count=20):
 
     return items
 
-def get_drill_items(module_type):
-    """Generate the item list for a given module type. Shared by the quiz
-    drill runner and the self-paced review (repaso) runner."""
+def _build_drill_items(module_type):
+    """Generate the raw item list for a given module type."""
     if module_type == "imperativo":
         return get_imperative_drill_items(load_verbs())
     elif module_type == "pronombres":
@@ -940,6 +960,81 @@ def get_drill_items(module_type):
         return get_preposiciones_drill_items()
     else:
         return get_imperative_drill_items(load_verbs())
+
+# Every topic the interleaved drill pulls from.
+_MIXTO_MODULES = [
+    "imperativo", "pronombres", "cambios", "pasado", "preterito", "pluscuam",
+    "por_para", "demostrativos", "adjetivos", "reflexivos", "participios",
+    "futuro", "estructuras", "rutina", "gerundio", "indefinidos",
+    "preposiciones", "adverbios", "lugares", "numeros", "vocabulario",
+]
+
+def get_mixto_drill_items(count=20):
+    """Interleaved drill: one item each from many different topics, so no two
+    consecutive questions share a rule. Blocked practice (20 preterite items in
+    a row) lets you coast on the last answer's pattern; interleaving forces you
+    to work out WHICH rule applies first, which is the part that actually
+    transfers to speaking. The topic is revealed in the explanation afterwards,
+    never in the prompt."""
+    items = []
+    for module_type in random.sample(_MIXTO_MODULES, min(len(_MIXTO_MODULES), count)):
+        pool = _build_drill_items(module_type)
+        if not pool:
+            continue
+        item = random.choice(pool)
+        item["explanation"] = f"[{module_type}] {item.get('explanation', '')}".strip()
+        items.append(item)
+    random.shuffle(items)
+    return items[:count]
+
+def _add_recognition_variants(items, fraction=0.3):
+    """Turn a slice of the drill into multiple-choice questions, using other
+    answers from the same drill as distractors.
+
+    Two reasons this matters pedagogically: those distractors are minimal pairs
+    by construction (same tense, same topic, e.g. pidió/pedió/pidío), so
+    choosing between them trains the discrimination that free recall alone
+    doesn't; and recognition is a lower rung than production, which gives
+    material you've just met a rung to stand on instead of only ever facing the
+    hardest possible format."""
+    candidates = [it for it in items if len(it["target_form"].split()) <= 3]
+    unique_forms = list(dict.fromkeys(it["target_form"] for it in candidates))
+    if len(unique_forms) < 4:
+        return items
+
+    for item in random.sample(candidates, max(1, int(len(candidates) * fraction))):
+        accepted = {_normalize_for_grading(a)
+                    for a in (item.get("accepted_forms") or [item["target_form"]])}
+        distractors = [f for f in unique_forms if _normalize_for_grading(f) not in accepted]
+        if len(distractors) < 3:
+            continue
+        choices = _plausible_distractors(item["target_form"], distractors) + [item["target_form"]]
+        random.shuffle(choices)
+        item["choices"] = choices
+    return items
+
+def _plausible_distractors(target, pool, count=3, shortlist=8):
+    """Pick wrong options that actually resemble the right one.
+
+    Sampling the pool uniformly produces giveaways — asking for the yo form of
+    'querer' against habló/vendí/recibiste is solvable by spotting the only
+    yo-form, without knowing the verb. Ranking by string similarity instead
+    surfaces same-person, same-ending, same-gender neighbours (quise vs. cupe
+    vs. puse; la silla vs. la policía), so the question tests the contrast it
+    claims to. The shortlist keeps some variety across sessions."""
+    ranked = sorted(pool, key=lambda f: difflib.SequenceMatcher(None, target, f).ratio(), reverse=True)
+    return random.sample(ranked[:max(shortlist, count)], count)
+
+def get_drill_items(module_type):
+    """Generate the item list for a module. Shared by the quiz runner and Repaso.
+
+    Also renumbers ids, which matters because each generator numbers its own
+    items from zero and the mixto drill combines several of them — duplicate
+    ids would collide as Streamlit widget keys."""
+    items = get_mixto_drill_items() if module_type == "mixto" else _build_drill_items(module_type)
+    for i, item in enumerate(items):
+        item["id"] = i
+    return _add_recognition_variants(items)
 
 def run_drill(module_type="imperativo", duration_seconds=300):
     """Main drill runner."""
@@ -1022,6 +1117,8 @@ def run_drill(module_type="imperativo", duration_seconds=300):
             # at their own pace, instead of a hardcoded sleep.
             if pending["is_correct"] is True:
                 st.success(f"✅ Correct! '{pending['target_form']}'")
+                if pending.get("accent_fix"):
+                    st.warning(f"✍️ Ojo con la tilde: se escribe **{pending['accent_fix']}**.")
             elif pending["is_correct"] is False:
                 st.error(f"❌ Incorrect. The correct form is: '{pending['target_form']}'")
                 if pending.get("explanation"):
@@ -1041,21 +1138,29 @@ def run_drill(module_type="imperativo", duration_seconds=300):
         # Answering phase
         answer_key = f"answer_{item['id']}"
 
-        st.caption("Acentos rápidos:")
-        accent_cols = st.columns(7)
-        for i, ch in enumerate(["á", "é", "í", "ó", "ú", "ñ", "ü"]):
-            with accent_cols[i]:
-                if st.button(ch, key=f"accent_{item['id']}_{ch}", use_container_width=True):
-                    st.session_state[answer_key] = st.session_state.get(answer_key, "") + ch
-                    st.rerun()
+        if item.get("choices"):
+            # Recognition item: pick the right form out of same-topic near-misses.
+            with st.form(key=f"answer_form_{item['id']}"):
+                user_answer = st.radio("Elige la forma correcta:", item["choices"],
+                                       index=None, key=f"choice_{item['id']}")
+                submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
+            user_answer = user_answer or ""
+        else:
+            st.caption("Acentos rápidos:")
+            accent_cols = st.columns(7)
+            for i, ch in enumerate(["á", "é", "í", "ó", "ú", "ñ", "ü"]):
+                with accent_cols[i]:
+                    if st.button(ch, key=f"accent_{item['id']}_{ch}", use_container_width=True):
+                        st.session_state[answer_key] = st.session_state.get(answer_key, "") + ch
+                        st.rerun()
 
-        # Wrapped in a form so pressing Enter submits it, same as clicking "Submit Answer".
-        with st.form(key=f"answer_form_{item['id']}"):
-            user_answer = st.text_input("Your answer:", key=answer_key)
-            submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
+            # Wrapped in a form so pressing Enter submits it, same as clicking "Submit Answer".
+            with st.form(key=f"answer_form_{item['id']}"):
+                user_answer = st.text_input("Your answer:", key=answer_key)
+                submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
 
         if submitted:
-            is_correct = is_correct_answer(user_answer, item)
+            is_correct, matched_form, needs_accent_fix = check_answer(user_answer, item)
 
             st.session_state.answers.append({
                 "item_id": item['id'],
@@ -1073,6 +1178,7 @@ def run_drill(module_type="imperativo", duration_seconds=300):
                 "is_correct": is_correct,
                 "target_form": item['target_form'],
                 "explanation": item.get('explanation', ''),
+                "accent_fix": matched_form if needs_accent_fix else None,
             }
             st.rerun()
 
