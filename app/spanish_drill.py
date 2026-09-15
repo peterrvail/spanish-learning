@@ -81,15 +81,34 @@ def is_mobile():
     return any(token in ua for token in ["iphone", "ipad", "ipod", "android", "mobile"])
 
 def inject_wide_sidebar_css():
-    """Widen the desktop sidebar so category names and buttons aren't cramped."""
+    """Widen the desktop sidebar and stop its buttons from clipping.
+
+    Streamlit ellipsises a button label that doesn't fit on one line, and the
+    Repasar icon rides in a narrow companion column, so on a ~1024px window the
+    longer names were cut to "Rutina diaria (p..." and the icon collapsed into
+    an empty sliver. Letting labels wrap and tightening the padding keeps both
+    legible without giving up the two-column grid."""
     st.markdown(
         """
         <style>
-        section[data-testid="stSidebar"] {
-            width: 420px !important;
-        }
+        /* Wide, but never more than half of a small window. */
+        section[data-testid="stSidebar"],
         section[data-testid="stSidebar"] > div {
-            width: 420px !important;
+            width: min(420px, 50vw) !important;
+        }
+        /* Wrap instead of truncating, and grow the button to fit the lines. */
+        section[data-testid="stSidebar"] div.stButton > button {
+            white-space: normal;
+            overflow-wrap: anywhere;
+            height: auto;
+            min-height: 2.5rem;
+            line-height: 1.25;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.45rem;
+        }
+        /* Tighten the gap so the icon column keeps usable width. */
+        section[data-testid="stSidebar"] div[data-testid="stHorizontalBlock"] {
+            gap: 0.4rem;
         }
         </style>
         """,
@@ -136,7 +155,7 @@ def _render_button_grid(commands, columns, key_prefix):
             module = cmd.split(" ", 1)[1] if cmd.startswith("!drill ") else None
             has_concept = module is not None and get_module_concept(module) is not None
             if has_concept:
-                bcol, rcol = st.columns([6, 1])
+                bcol, rcol = st.columns([5, 1.5])
                 with bcol:
                     if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
                         _set_active_command(cmd)
