@@ -7,6 +7,8 @@ import unicodedata
 from datetime import datetime, timedelta
 import os
 
+import progress
+
 # Load data
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 VERBS_FILE = os.path.join(DATA_DIR, "verbs", "verbs.json")
@@ -18,6 +20,10 @@ EXERCISES_DIR = os.path.join(DATA_DIR, "exercises")
 DRILL_CATEGORIES = {
     "🎲 Repaso interleaved": [
         ("🎲 Mixto (todos los temas)", "!drill mixto"),
+    ],
+    "🔁 Repaso espaciado": [
+        ("🔁 Quiz: lo que fallé", "!drill fallos"),
+        ("📖 Repasar solo lo que falle", "!repasar fallos"),
     ],
     "Verbos y Tiempos": [
         ("☀️ Rutina diaria (presente)", "!drill rutina"),
@@ -70,6 +76,26 @@ ROL_COMMANDS = [
 HABLAR_COMMANDS = [
     ("🗣️ Conversación libre", "!hablar"),
 ]
+
+# Default drill length per module (seconds). Anything not listed gets
+# DEFAULT_DRILL_SECONDS. The sidebar/header "Duración" selector can override all of them.
+DEFAULT_DRILL_SECONDS = 300
+MODULE_DURATIONS = {
+    "mixto": 600,        # 20 interleaved items across topics
+    "preterito": 420,    # 20 items, longer conjugations
+    "preterite": 420,
+    "numeros": 180,
+    "adjetivos": 180,
+    "participios": 180,
+    "futuro": 180,
+    "futuro_irregular": 180,
+    "fallos": 300,
+}
+DURATION_CHOICES = {"Por módulo (recomendado)": None, "3 min": 180, "5 min": 300, "10 min": 600, "15 min": 900}
+
+def drill_duration(module_type, override=None):
+    """Seconds for a drill: an explicit override, else the module's default."""
+    return override or MODULE_DURATIONS.get(module_type, DEFAULT_DRILL_SECONDS)
 
 def is_mobile():
     """Detect iOS/mobile via the request's User-Agent (server-side, no JS needed)."""
@@ -169,6 +195,11 @@ def _render_button_grid(commands, columns, key_prefix):
 
 def render_command_menu(columns=2):
     """Tap-friendly, categorized grid of drill/roleplay buttons. Sets st.session_state.active_command."""
+    choice = st.selectbox("⏱️ Duración", list(DURATION_CHOICES), key="duration_choice")
+    st.session_state.duration_override = DURATION_CHOICES[choice]
+    pending = progress.due_count()
+    if pending:
+        st.caption(f"🔁 {pending} para repasar hoy")
     st.caption("📖 = Repasar (revisar sin cronómetro ni puntuación)")
     for category_name, commands in DRILL_CATEGORIES.items():
         st.markdown(f"#### {category_name}")
@@ -233,23 +264,74 @@ def _normalize_for_grading(s):
     s = unicodedata.normalize("NFD", s.strip().lower())
     return "".join(c for c in s if unicodedata.category(c) != "Mn")
 
+def _loose(s):
+    """Lowercase, collapse whitespace and drop ¿?¡!.,;: — sentence answers
+    shouldn't be marked wrong over a missing question mark or period.
+    Accents are left alone so a missing tilde can still be flagged."""
+    s = re.sub(r"[¿?¡!.,;:]", " ", s.strip().lower())
+    return " ".join(s.split())
+
+_SUBJECT_PRONOUNS = ("yo", "tú", "él", "ella", "usted", "nosotros", "nosotras", "ellos", "ellas", "ustedes")
+
+def sentence_forms(raw):
+    """Every acceptable rendering of a full-sentence target: expands 'honesto/a'
+    and 'cambio/suelto' slash shorthand, and also accepts the sentence without
+    its leading subject pronoun (Spanish drops it: 'Yo hablé' = 'Hablé')."""
+    forms = [raw]
+    # Expand each slash token in turn (a/b -> a, b; word/a -> masculine + feminine).
+    for _ in range(4):
+        expanded, changed = [], False
+        for f in forms:
+            m = re.search(r"(\w+)/(\w+)", f)
+            if not m:
+                expanded.append(f)
+                continue
+            changed = True
+            first, second = m.group(1), m.group(2)
+            if second == "a" and first.endswith("o"):
+                second = first[:-1] + "a"
+            for choice in (first, second):
+                expanded.append(f[:m.start()] + choice + f[m.end():])
+        forms = expanded
+        if not changed:
+            break
+    out = list(forms)
+    for f in forms:
+        words = f.split(" ", 1)
+        if len(words) == 2 and words[0].lower().strip("¿¡") in _SUBJECT_PRONOUNS:
+            out.append(words[1])
+    return list(dict.fromkeys(out))
+
+def accepted_forms_for(item):
+    """All forms that count as correct. Items that spell out accepted_forms keep
+    them; otherwise multi-word targets are expanded with sentence_forms."""
+    if item.get("accepted_forms"):
+        return item["accepted_forms"]
+    target = item["target_form"]
+    if " " not in target and "/" not in target:
+        return [target]
+    # Keep the literal target too, so typing the shorthand ('honesto/a') still counts.
+    return list(dict.fromkeys(sentence_forms(target) + [target]))
+
 def check_answer(user_answer, item):
     """Grade an answer against every accepted form for this item.
 
-    Returns (is_correct, matched_form, needs_accent_fix). Accents are
-    forgiven so a missing tilde isn't scored as a wrong answer, but the
-    match is reported back so the drill can still show the correctly
-    accented spelling instead of quietly teaching the wrong one."""
-    accepted = item.get("accepted_forms") or [item["target_form"]]
+    Returns (is_correct, matched_form, needs_accent_fix). Accents and
+    punctuation are forgiven so a missing tilde isn't scored as a wrong
+    answer, but the match is reported back so the drill can still show the
+    correctly accented spelling instead of quietly teaching the wrong one."""
+    accepted = accepted_forms_for(item)
     typed = user_answer.strip()
+    if not typed:
+        return False, None, False
 
     for form in accepted:
-        if typed.lower() == form.lower():
+        if _loose(typed) == _loose(form):
             return True, form, False
 
-    normalized = _normalize_for_grading(typed)
+    normalized = _normalize_for_grading(_loose(typed))
     for form in accepted:
-        if normalized == _normalize_for_grading(form):
+        if normalized == _normalize_for_grading(_loose(form)):
             return True, form, True
 
     return False, None, False
@@ -977,6 +1059,8 @@ def _build_drill_items(module_type):
         return get_indefinidos_drill_items()
     elif module_type == "preposiciones":
         return get_preposiciones_drill_items()
+    elif module_type == "fallos":
+        return progress.due_items()
     else:
         return get_imperative_drill_items(load_verbs())
 
@@ -1001,6 +1085,7 @@ def get_mixto_drill_items(count=20):
         if not pool:
             continue
         item = random.choice(pool)
+        item["module"] = module_type
         item["explanation"] = f"[{module_type}] {item.get('explanation', '')}".strip()
         items.append(item)
     random.shuffle(items)
@@ -1022,8 +1107,7 @@ def _add_recognition_variants(items, fraction=0.3):
         return items
 
     for item in random.sample(candidates, max(1, int(len(candidates) * fraction))):
-        accepted = {_normalize_for_grading(a)
-                    for a in (item.get("accepted_forms") or [item["target_form"]])}
+        accepted = {_normalize_for_grading(_loose(a)) for a in accepted_forms_for(item)}
         distractors = [f for f in unique_forms if _normalize_for_grading(f) not in accepted]
         if len(distractors) < 3:
             continue
@@ -1053,15 +1137,29 @@ def get_drill_items(module_type):
     items = get_mixto_drill_items() if module_type == "mixto" else _build_drill_items(module_type)
     for i, item in enumerate(items):
         item["id"] = i
+        item.setdefault("module", module_type)
     return _add_recognition_variants(items)
 
-def run_drill(module_type="imperativo", duration_seconds=300):
-    """Main drill runner."""
+def render_breakdown(answers):
+    """Per-type tally of this session's answers, weakest first."""
+    if not answers:
+        return
+    st.markdown("#### Por tipo de ejercicio")
+    for label, (right, total) in progress.breakdown(answers).items():
+        icon = "✅" if right == total else ("⚠️" if right * 2 >= total else "❌")
+        st.markdown(f"- {icon} **{label.replace('_', ' ')}**: {right}/{total}")
+
+def run_drill(module_type="imperativo", duration_seconds=None):
+    """Main drill runner. Length defaults to the module's own (MODULE_DURATIONS)
+    unless the user picked a fixed length in the Duración selector."""
     initialize_session()
+
+    if duration_seconds is None:
+        duration_seconds = drill_duration(module_type, st.session_state.get("duration_override"))
 
     # Header
     st.title("⚡ Spanish Drill")
-    st.markdown(f"**Module:** `!drill {module_type}` | **Duration:** 5 minutes")
+    st.markdown(f"**Module:** `!drill {module_type}` | **Duration:** {duration_seconds // 60} minutes")
 
     # Initialize drill if not active
     if not st.session_state.drill_active:
@@ -1075,17 +1173,23 @@ def run_drill(module_type="imperativo", duration_seconds=300):
         st.session_state.total_questions = 0
         st.session_state.pending_feedback = None
 
+        if not st.session_state.drill_items:
+            st.session_state.drill_active = False
+            st.info("✅ No hay nada pendiente de repasar ahora mismo. ¡Haz un drill y vuelve después!"
+                    if module_type == "fallos" else "No hay elementos para este módulo.")
+            return
+
     # Calculate time remaining
     elapsed = (datetime.now() - st.session_state.drill_start_time).total_seconds()
     time_remaining = max(0, duration_seconds - elapsed)
 
     # Timer display
     minutes, seconds = divmod(int(time_remaining), 60)
-    progress = max(0, time_remaining / duration_seconds)
+    time_fraction = max(0, time_remaining / duration_seconds)
 
     col1, col2 = st.columns([3, 1])
     with col1:
-        st.progress(progress)
+        st.progress(time_fraction)
     with col2:
         st.metric("Time Left", f"{minutes}:{seconds:02d}")
 
@@ -1115,9 +1219,17 @@ def run_drill(module_type="imperativo", duration_seconds=300):
             accuracy = (st.session_state.score / st.session_state.total_questions * 100) if st.session_state.total_questions > 0 else 0
             st.metric("Accuracy", f"{accuracy:.0f}%")
 
-        if st.button("🔄 Start New Drill"):
-            st.session_state.drill_active = False
-            st.rerun()
+        render_breakdown(st.session_state.answers)
+
+        col_a, col_b = st.columns(2)
+        with col_a:
+            if st.button("🔄 Start New Drill", use_container_width=True):
+                st.session_state.drill_active = False
+                st.rerun()
+        with col_b:
+            missed = sum(1 for a in st.session_state.answers if not a["is_correct"])
+            if st.button(f"📖 Repasar lo que fallé ({missed})", use_container_width=True, disabled=not missed):
+                _set_active_command("!repasar fallos")
 
         return
 
@@ -1185,8 +1297,11 @@ def run_drill(module_type="imperativo", duration_seconds=300):
                 "item_id": item['id'],
                 "user_answer": user_answer,
                 "correct_answer": item['target_form'],
-                "is_correct": is_correct
+                "is_correct": is_correct,
+                "exercise_type": item.get("exercise_type"),
+                "module": item.get("module"),
             })
+            progress.record_attempt(item, is_correct)
 
             st.session_state.total_questions += 1
             if is_correct:
@@ -1206,6 +1321,8 @@ def run_drill(module_type="imperativo", duration_seconds=300):
         with col2:
             if module_type in VOCAB_MODULE_TYPES:
                 if st.button("👁️ Revelar y siguiente", use_container_width=True):
+                    # Giving up on a word counts as a miss for spaced repetition.
+                    progress.record_attempt(item, False)
                     st.session_state.pending_feedback = {
                         "item_id": item['id'],
                         "is_correct": None,
@@ -1365,7 +1482,8 @@ def run_repaso(module_type="imperativo"):
     _render_module_concept(module_type)
 
     items_key = f"repaso_items_{module_type}"
-    if items_key not in st.session_state:
+    # "fallos" mirrors the live review queue, so it must not be cached for the session.
+    if items_key not in st.session_state or module_type == "fallos":
         st.session_state[items_key] = get_drill_items(module_type)
     items = st.session_state[items_key]
 
@@ -1562,6 +1680,8 @@ def run_resumen():
         st.metric("Total", total)
     with col3:
         st.metric("Precisión", f"{accuracy:.0f}%")
+
+    render_breakdown(st.session_state.answers)
 
     misses = [a for a in st.session_state.answers if not a["is_correct"]]
     if misses:

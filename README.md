@@ -95,6 +95,16 @@ Spanish/
 
 ---
 
+### Progress & spaced repetition
+
+Every graded answer is logged to a local SQLite file (`data/progress/progress.db`, git-ignored; override with `SPANISH_PROGRESS_DB`). Missed items enter a Leitner queue: a miss is due again immediately, one correct answer pushes it out a day, two a week (then two weeks).
+
+- `!drill fallos` — timed quiz on what is due
+- `!repasar fallos` — read-through of the same queue ("Repasar solo lo que falle")
+- Drill length defaults per module (`MODULE_DURATIONS` in `spanish_drill.py`) and can be overridden with the **Duración** selector.
+
+Run the tests with `pip install pytest && python -m pytest tests`.
+
 ## Data Ingestion Workflow
 
 ### Submit Raw Materials
