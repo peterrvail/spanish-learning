@@ -113,3 +113,90 @@ def test_ui_drill_logs_and_summarizes(db):
     at.session_state["active_command"] = "!repasar fallos"
     at.run()
     assert not at.exception
+
+
+def test_imperative_negative_accepts_bare_verb():
+    items = sd.get_imperative_drill_items(sd.load_verbs(), count=200)
+    neg = next(i for i in items if i["polarity"] == "negative")
+    bare = neg["target_form"].split(" ", 1)[1]
+    assert sd.check_answer(bare, neg)[0]
+    assert sd.check_answer(neg["target_form"], neg)[0]
+    # Prompts no longer leak the answer through a half-filled "¡Habla___!" blank.
+    assert all("___" not in i["prompt"] for i in items)
+
+
+def test_make_hint():
+    assert sd.make_hint("se lo", 1) == "s_ __"
+    assert sd.make_hint("¿Qué tal?", 2) == "¿Qu_ ___?"
+
+
+def test_reflexive_explanation_strips_suffix_only():
+    expl = {i["explanation"] for i in sd.get_reflexivos_drill_items(count=200)}
+    assert not any("ntarse" in e for e in expl)
+
+
+def _app():
+    from streamlit.testing.v1 import AppTest
+    return AppTest.from_file(os.path.join(os.path.dirname(__file__), "..", "app", "spanish_drill.py"),
+                             default_timeout=30)
+
+
+def test_typed_command_does_not_override_buttons(db):
+    at = _app()
+    at.run()
+    at.sidebar.text_input(key="desktop_typed_cmd").set_value("!drill numeros")
+    at.run()
+    assert at.session_state["drill_module"] == "numeros"
+    next(b for b in at.sidebar.button if b.label.startswith("📜 Pretérito")).click()
+    at.run()
+    assert at.session_state["active_command"] == "!drill preterito"
+    assert at.session_state["drill_module"] == "preterito"
+    # Typing a different drill mid-drill really switches drills.
+    at.sidebar.text_input(key="desktop_typed_cmd").set_value("!drill futuro")
+    at.run()
+    assert at.session_state["drill_module"] == "futuro"
+    assert not at.exception
+
+
+def _start_typed_drill(at, module):
+    at.session_state["active_command"] = f"!drill {module}"
+    at.run()
+    # Make sure the first item is a typed one, not multiple choice.
+    for it in at.session_state["drill_items"]:
+        it.pop("choices", None)
+    at.run()
+    return at.session_state["drill_items"][0]
+
+
+def test_accent_button_keeps_typed_text(db):
+    at = _app()
+    item = _start_typed_drill(at, "numeros")
+    at.text_input(key=f"answer_{item['id']}").set_value("ma")
+    next(b for b in at.button if b.label == "ñ").click()
+    at.run()
+    assert at.text_input(key=f"answer_{item['id']}").value == "mañ"
+    assert at.session_state["answers"] == []  # an accent tap is not a submission
+
+
+def test_no_se_reveals_and_queues(db):
+    at = _app()
+    item = _start_typed_drill(at, "numeros")
+    next(b for b in at.button if "No sé" in b.label).click()
+    at.run()
+    assert any(item["target_form"] in i.value for i in at.info)
+    assert at.session_state["answers"][0]["is_correct"] is False
+    assert progress.due_count() == 1
+
+
+def test_hinted_correct_answer_still_queued(db):
+    at = _app()
+    item = _start_typed_drill(at, "numeros")
+    next(b for b in at.button if "Pista" in b.label).click()
+    at.run()
+    assert any("Pista" in i.value for i in at.info)
+    assert item["target_form"] not in " ".join(i.value for i in at.info) or len(item["target_form"]) <= 2
+    at.text_input(key=f"answer_{item['id']}").set_value(item["target_form"])
+    next(b for b in at.button if "Submit" in b.label).click()
+    at.run()
+    assert at.session_state["score"] == 1
+    assert progress.due_count() == 1
