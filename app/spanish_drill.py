@@ -7,6 +7,9 @@ import unicodedata
 from datetime import datetime, timedelta
 import os
 
+import conversation
+import progress
+
 # Load data
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 VERBS_FILE = os.path.join(DATA_DIR, "verbs", "verbs.json")
@@ -18,6 +21,11 @@ EXERCISES_DIR = os.path.join(DATA_DIR, "exercises")
 DRILL_CATEGORIES = {
     "🎲 Repaso interleaved": [
         ("🎲 Mixto (todos los temas)", "!drill mixto"),
+    ],
+    "🔁 Repaso espaciado": [
+        ("🔁 Quiz: lo que fallé", "!drill fallos"),
+        ("📖 Repasar solo lo que falle", "!repasar fallos"),
+        ("📈 Mi progreso", "!progreso"),
     ],
     "Verbos y Tiempos": [
         ("☀️ Rutina diaria (presente)", "!drill rutina"),
@@ -54,9 +62,6 @@ DRILL_CATEGORIES = {
 }
 # Flat list kept for backward-compatible lookups (parse_command etc.)
 DRILL_COMMANDS = [item for group in DRILL_CATEGORIES.values() for item in group]
-# Pure-vocabulary drills: recalling one exact word is the whole exercise, so
-# "I don't know" should reveal the answer and move on rather than nudge with a hint.
-VOCAB_MODULE_TYPES = {"vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "numeros", "adverbios", "lugares"}
 ROL_COMMANDS = [
     ("🍽 Restaurante", "!rol restaurante"),
     ("🚌 Transporte", "!rol transporte"),
@@ -70,6 +75,26 @@ ROL_COMMANDS = [
 HABLAR_COMMANDS = [
     ("🗣️ Conversación libre", "!hablar"),
 ]
+
+# Default drill length per module (seconds). Anything not listed gets
+# DEFAULT_DRILL_SECONDS. The sidebar/header "Duración" selector can override all of them.
+DEFAULT_DRILL_SECONDS = 300
+MODULE_DURATIONS = {
+    "mixto": 600,        # 20 interleaved items across topics
+    "preterito": 420,    # 20 items, longer conjugations
+    "preterite": 420,
+    "numeros": 180,
+    "adjetivos": 180,
+    "participios": 180,
+    "futuro": 180,
+    "futuro_irregular": 180,
+    "fallos": 300,
+}
+DURATION_CHOICES = {"Por módulo (recomendado)": None, "3 min": 180, "5 min": 300, "10 min": 600, "15 min": 900}
+
+def drill_duration(module_type, override=None):
+    """Seconds for a drill: an explicit override, else the module's default."""
+    return override or MODULE_DURATIONS.get(module_type, DEFAULT_DRILL_SECONDS)
 
 def is_mobile():
     """Detect iOS/mobile via the request's User-Agent (server-side, no JS needed)."""
@@ -105,6 +130,21 @@ def inject_wide_sidebar_css():
             line-height: 1.25;
             font-size: 0.9rem;
             padding: 0.4rem 0.45rem;
+        }
+        /* The ellipsis lives on the label's inner markdown container and <p>,
+           which set their own nowrap/hidden, so the rule above alone can't
+           reach it. */
+        section[data-testid="stSidebar"] div.stButton > button div[data-testid="stMarkdownContainer"],
+        section[data-testid="stSidebar"] div.stButton > button p {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+        }
+        /* The 📖 icon sits in a ~40px column; side padding alone would
+           swallow it. Streamlit tags each widget with an st-key-<key> class. */
+        section[data-testid="stSidebar"] [class*="st-key-menu_repasar_"] button {
+            padding-left: 0;
+            padding-right: 0;
         }
         /* Tighten the gap so the icon column keeps usable width. */
         section[data-testid="stSidebar"] div[data-testid="stHorizontalBlock"] {
@@ -144,6 +184,17 @@ def _set_active_command(cmd):
     st.session_state.drill_active = False
     st.rerun()
 
+def _on_typed_command(key):
+    """on_change callback for the command text boxes. Acting once, on submit,
+    and then clearing the box matters: reading the box on every rerun made a
+    stale typed command override every button tapped afterwards, and typing
+    a new !drill mid-drill kept serving the old drill's questions."""
+    cmd = st.session_state.get(key, "").strip()
+    if cmd:
+        st.session_state.active_command = cmd
+        st.session_state.drill_active = False
+    st.session_state[key] = ""
+
 def _render_button_grid(commands, columns, key_prefix):
     """Render a grid of drill/roleplay buttons. Drills whose module has a grammar
     concept to explain (see get_module_concept) also get a 📖 Repasar icon;
@@ -151,6 +202,8 @@ def _render_button_grid(commands, columns, key_prefix):
     review beyond the quiz itself."""
     cols = st.columns(columns)
     for i, (label, cmd) in enumerate(commands):
+        # Let long "A/B" labels wrap at the slash rather than mid-word.
+        label = label.replace("/", "/\u200b")
         with cols[i % columns]:
             module = cmd.split(" ", 1)[1] if cmd.startswith("!drill ") else None
             has_concept = module is not None and get_module_concept(module) is not None
@@ -169,6 +222,16 @@ def _render_button_grid(commands, columns, key_prefix):
 
 def render_command_menu(columns=2):
     """Tap-friendly, categorized grid of drill/roleplay buttons. Sets st.session_state.active_command."""
+    # On mobile the menu (and so this widget) isn't drawn during a drill, and
+    # Streamlit drops an undrawn widget's state; restore it from the saved choice.
+    if "duration_choice" not in st.session_state:
+        saved = st.session_state.get("duration_override")
+        st.session_state.duration_choice = next(k for k, v in DURATION_CHOICES.items() if v == saved)
+    choice = st.selectbox("⏱️ Duración", list(DURATION_CHOICES), key="duration_choice")
+    st.session_state.duration_override = DURATION_CHOICES[choice]
+    pending = progress.due_count()
+    if pending:
+        st.caption(f"🔁 {pending} para repasar hoy")
     st.caption("📖 = Repasar (revisar sin cronómetro ni puntuación)")
     for category_name, commands in DRILL_CATEGORIES.items():
         st.markdown(f"#### {category_name}")
@@ -233,23 +296,74 @@ def _normalize_for_grading(s):
     s = unicodedata.normalize("NFD", s.strip().lower())
     return "".join(c for c in s if unicodedata.category(c) != "Mn")
 
+def _loose(s):
+    """Lowercase, collapse whitespace and drop ¿?¡!.,;: — sentence answers
+    shouldn't be marked wrong over a missing question mark or period.
+    Accents are left alone so a missing tilde can still be flagged."""
+    s = re.sub(r"[¿?¡!.,;:]", " ", s.strip().lower())
+    return " ".join(s.split())
+
+_SUBJECT_PRONOUNS = ("yo", "tú", "él", "ella", "usted", "nosotros", "nosotras", "ellos", "ellas", "ustedes")
+
+def sentence_forms(raw):
+    """Every acceptable rendering of a full-sentence target: expands 'honesto/a'
+    and 'cambio/suelto' slash shorthand, and also accepts the sentence without
+    its leading subject pronoun (Spanish drops it: 'Yo hablé' = 'Hablé')."""
+    forms = [raw]
+    # Expand each slash token in turn (a/b -> a, b; word/a -> masculine + feminine).
+    for _ in range(4):
+        expanded, changed = [], False
+        for f in forms:
+            m = re.search(r"(\w+)/(\w+)", f)
+            if not m:
+                expanded.append(f)
+                continue
+            changed = True
+            first, second = m.group(1), m.group(2)
+            if second == "a" and first.endswith("o"):
+                second = first[:-1] + "a"
+            for choice in (first, second):
+                expanded.append(f[:m.start()] + choice + f[m.end():])
+        forms = expanded
+        if not changed:
+            break
+    out = list(forms)
+    for f in forms:
+        words = f.split(" ", 1)
+        if len(words) == 2 and words[0].lower().strip("¿¡") in _SUBJECT_PRONOUNS:
+            out.append(words[1])
+    return list(dict.fromkeys(out))
+
+def accepted_forms_for(item):
+    """All forms that count as correct. Items that spell out accepted_forms keep
+    them; otherwise multi-word targets are expanded with sentence_forms."""
+    if item.get("accepted_forms"):
+        return item["accepted_forms"]
+    target = item["target_form"]
+    if " " not in target and "/" not in target:
+        return [target]
+    # Keep the literal target too, so typing the shorthand ('honesto/a') still counts.
+    return list(dict.fromkeys(sentence_forms(target) + [target]))
+
 def check_answer(user_answer, item):
     """Grade an answer against every accepted form for this item.
 
-    Returns (is_correct, matched_form, needs_accent_fix). Accents are
-    forgiven so a missing tilde isn't scored as a wrong answer, but the
-    match is reported back so the drill can still show the correctly
-    accented spelling instead of quietly teaching the wrong one."""
-    accepted = item.get("accepted_forms") or [item["target_form"]]
+    Returns (is_correct, matched_form, needs_accent_fix). Accents and
+    punctuation are forgiven so a missing tilde isn't scored as a wrong
+    answer, but the match is reported back so the drill can still show the
+    correctly accented spelling instead of quietly teaching the wrong one."""
+    accepted = accepted_forms_for(item)
     typed = user_answer.strip()
+    if not typed:
+        return False, None, False
 
     for form in accepted:
-        if typed.lower() == form.lower():
+        if _loose(typed) == _loose(form):
             return True, form, False
 
-    normalized = _normalize_for_grading(typed)
+    normalized = _normalize_for_grading(_loose(typed))
     for form in accepted:
-        if normalized == _normalize_for_grading(form):
+        if normalized == _normalize_for_grading(_loose(form)):
             return True, form, True
 
     return False, None, False
@@ -281,6 +395,17 @@ def load_scenarios():
     with open(SCENARIOS_FILE, "r", encoding="utf-8") as f:
         return json.load(f)["scenarios"]
 
+def _scenario_matches(s, tema_lower):
+    return tema_lower in s["tema"].lower() or tema_lower in s["title"].lower() or tema_lower in s["id"].lower()
+
+def _another_scenario(tema, current_id):
+    """A different scenario on the same tema when there is one, else any other."""
+    scenarios = load_scenarios()
+    tema_lower = (tema or "default").lower().strip()
+    same_tema = [s for s in scenarios if tema_lower != "default" and _scenario_matches(s, tema_lower)]
+    pool = [s for s in (same_tema or scenarios) if s["id"] != current_id] or scenarios
+    return random.choice(pool)
+
 def find_scenario(tema):
     scenarios = load_scenarios()
     if not tema or tema == "default":
@@ -288,7 +413,7 @@ def find_scenario(tema):
     tema_lower = tema.lower().strip()
     # Match by tema, title, or id (partial match allowed)
     for s in scenarios:
-        if tema_lower in s["tema"].lower() or tema_lower in s["title"].lower() or tema_lower in s["id"].lower():
+        if _scenario_matches(s, tema_lower):
             return s
     return None
 
@@ -625,12 +750,14 @@ def get_reflexivos_drill_items(count=12):
     verb_list = rv["common_reflexive_verbs"]
     combos = [(v, person) for v in verb_list for person in pronoun_by_person]
     for v, person in random.sample(combos, min(max(count - 4, 1), len(combos))):
+        # 'sentarse' -> 'sentar', 'darse cuenta (de)' -> 'dar cuenta (de)'
+        bare_verb = re.sub(r"se\b", "", v["spanish"], count=1)
         items.append({
             "id": len(items),
             "prompt": f"Which reflexive pronoun goes with '{person}' for '{v['spanish']}' ({v['english']})?",
             "target_form": pronoun_by_person[person],
             "exercise_type": "reflexivos",
-            "explanation": f"{person} → {pronoun_by_person[person]} + {v['spanish'].replace('se', '', 1) if v['spanish'].endswith('se') else v['spanish']}"
+            "explanation": f"{person} → {pronoun_by_person[person]} + {bare_verb}"
         })
 
     for person, details in rv["conjugation"].items():
@@ -900,28 +1027,20 @@ def get_imperative_drill_items(verbs_data, count=20):
 
     items = []
     for verb, person, polarity, target_form in random.sample(combos, min(count, len(combos))):
-        prompt = f"Conjugate '{verb['infinitive']}' ({person}, {polarity}): "
-
-        exercise_type = random.choice(["fill_blank", "conjugate"])
-        if exercise_type == "fill_blank":
-            if polarity == "affirmative":
-                if person == "tú":
-                    prompt += f"¡{verb['infinitive'].split('r')[0].capitalize()}___! (Speak!)"
-                else:
-                    prompt += f"{verb['infinitive']} ahora."
-            else:
-                prompt += f"No ___ así. (Don't do it like that.)"
-        else:
-            prompt += f"What is the {person} {polarity} form?"
-
+        spanish_polarity = "afirmativo" if polarity == "affirmative" else "negativo"
+        accepted = [target_form]
+        if polarity == "negative" and target_form.lower().startswith("no "):
+            # The prompt already says "negativo", so the bare verb form counts too.
+            accepted.append(target_form[3:])
         items.append({
             "id": len(items),
-            "prompt": prompt,
+            "prompt": f"Imperativo {spanish_polarity} de '{verb['infinitive']}' ({verb.get('translation', '')}) — {person}",
             "verb_infinitive": verb["infinitive"],
             "person": person,
             "polarity": polarity,
             "target_form": target_form,
-            "exercise_type": exercise_type,
+            "accepted_forms": accepted,
+            "exercise_type": f"imperativo_{spanish_polarity}",
             "explanation": f"The {person} {polarity} imperative of '{verb['infinitive']}' is '{target_form}'."
         })
 
@@ -977,6 +1096,8 @@ def _build_drill_items(module_type):
         return get_indefinidos_drill_items()
     elif module_type == "preposiciones":
         return get_preposiciones_drill_items()
+    elif module_type == "fallos":
+        return progress.due_items()
     else:
         return get_imperative_drill_items(load_verbs())
 
@@ -1000,7 +1121,11 @@ def get_mixto_drill_items(count=20):
         pool = _build_drill_items(module_type)
         if not pool:
             continue
-        item = random.choice(pool)
+        # Make the multiple-choice variants here, while the whole topic is at
+        # hand: in the finished drill every item is from a different topic,
+        # so the wrong options would be giveaways (a number vs. a verb).
+        item = random.choice(_add_recognition_variants(pool))
+        item["module"] = module_type
         item["explanation"] = f"[{module_type}] {item.get('explanation', '')}".strip()
         items.append(item)
     random.shuffle(items)
@@ -1015,16 +1140,20 @@ def _add_recognition_variants(items, fraction=0.3):
     choosing between them trains the discrimination that free recall alone
     doesn't; and recognition is a lower rung than production, which gives
     material you've just met a rung to stand on instead of only ever facing the
-    hardest possible format."""
-    candidates = [it for it in items if len(it["target_form"].split()) <= 3]
-    unique_forms = list(dict.fromkeys(it["target_form"] for it in candidates))
-    if len(unique_forms) < 4:
-        return items
+    hardest possible format.
 
-    for item in random.sample(candidates, max(1, int(len(candidates) * fraction))):
-        accepted = {_normalize_for_grading(a)
-                    for a in (item.get("accepted_forms") or [item["target_form"]])}
-        distractors = [f for f in unique_forms if _normalize_for_grading(f) not in accepted]
+    Distractors only come from the same module, so a mixed review queue
+    ('fallos') never offers a number as a wrong answer to a verb question."""
+    candidates = [it for it in items if len(it["target_form"].split()) <= 3]
+    forms_by_module = {}
+    for it in candidates:
+        forms_by_module.setdefault(it.get("module"), []).append(it["target_form"])
+    forms_by_module = {m: list(dict.fromkeys(f)) for m, f in forms_by_module.items()}
+
+    for item in random.sample(candidates, int(len(candidates) * fraction)):
+        unique_forms = forms_by_module[item.get("module")]
+        accepted = {_normalize_for_grading(_loose(a)) for a in accepted_forms_for(item)}
+        distractors = [f for f in unique_forms if _normalize_for_grading(_loose(f)) not in accepted]
         if len(distractors) < 3:
             continue
         choices = _plausible_distractors(item["target_form"], distractors) + [item["target_form"]]
@@ -1053,15 +1182,50 @@ def get_drill_items(module_type):
     items = get_mixto_drill_items() if module_type == "mixto" else _build_drill_items(module_type)
     for i, item in enumerate(items):
         item["id"] = i
-    return _add_recognition_variants(items)
+        item.setdefault("module", module_type)
+    # mixto already made its variants per topic (see get_mixto_drill_items).
+    return items if module_type == "mixto" else _add_recognition_variants(items)
 
-def run_drill(module_type="imperativo", duration_seconds=300):
-    """Main drill runner."""
+def render_breakdown(answers):
+    """Per-type tally of this session's answers, weakest first."""
+    if not answers:
+        return
+    st.markdown("#### Por tipo de ejercicio")
+    for label, (right, total) in progress.breakdown(answers).items():
+        icon = "✅" if right == total else ("⚠️" if right * 2 >= total else "❌")
+        st.markdown(f"- {icon} **{label.replace('_', ' ')}**: {right}/{total}")
+
+def _render_timer(time_remaining, duration_seconds):
+    minutes, seconds = divmod(int(time_remaining), 60)
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.progress(max(0.0, time_remaining / duration_seconds))
+    with col2:
+        st.metric("Time Left", f"{minutes}:{seconds:02d}")
+
+@st.fragment(run_every=1)
+def _live_timer(duration_seconds):
+    """Tick the countdown every second without rerunning the page, so the
+    clock moves while you think and a half-typed answer is left alone. When
+    time runs out, rerun the whole app once so the summary replaces the
+    question; otherwise the drill only ended on your next click."""
+    elapsed = (datetime.now() - st.session_state.drill_start_time).total_seconds()
+    time_remaining = max(0, duration_seconds - elapsed)
+    _render_timer(time_remaining, duration_seconds)
+    if time_remaining <= 0:
+        st.rerun(scope="app")
+
+def run_drill(module_type="imperativo", duration_seconds=None):
+    """Main drill runner. Length defaults to the module's own (MODULE_DURATIONS)
+    unless the user picked a fixed length in the Duración selector."""
     initialize_session()
+
+    if duration_seconds is None:
+        duration_seconds = drill_duration(module_type, st.session_state.get("duration_override"))
 
     # Header
     st.title("⚡ Spanish Drill")
-    st.markdown(f"**Module:** `!drill {module_type}` | **Duration:** 5 minutes")
+    st.markdown(f"**Module:** `!drill {module_type}` | **Duration:** {duration_seconds // 60} minutes")
 
     # Initialize drill if not active
     if not st.session_state.drill_active:
@@ -1075,19 +1239,20 @@ def run_drill(module_type="imperativo", duration_seconds=300):
         st.session_state.total_questions = 0
         st.session_state.pending_feedback = None
 
-    # Calculate time remaining
+        if not st.session_state.drill_items:
+            st.session_state.drill_active = False
+            st.info("✅ No hay nada pendiente de repasar ahora mismo. ¡Haz un drill y vuelve después!"
+                    if module_type == "fallos" else "No hay elementos para este módulo.")
+            return
+
     elapsed = (datetime.now() - st.session_state.drill_start_time).total_seconds()
     time_remaining = max(0, duration_seconds - elapsed)
+    finished = time_remaining <= 0 or st.session_state.current_item_index >= len(st.session_state.drill_items)
 
-    # Timer display
-    minutes, seconds = divmod(int(time_remaining), 60)
-    progress = max(0, time_remaining / duration_seconds)
-
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.progress(progress)
-    with col2:
-        st.metric("Time Left", f"{minutes}:{seconds:02d}")
+    if finished:
+        _render_timer(time_remaining, duration_seconds)
+    else:
+        _live_timer(duration_seconds)
 
     pausa_col, resumen_col = st.columns(2)
     with pausa_col:
@@ -1100,7 +1265,7 @@ def run_drill(module_type="imperativo", duration_seconds=300):
             st.rerun()
 
     # Check if drill is complete
-    if time_remaining <= 0 or st.session_state.current_item_index >= len(st.session_state.drill_items):
+    if finished:
         st.success("✅ Drill Complete!")
 
         # Show summary
@@ -1115,9 +1280,17 @@ def run_drill(module_type="imperativo", duration_seconds=300):
             accuracy = (st.session_state.score / st.session_state.total_questions * 100) if st.session_state.total_questions > 0 else 0
             st.metric("Accuracy", f"{accuracy:.0f}%")
 
-        if st.button("🔄 Start New Drill"):
-            st.session_state.drill_active = False
-            st.rerun()
+        render_breakdown(st.session_state.answers)
+
+        col_a, col_b = st.columns(2)
+        with col_a:
+            if st.button("🔄 Start New Drill", use_container_width=True):
+                st.session_state.drill_active = False
+                st.rerun()
+        with col_b:
+            missed = sum(1 for a in st.session_state.answers if not a["is_correct"] or a.get("hinted"))
+            if st.button(f"📖 Repasar lo que fallé ({missed})", use_container_width=True, disabled=not missed):
+                _set_active_command("!repasar fallos")
 
         return
 
@@ -1134,19 +1307,20 @@ def run_drill(module_type="imperativo", duration_seconds=300):
         if pending and pending.get("item_id") == item["id"]:
             # Feedback phase: show the result and wait for the user to move on,
             # at their own pace, instead of a hardcoded sleep.
-            if pending["is_correct"] is True:
+            if pending.get("revealed"):
+                st.info(f"🤷 La respuesta: **{pending['target_form']}**")
+                if pending.get("explanation"):
+                    st.caption(f"💡 {pending['explanation']}")
+            elif pending["is_correct"]:
                 st.success(f"✅ Correct! '{pending['target_form']}'")
                 if pending.get("accent_fix"):
                     st.warning(f"✍️ Ojo con la tilde: se escribe **{pending['accent_fix']}**.")
-            elif pending["is_correct"] is False:
+                if pending.get("hinted"):
+                    st.caption("💡 Con pista — volverá a salir en el repaso espaciado.")
+            else:
                 st.error(f"❌ Incorrect. The correct form is: '{pending['target_form']}'")
                 if pending.get("explanation"):
                     st.info(f"💡 {pending['explanation']}")
-            else:
-                reveal = f"✅ {pending['target_form']}"
-                if pending.get("explanation"):
-                    reveal += f" — {pending['explanation']}"
-                st.info(reveal)
 
             if st.button("➡️ Continuar", use_container_width=True):
                 st.session_state.pending_feedback = None
@@ -1156,6 +1330,8 @@ def run_drill(module_type="imperativo", duration_seconds=300):
 
         # Answering phase
         answer_key = f"answer_{item['id']}"
+        hint_key = f"hint_level_{item['id']}"
+        hint_level = st.session_state.get(hint_key, 0)
 
         if item.get("choices"):
             # Recognition item: pick the right form out of same-topic near-misses.
@@ -1165,62 +1341,88 @@ def run_drill(module_type="imperativo", duration_seconds=300):
                 submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
             user_answer = user_answer or ""
         else:
-            st.caption("Acentos rápidos:")
-            accent_cols = st.columns(7)
-            for i, ch in enumerate(["á", "é", "í", "ó", "ú", "ñ", "ü"]):
-                with accent_cols[i]:
-                    if st.button(ch, key=f"accent_{item['id']}_{ch}", use_container_width=True):
-                        st.session_state[answer_key] = st.session_state.get(answer_key, "") + ch
-                        st.rerun()
-
-            # Wrapped in a form so pressing Enter submits it, same as clicking "Submit Answer".
+            if hint_level:
+                st.info(f"💡 Pista: `{make_hint(item['target_form'], hint_level)}`")
+            # Wrapped in a form so pressing Enter submits it (Enter fires the
+            # form's FIRST submit button, so Submit must come before the accents).
+            # The accent keys are submit buttons too: a plain st.button outside
+            # the form would rerun without the half-typed text, wiping it out.
             with st.form(key=f"answer_form_{item['id']}"):
                 user_answer = st.text_input("Your answer:", key=answer_key)
                 submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
+                accent_cols = st.columns(len(ACCENT_KEYS))
+                for col, ch in zip(accent_cols, ACCENT_KEYS):
+                    with col:
+                        st.form_submit_button(ch, use_container_width=True,
+                                              on_click=_append_accent, args=(answer_key, ch))
 
         if submitted:
             is_correct, matched_form, needs_accent_fix = check_answer(user_answer, item)
-
-            st.session_state.answers.append({
-                "item_id": item['id'],
-                "user_answer": user_answer,
-                "correct_answer": item['target_form'],
-                "is_correct": is_correct
-            })
-
-            st.session_state.total_questions += 1
-            if is_correct:
-                st.session_state.score += 1
-
-            st.session_state.pending_feedback = {
-                "item_id": item['id'],
-                "is_correct": is_correct,
-                "target_form": item['target_form'],
-                "explanation": item.get('explanation', ''),
-                "accent_fix": matched_form if needs_accent_fix else None,
-            }
+            _record_answer(item, user_answer, is_correct, hinted=hint_level > 0,
+                           accent_fix=matched_form if needs_accent_fix else None)
             st.rerun()
 
         col2, col3 = st.columns(2)
 
         with col2:
-            if module_type in VOCAB_MODULE_TYPES:
-                if st.button("👁️ Revelar y siguiente", use_container_width=True):
-                    st.session_state.pending_feedback = {
-                        "item_id": item['id'],
-                        "is_correct": None,
-                        "target_form": item['target_form'],
-                        "explanation": item.get('explanation', ''),
-                    }
-                    st.rerun()
-            else:
-                if st.button("💡 Hint", use_container_width=True):
-                    st.info(f"💡 Hint: {item['explanation']}")
+            can_hint = not item.get("choices") and hint_level < len(item["target_form"]) - 1
+            if st.button("💡 Pista (una letra más)", use_container_width=True, disabled=not can_hint):
+                st.session_state[hint_key] = hint_level + 1
+                st.rerun()
 
         with col3:
-            if st.button("⏭️ Skip", use_container_width=True):
-                st.session_state.current_item_index += 1
+            # "I don't know" shows the answer and counts as a miss, so the item
+            # lands in the review queue instead of silently disappearing.
+            if st.button("🤷 No sé (mostrar)", use_container_width=True):
+                _record_answer(item, "", False, revealed=True)
                 st.rerun()
+
+ACCENT_KEYS = ["á", "é", "í", "ó", "ú", "ñ", "ü", "¿", "¡"]
+
+def _append_accent(answer_key, ch):
+    """Form-button callback: runs after the form's typed text has landed in
+    session state, and before the widget is re-created, so it may edit it."""
+    st.session_state[answer_key] = st.session_state.get(answer_key, "") + ch
+
+def make_hint(target, level):
+    """Reveal the first `level` letters of the answer and mask the rest,
+    keeping spaces and punctuation so the shape of the answer shows:
+    make_hint('se lo', 1) -> 's_ __'."""
+    out, shown = [], 0
+    for ch in target:
+        if ch.isalpha():
+            out.append(ch if shown < level else "_")
+            shown += 1
+        else:
+            out.append(ch)
+    return "".join(out)
+
+def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, accent_fix=None):
+    """Score one answer, log it for spaced repetition, and queue its feedback.
+    An answer that needed a hint still scores, but goes to the review queue as
+    a miss: getting there with help isn't the same as knowing it."""
+    st.session_state.answers.append({
+        "item_id": item["id"],
+        "user_answer": user_answer,
+        "correct_answer": item["target_form"],
+        "is_correct": is_correct,
+        "hinted": hinted,
+        "exercise_type": item.get("exercise_type"),
+        "module": item.get("module"),
+    })
+    progress.record_attempt(item, is_correct and not hinted)
+    st.session_state.total_questions += 1
+    if is_correct:
+        st.session_state.score += 1
+    st.session_state.pending_feedback = {
+        "item_id": item["id"],
+        "is_correct": is_correct,
+        "revealed": revealed,
+        "hinted": hinted,
+        "target_form": item["target_form"],
+        "explanation": item.get("explanation", ""),
+        "accent_fix": accent_fix,
+    }
 
 def get_module_concept(module_type):
     """Return {'overview': str, 'uses': [...]} explaining the grammar concept
@@ -1365,7 +1567,8 @@ def run_repaso(module_type="imperativo"):
     _render_module_concept(module_type)
 
     items_key = f"repaso_items_{module_type}"
-    if items_key not in st.session_state:
+    # "fallos" mirrors the live review queue, so it must not be cached for the session.
+    if items_key not in st.session_state or module_type == "fallos":
         st.session_state[items_key] = get_drill_items(module_type)
     items = st.session_state[items_key]
 
@@ -1412,12 +1615,18 @@ def run_repaso(module_type="imperativo"):
         st.rerun()
 
 def run_rol(tema=None):
-    """Display a scenario card for roleplay. The conversation itself happens
-    in chat with Claude, using this card as context — Streamlit only selects
-    and presents the scenario."""
+    """Show a scenario card and, when the Claude API is configured, run the
+    roleplay right under it; otherwise the card is context to take to a
+    chat with Claude."""
     st.title("🎭 Roleplay Scenario")
 
-    scenario = find_scenario(tema)
+    # Pin the pick for this session: with no tema, find_scenario chooses at
+    # random, and a fresh pick on every rerun would swap the scenario mid-chat.
+    pin_key = f"rol_scenario_{tema}"
+    if pin_key not in st.session_state:
+        picked = find_scenario(tema)
+        st.session_state[pin_key] = picked["id"] if picked else None
+    scenario = next((s for s in load_scenarios() if s["id"] == st.session_state[pin_key]), None)
 
     if scenario is None:
         st.error(f"❌ No scenario found for tema '{tema}'.")
@@ -1457,15 +1666,20 @@ def run_rol(tema=None):
     st.info(f"**{p['name']}:** {scenario['opening_line']}")
 
     st.markdown("---")
-    st.markdown(
-        "**Cómo usar esta tarjeta:** Este panel selecciona y muestra el escenario, "
-        "pero la conversación dinámica ocurre chateando directamente con Claude. "
-        "Copia la frase de apertura (o simplemente escribe `!rol " + scenario["tema"] +
-        "` en el chat) y Claude continuará el rol dinámicamente en español, "
-        "corrigiendo errores de gramática al final de cada respuesta según el protocolo de inmersión."
-    )
+    if _chat_available():
+        st.markdown("### 🗣️ Conversación")
+        _render_chat(f"chat_rol_{scenario['id']}", conversation.system_prompt(scenario))
+    else:
+        st.markdown(
+            "**Cómo usar esta tarjeta:** copia la frase de apertura (o escribe `!rol " + scenario["tema"] +
+            "`) en un chat con Claude y continuará el rol en español, corrigiendo tus errores al final "
+            "de cada respuesta."
+        )
+        _chat_setup_help()
 
     if st.button("🔄 Otro escenario aleatorio"):
+        st.session_state.pop(f"chat_rol_{scenario['id']}", None)
+        st.session_state[pin_key] = _another_scenario(tema, scenario["id"])["id"]
         st.rerun()
 
 _HABLAR_STARTERS = [
@@ -1480,33 +1694,90 @@ _HABLAR_STARTERS = [
 ]
 
 def run_hablar():
-    """Freeform conversational-partner mode. Like !rol, the conversation
-    itself happens in chat with Claude — this screen just sets the stage
-    with a topic to start from, instead of a scripted scenario."""
+    """Freeform conversation partner. With Claude API credentials configured
+    the conversation happens right here; otherwise this screen offers a topic
+    to take to a chat with Claude."""
     st.title("🗣️ Compañero de Conversación")
     st.markdown(
-        "Conversación libre en español, sin guion ni objetivo fijo. "
-        "Escribe directamente en el chat con Claude — responderá **100% en "
-        "español**, en turnos de 2 a 4 frases, y corregirá tus errores de "
-        "gramática al final de cada respuesta."
+        "Conversación libre en español, sin guion ni objetivo fijo: respuestas "
+        "**100% en español**, de 2 a 4 frases, con tus errores corregidos al final."
     )
 
-    st.markdown("### 💬 Si no sabes por dónde empezar")
     idx_key = "hablar_starter_idx"
     st.session_state.setdefault(idx_key, random.randrange(len(_HABLAR_STARTERS)))
-    st.info(_HABLAR_STARTERS[st.session_state[idx_key]])
+    topic = _HABLAR_STARTERS[st.session_state[idx_key]]
 
-    if st.button("🔀 Otro tema aleatorio"):
+    if st.button("🔀 Otro tema (empieza de nuevo)"):
         st.session_state[idx_key] = random.randrange(len(_HABLAR_STARTERS))
+        st.session_state.pop("chat_hablar", None)
         st.rerun()
 
-    st.markdown("---")
-    st.markdown(
-        "**Cómo usar esto:** copia el tema de arriba (o escribe el tuyo) "
-        "directamente en el chat. Claude seguirá la conversación en español "
-        "de forma dinámica. Para algo más estructurado, con un objetivo y "
-        "vocabulario específicos, usa `!rol [tema]` en su lugar."
-    )
+    if _chat_available():
+        # The topic is part of the system prompt, which must stay fixed for
+        # the whole conversation, so changing it starts a new conversation.
+        system = conversation.system_prompt() + f'\n\nYou opened the conversation by asking: "{topic}"'
+        with st.chat_message("assistant"):
+            st.markdown(topic)
+        _render_chat("chat_hablar", system)
+    else:
+        st.markdown("### 💬 Si no sabes por dónde empezar")
+        st.info(topic)
+        st.markdown(
+            "Copia el tema (o escribe el tuyo) en un chat con Claude y seguirá la "
+            "conversación en español. Para algo más estructurado, usa `!rol [tema]`."
+        )
+        _chat_setup_help()
+
+def _anthropic_secret():
+    """ANTHROPIC_API_KEY from .streamlit/secrets.toml, if there is one."""
+    try:
+        return st.secrets.get("ANTHROPIC_API_KEY")
+    except Exception:  # no secrets file at all
+        return None
+
+def _chat_available():
+    return conversation.credentials_configured(_anthropic_secret())
+
+def _chat_setup_help():
+    with st.expander("💡 Chatear aquí mismo, sin salir de la app"):
+        st.markdown(
+            "La app puede llevar la conversación directamente si tiene acceso a la API de Claude:\n\n"
+            "1. `pip install -r requirements.txt` (incluye el paquete `anthropic`).\n"
+            "2. Pon tu clave en la variable de entorno `ANTHROPIC_API_KEY`, o en "
+            "`.streamlit/secrets.toml` como `ANTHROPIC_API_KEY = \"...\"`.\n"
+            "3. Reinicia la app.\n\n"
+            "Cada mensaje es una llamada a la API, con su coste."
+        )
+
+def _render_chat(conv_key, system):
+    """A chat thread stored in session state under conv_key. History is only
+    ever appended to (see conversation.py for why); a failed turn drops the
+    unanswered user message, which is the tail and so edits nothing earlier."""
+    history = st.session_state.setdefault(conv_key, [])
+    for msg in history:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"] if msg["role"] == "user" else conversation.assistant_text(msg["content"]))
+
+    prompt = st.chat_input("Escribe en español…")
+    if history and st.button("🧹 Nueva conversación"):
+        st.session_state.pop(conv_key, None)
+        st.rerun()
+    if not prompt:
+        return
+
+    history.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    result = {}
+    with st.chat_message("assistant"):
+        try:
+            client = conversation.get_client(_anthropic_secret())
+            st.write_stream(conversation.stream_reply(client, system, history, result))
+        except conversation.ChatError as e:
+            history.pop()
+            st.error(str(e))
+            return
+    history.append({"role": "assistant", "content": result["content"]})
 
 def run_pausa():
     """Step out of the current drill to see its grammar rule explained —
@@ -1563,6 +1834,8 @@ def run_resumen():
     with col3:
         st.metric("Precisión", f"{accuracy:.0f}%")
 
+    render_breakdown(st.session_state.answers)
+
     misses = [a for a in st.session_state.answers if not a["is_correct"]]
     if misses:
         st.markdown("### ❌ Para repasar")
@@ -1575,6 +1848,68 @@ def run_resumen():
     if st.button("▶️ Volver al drill"):
         st.session_state.active_command = f"!drill {st.session_state.drill_module}"
         st.rerun()
+
+def _module_label(module):
+    """'preterito' -> '📜 Pretérito irregular', using the menu's own labels."""
+    for label, cmd in DRILL_COMMANDS:
+        if cmd == f"!drill {module}":
+            return label
+    return module.replace("_", " ")
+
+def run_progreso():
+    """Long-term view built from the attempt log: streak, weekly accuracy,
+    daily volume, where cards sit in the Leitner boxes, and per-topic accuracy
+    with the weakest topics first."""
+    st.title("📈 Mi progreso")
+    data = progress.stats()
+    if data is None:
+        st.warning("No se pudo leer el registro de progreso.")
+        return
+    if not data["total"]:
+        st.info("Todavía no hay intentos registrados. Haz un drill y vuelve aquí.")
+        return
+
+    week_right, week_total = data["week"]
+    prev_right, prev_total = data["prev_week"]
+    week_pct = 100 * week_right / week_total if week_total else None
+    prev_pct = 100 * prev_right / prev_total if prev_total else None
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("🔥 Racha", f"{data['streak']} {'día' if data['streak'] == 1 else 'días'}")
+    c2.metric("Intentos", data["total"])
+    c3.metric("Precisión (7 días)", f"{week_pct:.0f}%" if week_pct is not None else "—",
+              delta=f"{week_pct - prev_pct:+.0f} pts vs. semana anterior"
+              if week_pct is not None and prev_pct is not None else None)
+    c4.metric("Para repasar hoy", data["due"])
+    if data["due"] and st.button(f"🔁 Repasar ahora ({data['due']})", use_container_width=True):
+        _set_active_command("!drill fallos")
+
+    st.markdown("### 🔁 Repaso espaciado")
+    boxes = data["boxes"]
+    b1, b2, b3, b4 = st.columns(4)
+    b1.metric("Por repasar", boxes.get(0, 0), help="Fallado la última vez: vuelve enseguida.")
+    b2.metric("Aprendiendo", boxes.get(1, 0), help="Un acierto: vuelve en 1 día.")
+    b3.metric("Consolidando", boxes.get(2, 0), help="Dos aciertos seguidos: vuelve en 1 semana.")
+    b4.metric("Dominadas", boxes.get(3, 0), help="Tres o más aciertos seguidos: cada 2 semanas.")
+
+    st.markdown("### 📅 Intentos por día (últimas 2 semanas)")
+    st.bar_chart({"Día": [d.strftime("%d/%m") for d, _ in data["daily"]],
+                  "Intentos": [n for _, n in data["daily"]]},
+                 x="Día", y="Intentos", height=220)
+
+    st.markdown("### 📚 Por tema (lo más flojo primero)")
+    st.dataframe(
+        {
+            "Tema": [_module_label(m) for m, _, _, _ in data["by_module"]],
+            "Precisión": [round(100 * c / t) for _, c, t, _ in data["by_module"]],
+            "Aciertos": [f"{c}/{t}" for _, c, t, _ in data["by_module"]],
+            "Última vez": [last.strftime("%d/%m") for _, _, _, last in data["by_module"]],
+        },
+        hide_index=True,
+        use_container_width=True,
+        column_config={"Precisión": st.column_config.ProgressColumn(
+            "Precisión", min_value=0, max_value=100, format="%d%%")},
+    )
 
 def parse_command(command_input):
     """Parse CLI-style commands."""
@@ -1598,6 +1933,8 @@ def parse_command(command_input):
         return ("pausa", None)
     elif parts[0] == "!resumen":
         return ("resumen", None)
+    elif parts[0] == "!progreso":
+        return ("progreso", None)
 
     return None
 
@@ -1623,6 +1960,8 @@ def dispatch_command(command_str):
         run_pausa()
     elif command_type == "resumen":
         run_resumen()
+    elif command_type == "progreso":
+        run_progreso()
 
 def render_landing():
     st.markdown("""
@@ -1662,7 +2001,6 @@ def main():
             if st.button("🏠 Home", use_container_width=True):
                 st.session_state.active_command = None
                 st.session_state.drill_active = False
-                st.session_state.pop("mobile_typed_cmd", None)
                 st.rerun()
             dispatch_command(st.session_state.active_command)
         else:
@@ -1670,10 +2008,8 @@ def main():
             render_command_menu(columns=1)
 
             with st.expander("⌨️ Advanced: type a command"):
-                typed = st.text_input("Command:", placeholder="!drill imperativo", key="mobile_typed_cmd")
-                if typed:
-                    st.session_state.active_command = typed
-                    st.rerun()
+                st.text_input("Command:", placeholder="!drill imperativo", key="mobile_typed_cmd",
+                              on_change=_on_typed_command, args=("mobile_typed_cmd",))
 
     else:
         inject_wide_sidebar_css()
@@ -1683,7 +2019,6 @@ def main():
             if st.sidebar.button("🏠 Home"):
                 st.session_state.active_command = None
                 st.session_state.drill_active = False
-                st.session_state.pop("desktop_typed_cmd", None)
                 st.rerun()
 
         st.sidebar.markdown("**Quick Commands:**")
@@ -1691,9 +2026,8 @@ def main():
             render_command_menu(columns=2)
 
         st.sidebar.markdown("---")
-        command_input = st.sidebar.text_input("Or type a command:", placeholder="!drill imperativo", key="desktop_typed_cmd")
-        if command_input:
-            st.session_state.active_command = command_input
+        st.sidebar.text_input("Or type a command:", placeholder="!drill imperativo", key="desktop_typed_cmd",
+                              on_change=_on_typed_command, args=("desktop_typed_cmd",))
 
         if st.session_state.active_command:
             dispatch_command(st.session_state.active_command)

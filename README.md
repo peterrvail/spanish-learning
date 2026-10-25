@@ -85,8 +85,11 @@ Spanish/
 
 ### Immersion Modes
 
-- `!hablar` — Conversational partner mode (100% Spanish, 2–4 sentence turns)
+- `!hablar` — Conversational partner mode (100% Spanish, 2–4 sentence turns, corrections after each reply)
 - `!rol [tema]` — Launch a roleplay scenario with persona and objective
+- `!progreso` — Streak, weekly accuracy, attempts per day, spaced-repetition boxes, and accuracy per topic (weakest first)
+
+With Claude API access the conversation happens inside the app (see **In-app conversation** below); without it, these screens give you a topic or scenario card to take to a chat with Claude.
 
 ### Control
 
@@ -94,6 +97,28 @@ Spanish/
 - `!resumen` — End-of-session diagnostic (patterns practiced, mistakes, new vocabulary)
 
 ---
+
+### Progress & spaced repetition
+
+Every graded answer is logged to a local SQLite file (`data/progress/progress.db`, git-ignored; override with `SPANISH_PROGRESS_DB`). Missed items enter a Leitner queue: a miss is due again immediately, one correct answer pushes it out a day, two a week (then two weeks).
+
+- `!drill fallos` — timed quiz on what is due
+- `!repasar fallos` — read-through of the same queue ("Repasar solo lo que falle")
+- Drill length defaults per module (`MODULE_DURATIONS` in `spanish_drill.py`) and can be overridden with the **Duración** selector.
+
+### In-app conversation
+
+`!hablar` and `!rol` talk to Claude directly when the app can find credentials:
+
+- `ANTHROPIC_API_KEY` in the environment, **or**
+- `ANTHROPIC_API_KEY = "..."` in `.streamlit/secrets.toml` (git-ignored), **or**
+- a profile from `ant auth login`.
+
+It uses `claude-opus-5-5` at low effort, streams replies, and opts into server-side refusal fallbacks (`fallbacks: "default"`). Every message is a billed API call. Without credentials the drills work exactly as before.
+
+### Tests
+
+`pip install pytest && python -m pytest tests` — needs Streamlit 1.46+ (the sidebar layout nests columns, which older versions reject). The chat tests use a fake client, so no API key is needed.
 
 ## Data Ingestion Workflow
 
