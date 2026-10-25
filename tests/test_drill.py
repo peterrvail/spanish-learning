@@ -441,3 +441,71 @@ def test_claude_not_asked_when_exact_match_or_single_word(db, monkeypatch):
     next(b for b in at.button if "Submit" in b.label).click()
     at.run()
     assert client.calls == [] and at.session_state["score"] == 1
+
+
+def _find(module, prompt_part, tries=60):
+    """The item in `module` whose prompt contains prompt_part (pools are sampled)."""
+    for _ in range(tries):
+        for it in sd._build_drill_items(module):
+            if prompt_part in it["prompt"]:
+                return it
+    raise AssertionError(f"no {module} item with {prompt_part!r}")
+
+
+def _ok(answer, item):
+    return sd.check_answer(answer, item)[0]
+
+
+def test_answer_key_corrections():
+    assert _find("pasado", "3 o'clock")["target_form"].startswith("Eran las tres")
+    assert _find("participios", "'imprimir'")["target_form"] == "impreso"
+    assert _find("participios", "'proveer'")["target_form"] == "provisto"
+    assert _find("participios", "'maldecir'")["target_form"] == "maldecido"
+
+
+def test_tu_and_usted_both_accepted_when_english_is_ambiguous():
+    hungry = _find("estructuras", "Are you hungry")
+    assert _ok("¿Tiene hambre? ¿Tiene sed?", hungry) and _ok("tienes hambre tienes sed", hungry)
+    origin = _find("estructuras", "Where are you from")
+    assert _ok("¿De dónde eres?", origin) and _ok("¿De dónde es usted?", origin)
+    assert _ok("Qué significa tu nombre", _find("estructuras", "[your name]"))  # no literal brackets
+
+
+def test_common_variants_accepted():
+    assert _ok("Voy en tren", _find("rutina", "I go by train"))
+    assert _ok("Juego al fútbol", _find("rutina", "I play soccer"))
+    assert _ok("Estaba cansada", _find("pasado", "I was tired."))
+    assert _ok("en resumen", _find("preposiciones", "in summary"))
+    assert _ok("dentro", _find("adverbios", ": inside"))
+    assert _ok("adelante", _find("adverbios", ": in front"))
+
+
+def test_solo_is_not_corrected_to_old_accent():
+    only = _find("adverbios", ": only")
+    assert sd.check_answer("solo", only) == (True, "solo", False)  # no "Ojo con la tilde" warning
+
+
+def test_optional_se_verbs_accept_both_forms():
+    for infinitive in ("divertir(se)", "acostar(se)"):
+        item = _find("cambios", f"'{infinitive}'")
+        bare = item["target_form"].removeprefix("me ")
+        assert _ok(bare, item) and _ok("me " + bare, item)
+
+
+def test_pausa_and_resumen_stop_the_clock(db):
+    at = _app()
+    _start_typed_drill(at, "numeros")
+    at.session_state["drill_start_time"] = datetime.now() - timedelta(seconds=60)
+    at.session_state["active_command"] = "!pausa"
+    at.run()
+    assert at.session_state["paused_at"]
+    # Ten minutes reading the explanation: the drill ran 60s, then sat paused for 10 min.
+    at.session_state["paused_at"] = at.session_state["paused_at"] - timedelta(minutes=10)
+    at.session_state["drill_start_time"] = at.session_state["drill_start_time"] - timedelta(minutes=10)
+    next(b for b in at.button if "Volver al drill" in b.label).click()
+    at.run()
+    at.run()
+    elapsed = (datetime.now() - at.session_state["drill_start_time"]).total_seconds()
+    assert 55 <= elapsed <= 70          # ...don't count against the drill
+    assert "paused_at" not in at.session_state
+    assert "Drill Complete" not in " ".join(s.value for s in at.success)

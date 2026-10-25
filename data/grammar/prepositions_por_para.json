@@ -279,10 +279,10 @@
       {"spanish": "en voz alta", "english": "out loud"},
       {"spanish": "en voz baja", "english": "quietly/in a low voice"},
       {"spanish": "en cambio", "english": "on the other hand"},
-      {"spanish": "en síntesis", "english": "in summary"},
+      {"spanish": "en síntesis", "english": "in summary", "also_accepted": ["en resumen"]},
       {"spanish": "estoy de acuerdo", "english": "I agree"},
       {"spanish": "tiene sentido", "english": "it makes sense"},
-      {"spanish": "claro que sí", "english": "of course"}
+      {"spanish": "claro que sí", "english": "of course", "also_accepted": ["por supuesto"]}
     ]
   }
 }
