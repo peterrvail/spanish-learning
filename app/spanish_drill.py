@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 import os
 
 import conversation
+import grading
 import progress
 
 # Load data
@@ -833,14 +834,29 @@ def get_futuro_irregular_drill_items(count=12):
     data = load_grammar("future_complete.json")
     stems = data["future_simple"]["irregular_stems"]
     items = []
+    persons = [("yo", 0), ("tú", 1), ("él/ella/usted", 2), ("nosotros", 3), ("ellos/ustedes", 5)]
     for s in stems:
-        items.append({
-            "id": len(items),
-            "prompt": f"Irregular future stem of '{s['infinitive']}' ({s['english']})?",
-            "target_form": s["irregular_stem"].rstrip("-"),
-            "exercise_type": "futuro_irregular",
-            "explanation": f"{s['infinitive']} → {s['irregular_stem']} — e.g. {s['example']}"
-        })
+        forms = [f.strip() for f in s["example"].split(",")]
+        explanation = f"{s['infinitive']} → {s['irregular_stem']} — e.g. {s['example']}"
+        # Half the time ask for a full conjugated form: knowing the stem is
+        # only useful once you can put the ending on it.
+        if len(forms) == 6 and random.random() < 0.5:
+            person, idx = random.choice(persons)
+            items.append({
+                "id": len(items),
+                "prompt": f"Future tense of '{s['infinitive']}' ({s['english']}) — {person}?",
+                "target_form": forms[idx],
+                "exercise_type": "futuro_conjugado",
+                "explanation": explanation,
+            })
+        else:
+            items.append({
+                "id": len(items),
+                "prompt": f"Irregular future stem of '{s['infinitive']}' ({s['english']})?",
+                "target_form": s["irregular_stem"].rstrip("-"),
+                "exercise_type": "futuro_irregular",
+                "explanation": explanation,
+            })
     random.shuffle(items)
     return items[:count]
 
@@ -1362,6 +1378,12 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                 st.info(f"🤷 La respuesta: **{pending['target_form']}**")
                 if pending.get("explanation"):
                     st.caption(f"💡 {pending['explanation']}")
+            elif pending["is_correct"] and pending.get("ai_review"):
+                # Didn't match the model answer, but Claude judged it right.
+                st.success("✅ ¡Correcto! Tu versión también vale.")
+                st.caption(f"Respuesta modelo: {pending['target_form']}")
+                if pending["ai_review"].get("feedback"):
+                    st.info(f"🤖 {pending['ai_review']['feedback']}")
             elif pending["is_correct"]:
                 st.success(f"✅ Correct! '{pending['target_form']}'")
                 if pending.get("accent_fix"):
@@ -1370,8 +1392,15 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                     st.caption("💡 Con pista — volverá a salir en el repaso espaciado.")
             else:
                 st.error(f"❌ Incorrect. The correct form is: '{pending['target_form']}'")
+                diff = grading.word_diff(pending.get("user_answer", ""), pending["target_form"])
+                if diff:
+                    st.markdown(f"🔍 {diff}")
+                if (pending.get("ai_review") or {}).get("feedback"):
+                    st.info(f"🤖 {pending['ai_review']['feedback']}")
                 if pending.get("explanation"):
                     st.info(f"💡 {pending['explanation']}")
+            if pending.get("ai_unavailable"):
+                st.caption("(No se pudo consultar a Claude; solo se comparó con la respuesta modelo.)")
 
             if st.button("➡️ Continuar", use_container_width=True):
                 st.session_state.pending_feedback = None
@@ -1409,8 +1438,15 @@ def run_drill(module_type="imperativo", duration_seconds=None):
 
         if submitted:
             is_correct, matched_form, needs_accent_fix = check_answer(user_answer, item)
+            review, unavailable = None, False
+            if not is_correct and user_answer.strip() and grading.eligible(item) and _chat_available():
+                review = _claude_review(item, user_answer)
+                unavailable = review is None
+                if review:
+                    is_correct = review["correct"]
             _record_answer(item, user_answer, is_correct, hinted=hint_level > 0,
-                           accent_fix=matched_form if needs_accent_fix else None)
+                           accent_fix=matched_form if needs_accent_fix else None,
+                           ai_review=review, ai_unavailable=unavailable)
             st.rerun()
 
         col2, col3 = st.container(key="row_answer_tools").columns(2)
@@ -1448,7 +1484,21 @@ def make_hint(target, level):
             out.append(ch)
     return "".join(out)
 
-def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, accent_fix=None):
+def _claude_review(item, answer):
+    """Claude's verdict on a sentence that missed the model answer, cached per
+    (model answer, typed answer) so a repeat answer costs no second call."""
+    cache = st.session_state.setdefault("ai_verdicts", {})
+    key = (item["target_form"], _normalize_for_grading(_loose(answer)))
+    if key not in cache:
+        with st.spinner("Revisando tu frase con Claude…"):
+            verdict = grading.judge(conversation.get_client(_anthropic_secret()), item, answer)
+        if verdict is None:
+            return None  # don't cache failures; the next try may work
+        cache[key] = verdict
+    return cache[key]
+
+def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, accent_fix=None,
+                   ai_review=None, ai_unavailable=False):
     """Score one answer, log it for spaced repetition, and queue its feedback.
     An answer that needed a hint still scores, but goes to the review queue as
     a miss: getting there with help isn't the same as knowing it."""
@@ -1473,6 +1523,9 @@ def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, 
         "target_form": item["target_form"],
         "explanation": item.get("explanation", ""),
         "accent_fix": accent_fix,
+        "user_answer": user_answer,
+        "ai_review": ai_review,
+        "ai_unavailable": ai_unavailable,
     }
 
 def get_module_concept(module_type):

@@ -110,6 +110,62 @@
         "irregular_stem": "querr-",
         "example": "querré, querrás, querrá, querremos, querréis, querrán",
         "english": "will want"
+      },
+      {
+        "infinitive": "mantener",
+        "irregular_stem": "mantendr-",
+        "example": "mantendré, mantendrás, mantendrá, mantendremos, mantendréis, mantendrán",
+        "english": "will maintain / keep",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "obtener",
+        "irregular_stem": "obtendr-",
+        "example": "obtendré, obtendrás, obtendrá, obtendremos, obtendréis, obtendrán",
+        "english": "will obtain",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "contener",
+        "irregular_stem": "contendr-",
+        "example": "contendré, contendrás, contendrá, contendremos, contendréis, contendrán",
+        "english": "will contain",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "suponer",
+        "irregular_stem": "supondr-",
+        "example": "supondré, supondrás, supondrá, supondremos, supondréis, supondrán",
+        "english": "will suppose",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "componer",
+        "irregular_stem": "compondr-",
+        "example": "compondré, compondrás, compondrá, compondremos, compondréis, compondrán",
+        "english": "will compose",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "convenir",
+        "irregular_stem": "convendr-",
+        "example": "convendré, convendrás, convendrá, convendremos, convendréis, convendrán",
+        "english": "will suit / be advisable",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "deshacer",
+        "irregular_stem": "deshar-",
+        "example": "desharé, desharás, deshará, desharemos, desharéis, desharán",
+        "english": "will undo",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "rehacer",
+        "irregular_stem": "rehar-",
+        "example": "reharé, reharás, rehará, reharemos, reharéis, reharán",
+        "english": "will redo",
+        "source": "claude-draft"
       }
     ],
     "alternative_future_forms": {

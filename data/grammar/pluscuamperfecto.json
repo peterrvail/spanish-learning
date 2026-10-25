@@ -41,6 +41,30 @@
             "spanish": "Ana, antes de dormir, había terminado su tarea.",
             "english": "Ana, before going to sleep, had finished her homework.",
             "explanation": "Finishing homework happened before going to sleep"
+          },
+          {
+            "spanish": "Antes de mudarme a España, yo había estudiado español durante dos años.",
+            "english": "Before moving to Spain, I had studied Spanish for two years.",
+            "explanation": "Studying (pluscuamperfecto) happened before the move",
+            "source": "claude-draft"
+          },
+          {
+            "spanish": "Antes de la fiesta, nosotros habíamos limpiado toda la casa.",
+            "english": "Before the party, we had cleaned the whole house.",
+            "explanation": "'Antes de' + noun works too; the cleaning came first",
+            "source": "claude-draft"
+          },
+          {
+            "spanish": "Antes de conocer a Marta, tú nunca habías bailado salsa.",
+            "english": "Before meeting Marta, you had never danced salsa.",
+            "explanation": "Nunca + pluscuamperfecto: no experience up to that earlier point",
+            "source": "claude-draft"
+          },
+          {
+            "spanish": "Antes de cumplir treinta años, mi hermana ya había viajado a diez países.",
+            "english": "Before turning thirty, my sister had already traveled to ten countries.",
+            "explanation": "Ya + pluscuamperfecto: already completed before that moment",
+            "source": "claude-draft"
           }
         ]
       },
@@ -74,6 +98,30 @@
             "spanish": "Ella no quiso comer porque ya había cenado.",
             "english": "She didn't want to eat because she had already had dinner.",
             "explanation": "Preterite (no quiso) = result; Pluperfect (había cenado) = earlier cause"
+          },
+          {
+            "spanish": "No pude entrar porque había olvidado las llaves.",
+            "english": "I couldn't get in because I had forgotten the keys.",
+            "explanation": "Preterite (no pude) = result; Pluperfect (había olvidado) = earlier cause",
+            "source": "claude-draft"
+          },
+          {
+            "spanish": "Estábamos cansados porque habíamos caminado todo el día.",
+            "english": "We were tired because we had walked all day.",
+            "explanation": "Imperfect (estábamos) = state; Pluperfect (habíamos caminado) = earlier cause",
+            "source": "claude-draft"
+          },
+          {
+            "spanish": "Ellos no fueron al cine porque ya habían visto la película.",
+            "english": "They didn't go to the cinema because they had already seen the film.",
+            "explanation": "Preterite (no fueron) = result; Pluperfect (habían visto) = earlier cause",
+            "source": "claude-draft"
+          },
+          {
+            "spanish": "El profesor se enfadó porque los alumnos no habían hecho los deberes.",
+            "english": "The teacher got angry because the students hadn't done their homework.",
+            "explanation": "Preterite (se enfadó) = result; Pluperfect (no habían hecho) = earlier cause",
+            "source": "claude-draft"
           }
         ]
       }

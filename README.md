@@ -116,6 +116,10 @@ Every graded answer is logged to a local SQLite file (`data/progress/progress.db
 
 It uses `claude-opus-5-5` at low effort, streams replies, and opts into server-side refusal fallbacks (`fallbacks: "default"`). Every message is a billed API call. Without credentials the drills work exactly as before.
 
+The same credentials turn on **Claude grading for sentence answers**: when a translation doesn't match the model answer, Claude checks whether it is still correct Spanish that uses the drilled grammar ("Te quería pedir un favor" for "Quería pedirte un favor") and explains the main error if not. That is one API call per missed sentence; single words and short forms are always graded exactly. Wrong answers also show a word-by-word comparison with the model answer (no API needed).
+
+Entries in `data/` marked `"source": "claude-draft"` were written by Claude to fill out small drill pools, not taken from lesson materials; review them like any other content.
+
 ### Tests
 
 `pip install pytest && python -m pytest tests` — needs Streamlit 1.46+ (the sidebar layout nests columns, which older versions reject). The chat tests use a fake client, so no API key is needed.

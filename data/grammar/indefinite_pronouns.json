@@ -27,6 +27,33 @@
         "english_negative": "none, not any",
         "example_affirmative": "¿Tienes alguna pregunta?",
         "example_negative": "No tengo ninguna pregunta."
+      },
+      {
+        "affirmative": "siempre",
+        "negative": "nunca / jamás",
+        "english_affirmative": "always",
+        "english_negative": "never",
+        "example_affirmative": "Siempre desayuno café.",
+        "example_negative": "Nunca desayuno café.",
+        "source": "claude-draft"
+      },
+      {
+        "affirmative": "también",
+        "negative": "tampoco",
+        "english_affirmative": "also, too",
+        "english_negative": "neither, not either",
+        "example_affirmative": "Yo también quiero ir.",
+        "example_negative": "Yo tampoco quiero ir.",
+        "source": "claude-draft"
+      },
+      {
+        "affirmative": "en algún lugar / en alguna parte",
+        "negative": "en ningún lugar / en ninguna parte",
+        "english_affirmative": "somewhere",
+        "english_negative": "nowhere",
+        "example_affirmative": "Dejé las llaves en algún lugar.",
+        "example_negative": "No las encuentro en ningún lugar.",
+        "source": "claude-draft"
       }
     ],
     "adjective_forms_before_noun": {
