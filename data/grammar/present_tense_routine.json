@@ -13,7 +13,7 @@
       {"spanish": "Yo toco mi instrumento.", "english": "I play my instrument.", "infinitive": "tocar"},
       {"spanish": "Yo canto.", "english": "I sing.", "infinitive": "cantar"},
       {"spanish": "Yo como.", "english": "I eat.", "infinitive": "comer"},
-      {"spanish": "Yo voy en el tren.", "english": "I go by train.", "infinitive": "ir", "note": "irregular: voy"}
+      {"spanish": "Yo voy en el tren.", "english": "I go by train.", "infinitive": "ir", "note": "irregular: voy", "also_accepted": ["Yo voy en tren."]}
     ],
     "additional_routine_verbs": [
       {"spanish": "Yo trabajo.", "english": "I work.", "infinitive": "trabajar"},
@@ -34,8 +34,8 @@
       {"spanish": "Yo quiero café.", "english": "I want coffee.", "infinitive": "querer", "note": "E→IE stem change"},
       {"spanish": "Yo puedo nadar.", "english": "I can swim.", "infinitive": "poder", "note": "O→UE stem change"},
       {"spanish": "Yo sé la respuesta.", "english": "I know the answer.", "infinitive": "saber", "note": "irregular: sé"},
-      {"spanish": "Yo veo la televisión.", "english": "I watch television.", "infinitive": "ver", "note": "irregular: veo"},
-      {"spanish": "Yo juego fútbol.", "english": "I play soccer.", "infinitive": "jugar", "note": "U→UE stem change"}
+      {"spanish": "Yo veo la televisión.", "english": "I watch television.", "infinitive": "ver", "note": "irregular: veo", "also_accepted": ["Yo veo televisión.", "Yo veo la tele."]},
+      {"spanish": "Yo juego fútbol.", "english": "I play soccer.", "infinitive": "jugar", "note": "U→UE stem change", "also_accepted": ["Yo juego al fútbol."]}
     ]
   }
 }

@@ -92,9 +92,9 @@
           "english": "made/done"
         },
         {
-          "infinitive": "impresionar",
+          "infinitive": "imprimir",
           "participle": "impreso",
-          "english": "impressed/printed"
+          "english": "printed"
         },
         {
           "infinitive": "inscribir",
@@ -103,8 +103,9 @@
         },
         {
           "infinitive": "maldecir",
-          "participle": "maldito",
-          "english": "cursed"
+          "participle": "maldecido",
+          "english": "cursed",
+          "note": "'maldito' is the adjective (¡maldito tráfico!); perfect tenses use 'maldecido' (ha maldecido)."
         },
         {
           "infinitive": "morir",
@@ -132,8 +133,7 @@
           "english": "proscribed"
         },
         {
-          "infinitive": "proveedor",
-          "related_infinitive": "proveer",
+          "infinitive": "proveer",
           "participle": "provisto",
           "english": "provided"
         },

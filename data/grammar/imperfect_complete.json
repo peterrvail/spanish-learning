@@ -109,6 +109,7 @@
         "examples": [
           {
             "spanish": "Tenía cansancio.",
+            "also_accepted": ["Estaba cansado/a."],
             "english": "I was tired.",
             "explanation": "Physical state in the past"
           },
@@ -136,7 +137,7 @@
             "explanation": "Age at a specific point in the past"
           },
           {
-            "spanish": "Era las tres de la tarde cuando llegó.",
+            "spanish": "Eran las tres de la tarde cuando llegó.",
             "english": "It was 3 o'clock in the afternoon when he arrived.",
             "explanation": "Time in the past"
           }

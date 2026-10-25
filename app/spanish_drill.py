@@ -189,6 +189,16 @@ def inject_responsive_css():
                 padding-left: 0.2rem !important;
                 padding-right: 0.2rem !important;
             }
+            /* Rows of four stat tiles (progreso): two per line on a phone
+               instead of one, so the page isn't a column of single numbers. */
+            [class*="st-key-grid2_"] [data-testid="stHorizontalBlock"] {
+                flex-wrap: wrap !important;
+                gap: 0.5rem !important;
+            }
+            [class*="st-key-grid2_"] [data-testid="stColumn"] {
+                min-width: calc(50% - 0.5rem) !important;
+                flex: 1 1 calc(50% - 0.5rem) !important;
+            }
             /* Narrow keys, but at least a full touch target tall. */
             [class*="st-key-row_accents"] button {
                 min-height: 44px;
@@ -317,10 +327,11 @@ def _normalize_for_grading(s):
     return "".join(c for c in s if unicodedata.category(c) != "Mn")
 
 def _loose(s):
-    """Lowercase, collapse whitespace and drop ¿?¡!.,;: — sentence answers
-    shouldn't be marked wrong over a missing question mark or period.
+    """Lowercase, collapse whitespace and drop ¿?¡!.,;: and [ ] — sentence
+    answers shouldn't be marked wrong over a missing question mark, or for
+    not typing the brackets of a placeholder like '¿Qué significa [tu nombre]?'.
     Accents are left alone so a missing tilde can still be flagged."""
-    s = re.sub(r"[¿?¡!.,;:]", " ", s.strip().lower())
+    s = re.sub(r"[¿?¡!.,;:\[\]]", " ", s.strip().lower())
     return " ".join(s.split())
 
 _SUBJECT_PRONOUNS = ("yo", "tú", "él", "ella", "usted", "nosotros", "nosotras", "ellos", "ellas", "ustedes")
@@ -354,16 +365,22 @@ def sentence_forms(raw):
             out.append(words[1])
     return list(dict.fromkeys(out))
 
+def _expand_answer(text):
+    if " " not in text and "/" not in text:
+        return [text]
+    # Keep the literal text too, so typing the shorthand ('honesto/a') still counts.
+    return sentence_forms(text) + [text]
+
 def accepted_forms_for(item):
     """All forms that count as correct. Items that spell out accepted_forms keep
-    them; otherwise multi-word targets are expanded with sentence_forms."""
-    if item.get("accepted_forms"):
-        return item["accepted_forms"]
-    target = item["target_form"]
-    if " " not in target and "/" not in target:
-        return [target]
-    # Keep the literal target too, so typing the shorthand ('honesto/a') still counts.
-    return list(dict.fromkeys(sentence_forms(target) + [target]))
+    them; otherwise multi-word targets are expanded with sentence_forms. Data
+    entries can list other right answers in "also_accepted" (tú as well as
+    usted when the English doesn't say which, "voy en tren" as well as
+    "voy en el tren"); the model answer shown stays the same."""
+    forms = list(item["accepted_forms"]) if item.get("accepted_forms") else _expand_answer(item["target_form"])
+    for alt in item.get("also_accepted", []):
+        forms += _expand_answer(alt)
+    return list(dict.fromkeys(forms))
 
 def check_answer(user_answer, item):
     """Grade an answer against every accepted form for this item.
@@ -466,10 +483,17 @@ def get_stem_change_drill_items(count=15):
             continue
         sample = random.sample(verb_list, min(max(count // 3, 1), len(verb_list)))
         for v in sample:
+            target = v["yo_form"]
+            accepted = [target]
+            if "(se)" in v["infinitive"]:
+                # '(se)' marks the pronoun as optional: 'divierto' and 'me divierto'
+                # are both right, whichever one the data happens to list.
+                accepted.append(target[3:] if target.startswith("me ") else "me " + target)
             items.append({
                 "id": len(items),
                 "prompt": f"Conjugate '{v['infinitive']}' ({v['english']}) in the YO form. Pattern: {group['rule']}",
-                "target_form": v["yo_form"],
+                "target_form": target,
+                "accepted_forms": accepted,
                 "exercise_type": "stem_change",
                 "explanation": f"{group['name']}: {v['infinitive']} → {v['yo_form']}" + (f" ({v['note']})" if v.get("note") else "")
             })
@@ -487,6 +511,7 @@ def get_imperfect_drill_items(count=15):
             "id": len(items),
             "prompt": f"Translate to Spanish (imperfect): {p['english']} [Use type: {p['use_type']}]",
             "target_form": p["spanish"],
+            "also_accepted": p.get("also_accepted", []),
             "exercise_type": "imperfect",
             "explanation": f"{p['spanish']} — {p['use_type']}"
         })
@@ -496,6 +521,7 @@ def get_imperfect_drill_items(count=15):
                 "id": len(items),
                 "prompt": f"Translate to Spanish (imperfect): {ex['english']} [Use type: {use['name']}]",
                 "target_form": ex["spanish"],
+                "also_accepted": ex.get("also_accepted", []),
                 "exercise_type": "imperfect",
                 "explanation": f"{ex['spanish']} — {ex.get('explanation', use['name'])}"
             })
@@ -608,6 +634,7 @@ def get_pluscuamperfecto_drill_items(count=10):
                 "id": len(items),
                 "prompt": f"Translate to Spanish (pluscuamperfecto - {use['name']}): {ex['english']}",
                 "target_form": ex["spanish"],
+                "also_accepted": ex.get("also_accepted", []),
                 "exercise_type": "pluscuamperfecto",
                 "explanation": f"{ex['spanish']} — {ex.get('explanation', '')}"
             })
@@ -667,6 +694,7 @@ def get_por_para_drill_items(count=15):
             "id": len(items),
             "prompt": f"Translate to Spanish (uses PARA): {expr['english']}",
             "target_form": expr["spanish"],
+            "also_accepted": expr.get("also_accepted", []),
             "exercise_type": "por_para",
             "explanation": f"{expr['spanish']} — {expr['english']}"
         })
@@ -687,6 +715,7 @@ def get_demostrativos_drill_items(count=12):
                 "id": len(items),
                 "prompt": f"Translate to Spanish ({group['meaning']}): {ex['english']}",
                 "target_form": ex["spanish"],
+                "also_accepted": ex.get("also_accepted", []),
                 "exercise_type": "demostrativos",
                 "explanation": f"{ex['spanish']} — {ex.get('note', group['meaning'])}"
             })
@@ -771,6 +800,7 @@ def get_numeros_drill_items(count=15):
             "id": len(items),
             "prompt": f"Write this number in Spanish: {n['number']}",
             "target_form": n["spanish"],
+            "also_accepted": n.get("also_accepted", []),
             "exercise_type": "numeros",
             "explanation": f"{n['number']} → {n['spanish']}" + (f" ({n['note']})" if 'note' in n else "")
         })
@@ -825,6 +855,7 @@ def get_participios_drill_items(count=15):
             "target_form": p["participle"],
             "exercise_type": "participios",
             "explanation": f"{p['infinitive']} → {p['participle']} — {p.get('english', '')}"
+                           + (f" ({p['note']})" if p.get("note") else ""),
         })
     random.shuffle(items)
     return items[:count]
@@ -869,6 +900,7 @@ def get_estructuras_drill_items(count=15):
             "id": len(items),
             "prompt": f"Translate to Spanish: {q['english']}",
             "target_form": q["spanish"],
+            "also_accepted": q.get("also_accepted", []),
             "exercise_type": "estructuras",
             "explanation": f"{q['spanish']} — {q['english']}" + (f" ({q['note']})" if 'note' in q else "")
         })
@@ -904,6 +936,7 @@ def get_rutina_drill_items(count=15):
             "id": len(items),
             "prompt": f"Translate to Spanish (present tense, daily routine): {ex['english']}",
             "target_form": ex["spanish"],
+            "also_accepted": ex.get("also_accepted", []),
             "exercise_type": "rutina",
             "explanation": f"{ex['spanish']} — {ex['infinitive']}" + (f" ({ex['note']})" if 'note' in ex else "")
         })
@@ -921,6 +954,7 @@ def get_ir_gerundio_drill_items(count=12):
             "id": len(items),
             "prompt": f"Translate to Spanish (voy + gerundio — action while traveling): {ex['english']}",
             "target_form": ex["spanish"],
+            "also_accepted": ex.get("also_accepted", []),
             "exercise_type": "ir_gerundio",
             "explanation": f"{ex['spanish']} — {ex['base_verb']} → {ex['gerund']}"
         })
@@ -930,6 +964,7 @@ def get_ir_gerundio_drill_items(count=12):
             "id": len(items),
             "prompt": f"Translate to Spanish (ir + gerundio, '{ex['person']}' form): {ex['english']}",
             "target_form": ex["spanish"],
+            "also_accepted": ex.get("also_accepted", []),
             "exercise_type": "ir_gerundio",
             "explanation": f"{ex['spanish']} — {ex.get('use', 'simultaneous action while moving')}"
         })
@@ -1046,6 +1081,7 @@ def get_preposiciones_drill_items(count=12):
             "id": len(items),
             "prompt": f"Translate to Spanish (idiom): {expr['english']}",
             "target_form": expr["spanish"],
+            "also_accepted": expr.get("also_accepted", []),
             "exercise_type": "preposiciones",
             "explanation": f"{expr['spanish']} — {expr['english']}"
         })
@@ -1289,6 +1325,11 @@ def run_drill(module_type="imperativo", duration_seconds=None):
 
     if duration_seconds is None:
         duration_seconds = drill_duration(module_type, st.session_state.get("duration_override"))
+
+    if st.session_state.drill_active:
+        _resume_drill()  # back from Pausa/Resumen, where the clock was stopped
+    else:
+        st.session_state.pop("paused_at", None)
 
     # Header
     st.title("⚡ Spanish Drill")
@@ -1883,6 +1924,19 @@ def _render_chat(conv_key, system):
             return
     history.append({"role": "assistant", "content": result["content"]})
 
+def _pause_drill():
+    """Stop the drill clock while a side screen (Pausa, Resumen) is open, so
+    reading an explanation doesn't eat into the drill."""
+    if st.session_state.get("drill_active") and not st.session_state.get("paused_at"):
+        st.session_state.paused_at = datetime.now()
+
+def _resume_drill():
+    """Restart the clock where it stopped, by moving the start time forward
+    by however long the drill was paused."""
+    paused_at = st.session_state.pop("paused_at", None)
+    if paused_at and st.session_state.get("drill_start_time"):
+        st.session_state.drill_start_time += datetime.now() - paused_at
+
 def run_pausa():
     """Step out of the current drill to see its grammar rule explained —
     reuses the same concept lookup that powers Repaso."""
@@ -1897,7 +1951,8 @@ def run_pausa():
         )
         return
 
-    st.caption(f"Pausando `!drill {module_type}` — el cronómetro del drill sigue corriendo mientras lees esto.")
+    _pause_drill()
+    st.caption(f"`!drill {module_type}` en pausa — el cronómetro se detiene mientras lees esto.")
 
     concept = get_module_concept(module_type)
     if concept:
@@ -1925,6 +1980,9 @@ def run_resumen():
             "preguntas, y luego escribe `!resumen` para ver tu progreso."
         )
         return
+
+    _pause_drill()
+    st.caption("⏸️ El cronómetro del drill está en pausa.")
 
     total = st.session_state.get("total_questions", 0)
     score = st.session_state.get("score", 0)
@@ -1978,7 +2036,7 @@ def run_progreso():
     week_pct = 100 * week_right / week_total if week_total else None
     prev_pct = 100 * prev_right / prev_total if prev_total else None
 
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3, c4 = st.container(key="grid2_stats").columns(4)
     c1.metric("🔥 Racha", f"{data['streak']} {'día' if data['streak'] == 1 else 'días'}")
     c2.metric("Intentos", data["total"])
     c3.metric("Precisión (7 días)", f"{week_pct:.0f}%" if week_pct is not None else "—",
@@ -1990,7 +2048,7 @@ def run_progreso():
 
     st.markdown("### 🔁 Repaso espaciado")
     boxes = data["boxes"]
-    b1, b2, b3, b4 = st.columns(4)
+    b1, b2, b3, b4 = st.container(key="grid2_boxes").columns(4)
     b1.metric("Por repasar", boxes.get(0, 0), help="Fallado la última vez: vuelve enseguida.")
     b2.metric("Aprendiendo", boxes.get(1, 0), help="Un acierto: vuelve en 1 día.")
     b3.metric("Consolidando", boxes.get(2, 0), help="Dos aciertos seguidos: vuelve en 1 semana.")
