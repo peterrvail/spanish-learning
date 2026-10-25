@@ -129,3 +129,60 @@ def breakdown(answers):
         right, total = tally.get(label, (0, 0))
         tally[label] = (right + (1 if a["is_correct"] else 0), total + 1)
     return OrderedDict(sorted(tally.items(), key=lambda kv: (kv[1][0] / kv[1][1], kv[0])))
+
+
+def streak_days(days, today):
+    """Consecutive practice days ending today, or yesterday if today has no
+    attempts yet (so the streak isn't shown as broken first thing in the morning)."""
+    days = set(days)
+    day = today if today in days else today - timedelta(days=1)
+    count = 0
+    while day in days:
+        count += 1
+        day -= timedelta(days=1)
+    return count
+
+
+def stats(now=None, window_days=14):
+    """Everything the progress page shows, from the attempt log and cards.
+    Returns None when the log can't be read."""
+    now = now or datetime.now()
+    today = now.date()
+    try:
+        with _connect() as conn:
+            rows = conn.execute("SELECT ts, module, is_correct FROM attempts").fetchall()
+            box_rows = conn.execute("SELECT box, COUNT(*) FROM cards GROUP BY box").fetchall()
+            due = conn.execute(
+                "SELECT COUNT(*) FROM cards WHERE misses > 0 AND due <= ?", (now.isoformat(),)
+            ).fetchone()[0]
+    except (sqlite3.Error, OSError):
+        return None
+
+    by_module, per_day = {}, {}
+    week, prev_week = [0, 0], [0, 0]
+    for ts, module, ok in rows:
+        day = datetime.fromisoformat(ts).date()
+        per_day[day] = per_day.get(day, 0) + 1
+        m = by_module.setdefault(module or "otros", [0, 0, day])
+        m[0] += ok
+        m[1] += 1
+        m[2] = max(m[2], day)
+        age = (today - day).days
+        bucket = week if age < 7 else prev_week if age < 14 else None
+        if bucket is not None:
+            bucket[0] += ok
+            bucket[1] += 1
+
+    return {
+        "total": len(rows),
+        "streak": streak_days(per_day, today),
+        "week": tuple(week),
+        "prev_week": tuple(prev_week),
+        # weakest first, so the top of the table is what to practice
+        "by_module": sorted(((m, c, t, last) for m, (c, t, last) in by_module.items()),
+                            key=lambda r: (r[1] / r[2], -r[2])),
+        "daily": [(today - timedelta(days=i), per_day.get(today - timedelta(days=i), 0))
+                  for i in range(window_days - 1, -1, -1)],
+        "boxes": {box: n for box, n in box_rows},
+        "due": due,
+    }

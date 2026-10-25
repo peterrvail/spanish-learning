@@ -7,6 +7,7 @@ import unicodedata
 from datetime import datetime, timedelta
 import os
 
+import conversation
 import progress
 
 # Load data
@@ -24,6 +25,7 @@ DRILL_CATEGORIES = {
     "🔁 Repaso espaciado": [
         ("🔁 Quiz: lo que fallé", "!drill fallos"),
         ("📖 Repasar solo lo que falle", "!repasar fallos"),
+        ("📈 Mi progreso", "!progreso"),
     ],
     "Verbos y Tiempos": [
         ("☀️ Rutina diaria (presente)", "!drill rutina"),
@@ -129,6 +131,21 @@ def inject_wide_sidebar_css():
             font-size: 0.9rem;
             padding: 0.4rem 0.45rem;
         }
+        /* The ellipsis lives on the label's inner markdown container and <p>,
+           which set their own nowrap/hidden, so the rule above alone can't
+           reach it. */
+        section[data-testid="stSidebar"] div.stButton > button div[data-testid="stMarkdownContainer"],
+        section[data-testid="stSidebar"] div.stButton > button p {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+        }
+        /* The 📖 icon sits in a ~40px column; side padding alone would
+           swallow it. Streamlit tags each widget with an st-key-<key> class. */
+        section[data-testid="stSidebar"] [class*="st-key-menu_repasar_"] button {
+            padding-left: 0;
+            padding-right: 0;
+        }
         /* Tighten the gap so the icon column keeps usable width. */
         section[data-testid="stSidebar"] div[data-testid="stHorizontalBlock"] {
             gap: 0.4rem;
@@ -185,6 +202,8 @@ def _render_button_grid(commands, columns, key_prefix):
     review beyond the quiz itself."""
     cols = st.columns(columns)
     for i, (label, cmd) in enumerate(commands):
+        # Let long "A/B" labels wrap at the slash rather than mid-word.
+        label = label.replace("/", "/\u200b")
         with cols[i % columns]:
             module = cmd.split(" ", 1)[1] if cmd.startswith("!drill ") else None
             has_concept = module is not None and get_module_concept(module) is not None
@@ -376,6 +395,17 @@ def load_scenarios():
     with open(SCENARIOS_FILE, "r", encoding="utf-8") as f:
         return json.load(f)["scenarios"]
 
+def _scenario_matches(s, tema_lower):
+    return tema_lower in s["tema"].lower() or tema_lower in s["title"].lower() or tema_lower in s["id"].lower()
+
+def _another_scenario(tema, current_id):
+    """A different scenario on the same tema when there is one, else any other."""
+    scenarios = load_scenarios()
+    tema_lower = (tema or "default").lower().strip()
+    same_tema = [s for s in scenarios if tema_lower != "default" and _scenario_matches(s, tema_lower)]
+    pool = [s for s in (same_tema or scenarios) if s["id"] != current_id] or scenarios
+    return random.choice(pool)
+
 def find_scenario(tema):
     scenarios = load_scenarios()
     if not tema or tema == "default":
@@ -383,7 +413,7 @@ def find_scenario(tema):
     tema_lower = tema.lower().strip()
     # Match by tema, title, or id (partial match allowed)
     for s in scenarios:
-        if tema_lower in s["tema"].lower() or tema_lower in s["title"].lower() or tema_lower in s["id"].lower():
+        if _scenario_matches(s, tema_lower):
             return s
     return None
 
@@ -1091,7 +1121,10 @@ def get_mixto_drill_items(count=20):
         pool = _build_drill_items(module_type)
         if not pool:
             continue
-        item = random.choice(pool)
+        # Make the multiple-choice variants here, while the whole topic is at
+        # hand: in the finished drill every item is from a different topic,
+        # so the wrong options would be giveaways (a number vs. a verb).
+        item = random.choice(_add_recognition_variants(pool))
         item["module"] = module_type
         item["explanation"] = f"[{module_type}] {item.get('explanation', '')}".strip()
         items.append(item)
@@ -1107,15 +1140,20 @@ def _add_recognition_variants(items, fraction=0.3):
     choosing between them trains the discrimination that free recall alone
     doesn't; and recognition is a lower rung than production, which gives
     material you've just met a rung to stand on instead of only ever facing the
-    hardest possible format."""
-    candidates = [it for it in items if len(it["target_form"].split()) <= 3]
-    unique_forms = list(dict.fromkeys(it["target_form"] for it in candidates))
-    if len(unique_forms) < 4:
-        return items
+    hardest possible format.
 
-    for item in random.sample(candidates, max(1, int(len(candidates) * fraction))):
+    Distractors only come from the same module, so a mixed review queue
+    ('fallos') never offers a number as a wrong answer to a verb question."""
+    candidates = [it for it in items if len(it["target_form"].split()) <= 3]
+    forms_by_module = {}
+    for it in candidates:
+        forms_by_module.setdefault(it.get("module"), []).append(it["target_form"])
+    forms_by_module = {m: list(dict.fromkeys(f)) for m, f in forms_by_module.items()}
+
+    for item in random.sample(candidates, int(len(candidates) * fraction)):
+        unique_forms = forms_by_module[item.get("module")]
         accepted = {_normalize_for_grading(_loose(a)) for a in accepted_forms_for(item)}
-        distractors = [f for f in unique_forms if _normalize_for_grading(f) not in accepted]
+        distractors = [f for f in unique_forms if _normalize_for_grading(_loose(f)) not in accepted]
         if len(distractors) < 3:
             continue
         choices = _plausible_distractors(item["target_form"], distractors) + [item["target_form"]]
@@ -1145,7 +1183,8 @@ def get_drill_items(module_type):
     for i, item in enumerate(items):
         item["id"] = i
         item.setdefault("module", module_type)
-    return _add_recognition_variants(items)
+    # mixto already made its variants per topic (see get_mixto_drill_items).
+    return items if module_type == "mixto" else _add_recognition_variants(items)
 
 def render_breakdown(answers):
     """Per-type tally of this session's answers, weakest first."""
@@ -1155,6 +1194,26 @@ def render_breakdown(answers):
     for label, (right, total) in progress.breakdown(answers).items():
         icon = "✅" if right == total else ("⚠️" if right * 2 >= total else "❌")
         st.markdown(f"- {icon} **{label.replace('_', ' ')}**: {right}/{total}")
+
+def _render_timer(time_remaining, duration_seconds):
+    minutes, seconds = divmod(int(time_remaining), 60)
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.progress(max(0.0, time_remaining / duration_seconds))
+    with col2:
+        st.metric("Time Left", f"{minutes}:{seconds:02d}")
+
+@st.fragment(run_every=1)
+def _live_timer(duration_seconds):
+    """Tick the countdown every second without rerunning the page, so the
+    clock moves while you think and a half-typed answer is left alone. When
+    time runs out, rerun the whole app once so the summary replaces the
+    question; otherwise the drill only ended on your next click."""
+    elapsed = (datetime.now() - st.session_state.drill_start_time).total_seconds()
+    time_remaining = max(0, duration_seconds - elapsed)
+    _render_timer(time_remaining, duration_seconds)
+    if time_remaining <= 0:
+        st.rerun(scope="app")
 
 def run_drill(module_type="imperativo", duration_seconds=None):
     """Main drill runner. Length defaults to the module's own (MODULE_DURATIONS)
@@ -1186,19 +1245,14 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                     if module_type == "fallos" else "No hay elementos para este módulo.")
             return
 
-    # Calculate time remaining
     elapsed = (datetime.now() - st.session_state.drill_start_time).total_seconds()
     time_remaining = max(0, duration_seconds - elapsed)
+    finished = time_remaining <= 0 or st.session_state.current_item_index >= len(st.session_state.drill_items)
 
-    # Timer display
-    minutes, seconds = divmod(int(time_remaining), 60)
-    time_fraction = max(0, time_remaining / duration_seconds)
-
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.progress(time_fraction)
-    with col2:
-        st.metric("Time Left", f"{minutes}:{seconds:02d}")
+    if finished:
+        _render_timer(time_remaining, duration_seconds)
+    else:
+        _live_timer(duration_seconds)
 
     pausa_col, resumen_col = st.columns(2)
     with pausa_col:
@@ -1211,7 +1265,7 @@ def run_drill(module_type="imperativo", duration_seconds=None):
             st.rerun()
 
     # Check if drill is complete
-    if time_remaining <= 0 or st.session_state.current_item_index >= len(st.session_state.drill_items):
+    if finished:
         st.success("✅ Drill Complete!")
 
         # Show summary
@@ -1299,7 +1353,7 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                 accent_cols = st.columns(len(ACCENT_KEYS))
                 for col, ch in zip(accent_cols, ACCENT_KEYS):
                     with col:
-                        st.form_submit_button(ch, key=f"accent_{item['id']}_{ch}", use_container_width=True,
+                        st.form_submit_button(ch, use_container_width=True,
                                               on_click=_append_accent, args=(answer_key, ch))
 
         if submitted:
@@ -1561,12 +1615,18 @@ def run_repaso(module_type="imperativo"):
         st.rerun()
 
 def run_rol(tema=None):
-    """Display a scenario card for roleplay. The conversation itself happens
-    in chat with Claude, using this card as context — Streamlit only selects
-    and presents the scenario."""
+    """Show a scenario card and, when the Claude API is configured, run the
+    roleplay right under it; otherwise the card is context to take to a
+    chat with Claude."""
     st.title("🎭 Roleplay Scenario")
 
-    scenario = find_scenario(tema)
+    # Pin the pick for this session: with no tema, find_scenario chooses at
+    # random, and a fresh pick on every rerun would swap the scenario mid-chat.
+    pin_key = f"rol_scenario_{tema}"
+    if pin_key not in st.session_state:
+        picked = find_scenario(tema)
+        st.session_state[pin_key] = picked["id"] if picked else None
+    scenario = next((s for s in load_scenarios() if s["id"] == st.session_state[pin_key]), None)
 
     if scenario is None:
         st.error(f"❌ No scenario found for tema '{tema}'.")
@@ -1606,15 +1666,20 @@ def run_rol(tema=None):
     st.info(f"**{p['name']}:** {scenario['opening_line']}")
 
     st.markdown("---")
-    st.markdown(
-        "**Cómo usar esta tarjeta:** Este panel selecciona y muestra el escenario, "
-        "pero la conversación dinámica ocurre chateando directamente con Claude. "
-        "Copia la frase de apertura (o simplemente escribe `!rol " + scenario["tema"] +
-        "` en el chat) y Claude continuará el rol dinámicamente en español, "
-        "corrigiendo errores de gramática al final de cada respuesta según el protocolo de inmersión."
-    )
+    if _chat_available():
+        st.markdown("### 🗣️ Conversación")
+        _render_chat(f"chat_rol_{scenario['id']}", conversation.system_prompt(scenario))
+    else:
+        st.markdown(
+            "**Cómo usar esta tarjeta:** copia la frase de apertura (o escribe `!rol " + scenario["tema"] +
+            "`) en un chat con Claude y continuará el rol en español, corrigiendo tus errores al final "
+            "de cada respuesta."
+        )
+        _chat_setup_help()
 
     if st.button("🔄 Otro escenario aleatorio"):
+        st.session_state.pop(f"chat_rol_{scenario['id']}", None)
+        st.session_state[pin_key] = _another_scenario(tema, scenario["id"])["id"]
         st.rerun()
 
 _HABLAR_STARTERS = [
@@ -1629,33 +1694,90 @@ _HABLAR_STARTERS = [
 ]
 
 def run_hablar():
-    """Freeform conversational-partner mode. Like !rol, the conversation
-    itself happens in chat with Claude — this screen just sets the stage
-    with a topic to start from, instead of a scripted scenario."""
+    """Freeform conversation partner. With Claude API credentials configured
+    the conversation happens right here; otherwise this screen offers a topic
+    to take to a chat with Claude."""
     st.title("🗣️ Compañero de Conversación")
     st.markdown(
-        "Conversación libre en español, sin guion ni objetivo fijo. "
-        "Escribe directamente en el chat con Claude — responderá **100% en "
-        "español**, en turnos de 2 a 4 frases, y corregirá tus errores de "
-        "gramática al final de cada respuesta."
+        "Conversación libre en español, sin guion ni objetivo fijo: respuestas "
+        "**100% en español**, de 2 a 4 frases, con tus errores corregidos al final."
     )
 
-    st.markdown("### 💬 Si no sabes por dónde empezar")
     idx_key = "hablar_starter_idx"
     st.session_state.setdefault(idx_key, random.randrange(len(_HABLAR_STARTERS)))
-    st.info(_HABLAR_STARTERS[st.session_state[idx_key]])
+    topic = _HABLAR_STARTERS[st.session_state[idx_key]]
 
-    if st.button("🔀 Otro tema aleatorio"):
+    if st.button("🔀 Otro tema (empieza de nuevo)"):
         st.session_state[idx_key] = random.randrange(len(_HABLAR_STARTERS))
+        st.session_state.pop("chat_hablar", None)
         st.rerun()
 
-    st.markdown("---")
-    st.markdown(
-        "**Cómo usar esto:** copia el tema de arriba (o escribe el tuyo) "
-        "directamente en el chat. Claude seguirá la conversación en español "
-        "de forma dinámica. Para algo más estructurado, con un objetivo y "
-        "vocabulario específicos, usa `!rol [tema]` en su lugar."
-    )
+    if _chat_available():
+        # The topic is part of the system prompt, which must stay fixed for
+        # the whole conversation, so changing it starts a new conversation.
+        system = conversation.system_prompt() + f'\n\nYou opened the conversation by asking: "{topic}"'
+        with st.chat_message("assistant"):
+            st.markdown(topic)
+        _render_chat("chat_hablar", system)
+    else:
+        st.markdown("### 💬 Si no sabes por dónde empezar")
+        st.info(topic)
+        st.markdown(
+            "Copia el tema (o escribe el tuyo) en un chat con Claude y seguirá la "
+            "conversación en español. Para algo más estructurado, usa `!rol [tema]`."
+        )
+        _chat_setup_help()
+
+def _anthropic_secret():
+    """ANTHROPIC_API_KEY from .streamlit/secrets.toml, if there is one."""
+    try:
+        return st.secrets.get("ANTHROPIC_API_KEY")
+    except Exception:  # no secrets file at all
+        return None
+
+def _chat_available():
+    return conversation.credentials_configured(_anthropic_secret())
+
+def _chat_setup_help():
+    with st.expander("💡 Chatear aquí mismo, sin salir de la app"):
+        st.markdown(
+            "La app puede llevar la conversación directamente si tiene acceso a la API de Claude:\n\n"
+            "1. `pip install -r requirements.txt` (incluye el paquete `anthropic`).\n"
+            "2. Pon tu clave en la variable de entorno `ANTHROPIC_API_KEY`, o en "
+            "`.streamlit/secrets.toml` como `ANTHROPIC_API_KEY = \"...\"`.\n"
+            "3. Reinicia la app.\n\n"
+            "Cada mensaje es una llamada a la API, con su coste."
+        )
+
+def _render_chat(conv_key, system):
+    """A chat thread stored in session state under conv_key. History is only
+    ever appended to (see conversation.py for why); a failed turn drops the
+    unanswered user message, which is the tail and so edits nothing earlier."""
+    history = st.session_state.setdefault(conv_key, [])
+    for msg in history:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"] if msg["role"] == "user" else conversation.assistant_text(msg["content"]))
+
+    prompt = st.chat_input("Escribe en español…")
+    if history and st.button("🧹 Nueva conversación"):
+        st.session_state.pop(conv_key, None)
+        st.rerun()
+    if not prompt:
+        return
+
+    history.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    result = {}
+    with st.chat_message("assistant"):
+        try:
+            client = conversation.get_client(_anthropic_secret())
+            st.write_stream(conversation.stream_reply(client, system, history, result))
+        except conversation.ChatError as e:
+            history.pop()
+            st.error(str(e))
+            return
+    history.append({"role": "assistant", "content": result["content"]})
 
 def run_pausa():
     """Step out of the current drill to see its grammar rule explained —
@@ -1727,6 +1849,68 @@ def run_resumen():
         st.session_state.active_command = f"!drill {st.session_state.drill_module}"
         st.rerun()
 
+def _module_label(module):
+    """'preterito' -> '📜 Pretérito irregular', using the menu's own labels."""
+    for label, cmd in DRILL_COMMANDS:
+        if cmd == f"!drill {module}":
+            return label
+    return module.replace("_", " ")
+
+def run_progreso():
+    """Long-term view built from the attempt log: streak, weekly accuracy,
+    daily volume, where cards sit in the Leitner boxes, and per-topic accuracy
+    with the weakest topics first."""
+    st.title("📈 Mi progreso")
+    data = progress.stats()
+    if data is None:
+        st.warning("No se pudo leer el registro de progreso.")
+        return
+    if not data["total"]:
+        st.info("Todavía no hay intentos registrados. Haz un drill y vuelve aquí.")
+        return
+
+    week_right, week_total = data["week"]
+    prev_right, prev_total = data["prev_week"]
+    week_pct = 100 * week_right / week_total if week_total else None
+    prev_pct = 100 * prev_right / prev_total if prev_total else None
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("🔥 Racha", f"{data['streak']} {'día' if data['streak'] == 1 else 'días'}")
+    c2.metric("Intentos", data["total"])
+    c3.metric("Precisión (7 días)", f"{week_pct:.0f}%" if week_pct is not None else "—",
+              delta=f"{week_pct - prev_pct:+.0f} pts vs. semana anterior"
+              if week_pct is not None and prev_pct is not None else None)
+    c4.metric("Para repasar hoy", data["due"])
+    if data["due"] and st.button(f"🔁 Repasar ahora ({data['due']})", use_container_width=True):
+        _set_active_command("!drill fallos")
+
+    st.markdown("### 🔁 Repaso espaciado")
+    boxes = data["boxes"]
+    b1, b2, b3, b4 = st.columns(4)
+    b1.metric("Por repasar", boxes.get(0, 0), help="Fallado la última vez: vuelve enseguida.")
+    b2.metric("Aprendiendo", boxes.get(1, 0), help="Un acierto: vuelve en 1 día.")
+    b3.metric("Consolidando", boxes.get(2, 0), help="Dos aciertos seguidos: vuelve en 1 semana.")
+    b4.metric("Dominadas", boxes.get(3, 0), help="Tres o más aciertos seguidos: cada 2 semanas.")
+
+    st.markdown("### 📅 Intentos por día (últimas 2 semanas)")
+    st.bar_chart({"Día": [d.strftime("%d/%m") for d, _ in data["daily"]],
+                  "Intentos": [n for _, n in data["daily"]]},
+                 x="Día", y="Intentos", height=220)
+
+    st.markdown("### 📚 Por tema (lo más flojo primero)")
+    st.dataframe(
+        {
+            "Tema": [_module_label(m) for m, _, _, _ in data["by_module"]],
+            "Precisión": [round(100 * c / t) for _, c, t, _ in data["by_module"]],
+            "Aciertos": [f"{c}/{t}" for _, c, t, _ in data["by_module"]],
+            "Última vez": [last.strftime("%d/%m") for _, _, _, last in data["by_module"]],
+        },
+        hide_index=True,
+        use_container_width=True,
+        column_config={"Precisión": st.column_config.ProgressColumn(
+            "Precisión", min_value=0, max_value=100, format="%d%%")},
+    )
+
 def parse_command(command_input):
     """Parse CLI-style commands."""
     parts = command_input.strip().split()
@@ -1749,6 +1933,8 @@ def parse_command(command_input):
         return ("pausa", None)
     elif parts[0] == "!resumen":
         return ("resumen", None)
+    elif parts[0] == "!progreso":
+        return ("progreso", None)
 
     return None
 
@@ -1774,6 +1960,8 @@ def dispatch_command(command_str):
         run_pausa()
     elif command_type == "resumen":
         run_resumen()
+    elif command_type == "progreso":
+        run_progreso()
 
 def render_landing():
     st.markdown("""

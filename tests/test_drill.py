@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app"))
+import conversation  # noqa: E402
 import progress  # noqa: E402
 import spanish_drill as sd  # noqa: E402
 
@@ -91,11 +92,10 @@ def test_every_module_builds_items_that_grade_themselves():
 def test_ui_drill_logs_and_summarizes(db):
     from streamlit.testing.v1 import AppTest
     at = AppTest.from_file(os.path.join(os.path.dirname(__file__), "..", "app", "spanish_drill.py"), default_timeout=30)
-    at.session_state["active_command"] = "!drill numeros"
-    at.run()
+    item = _start_typed_drill(at, "numeros")
     assert not at.exception
-    # Answer wrong, continue, then answer right (accent-free) and finish via skip.
-    at.text_input[0].set_value("zzz")
+    # Answer wrong and continue; then jump to the end-of-drill screen.
+    at.text_input(key=f"answer_{item['id']}").set_value("zzz")
     next(b for b in at.button if "Submit" in b.label).click()
     at.run()
     assert any("Incorrect" in e.value for e in at.error)
@@ -200,3 +200,126 @@ def test_hinted_correct_answer_still_queued(db):
     at.run()
     assert at.session_state["score"] == 1
     assert progress.due_count() == 1
+
+
+def test_streak_days():
+    from datetime import date
+    today = date(2026, 3, 10)
+    d = lambda n: today - timedelta(days=n)
+    assert progress.streak_days([d(0), d(1), d(2), d(4)], today) == 3
+    assert progress.streak_days([d(1), d(2)], today) == 2      # not broken before today's practice
+    assert progress.streak_days([d(2)], today) == 0
+
+
+def test_stats_and_progress_page(db):
+    now = datetime(2026, 3, 10, 12)
+    progress.record_attempt(item("fui"), True, module="preterito", now=now)
+    progress.record_attempt(item("cero"), False, module="numeros", now=now - timedelta(days=8))
+    s = progress.stats(now=now)
+    assert s["total"] == 2 and s["streak"] == 1
+    assert s["week"] == (1, 1) and s["prev_week"] == (0, 1)
+    assert s["by_module"][0][0] == "numeros"  # weakest first
+    at = _app()
+    at.session_state["active_command"] = "!progreso"
+    at.run()
+    assert not at.exception
+    assert any(m.label == "Intentos" for m in at.metric)
+
+
+class _Block:
+    def __init__(self, **d):
+        self.d = d
+
+    def to_dict(self):
+        return dict(self.d)
+
+
+class _FakeStream:
+    def __init__(self, text, stop_reason):
+        self.text_stream = iter([text[:5], text[5:]])
+        self._final = type("M", (), {"stop_reason": stop_reason, "content": [
+            _Block(type="thinking", thinking="", signature="sig"), _Block(type="text", text=text)]})()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+    def get_final_message(self):
+        return self._final
+
+
+class FakeClient:
+    """Records every request; replies with canned text."""
+    def __init__(self, reply="¡Hola! ¿Qué tal?", stop_reason="end_turn"):
+        self.calls, self.reply, self.stop_reason = [], reply, stop_reason
+        self.beta = type("B", (), {"messages": self})()
+
+    def stream(self, **kw):
+        # Snapshot the messages: the caller keeps appending to the same list.
+        self.calls.append({**kw, "messages": [dict(m) for m in kw["messages"]]})
+        return _FakeStream(self.reply, self.stop_reason)
+
+
+def test_stream_reply_request_shape_and_result():
+    client, result = FakeClient(), {}
+    text = "".join(conversation.stream_reply(client, "SYS", [{"role": "user", "content": "hola"}], result))
+    assert text == "¡Hola! ¿Qué tal?"
+    call = client.calls[0]
+    assert call["model"] == "claude-opus-5-5" and call["fallbacks"] == "default"
+    assert call["betas"] == ["server-side-fallback-2026-07-01"] and call["output_config"] == {"effort": "low"}
+    assert [b["type"] for b in result["content"]] == ["thinking", "text"]
+    assert conversation.assistant_text(result["content"]) == "¡Hola! ¿Qué tal?"
+
+
+def test_stream_reply_refusal_raises():
+    with pytest.raises(conversation.ChatError):
+        list(conversation.stream_reply(FakeClient(stop_reason="refusal"), "S", [{"role": "user", "content": "x"}], {}))
+
+
+def test_chat_ui_appends_and_replays_history_verbatim(monkeypatch):
+    client = FakeClient()
+    monkeypatch.setattr(conversation, "credentials_configured", lambda *a: True)
+    monkeypatch.setattr(conversation, "get_client", lambda *a: client)
+    at = _app()
+    at.session_state["active_command"] = "!hablar"
+    at.run()
+    at.chat_input[0].set_value("Ayer fui al cine.").run()
+    assert not at.exception
+    at.chat_input[0].set_value("Me gustó mucho.").run()
+    first, second = client.calls
+    assert first["system"] == second["system"]                # system prompt fixed per conversation
+    assert second["messages"][:2] == [first["messages"][0],  # earlier turns replayed unchanged,
+                                      {"role": "assistant", "content": [  # thinking block included
+                                          {"type": "thinking", "thinking": "", "signature": "sig"},
+                                          {"type": "text", "text": "¡Hola! ¿Qué tal?"}]}]
+    assert len(at.session_state["chat_hablar"]) == 4
+
+
+def test_chat_failure_drops_unanswered_turn(monkeypatch):
+    monkeypatch.setattr(conversation, "credentials_configured", lambda *a: True)
+    monkeypatch.setattr(conversation, "get_client", lambda *a: FakeClient(stop_reason="refusal"))
+    at = _app()
+    at.session_state["active_command"] = "!rol restaurante"
+    at.run()
+    at.chat_input[0].set_value("Hola").run()
+    assert not at.exception
+    assert at.error and at.session_state["chat_rol_" + at.session_state["rol_scenario_restaurante"]] == []
+
+
+def test_without_credentials_falls_back_to_instructions(monkeypatch):
+    monkeypatch.setattr(conversation, "credentials_configured", lambda *a: False)
+    at = _app()
+    at.session_state["active_command"] = "!hablar"
+    at.run()
+    assert not at.exception and not at.chat_input
+    assert any("Chatear aquí mismo" in e.label for e in at.expander)
+
+
+def test_missing_credentials_at_request_time_is_a_chat_error(monkeypatch):
+    class NoCreds(FakeClient):
+        def stream(self, **kw):
+            raise TypeError("Could not resolve authentication method. Expected one of api_key, ...")
+    with pytest.raises(conversation.ChatError):
+        list(conversation.stream_reply(NoCreds(), "S", [{"role": "user", "content": "x"}], {}))
