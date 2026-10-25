@@ -100,6 +100,56 @@
         "spanish": "Ellos van corriendo por el parque.",
         "english": "They go running through the park.",
         "person": "ellos"
+      },
+      {
+        "spanish": "Voy aprendiendo poco a poco.",
+        "english": "I'm gradually learning, little by little.",
+        "person": "yo",
+        "use": "gradual progress",
+        "source": "claude-draft"
+      },
+      {
+        "spanish": "Ella va cantando por la calle.",
+        "english": "She goes down the street singing.",
+        "person": "ella",
+        "source": "claude-draft"
+      },
+      {
+        "spanish": "Nosotros vamos comiendo en el coche.",
+        "english": "We eat in the car on the way.",
+        "person": "nosotros",
+        "source": "claude-draft"
+      },
+      {
+        "spanish": "¿Vas leyendo en el metro?",
+        "english": "Do you read on the metro on your way?",
+        "person": "tú",
+        "source": "claude-draft"
+      },
+      {
+        "spanish": "Voy escuchando un pódcast en el autobús.",
+        "english": "I listen to a podcast on the bus on my way.",
+        "person": "yo",
+        "source": "claude-draft"
+      },
+      {
+        "spanish": "Ellas van charlando de camino al trabajo.",
+        "english": "They (women) chat on their way to work.",
+        "person": "ellas",
+        "source": "claude-draft"
+      },
+      {
+        "spanish": "Ustedes van hablando muy alto en el tren.",
+        "english": "You (all) are talking very loudly on the train as you go.",
+        "person": "ustedes",
+        "source": "claude-draft"
+      },
+      {
+        "spanish": "Él va entendiendo mejor las películas en español.",
+        "english": "He's gradually understanding films in Spanish better.",
+        "person": "él",
+        "use": "gradual progress",
+        "source": "claude-draft"
       }
     ],
     "gerund_formation_reminder": {

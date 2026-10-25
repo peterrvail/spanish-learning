@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 import os
 
 import conversation
+import grading
 import progress
 
 # Load data
@@ -173,6 +174,25 @@ def inject_responsive_css():
             h1 { font-size: 1.6rem !important; }
             h2 { font-size: 1.3rem !important; }
             h3 { font-size: 1.1rem !important; }
+            /* Streamlit stacks columns full-width on phones. For the small
+               control rows in a drill (timer, Pausa/Resumen, the accent keys,
+               Pista/No sé) that pushed the question and answer box off the
+               screen, so keep containers keyed row_* on one line. */
+            [class*="st-key-row_"] [data-testid="stHorizontalBlock"] {
+                flex-wrap: nowrap !important;
+                gap: 0.35rem !important;
+            }
+            [class*="st-key-row_"] [data-testid="stColumn"] {
+                min-width: 0 !important;
+            }
+            [class*="st-key-row_"] button {
+                padding-left: 0.2rem !important;
+                padding-right: 0.2rem !important;
+            }
+            /* Narrow keys, but at least a full touch target tall. */
+            [class*="st-key-row_accents"] button {
+                min-height: 44px;
+            }
         }
         </style>
         """,
@@ -701,8 +721,29 @@ def get_adverbios_drill_items(count=15):
                 "exercise_type": "adverbios",
                 "explanation": f"{w['spanish']} — {w['english']}"
             })
+    # The list has synonyms as separate entries ('outside' = afuera / fuera),
+    # so merge them, or one of two right answers is graded wrong.
+    items = merge_same_prompt(items)
     random.shuffle(items)
     return items[:count]
+
+def merge_same_prompt(items):
+    """Collapse items that ask the identical question into one that accepts
+    every answer any of them had. Must run on the whole pool before sampling,
+    since the synonyms may not both land in the sample."""
+    merged = {}
+    for item in items:
+        if item["prompt"] not in merged:
+            merged[item["prompt"]] = dict(item, accepted_forms=list(accepted_forms_for(item)))
+            continue
+        keep = merged[item["prompt"]]
+        for form in accepted_forms_for(item):
+            if form not in keep["accepted_forms"]:
+                keep["accepted_forms"].append(form)
+        keep["explanation"] += f" · {item.get('explanation', '')}"
+    for i, item in enumerate(merged.values()):
+        item["id"] = i
+    return list(merged.values())
 
 def get_adjetivos_drill_items(count=10):
     """Generate shortened-adjective (apocope) drill items: buen/bueno, mal/malo, etc."""
@@ -793,14 +834,29 @@ def get_futuro_irregular_drill_items(count=12):
     data = load_grammar("future_complete.json")
     stems = data["future_simple"]["irregular_stems"]
     items = []
+    persons = [("yo", 0), ("tú", 1), ("él/ella/usted", 2), ("nosotros", 3), ("ellos/ustedes", 5)]
     for s in stems:
-        items.append({
-            "id": len(items),
-            "prompt": f"Irregular future stem of '{s['infinitive']}' ({s['english']})?",
-            "target_form": s["irregular_stem"].rstrip("-"),
-            "exercise_type": "futuro_irregular",
-            "explanation": f"{s['infinitive']} → {s['irregular_stem']} — e.g. {s['example']}"
-        })
+        forms = [f.strip() for f in s["example"].split(",")]
+        explanation = f"{s['infinitive']} → {s['irregular_stem']} — e.g. {s['example']}"
+        # Half the time ask for a full conjugated form: knowing the stem is
+        # only useful once you can put the ending on it.
+        if len(forms) == 6 and random.random() < 0.5:
+            person, idx = random.choice(persons)
+            items.append({
+                "id": len(items),
+                "prompt": f"Future tense of '{s['infinitive']}' ({s['english']}) — {person}?",
+                "target_form": forms[idx],
+                "exercise_type": "futuro_conjugado",
+                "explanation": explanation,
+            })
+        else:
+            items.append({
+                "id": len(items),
+                "prompt": f"Irregular future stem of '{s['infinitive']}' ({s['english']})?",
+                "target_form": s["irregular_stem"].rstrip("-"),
+                "exercise_type": "futuro_irregular",
+                "explanation": explanation,
+            })
     random.shuffle(items)
     return items[:count]
 
@@ -1046,6 +1102,16 @@ def get_imperative_drill_items(verbs_data, count=20):
 
     return items
 
+# Every module name _build_drill_items understands, aliases included.
+KNOWN_MODULES = {
+    "mixto", "fallos", "imperativo", "pronombres", "stem_changes", "cambios", "imperfecto", "pasado",
+    "preterito", "preterite", "pluscuamperfecto", "pluscuam", "ejercicio", "review111", "por_para",
+    "porpara", "demostrativos", "distancias", "adverbios", "adjetivos", "numeros", "reflexivos",
+    "participios", "futuro_irregular", "futuro", "estructuras", "preguntas", "lugares", "rutina",
+    "ir_gerundio", "gerundio", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
+    "preposiciones",
+}
+
 def _build_drill_items(module_type):
     """Generate the raw item list for a given module type."""
     if module_type == "imperativo":
@@ -1197,11 +1263,12 @@ def render_breakdown(answers):
 
 def _render_timer(time_remaining, duration_seconds):
     minutes, seconds = divmod(int(time_remaining), 60)
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.progress(max(0.0, time_remaining / duration_seconds))
-    with col2:
-        st.metric("Time Left", f"{minutes}:{seconds:02d}")
+    with st.container(key="row_timer"):
+        col1, col2 = st.columns([3, 1], vertical_alignment="center")
+        with col1:
+            st.progress(max(0.0, time_remaining / duration_seconds))
+        with col2:
+            st.metric("Time Left", f"{minutes}:{seconds:02d}")
 
 @st.fragment(run_every=1)
 def _live_timer(duration_seconds):
@@ -1254,7 +1321,7 @@ def run_drill(module_type="imperativo", duration_seconds=None):
     else:
         _live_timer(duration_seconds)
 
-    pausa_col, resumen_col = st.columns(2)
+    pausa_col, resumen_col = st.container(key="row_drill_tools").columns(2)
     with pausa_col:
         if st.button("⏸️ Pausa (explicar)", use_container_width=True):
             st.session_state.active_command = "!pausa"
@@ -1311,6 +1378,12 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                 st.info(f"🤷 La respuesta: **{pending['target_form']}**")
                 if pending.get("explanation"):
                     st.caption(f"💡 {pending['explanation']}")
+            elif pending["is_correct"] and pending.get("ai_review"):
+                # Didn't match the model answer, but Claude judged it right.
+                st.success("✅ ¡Correcto! Tu versión también vale.")
+                st.caption(f"Respuesta modelo: {pending['target_form']}")
+                if pending["ai_review"].get("feedback"):
+                    st.info(f"🤖 {pending['ai_review']['feedback']}")
             elif pending["is_correct"]:
                 st.success(f"✅ Correct! '{pending['target_form']}'")
                 if pending.get("accent_fix"):
@@ -1319,8 +1392,15 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                     st.caption("💡 Con pista — volverá a salir en el repaso espaciado.")
             else:
                 st.error(f"❌ Incorrect. The correct form is: '{pending['target_form']}'")
+                diff = grading.word_diff(pending.get("user_answer", ""), pending["target_form"])
+                if diff:
+                    st.markdown(f"🔍 {diff}")
+                if (pending.get("ai_review") or {}).get("feedback"):
+                    st.info(f"🤖 {pending['ai_review']['feedback']}")
                 if pending.get("explanation"):
                     st.info(f"💡 {pending['explanation']}")
+            if pending.get("ai_unavailable"):
+                st.caption("(No se pudo consultar a Claude; solo se comparó con la respuesta modelo.)")
 
             if st.button("➡️ Continuar", use_container_width=True):
                 st.session_state.pending_feedback = None
@@ -1350,7 +1430,7 @@ def run_drill(module_type="imperativo", duration_seconds=None):
             with st.form(key=f"answer_form_{item['id']}"):
                 user_answer = st.text_input("Your answer:", key=answer_key)
                 submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
-                accent_cols = st.columns(len(ACCENT_KEYS))
+                accent_cols = st.container(key="row_accents").columns(len(ACCENT_KEYS))
                 for col, ch in zip(accent_cols, ACCENT_KEYS):
                     with col:
                         st.form_submit_button(ch, use_container_width=True,
@@ -1358,11 +1438,18 @@ def run_drill(module_type="imperativo", duration_seconds=None):
 
         if submitted:
             is_correct, matched_form, needs_accent_fix = check_answer(user_answer, item)
+            review, unavailable = None, False
+            if not is_correct and user_answer.strip() and grading.eligible(item) and _chat_available():
+                review = _claude_review(item, user_answer)
+                unavailable = review is None
+                if review:
+                    is_correct = review["correct"]
             _record_answer(item, user_answer, is_correct, hinted=hint_level > 0,
-                           accent_fix=matched_form if needs_accent_fix else None)
+                           accent_fix=matched_form if needs_accent_fix else None,
+                           ai_review=review, ai_unavailable=unavailable)
             st.rerun()
 
-        col2, col3 = st.columns(2)
+        col2, col3 = st.container(key="row_answer_tools").columns(2)
 
         with col2:
             can_hint = not item.get("choices") and hint_level < len(item["target_form"]) - 1
@@ -1397,7 +1484,21 @@ def make_hint(target, level):
             out.append(ch)
     return "".join(out)
 
-def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, accent_fix=None):
+def _claude_review(item, answer):
+    """Claude's verdict on a sentence that missed the model answer, cached per
+    (model answer, typed answer) so a repeat answer costs no second call."""
+    cache = st.session_state.setdefault("ai_verdicts", {})
+    key = (item["target_form"], _normalize_for_grading(_loose(answer)))
+    if key not in cache:
+        with st.spinner("Revisando tu frase con Claude…"):
+            verdict = grading.judge(conversation.get_client(_anthropic_secret()), item, answer)
+        if verdict is None:
+            return None  # don't cache failures; the next try may work
+        cache[key] = verdict
+    return cache[key]
+
+def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, accent_fix=None,
+                   ai_review=None, ai_unavailable=False):
     """Score one answer, log it for spaced repetition, and queue its feedback.
     An answer that needed a hint still scores, but goes to the review queue as
     a miss: getting there with help isn't the same as knowing it."""
@@ -1422,6 +1523,9 @@ def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, 
         "target_form": item["target_form"],
         "explanation": item.get("explanation", ""),
         "accent_fix": accent_fix,
+        "user_answer": user_answer,
+        "ai_review": ai_review,
+        "ai_unavailable": ai_unavailable,
     }
 
 def get_module_concept(module_type):
@@ -1918,12 +2022,10 @@ def parse_command(command_input):
     if not parts:
         return None
 
-    if parts[0] == "!drill":
-        module = parts[1] if len(parts) > 1 else "imperativo"
-        return ("drill", module)
-    elif parts[0] == "!repasar":
-        module = parts[1] if len(parts) > 1 else "imperativo"
-        return ("repasar", module)
+    if parts[0] in ("!drill", "!repasar"):
+        # 'Pretérito' -> 'preterito', so a capital or an accent isn't a typo.
+        module = _normalize_for_grading(parts[1]) if len(parts) > 1 else "imperativo"
+        return (parts[0][1:], module)
     elif parts[0] == "!hablar":
         return ("hablar", None)
     elif parts[0] == "!rol":
@@ -1947,6 +2049,14 @@ def dispatch_command(command_str):
         return
 
     command_type, arg = parsed
+
+    if command_type in ("drill", "repasar") and arg not in KNOWN_MODULES:
+        # Without this an unknown name silently ran the imperative drill under
+        # the typo's header, and logged its answers under the typo too.
+        st.error(f"❌ No existe el módulo `{arg}`.")
+        st.markdown("**Módulos:** " + ", ".join(f"`{cmd.split()[1]}`" for _, cmd in DRILL_COMMANDS
+                                                if cmd.startswith("!drill ")))
+        return
 
     if command_type == "drill":
         run_drill(module_type=arg)
@@ -1995,7 +2105,10 @@ def main():
         st.session_state.active_command = None
 
     if mobile:
-        st.title("🎯 Spanish Learning System")
+        # During an activity the page has its own title; a second one above
+        # it only pushes the question further down a phone screen.
+        if not st.session_state.active_command:
+            st.title("🎯 Spanish Learning System")
 
         if st.session_state.active_command:
             if st.button("🏠 Home", use_container_width=True):

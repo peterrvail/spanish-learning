@@ -6,6 +6,7 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app"))
 import conversation  # noqa: E402
+import grading  # noqa: E402
 import progress  # noqa: E402
 import spanish_drill as sd  # noqa: E402
 
@@ -323,3 +324,120 @@ def test_missing_credentials_at_request_time_is_a_chat_error(monkeypatch):
             raise TypeError("Could not resolve authentication method. Expected one of api_key, ...")
     with pytest.raises(conversation.ChatError):
         list(conversation.stream_reply(NoCreds(), "S", [{"role": "user", "content": "x"}], {}))
+
+
+def test_adverb_synonyms_accept_both_answers():
+    items = sd.get_adverbios_drill_items(count=999)
+    prompts = [i["prompt"] for i in items]
+    assert len(prompts) == len(set(prompts))  # one question per English word
+    outside = next(i for i in items if i["prompt"].endswith(": outside"))
+    assert sd.check_answer("fuera", outside)[0] and sd.check_answer("afuera", outside)[0]
+
+
+def test_module_names_normalized_and_unknown_rejected(db):
+    assert sd.parse_command("!drill Pretérito") == ("drill", "preterito")
+    assert all(cmd.split()[1] in sd.KNOWN_MODULES for _, cmd in sd.DRILL_COMMANDS if cmd.startswith("!drill "))
+    at = _app()
+    at.session_state["active_command"] = "!drill zzz"
+    at.run()
+    assert not at.exception
+    assert any("No existe el módulo" in e.value for e in at.error)
+    assert "drill_items" not in at.session_state  # no imperative drill started under the typo
+
+
+class FakeGrader:
+    """Stands in for client.beta.messages.create in grading.judge."""
+    def __init__(self, text='{"correct": true, "feedback": "Also natural."}', stop_reason="end_turn", exc=None):
+        self.calls, self.text, self.stop_reason, self.exc = [], text, stop_reason, exc
+        self.beta = type("B", (), {"messages": self})()
+
+    def create(self, **kw):
+        self.calls.append(kw)
+        if self.exc:
+            raise self.exc
+        block = type("T", (), {"type": "text", "text": self.text})()
+        return type("R", (), {"stop_reason": self.stop_reason, "content": [block]})()
+
+
+SENTENCE = {"prompt": "Translate to Spanish (imperfect): I wanted to ask you a favor.", "id": 0,
+            "target_form": "Quería pedirte un favor.", "exercise_type": "imperfect", "explanation": "x"}
+
+
+def test_grading_eligible_only_for_typed_sentences():
+    assert grading.eligible(SENTENCE)
+    assert grading.eligible(dict(SENTENCE, target_form="Tenía cansancio."))  # short, but a sentence
+    assert not grading.eligible(dict(SENTENCE, target_form="quería"))
+    assert not grading.eligible(dict(SENTENCE, target_form="se lo"))
+    assert not grading.eligible(dict(SENTENCE, choices=["a", "b"]))
+
+
+def test_judge_request_and_verdicts():
+    client = FakeGrader()
+    assert grading.judge(client, SENTENCE, "Te quería pedir un favor") == {"correct": True, "feedback": "Also natural."}
+    kw = client.calls[0]
+    assert kw["model"] == "claude-opus-5-5" and kw["fallbacks"] == "default"
+    assert kw["output_config"]["effort"] == "low" and kw["output_config"]["format"]["type"] == "json_schema"
+    assert "Te quería pedir un favor" in kw["messages"][0]["content"]
+    # Every failure means "no verdict", so the drill keeps exact grading.
+    assert grading.judge(FakeGrader(stop_reason="refusal"), SENTENCE, "x") is None
+    assert grading.judge(FakeGrader(stop_reason="max_tokens"), SENTENCE, "x") is None
+    assert grading.judge(FakeGrader(text="not json"), SENTENCE, "x") is None
+    assert grading.judge(FakeGrader(exc=TypeError("Could not resolve authentication method")), SENTENCE, "x") is None
+
+
+def test_word_diff():
+    assert grading.word_diff("Yo vivo en Madrid", "Vivía en Madrid.") == "~~Yo vivo~~ **Vivía** en Madrid."
+    assert grading.word_diff("vivia en madrid", "Vivía en Madrid.") == "Vivía en Madrid."  # accents/case ignored
+    assert grading.word_diff("Vivía en *Madrid", "Vivía en Madrid.") == "Vivía en ~~\\*Madrid~~ **Madrid.**"  # escaped
+    assert grading.word_diff("hola", "hola") is None                                      # one-word target
+    assert grading.word_diff("", "Vivía en Madrid.") is None
+    assert grading.word_diff("Yo quiero pedir un favor", "Mientras estudiaba, oí un ruido extraño.") is None
+
+
+def _sentence_drill(at, monkeypatch, client):
+    monkeypatch.setattr(conversation, "credentials_configured", lambda *a: True)
+    monkeypatch.setattr(conversation, "get_client", lambda *a: client)
+    at.session_state["active_command"] = "!drill pasado"
+    at.run()
+    for it in at.session_state["drill_items"]:
+        it.pop("choices", None)
+    at.run()
+    item = at.session_state["drill_items"][0]
+    return item
+
+
+def test_drill_accepts_paraphrase_claude_approves(db, monkeypatch):
+    client = FakeGrader()
+    at = _app()
+    item = _sentence_drill(at, monkeypatch, client)
+    at.text_input(key=f"answer_{item['id']}").set_value("una paráfrasis válida")
+    next(b for b in at.button if "Submit" in b.label).click()
+    at.run()
+    assert not at.exception
+    assert len(client.calls) == 1 and at.session_state["score"] == 1
+    assert any("también vale" in m.value for m in at.success)
+    assert progress.due_count() == 0  # logged as correct
+
+
+def test_drill_shows_claude_feedback_and_diff_when_wrong(db, monkeypatch):
+    client = FakeGrader(text='{"correct": false, "feedback": "Use the imperfect here."}')
+    at = _app()
+    item = _sentence_drill(at, monkeypatch, client)
+    # One word off: close enough for the word diff to be shown.
+    words = item["target_form"].split()
+    at.text_input(key=f"answer_{item['id']}").set_value(" ".join(["zzz"] + words[1:]))
+    next(b for b in at.button if "Submit" in b.label).click()
+    at.run()
+    assert at.session_state["score"] == 0 and progress.due_count() == 1
+    assert any("Use the imperfect" in i.value for i in at.info)
+    assert any(m.value.startswith("🔍") and "~~zzz~~" in m.value for m in at.markdown)
+
+
+def test_claude_not_asked_when_exact_match_or_single_word(db, monkeypatch):
+    client = FakeGrader()
+    at = _app()
+    item = _sentence_drill(at, monkeypatch, client)
+    at.text_input(key=f"answer_{item['id']}").set_value(item["target_form"])
+    next(b for b in at.button if "Submit" in b.label).click()
+    at.run()
+    assert client.calls == [] and at.session_state["score"] == 1

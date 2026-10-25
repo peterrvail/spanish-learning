@@ -67,9 +67,34 @@
         "example": "San Pedro / San Francisco",
         "english": "Saint Peter / Saint Francis",
         "note": "Exception: names starting with 'To-' or 'Do-' keep 'santo' (Santo Tomás, Santo Domingo)."
+      },
+      {
+        "full_form": "cualquiera",
+        "shortened_form": "cualquier",
+        "context": "before ANY singular noun, masculine or feminine",
+        "example": "cualquier día / cualquier persona",
+        "english": "any day / any person",
+        "source": "claude-draft"
+      },
+      {
+        "full_form": "ciento",
+        "shortened_form": "cien",
+        "context": "directly before a noun, or before mil / millones",
+        "example": "cien personas / cien mil euros",
+        "english": "a hundred people / a hundred thousand euros",
+        "note": "Only 'cien' exactly: 101-199 keep 'ciento' (ciento dos).",
+        "source": "claude-draft"
+      },
+      {
+        "full_form": "uno",
+        "shortened_form": "un",
+        "context": "before masculine singular noun, also in compounds",
+        "example": "un libro / veintiún años",
+        "english": "a book / twenty-one years",
+        "source": "claude-draft"
       }
     ],
-    "note": "Most of these shortened forms only apply before MASCULINE SINGULAR nouns — feminine forms (buena, mala, primera, tercera, alguna, ninguna) are NOT shortened. 'Grande/gran' is the exception: it shortens before a singular noun of either gender."
+    "note": "Most of these shortened forms only apply before MASCULINE SINGULAR nouns — feminine forms (buena, mala, primera, tercera, alguna, ninguna) are NOT shortened. 'Grande/gran' and 'cualquiera/cualquier' are the exceptions: they shorten before a singular noun of either gender (and 'cien' before any noun)."
   },
   "example_sentences": [
     {
