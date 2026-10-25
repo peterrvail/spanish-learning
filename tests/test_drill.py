@@ -323,3 +323,22 @@ def test_missing_credentials_at_request_time_is_a_chat_error(monkeypatch):
             raise TypeError("Could not resolve authentication method. Expected one of api_key, ...")
     with pytest.raises(conversation.ChatError):
         list(conversation.stream_reply(NoCreds(), "S", [{"role": "user", "content": "x"}], {}))
+
+
+def test_adverb_synonyms_accept_both_answers():
+    items = sd.get_adverbios_drill_items(count=999)
+    prompts = [i["prompt"] for i in items]
+    assert len(prompts) == len(set(prompts))  # one question per English word
+    outside = next(i for i in items if i["prompt"].endswith(": outside"))
+    assert sd.check_answer("fuera", outside)[0] and sd.check_answer("afuera", outside)[0]
+
+
+def test_module_names_normalized_and_unknown_rejected(db):
+    assert sd.parse_command("!drill Pretérito") == ("drill", "preterito")
+    assert all(cmd.split()[1] in sd.KNOWN_MODULES for _, cmd in sd.DRILL_COMMANDS if cmd.startswith("!drill "))
+    at = _app()
+    at.session_state["active_command"] = "!drill zzz"
+    at.run()
+    assert not at.exception
+    assert any("No existe el módulo" in e.value for e in at.error)
+    assert "drill_items" not in at.session_state  # no imperative drill started under the typo
