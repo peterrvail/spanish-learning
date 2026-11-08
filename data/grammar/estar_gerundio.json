@@ -1,0 +1,705 @@
+{
+  "estar_gerundio": {
+    "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65",
+    "overview": "El gerundio (-ando / -iendo) expresa una acción que continúa o que no ha terminado, como el '-ing' del inglés. Con ESTAR forma los tiempos progresivos: lo que está pasando ahora (estoy leyendo), lo que estará pasando en un momento del futuro (mañana a esta hora estaré leyendo) y, en el pasado, cuatro matices: lo que estaba pasando (estaba leyendo cuando llamaste), un período cerrado (estuve leyendo toda la tarde), lo que ha estado pasando hasta ahora (he estado leyendo) y lo que había estado pasando antes de otro momento pasado (había estado leyendo cuando llegaste).",
+    "construction": "ESTAR (conjugado en cualquier tiempo) + GERUNDIO (no cambia: siempre -ando / -iendo)",
+    "formation": {
+      "ar": "-AR → -ANDO: habl-ar → habl-ando (speaking)",
+      "er_ir": "-ER / -IR → -IENDO: com-er → com-iendo (eating), viv-ir → viv-iendo (living)"
+    },
+    "estar_forms": {
+      "presente": {
+        "yo": "estoy",
+        "tú": "estás",
+        "él/ella/usted": "está",
+        "nosotros": "estamos",
+        "ellos/ustedes": "están"
+      },
+      "imperfecto": {
+        "yo": "estaba",
+        "tú": "estabas",
+        "él/ella/usted": "estaba",
+        "nosotros": "estábamos",
+        "ellos/ustedes": "estaban"
+      },
+      "preterito": {
+        "yo": "estuve",
+        "tú": "estuviste",
+        "él/ella/usted": "estuvo",
+        "nosotros": "estuvimos",
+        "ellos/ustedes": "estuvieron"
+      },
+      "perfecto": {
+        "yo": "he estado",
+        "tú": "has estado",
+        "él/ella/usted": "ha estado",
+        "nosotros": "hemos estado",
+        "ellos/ustedes": "han estado"
+      },
+      "pluscuamperfecto": {
+        "yo": "había estado",
+        "tú": "habías estado",
+        "él/ella/usted": "había estado",
+        "nosotros": "habíamos estado",
+        "ellos/ustedes": "habían estado"
+      },
+      "futuro": {
+        "yo": "estaré",
+        "tú": "estarás",
+        "él/ella/usted": "estará",
+        "nosotros": "estaremos",
+        "ellos/ustedes": "estarán"
+      }
+    },
+    "tense_notes": {
+      "presente": "Acción en progreso ahora: Ahora mismo estoy cocinando.",
+      "imperfecto": "Acción en progreso en un momento del pasado, a menudo interrumpida por otra: Estaba cocinando cuando sonó el teléfono.",
+      "preterito": "Acción en progreso durante un período cerrado y terminado del pasado: Estuve cocinando toda la tarde.",
+      "perfecto": "Acción que empezó en el pasado y sigue hasta ahora (o acaba de terminar): He estado cocinando todo el día; estoy cansado.",
+      "pluscuamperfecto": "Acción en progreso antes de otro momento del pasado: Había estado cocinando una hora cuando llegaron los invitados.",
+      "futuro": "Acción en progreso en un momento del futuro: Mañana a las ocho estaré cocinando."
+    },
+    "not_used_with_estar": {
+      "verbs": [
+        "poder",
+        "preferir",
+        "creer",
+        "ir"
+      ],
+      "note": "Their gerunds are correct (pudiendo, prefiriendo, creyendo, yendo), but these verbs are almost never used in the progressive: say 'puedo', 'prefiero', 'creo', 'voy', not 'estoy pudiendo / prefiriendo / creyendo / yendo'."
+    },
+    "regular_verbs": [
+      {
+        "infinitive": "hablar",
+        "gerund": "hablando",
+        "english": "speaking",
+        "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+      },
+      {
+        "infinitive": "comer",
+        "gerund": "comiendo",
+        "english": "eating",
+        "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+      },
+      {
+        "infinitive": "vivir",
+        "gerund": "viviendo",
+        "english": "living",
+        "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+      },
+      {
+        "infinitive": "trabajar",
+        "gerund": "trabajando",
+        "english": "working",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "estudiar",
+        "gerund": "estudiando",
+        "english": "studying",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "cocinar",
+        "gerund": "cocinando",
+        "english": "cooking",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "caminar",
+        "gerund": "caminando",
+        "english": "walking",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "escuchar",
+        "gerund": "escuchando",
+        "english": "listening",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "viajar",
+        "gerund": "viajando",
+        "english": "traveling",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "aprender",
+        "gerund": "aprendiendo",
+        "english": "learning",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "beber",
+        "gerund": "bebiendo",
+        "english": "drinking",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "correr",
+        "gerund": "corriendo",
+        "english": "running",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "hacer",
+        "gerund": "haciendo",
+        "english": "doing / making",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "escribir",
+        "gerund": "escribiendo",
+        "english": "writing",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "abrir",
+        "gerund": "abriendo",
+        "english": "opening",
+        "source": "claude-draft"
+      },
+      {
+        "infinitive": "salir",
+        "gerund": "saliendo",
+        "english": "leaving / going out",
+        "source": "claude-draft"
+      }
+    ],
+    "irregular_groups": [
+      {
+        "name": "o → u",
+        "rule": "-IR verbs with o in the stem change it to u.",
+        "verbs": [
+          {
+            "infinitive": "dormir",
+            "gerund": "durmiendo",
+            "english": "sleeping",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "morir",
+            "gerund": "muriendo",
+            "english": "dying",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "poder",
+            "gerund": "pudiendo",
+            "english": "being able",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          }
+        ]
+      },
+      {
+        "name": "i → y",
+        "rule": "When the stem ends in a vowel, -iendo becomes -yendo (no three vowels in a row).",
+        "verbs": [
+          {
+            "infinitive": "construir",
+            "gerund": "construyendo",
+            "english": "constructing",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "creer",
+            "gerund": "creyendo",
+            "english": "believing",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "destruir",
+            "gerund": "destruyendo",
+            "english": "destroying",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "ir",
+            "gerund": "yendo",
+            "english": "going",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "leer",
+            "gerund": "leyendo",
+            "english": "reading",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "oír",
+            "gerund": "oyendo",
+            "english": "hearing",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "traer",
+            "gerund": "trayendo",
+            "english": "bringing",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          }
+        ]
+      },
+      {
+        "name": "e → i",
+        "rule": "-IR verbs with e in the stem change it to i.",
+        "verbs": [
+          {
+            "infinitive": "corregir",
+            "gerund": "corrigiendo",
+            "english": "correcting",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "divertir",
+            "gerund": "divirtiendo",
+            "english": "having fun / entertaining",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "mentir",
+            "gerund": "mintiendo",
+            "english": "lying",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "pedir",
+            "gerund": "pidiendo",
+            "english": "asking for",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "preferir",
+            "gerund": "prefiriendo",
+            "english": "preferring",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "reír",
+            "gerund": "riendo",
+            "english": "laughing",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "repetir",
+            "gerund": "repitiendo",
+            "english": "repeating",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "seguir",
+            "gerund": "siguiendo",
+            "english": "following",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "sentir",
+            "gerund": "sintiendo",
+            "english": "feeling",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "venir",
+            "gerund": "viniendo",
+            "english": "coming",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "vestir",
+            "gerund": "vistiendo",
+            "english": "dressing",
+            "source": "lesson: Notes on Grammar - The Gerund (El gerundio), p. 65"
+          },
+          {
+            "infinitive": "decir",
+            "gerund": "diciendo",
+            "english": "saying / telling",
+            "source": "claude-draft"
+          }
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "tense": "presente",
+        "sentence": "Ahora mismo yo ___ (leer) el periódico.",
+        "answer": "estoy leyendo",
+        "english": "Right now I'm reading the newspaper.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "presente",
+        "sentence": "¿Qué ___ (hacer) tú en este momento?",
+        "answer": "estás haciendo",
+        "english": "What are you doing at the moment?",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "presente",
+        "sentence": "Mi abuela ___ (dormir) la siesta; no hagas ruido.",
+        "answer": "está durmiendo",
+        "english": "My grandmother is taking a nap; don't make noise.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "presente",
+        "sentence": "Los niños ___ (construir) un castillo de arena.",
+        "answer": "están construyendo",
+        "english": "The children are building a sandcastle.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "presente",
+        "sentence": "Nosotros ___ (aprender) mucho en esta clase.",
+        "answer": "estamos aprendiendo",
+        "english": "We're learning a lot in this class.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "presente",
+        "sentence": "¿Tú me ___ (mentir)?",
+        "answer": "estás mintiendo",
+        "english": "Are you lying to me?",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "presente",
+        "sentence": "Ella ___ (pedir) la cuenta al camarero.",
+        "answer": "está pidiendo",
+        "english": "She's asking the waiter for the bill.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "presente",
+        "sentence": "Ustedes ___ (trabajar) demasiado últimamente.",
+        "answer": "están trabajando",
+        "english": "You've been working too much lately.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "presente",
+        "sentence": "Yo ___ (seguir) una receta nueva.",
+        "answer": "estoy siguiendo",
+        "english": "I'm following a new recipe.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "presente",
+        "sentence": "El profesor ___ (corregir) los exámenes ahora.",
+        "answer": "está corrigiendo",
+        "english": "The teacher is correcting the exams now.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "Ayer a las ocho, yo todavía ___ (dormir).",
+        "answer": "estaba durmiendo",
+        "english": "Yesterday at eight, I was still sleeping.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "Cuando llamaste, nosotros ___ (comer).",
+        "answer": "estábamos comiendo",
+        "english": "When you called, we were eating.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "Mientras ella ___ (leer), empezó a llover.",
+        "answer": "estaba leyendo",
+        "english": "While she was reading, it started to rain.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "¿Qué ___ (hacer) tú anoche a las once?",
+        "answer": "estabas haciendo",
+        "english": "What were you doing last night at eleven?",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "El niño ___ (mentir), y su madre lo sabía.",
+        "answer": "estaba mintiendo",
+        "english": "The boy was lying, and his mother knew it.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "Cuando entré, todos ___ (reír).",
+        "answer": "estaban riendo",
+        "english": "When I came in, everyone was laughing.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "Mi padre ___ (oír) las noticias en la radio cuando llegué.",
+        "answer": "estaba oyendo",
+        "english": "My father was listening to the news on the radio when I arrived.",
+        "source": "claude-draft",
+        "also_accepted": [
+          "estaba escuchando"
+        ]
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "Ella ___ (vestir) a su hija cuando sonó el timbre.",
+        "answer": "estaba vistiendo",
+        "english": "She was dressing her daughter when the doorbell rang.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "Cuando te vi, tú ___ (traer) las bolsas del supermercado.",
+        "answer": "estabas trayendo",
+        "english": "When I saw you, you were bringing the bags from the supermarket.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "imperfecto",
+        "sentence": "El payaso ___ (divertir) a los niños cuando empezó a llover.",
+        "answer": "estaba divirtiendo",
+        "english": "The clown was entertaining the children when it started to rain.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "preterito",
+        "sentence": "Ayer yo ___ (trabajar) toda la mañana.",
+        "answer": "estuve trabajando",
+        "english": "Yesterday I was working all morning.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "preterito",
+        "sentence": "Nosotros ___ (esperar) el autobús durante una hora.",
+        "answer": "estuvimos esperando",
+        "english": "We were waiting for the bus for an hour.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "preterito",
+        "sentence": "El sábado ellos ___ (bailar) hasta las tres.",
+        "answer": "estuvieron bailando",
+        "english": "On Saturday they were dancing until three.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "preterito",
+        "sentence": "¿Tú ___ (estudiar) toda la tarde?",
+        "answer": "estuviste estudiando",
+        "english": "Were you studying all afternoon?",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "preterito",
+        "sentence": "Mi hermana ___ (leer) durante dos horas en el parque.",
+        "answer": "estuvo leyendo",
+        "english": "My sister was reading in the park for two hours.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "preterito",
+        "sentence": "La semana pasada, nosotros ___ (construir) la terraza.",
+        "answer": "estuvimos construyendo",
+        "english": "Last week we were building the terrace.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "preterito",
+        "sentence": "Él ___ (repetir) la misma canción toda la tarde.",
+        "answer": "estuvo repitiendo",
+        "english": "He was repeating the same song all afternoon.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "preterito",
+        "sentence": "Ustedes ___ (seguir) el partido por la radio hasta el final.",
+        "answer": "estuvieron siguiendo",
+        "english": "You (all) were following the match on the radio until the end.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "perfecto",
+        "sentence": "Yo ___ (estudiar) todo el día; estoy cansado.",
+        "answer": "he estado estudiando",
+        "english": "I've been studying all day; I'm tired.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "perfecto",
+        "sentence": "¿Qué ___ (hacer) tú últimamente?",
+        "answer": "has estado haciendo",
+        "english": "What have you been doing lately?",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "perfecto",
+        "sentence": "Nosotros ___ (aprender) español desde enero.",
+        "answer": "hemos estado aprendiendo",
+        "english": "We've been learning Spanish since January.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "perfecto",
+        "sentence": "Ella ___ (dormir) toda la tarde.",
+        "answer": "ha estado durmiendo",
+        "english": "She's been sleeping all afternoon.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "perfecto",
+        "sentence": "Los vecinos ___ (construir) esa casa durante meses.",
+        "answer": "han estado construyendo",
+        "english": "The neighbors have been building that house for months.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "perfecto",
+        "sentence": "Esta semana ___ (llover) sin parar.",
+        "answer": "ha estado lloviendo",
+        "english": "It's been raining nonstop this week.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "perfecto",
+        "sentence": "Tú me ___ (mentir) todo este tiempo.",
+        "answer": "has estado mintiendo",
+        "english": "You've been lying to me all this time.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "perfecto",
+        "sentence": "Mis padres ___ (viajar) por Ecuador este mes.",
+        "answer": "han estado viajando",
+        "english": "My parents have been traveling around Ecuador this month.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "pluscuamperfecto",
+        "sentence": "Yo ___ (esperar) una hora cuando por fin llegó el autobús.",
+        "answer": "había estado esperando",
+        "english": "I had been waiting for an hour when the bus finally arrived.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "pluscuamperfecto",
+        "sentence": "Cuando la conocí, ella ___ (vivir) en Quito cinco años.",
+        "answer": "había estado viviendo",
+        "english": "When I met her, she had been living in Quito for five years.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "pluscuamperfecto",
+        "sentence": "Estábamos cansados porque nosotros ___ (correr) toda la mañana.",
+        "answer": "habíamos estado corriendo",
+        "english": "We were tired because we had been running all morning.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "pluscuamperfecto",
+        "sentence": "Los niños ___ (jugar) en el barro; por eso estaban sucios.",
+        "answer": "habían estado jugando",
+        "english": "The children had been playing in the mud; that's why they were dirty.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "pluscuamperfecto",
+        "sentence": "Él ___ (mentir) durante años antes de confesar la verdad.",
+        "answer": "había estado mintiendo",
+        "english": "He had been lying for years before confessing the truth.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "pluscuamperfecto",
+        "sentence": "Cuando llegó el médico, el paciente ___ (sentir) dolor toda la noche.",
+        "answer": "había estado sintiendo",
+        "english": "When the doctor arrived, the patient had been feeling pain all night.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "pluscuamperfecto",
+        "sentence": "Ellas ___ (pedir) ayuda durante semanas antes de que alguien respondiera.",
+        "answer": "habían estado pidiendo",
+        "english": "They (women) had been asking for help for weeks before anyone answered.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "pluscuamperfecto",
+        "sentence": "Tú ___ (leer) la novela antes de ver la película, ¿verdad?",
+        "answer": "habías estado leyendo",
+        "english": "You had been reading the novel before seeing the film, right?",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "Mañana a esta hora, yo ___ (viajar) a Madrid.",
+        "answer": "estaré viajando",
+        "english": "This time tomorrow, I'll be traveling to Madrid.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "No me llames a las nueve; yo ___ (dormir).",
+        "answer": "estaré durmiendo",
+        "english": "Don't call me at nine; I'll be sleeping.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "El lunes a las diez, nosotros ___ (estudiar) para el examen.",
+        "answer": "estaremos estudiando",
+        "english": "On Monday at ten, we'll be studying for the exam.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "Dentro de un año, ellos ___ (construir) su casa nueva.",
+        "answer": "estarán construyendo",
+        "english": "A year from now, they'll be building their new house.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "Mañana a esta hora, tú ___ (venir) en el tren.",
+        "answer": "estarás viniendo",
+        "english": "This time tomorrow, you'll be coming on the train.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "Esta noche a las once, ella todavía ___ (trabajar).",
+        "answer": "estará trabajando",
+        "english": "Tonight at eleven, she'll still be working.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "Cuando llegues, yo ___ (preparar) la cena.",
+        "answer": "estaré preparando",
+        "english": "When you arrive, I'll be making dinner.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "En julio, mis padres ___ (descansar) en la playa.",
+        "answer": "estarán descansando",
+        "english": "In July, my parents will be relaxing at the beach.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "El sábado por la tarde, nosotros ___ (celebrar) el cumpleaños de Ana.",
+        "answer": "estaremos celebrando",
+        "english": "On Saturday afternoon, we'll be celebrating Ana's birthday.",
+        "source": "claude-draft"
+      },
+      {
+        "tense": "futuro",
+        "sentence": "Mañana a mediodía, el profesor ___ (corregir) nuestros exámenes.",
+        "answer": "estará corrigiendo",
+        "english": "Tomorrow at noon, the teacher will be correcting our exams.",
+        "source": "claude-draft"
+      }
+    ]
+  }
+}

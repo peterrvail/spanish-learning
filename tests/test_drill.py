@@ -83,7 +83,7 @@ def test_every_module_builds_items_that_grade_themselves():
     for module in ["imperativo", "pronombres", "cambios", "pasado", "preterito", "pluscuam", "por_para",
                    "demostrativos", "adverbios", "adjetivos", "numeros", "reflexivos", "participios",
                    "futuro", "estructuras", "lugares", "rutina", "gerundio", "vocabulario",
-                   "indefinidos", "preposiciones", "ejercicio", "mixto"]:
+                   "indefinidos", "preposiciones", "ejercicio", "estar_gerundio", "mixto"]:
         items = sd.get_drill_items(module)
         assert items, module
         for it in items:
@@ -509,3 +509,63 @@ def test_pausa_and_resumen_stop_the_clock(db):
     assert 55 <= elapsed <= 70          # ...don't count against the drill
     assert "paused_at" not in at.session_state
     assert "Drill Complete" not in " ".join(s.value for s in at.success)
+
+
+
+def test_estar_gerundio_covers_every_tense_and_the_irregulars():
+    import collections, json
+    seen = collections.Counter()
+    for _ in range(50):
+        items = sd.get_estar_gerundio_drill_items()
+        assert len(items) == 16
+        seen.update(i["exercise_type"] for i in items)
+    # Present, future and the four pasts each get ~2 questions per drill.
+    for tense in ("presente", "imperfecto", "preterito", "perfecto", "pluscuamperfecto", "futuro"):
+        assert seen[f"estar_gerundio_{tense}"] == 100, tense
+    assert seen["gerundio_irregular"] == 150 and seen["gerundio_regular"] == 50
+    # The lesson's irregular groups are all there.
+    d = json.load(open(os.path.join(sd.GRAMMAR_DIR, "estar_gerundio.json")))["estar_gerundio"]
+    gerunds = {v["infinitive"]: v["gerund"] for g in d["irregular_groups"] for v in g["verbs"]}
+    assert {"dormir": "durmiendo", "poder": "pudiendo", "ir": "yendo", "oír": "oyendo",
+            "traer": "trayendo", "reír": "riendo", "vestir": "vistiendo"}.items() <= gerunds.items()
+
+
+def test_estar_gerundio_skips_verbs_not_used_in_the_progressive():
+    for _ in range(100):
+        for i in sd.get_estar_gerundio_drill_items():
+            if i["prompt"].startswith("Estar + gerundio"):
+                assert not any(f"'{v}'" in i["prompt"] for v in ("poder", "preferir", "creer", "ir")), i["prompt"]
+
+
+def test_estar_gerundio_compound_pasts():
+    items = [i for _ in range(30) for i in sd.get_estar_gerundio_drill_items()]
+    perfect = next(i for i in items if i["exercise_type"] == "estar_gerundio_perfecto" and i["prompt"].startswith("Estar"))
+    assert perfect["target_form"].split()[1] == "estado" and perfect["target_form"].split()[0] in {"he", "has", "ha", "hemos", "han"}
+    pluperfect = next(i for i in items if i["exercise_type"] == "estar_gerundio_pluscuamperfecto" and i["prompt"].startswith("Estar"))
+    assert pluperfect["target_form"].startswith(("había estado", "habías estado", "habíamos estado", "habían estado"))
+    assert sd.check_answer(pluperfect["target_form"].replace("í", "i"), pluperfect)[:3:2] == (True, True)  # accent forgiven, flagged
+
+
+def test_estar_gerundio_sentence_answers_match_the_tables():
+    import json, re
+    d = json.load(open(os.path.join(sd.GRAMMAR_DIR, "estar_gerundio.json")))["estar_gerundio"]
+    gerund = {v["infinitive"]: v["gerund"] for v in d["regular_verbs"]}
+    gerund.update({v["infinitive"]: v["gerund"] for g in d["irregular_groups"] for v in g["verbs"]})
+    assert set(d["tense_notes"]) == set(d["estar_forms"]) == set(sd._TENSE_LABELS)
+    for x in d["sentences"]:
+        estar, ger = x["answer"].rsplit(" ", 1)
+        assert estar in d["estar_forms"][x["tense"]].values(), x
+        verb = re.search(r"\((\w+)\)", x["sentence"]).group(1)
+        if verb in gerund:
+            assert ger == gerund[verb], x
+
+
+def test_estar_gerundio_is_in_menu_review_and_mixto():
+    import json
+    assert ("🎬 Estar + gerundio", "!drill estar_gerundio") in sd.DRILL_COMMANDS
+    concept = sd.get_module_concept("estar_gerundio")
+    assert len(concept["uses"]) == 5 + 6  # formation, 3 irregular groups, stative note; one per tense
+    assert "estar_gerundio" in sd._MIXTO_MODULES and "progresivo" in sd.KNOWN_MODULES
+    sentences = json.load(open(os.path.join(sd.GRAMMAR_DIR, "estar_gerundio.json")))["estar_gerundio"]["sentences"]
+    oir = next(x for x in sentences if x["answer"] == "estaba oyendo")
+    assert "estaba escuchando" in oir["also_accepted"]

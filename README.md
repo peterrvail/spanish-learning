@@ -80,6 +80,7 @@ Spanish/
 ### Drills
 
 - `!drill imperativo` — 5-min imperative conjugation drill (tú, usted, nosotros, ustedes; affirmative + negative)
+- `!drill estar_gerundio` — Gerunds (regular + the o→u, i→y, e→i irregulars) and estar + gerundio in present, future and four pasts: imperfecto (estaba), pretérito indefinido (estuve), pretérito perfecto (he estado), pluscuamperfecto (había estado)
 - `!drill pronombres` — Double object pronoun mechanics (coming soon)
 - `!drill aspecto` — Preterite vs. Imperfect (coming soon)
 
