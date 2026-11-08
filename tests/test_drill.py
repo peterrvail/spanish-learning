@@ -6,6 +6,7 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app"))
 import conversation  # noqa: E402
+import flashcards  # noqa: E402
 import grading  # noqa: E402
 import progress  # noqa: E402
 import spanish_drill as sd  # noqa: E402
@@ -569,3 +570,89 @@ def test_estar_gerundio_is_in_menu_review_and_mixto():
     sentences = json.load(open(os.path.join(sd.GRAMMAR_DIR, "estar_gerundio.json")))["estar_gerundio"]["sentences"]
     oir = next(x for x in sentences if x["answer"] == "estaba oyendo")
     assert "estaba escuchando" in oir["also_accepted"]
+
+
+
+def test_flashcards_cover_every_lesson_vocab_file():
+    import glob
+    cards = flashcards.load_cards()
+    lesson_files = {os.path.basename(f)[:-5] for f in glob.glob(os.path.join(flashcards.VOCAB_DIR, "*.json"))}
+    assert set(flashcards.decks(cards)) == lesson_files - {"common_words"}   # not from the screenshots
+    assert len(cards) > 600
+    assert all(c["spanish"] and c["english"] for c in cards)
+    assert len({(c["spanish"], c["english"]) for c in cards}) == len(cards)  # no duplicates
+    cocina = next(c for c in cards if c["spanish"] == "la cocina")
+    assert cocina["gender"] == "f" and cocina["deck"] == "household_and_rooms"
+    tres = next(c for c in cards if c["is_number"] and c["spanish"] == "ochenta y tres")
+    assert tres["english"] == "83" and tres["category"] == "número"
+
+
+def test_flashcard_quiz_item_shares_review_card_with_drills():
+    cards = flashcards.load_cards()
+    number = next(c for c in cards if c["is_number"] and c["english"] == "83")
+    item = flashcards.quiz_item(number, sd.split_alternates)
+    assert item["prompt"] == "Write this number in Spanish: 83"            # same prompt as !drill numeros
+    spouse = next(c for c in cards if c["spanish"] == "el esposo / la esposa")
+    item = flashcards.quiz_item(spouse, sd.split_alternates)
+    assert sd.check_answer("la esposa", item)[0] and item["module"] == "tarjetas"
+
+
+def test_flashcard_deck_building_and_requeue():
+    import random as _r
+    cards = [{"id": str(i), "deck": "a" if i < 8 else "b"} for i in range(12)]
+    deck = flashcards.build_deck(cards, {"a"}, 5, due_keys={"6", "7"}, key_of=lambda c: c["id"], rng=_r.Random(1))
+    assert len(deck) == 5 and {c["id"] for c in deck[:2]} == {"6", "7"} and all(c["deck"] == "a" for c in deck)
+    assert len(flashcards.build_deck(cards, {"a", "b"}, 0)) == 12
+    assert flashcards.requeue(list("abcdef"), 0) == list("bcdaef")
+    assert flashcards.requeue(list("ab"), 0) == list("ba")
+
+
+def test_flashcard_html_is_one_line_and_escaped():
+    card = {"spanish": "<b>x</b>", "english": "y", "category": "c", "gender": "", "note": "", "example": "",
+            "example_english": "", "is_number": False}
+    markup = flashcards.card_html(card, "es_en", "f1")
+    assert "\n" not in markup and "<b>x</b>" not in markup and "&lt;b&gt;" in markup
+
+
+def test_flashcards_flow(db):
+    at = _app()
+    at.session_state["active_command"] = "!tarjetas"
+    at.run()
+    at.radio[1].set_value("10")
+    next(b for b in at.button if "Empezar" in b.label).click()
+    at.run()
+    assert not at.exception and at.session_state["fc"]["total"] == 10
+    first = at.session_state["fc"]["queue"][0]
+    next(b for b in at.button if "Otra vez" in b.label).click()
+    at.run()
+    assert at.session_state["fc"]["queue"].index(first) == 3          # comes back 3 cards later
+    assert progress.due_count() == 1                                   # and into the review queue
+    for _ in range(10):                                                # 10 cards, the missed one included
+        next(b for b in at.button if "Lo sabía" in b.label).click()
+        at.run()
+    assert any("Mazo terminado" in s.value for s in at.success)
+    assert any("9 de 10" in s.value for s in at.success)
+    assert progress.due_count() == 0                                   # relearned: due tomorrow, not now
+    next(b for b in at.button if "Nuevo mazo" in b.label).click()
+    at.run()
+    assert "fc" not in at.session_state
+
+
+
+def test_recent_class_notes_deck():
+    import json
+    path = os.path.join(flashcards.VOCAB_DIR, "class_notes_recent.json")
+    d = json.load(open(path))
+    lists = {k: v for k, v in d.items() if not k.startswith("_")}
+    entries = [e for v in lists.values() for e in v]
+    assert len(entries) >= 150
+    assert all(e.get("example") and e.get("example_english") for e in entries)       # every card has an example
+    assert {e["example_source"] for e in entries} == {"pizarra", "claude-draft"}
+    spanish = {e["spanish"] for e in entries}
+    assert "el balde" in spanish and "el valde" not in spanish                      # board misspelling fixed
+    # Its categories are all in the typed "Mis lecciones" quiz pool.
+    assert ("class_notes_recent.json", list(lists)) in sd._VOCABULARIO_MIXTO_SOURCES
+    cards = [c for c in flashcards.load_cards() if c["deck"] == "class_notes_recent"]
+    assert len(cards) == len(entries)                                              # no clashes with older decks
+    gotera = next(c for c in cards if c["spanish"] == "la gotera")
+    assert gotera["example_from_class"] and "de tu clase" in flashcards.card_html(gotera, "es_en", "x")

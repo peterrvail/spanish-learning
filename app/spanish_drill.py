@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 import os
 
 import conversation
+import flashcards
 import grading
 import progress
 
@@ -51,6 +52,7 @@ DRILL_CATEGORIES = {
         ("🗣️ Estructuras + preguntas", "!drill estructuras"),
     ],
     "Vocabulario": [
+        ("🃏 Tarjetas (mis lecciones)", "!tarjetas"),
         ("📚 Mis lecciones", "!drill vocabulario"),
         ("🌍 Común (general)", "!drill vocab_comun"),
         ("🔀 Mezcla", "!drill vocab_mezcla"),
@@ -1051,6 +1053,9 @@ _VOCABULARIO_MIXTO_SOURCES = [
     ("time_and_calendar.json", ["days_of_the_week", "time_expressions"]),
     ("misc_common_nouns.json", ["technology_and_money", "transportation", "other_common_nouns"]),
     ("additional_verbs.json", ["everyday_action_verbs", "story_and_emotion_verbs"]),
+    ("class_notes_recent.json", ["casa_y_reparaciones", "naturaleza_y_animales", "comida_y_compras",
+                                 "cuerpo_y_salud", "ciudad_y_direcciones", "tiempo_libre_y_trabajo",
+                                 "verbos_y_expresiones"]),
 ]
 
 def _lesson_vocabulario_pool():
@@ -2092,10 +2097,98 @@ def run_resumen():
         st.session_state.active_command = f"!drill {st.session_state.drill_module}"
         st.rerun()
 
+_DIRECTIONS = {"Español → inglés": "es_en", "Inglés → español": "en_es", "Mezcla": "mix"}
+_DECK_SIZES = {"10": 10, "20": 20, "30": 30, "Todas": 0}
+
+def _start_flashcards(card_ids, direction):
+    st.session_state.fc = {
+        "queue": list(card_ids),
+        "dirs": {cid: (random.choice(["es_en", "en_es"]) if direction == "mix" else direction) for cid in card_ids},
+        "missed": [],        # ids marked "otra vez" at least once, in order
+        "done": 0,
+        "total": len(card_ids),
+        "flips": 0,          # bumps the card's checkbox id, so each new card starts face up
+    }
+
+def run_tarjetas():
+    """Flashcards over the vocabulary from the class screenshots (one deck per
+    topic file). Tap the card to flip it, then say whether you knew it: a
+    miss comes back a few cards later in the same session, and every answer
+    goes into the spaced-repetition log, so missed words also show up in
+    "!drill fallos" and the review counter."""
+    st.title("🃏 Tarjetas")
+    cards = {c["id"]: c for c in flashcards.load_cards()}
+    session = st.session_state.get("fc")
+
+    if session is None:
+        st.caption(f"{len(cards)} palabras y frases de tus clases, en {len(flashcards.decks(cards.values()))} temas.")
+        counts = flashcards.decks(cards.values())
+        # Empty means every topic, so the picker starts as one line, not 16 chips.
+        chosen = st.multiselect("Temas", list(counts), placeholder="Todos los temas (o elige algunos)",
+                                format_func=lambda d: f"{flashcards.deck_label(d)} ({counts[d]})") or list(counts)
+        c1, c2 = st.container(key="row_fc_setup").columns(2)
+        direction = c1.radio("Dirección", list(_DIRECTIONS), index=0)
+        size = c2.radio("Tarjetas", list(_DECK_SIZES), index=1, horizontal=True)
+        due_first = st.checkbox("Primero las que tengo pendientes de repaso", value=True)
+        if st.button("🃏 Empezar", use_container_width=True):
+            due = progress.due_keys() if due_first else set()
+            key_of = lambda c: progress.card_key(flashcards.quiz_item(c, split_alternates))
+            deck = flashcards.build_deck(list(cards.values()), set(chosen), _DECK_SIZES[size], due, key_of)
+            _start_flashcards([c["id"] for c in deck], _DIRECTIONS[direction])
+            st.rerun()
+        return
+
+    queue = [cid for cid in session["queue"] if cid in cards]  # tolerate edited data files
+    session["queue"] = queue
+    if not queue:
+        total, missed = session["total"], session["missed"]
+        st.success(f"✅ ¡Mazo terminado! {total - len(missed)} de {total} a la primera.")
+        if missed:
+            st.markdown("### 🔁 Para repasar")
+            for cid in missed:
+                if cid in cards:
+                    st.markdown(f"- **{cards[cid]['spanish']}** — {cards[cid]['english']}")
+        a, b = st.container(key="row_fc_end").columns(2)
+        if missed and a.button(f"🔁 Otra vez las falladas ({len(missed)})", use_container_width=True):
+            _start_flashcards([cid for cid in missed if cid in cards],
+                              "mix" if len(set(session["dirs"].values())) > 1 else next(iter(session["dirs"].values())))
+            st.rerun()
+        if b.button("🃏 Nuevo mazo", use_container_width=True):
+            st.session_state.pop("fc", None)
+            st.rerun()
+        return
+
+    card = cards[queue[0]]
+    st.progress(session["done"] / session["total"])
+    st.caption(f"{flashcards.deck_label(card['deck'])} · {session['done']} de {session['total']} sabidas · quedan {len(queue)}")
+    # variant alternates per card so the browser can't reuse the previous
+    # card's (ticked) checkbox; see flashcards.card_html.
+    st.markdown(flashcards.CARD_CSS + flashcards.card_html(card, session["dirs"][card["id"]],
+                                                           f"fc-flip-{session['flips']}", session["flips"]),
+                unsafe_allow_html=True)
+
+    again, knew = st.container(key="row_fc_grade").columns(2)
+    if again.button("🔁 Otra vez", use_container_width=True):
+        progress.record_attempt(flashcards.quiz_item(card, split_alternates), False)
+        if card["id"] not in session["missed"]:
+            session["missed"].append(card["id"])
+        flashcards.requeue(queue, 0)
+        session["flips"] += 1
+        st.rerun()
+    if knew.button("✅ Lo sabía", use_container_width=True):
+        progress.record_attempt(flashcards.quiz_item(card, split_alternates), True)
+        queue.pop(0)
+        session["done"] += 1
+        session["flips"] += 1
+        st.rerun()
+    if st.button("⏹ Terminar"):
+        st.session_state.pop("fc", None)
+        st.rerun()
+
 def _module_label(module):
     """'preterito' -> '📜 Pretérito irregular', using the menu's own labels."""
     for label, cmd in DRILL_COMMANDS:
-        if cmd == f"!drill {module}":
+        if cmd in (f"!drill {module}", f"!{module}"):
             return label
     return module.replace("_", " ")
 
@@ -2176,6 +2269,8 @@ def parse_command(command_input):
         return ("resumen", None)
     elif parts[0] == "!progreso":
         return ("progreso", None)
+    elif parts[0] == "!tarjetas":
+        return ("tarjetas", None)
 
     return None
 
@@ -2211,6 +2306,8 @@ def dispatch_command(command_str):
         run_resumen()
     elif command_type == "progreso":
         run_progreso()
+    elif command_type == "tarjetas":
+        run_tarjetas()
 
 def render_landing():
     st.markdown("""
