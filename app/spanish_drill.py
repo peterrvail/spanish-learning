@@ -33,6 +33,7 @@ DRILL_CATEGORIES = {
         ("⚡ Imperativo", "!drill imperativo"),
         ("🔄 Cambios de raíz", "!drill cambios"),
         ("⏳ Pasado (imperfecto)", "!drill pasado"),
+        ("🎬 Estar + gerundio", "!drill estar_gerundio"),
         ("📜 Pretérito irregular", "!drill preterito"),
         ("⏮ Pluscuamperfecto", "!drill pluscuam"),
         ("🔮 Futuro irregular", "!drill futuro"),
@@ -84,6 +85,8 @@ MODULE_DURATIONS = {
     "mixto": 600,        # 20 interleaved items across topics
     "preterito": 420,    # 20 items, longer conjugations
     "preterite": 420,
+    "estar_gerundio": 420,  # 16 items, some 3-word answers (habíamos estado corriendo)
+    "progresivo": 420,
     "numeros": 180,
     "adjetivos": 180,
     "participios": 180,
@@ -943,6 +946,70 @@ def get_rutina_drill_items(count=15):
     random.shuffle(items)
     return items[:count]
 
+_TENSE_LABELS = {
+    "presente": "presente",
+    "imperfecto": "imperfecto",
+    "preterito": "pretérito indefinido",
+    "perfecto": "pretérito perfecto",
+    "pluscuamperfecto": "pluscuamperfecto",
+    "futuro": "futuro",
+}
+
+def get_estar_gerundio_drill_items(count=16):
+    """Gerunds and the progressive tenses (estar + gerundio), from the "Notes
+    on Grammar: The Gerund" lesson: present, future, and four kinds of past
+    (estaba / estuve / he estado / había estado + gerundio). Three kinds of
+    item, with every tense getting the same share:
+    - the gerund on its own, mostly the irregular groups (o→u, i→y, e→i);
+    - estar + gerundio for a given tense and person, one per tense;
+    - a sentence with a blank, labelled with the tense to use."""
+    d = load_grammar("estar_gerundio.json")["estar_gerundio"]
+    tenses = list(_TENSE_LABELS)
+    persons = list(d["estar_forms"]["presente"])
+    irregular = [(verb, group) for group in d["irregular_groups"] for verb in group["verbs"]]
+    # Some verbs have a perfectly good gerund but are (almost) never used in
+    # the progressive: no "estaban prefiriendo". Drill their gerunds only.
+    stative = set(d["not_used_with_estar"]["verbs"])
+    progressive_verbs = [v for v in d["regular_verbs"] + [verb for verb, _ in irregular]
+                         if v["infinitive"] not in stative]
+    items = []
+
+    def add(prompt, target, exercise_type, explanation, also=()):
+        items.append({"id": len(items), "prompt": prompt, "target_form": target,
+                      "exercise_type": exercise_type, "explanation": explanation,
+                      "also_accepted": list(also)})
+
+    # Gerund forms: three irregular, one regular.
+    for verb, group in random.sample(irregular, 3):
+        add(f"Gerundio de '{verb['infinitive']}' ({verb['english']})?", verb["gerund"], "gerundio_irregular",
+            f"{verb['infinitive']} → {verb['gerund']}. Irregular {group['name']}: {group['rule']}")
+    verb = random.choice(d["regular_verbs"])
+    add(f"Gerundio de '{verb['infinitive']}' ({verb['english']})?", verb["gerund"], "gerundio_regular",
+        f"{verb['infinitive']} → {verb['gerund']}. {d['formation']['ar']}; {d['formation']['er_ir']}")
+
+    # estar + gerundio: one per tense.
+    for tense in tenses:
+        verb, person = random.choice(progressive_verbs), random.choice(persons)
+        estar = d["estar_forms"][tense][person]
+        add(f"Estar + gerundio en {_TENSE_LABELS[tense]}, {person}: '{verb['infinitive']}' ({verb['english']})",
+            f"{estar} {verb['gerund']}", f"estar_gerundio_{tense}",
+            f"{estar} (estar en {_TENSE_LABELS[tense]}) + {verb['gerund']}. {d['tense_notes'][tense]}")
+
+    # Sentences: the rest, taken round-robin from the three tenses.
+    by_tense = {t: random.sample([x for x in d["sentences"] if x["tense"] == t],
+                                 sum(x["tense"] == t for x in d["sentences"])) for t in tenses}
+    random.shuffle(tenses)
+    while len(items) < count and any(by_tense.values()):
+        for tense in tenses:
+            if by_tense[tense] and len(items) < count:
+                x = by_tense[tense].pop()
+                add(f"Completa con estar + gerundio en {_TENSE_LABELS[tense]}: {x['sentence']}", x["answer"],
+                    f"estar_gerundio_{tense}", f"{x['sentence'].replace('___', x['answer'])} — {x['english']}",
+                    x.get("also_accepted", []))
+
+    random.shuffle(items)
+    return items[:count]
+
 def get_ir_gerundio_drill_items(count=12):
     """Generate IR (conjugated) + gerundio drill items (action while in motion)."""
     data = load_grammar("ir_gerundio.json")
@@ -1144,7 +1211,7 @@ KNOWN_MODULES = {
     "preterito", "preterite", "pluscuamperfecto", "pluscuam", "ejercicio", "review111", "por_para",
     "porpara", "demostrativos", "distancias", "adverbios", "adjetivos", "numeros", "reflexivos",
     "participios", "futuro_irregular", "futuro", "estructuras", "preguntas", "lugares", "rutina",
-    "ir_gerundio", "gerundio", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
+    "ir_gerundio", "gerundio", "estar_gerundio", "progresivo", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
     "preposiciones",
 }
 
@@ -1188,6 +1255,8 @@ def _build_drill_items(module_type):
         return get_rutina_drill_items()
     elif module_type == "ir_gerundio" or module_type == "gerundio":
         return get_ir_gerundio_drill_items()
+    elif module_type in ("estar_gerundio", "progresivo"):
+        return get_estar_gerundio_drill_items()
     elif module_type == "vocabulario" or module_type == "comunes":
         return get_vocabulario_drill_items(source="mio")
     elif module_type == "vocab_comun":
@@ -1207,7 +1276,7 @@ def _build_drill_items(module_type):
 _MIXTO_MODULES = [
     "imperativo", "pronombres", "cambios", "pasado", "preterito", "pluscuam",
     "por_para", "demostrativos", "adjetivos", "reflexivos", "participios",
-    "futuro", "estructuras", "rutina", "gerundio", "indefinidos",
+    "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "indefinidos",
     "preposiciones", "adverbios", "lugares", "numeros", "vocabulario",
 ]
 
@@ -1657,6 +1726,18 @@ def get_module_concept(module_type):
         elif module_type in ("ir_gerundio", "gerundio"):
             d = load_grammar("ir_gerundio.json")["ir_gerundio"]
             return {"overview": d["overview"], "uses": d["meaning_and_use"]}
+        elif module_type in ("estar_gerundio", "progresivo"):
+            d = load_grammar("estar_gerundio.json")["estar_gerundio"]
+            uses = [{"name": "Formación (regular)", "description": f"{d['formation']['ar']}; {d['formation']['er_ir']}"}]
+            for group in d["irregular_groups"]:
+                pairs = ", ".join(f"{v['infinitive']} → {v['gerund']}" for v in group["verbs"])
+                uses.append({"name": f"Irregulares {group['name']}", "description": f"{group['rule']} {pairs}"})
+            uses.append({"name": "Sin forma progresiva", "description": d["not_used_with_estar"]["note"]})
+            for tense, label in _TENSE_LABELS.items():
+                forms = ", ".join(d["estar_forms"][tense].values())
+                uses.append({"name": f"Estar + gerundio: {label}",
+                             "description": f"{d['tense_notes'][tense]} (estar: {forms})"})
+            return {"overview": f"{d['overview']} {d['construction']}", "uses": uses}
         elif module_type == "indefinidos":
             d = load_grammar("indefinite_pronouns.json")["indefinite_and_negative_pronouns"]
             return {"overview": d["overview"], "uses": []}
