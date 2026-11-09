@@ -22,6 +22,7 @@ DECK_LABELS = {
     "body_and_health": "🩺 Cuerpo y salud",
     "class_notes_recent": "📝 Clases recientes",
     "clothing": "👕 Ropa",
+    "expressions_reference": "💬 Expresiones",
     "core_verbs": "⚙️ Verbos básicos",
     "emotions_and_adjectives": "😊 Emociones y adjetivos",
     "family_and_people": "👪 Familia y personas",
@@ -36,12 +37,32 @@ DECK_LABELS = {
     "time_and_calendar": "📅 Tiempo y calendario",
 }
 
+# Group names inside files that are split into one deck per group.
+SUB_LABELS = {
+    "saludos_y_cortesia": "saludos y cortesía",
+    "conversacion_y_sentimientos": "conversación y sentimientos",
+    "tiempo_y_frecuencia": "tiempo y frecuencia",
+    "estructuras_utiles": "estructuras útiles",
+    "clima_y_naturaleza": "clima y naturaleza",
+    "salud_y_cuerpo": "salud y cuerpo",
+    "viajes_y_direcciones": "viajes y direcciones",
+    "comida_casa_y_compras": "comida, casa y compras",
+    "personas_trabajo_y_sociedad": "personas, trabajo y sociedad",
+}
+
 # List keys that only group entries; the category is the key above them.
 _GROUPING_KEYS = {"words", "examples", "verbs", "places", "numbers"}
 
 
+def _sub_label(key):
+    return SUB_LABELS.get(key, key.replace("_", " "))
+
+
 def deck_label(deck):
-    return DECK_LABELS.get(deck, deck.replace("_", " ").capitalize())
+    """'places' -> '📍 Lugares'; split decks 'file:group' -> '💬 Expresiones: saludos y cortesía'."""
+    base, _, sub = deck.partition(":")
+    label = DECK_LABELS.get(base, base.replace("_", " ").capitalize())
+    return f"{label}: {_sub_label(sub)}" if sub else label
 
 
 def _front_back(entry):
@@ -70,7 +91,7 @@ def _walk(node, path, out):
 
 def _category(path):
     keys = [k for k in path if k not in _GROUPING_KEYS] or path or ["general"]
-    return keys[-1].replace("_", " ")
+    return _sub_label(keys[-1])
 
 
 def _gender(entry):
@@ -79,17 +100,30 @@ def _gender(entry):
         return "m"
     if g.startswith("fem"):
         return "f"
-    spanish = entry.get("spanish", "").lower()
-    if not g and spanish.startswith(("el ", "los ", "un ")) and " / " not in spanish:
+    # No gender field: guess from the article, but only for "article + one
+    # word" - a phrase like "la cuenta, por favor" is not a feminine noun.
+    words = entry.get("spanish", "").lower().split()
+    if not g and len(words) == 2 and words[0] in ("el", "los", "un"):
         return "m"
-    if not g and spanish.startswith(("la ", "las ", "una ")) and " / " not in spanish:
+    if not g and len(words) == 2 and words[0] in ("la", "las", "una"):
         return "f"
     return ""
 
 
 def _key(text):
+    """Comparison key: case, accents, ¿?¡!.,() and extra spaces don't make
+    two entries different ('darse cuenta (de)' == 'darse cuenta de')."""
     text = unicodedata.normalize("NFD", text.lower())
-    return "".join(c for c in text if unicodedata.category(c) != "Mn").strip()
+    text = "".join(c for c in text if unicodedata.category(c) != "Mn")
+    return " ".join(re.sub(r"[¿?¡!.,()]", " ", text).split())
+
+
+def _lesson_label(first_seen):
+    """'L95' -> 'Lección 95'; other labels ('Pasado simple') as they are."""
+    m = re.fullmatch(r"L(\d+(?:\.\d+)?)", first_seen or "")
+    if m:
+        return f"Lección {m.group(1)}"
+    return "" if first_seen in ("", "Untitled") else first_seen
 
 
 def load_cards(vocab_dir=VOCAB_DIR):
@@ -100,11 +134,16 @@ def load_cards(vocab_dir=VOCAB_DIR):
         name = os.path.basename(path)
         if name in NOT_FROM_LESSONS:
             continue
-        deck = name[:-len(".json")]
+        file_deck = name[:-len(".json")]
         with open(path, encoding="utf-8") as f:
-            entries = []
-            _walk(json.load(f), [], entries)
+            data = json.load(f)
+        # A file can ask to be one deck per top-level group (e.g. 640
+        # expressions, grouped by situation) instead of one big deck.
+        split = isinstance(data.get("_meta"), dict) and data["_meta"].get("split_decks")
+        entries = []
+        _walk(data, [], entries)
         for entry_path, entry in entries:
+            deck = f"{file_deck}:{entry_path[0]}" if split and entry_path else file_deck
             sides = _front_back(entry)
             if not sides:
                 continue
@@ -127,6 +166,7 @@ def load_cards(vocab_dir=VOCAB_DIR):
                 "example_english": entry.get("example_english", ""),
                 "example_from_class": entry.get("example_source") == "pizarra",
                 "is_number": "number" in entry or "year" in entry,
+                "lesson": _lesson_label(entry.get("first_seen", "")),
             })
     return cards
 
@@ -204,6 +244,8 @@ def card_html(card, direction, flip_id, variant=0):
         if card.get("example_from_class"):
             details += '<br><span class="fc-from-class">📝 de tu clase</span>'
         details += "</div>"
+    if card.get("lesson"):
+        details += f'<div class="fc-lesson">📚 {e(card["lesson"])}</div>'
     category = e(card["category"])
     markup = f"""
 <div class="fc-scene">
@@ -257,5 +299,6 @@ CARD_CSS = """
 .fc-example { margin-top: 0.6rem; font-size: 0.9rem; font-style: italic; color: #374151; }
 .fc-example span { font-style: normal; color: #6b7280; font-size: 0.8rem; }
 .fc-example .fc-from-class { color: #0f766e; font-size: 0.72rem; }
+.fc-lesson { position: absolute; bottom: 0.8rem; font-size: 0.72rem; color: #6b7280; }
 </style>
 """

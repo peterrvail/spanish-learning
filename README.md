@@ -80,7 +80,7 @@ Spanish/
 ### Drills
 
 - `!drill imperativo` — 5-min imperative conjugation drill (tú, usted, nosotros, ustedes; affirmative + negative)
-- `!tarjetas` — Flashcards from your class vocabulary: one deck per topic file in `data/vocabulary/` (everything except `common_words.json`, which isn't from the lessons), including **📝 Clases recientes** from the latest whiteboard notes. Tap the card to flip it, then "Otra vez" (it comes back a few cards later) or "Lo sabía". Results feed the spaced-repetition queue, so missed words also show up in `!drill fallos`. A new vocabulary file becomes a new deck automatically.
+- `!tarjetas` — Flashcards from your class vocabulary: one deck per topic file in `data/vocabulary/` (everything except `common_words.json`, which isn't from the lessons), including **📝 Clases recientes** from the latest whiteboard notes and **💬 Expresiones** (640 fixed phrases from the lesson reference, one deck per situation; a file whose `_meta` has `"split_decks": true` becomes one deck per group). Cards show the lesson where a word first appeared when the data has it. Tap the card to flip it, then "Otra vez" (it comes back a few cards later) or "Lo sabía". Results feed the spaced-repetition queue, so missed words also show up in `!drill fallos`. A new vocabulary file becomes a new deck automatically.
 - `!drill estar_gerundio` — Gerunds (regular + the o→u, i→y, e→i irregulars) and estar + gerundio in present, future and four pasts: imperfecto (estaba), pretérito indefinido (estuve), pretérito perfecto (he estado), pluscuamperfecto (había estado)
 - `!drill pronombres` — Double object pronoun mechanics (coming soon)
 - `!drill aspecto` — Preterite vs. Imperfect (coming soon)

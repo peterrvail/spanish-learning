@@ -577,7 +577,8 @@ def test_flashcards_cover_every_lesson_vocab_file():
     import glob
     cards = flashcards.load_cards()
     lesson_files = {os.path.basename(f)[:-5] for f in glob.glob(os.path.join(flashcards.VOCAB_DIR, "*.json"))}
-    assert set(flashcards.decks(cards)) == lesson_files - {"common_words"}   # not from the screenshots
+    deck_files = {deck.split(":")[0] for deck in flashcards.decks(cards)}   # split files: "file:group"
+    assert deck_files == lesson_files - {"common_words"}                    # not from the screenshots
     assert len(cards) > 600
     assert all(c["spanish"] and c["english"] for c in cards)
     assert len({(c["spanish"], c["english"]) for c in cards}) == len(cards)  # no duplicates
@@ -656,3 +657,26 @@ def test_recent_class_notes_deck():
     assert len(cards) == len(entries)                                              # no clashes with older decks
     gotera = next(c for c in cards if c["spanish"] == "la gotera")
     assert gotera["example_from_class"] and "de tu clase" in flashcards.card_html(gotera, "es_en", "x")
+
+
+
+def test_expressions_reference_is_split_into_situation_decks():
+    import json
+    d = json.load(open(os.path.join(flashcards.VOCAB_DIR, "expressions_reference.json")))
+    groups = [k for k in d if not k.startswith("_")]
+    assert sum(len(d[g]) for g in groups) == 640 and len(groups) == 9
+    cards = [c for c in flashcards.load_cards() if c["deck"].startswith("expressions_reference:")]
+    assert {c["deck"].split(":")[1] for c in cards} == set(groups)       # one deck per situation
+    assert len(cards) > 600                                              # minus repeats of older cards
+    assert flashcards.deck_label("expressions_reference:saludos_y_cortesia") == "💬 Expresiones: saludos y cortesía"
+    acabar = next(c for c in cards if c["spanish"] == "acabar de")
+    assert acabar["lesson"] == "Lección 23" and acabar["example"] == "Acabo de llegar a casa"
+    assert "Lección 23" in flashcards.card_html(acabar, "es_en", "x")
+    assert not any(c["gender"] for c in cards if len(c["spanish"].split()) > 2)  # phrases get no gender stripe
+
+
+def test_flashcard_dedupe_ignores_punctuation_and_parentheses():
+    assert flashcards._key("¿A quién le importa?") == flashcards._key("a quien le importa")
+    assert flashcards._key("darse cuenta (de)") == flashcards._key("darse cuenta de")
+    keys = [(flashcards._key(c["spanish"]), flashcards._key(c["english"])) for c in flashcards.load_cards()]
+    assert len(keys) == len(set(keys))
