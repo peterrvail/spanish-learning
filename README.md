@@ -81,6 +81,9 @@ Spanish/
 
 - `!drill imperativo` — 5-min imperative conjugation drill (tú, usted, nosotros, ustedes; affirmative + negative)
 - `!tarjetas` — Flashcards from your complete lesson vocabulary: `data/reference/vocabulary_reference.json`, the "Spanish Vocabulary — Complete Lesson Reference" (3,563 words and phrases from Lessons 1–119), as 36 decks (expressions by situation, verbs, nouns by topic, adjectives, small words), plus **📝 Notas de clase (extra)** for class-notes phrases the reference leaves out. Choose by topic, or by lesson range (default: your last ten lessons). Cards show the lesson where each word first appeared, and an example sentence where there is one (from the reference's notes, or the whiteboard examples in `class_notes_recent.json`). Tap the card to flip it, then "Otra vez" (it comes back a few cards later) or "Lo sabía". Results feed the spaced-repetition queue, so missed words also show up in `!drill fallos`.
+- `!drill condicional` — Simple conditional: irregular stems (tendría, diría...), regular forms, and translations of the seven uses
+- `!drill ser_estar` — Ser, estar or hay in context, including adjectives that change meaning (ser listo / estar listo)
+- `!lt` — 🎧 Language Transfer tracker: the free 90-track Complete Spanish course mapped to your lessons (`data/external/language_transfer.json`). Tick tracks as you listen (saved to `data/progress/lt_progress.json`, so it survives restarts); 🆕 marks topics your lessons haven't covered yet. Every Repaso screen also lists the tracks that explain its grammar.
 - `!drill estar_gerundio` — Gerunds (regular + the o→u, i→y, e→i irregulars) and estar + gerundio in present, future and four pasts: imperfecto (estaba), pretérito indefinido (estuve), pretérito perfecto (he estado), pluscuamperfecto (había estado)
 - `!drill pronombres` — Double object pronoun mechanics (coming soon)
 - `!drill aspecto` — Preterite vs. Imperfect (coming soon)

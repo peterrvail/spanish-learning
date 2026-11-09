@@ -1,0 +1,290 @@
+{
+  "ser_estar": {
+    "source": "claude-draft: written for the app; the topic is from lessons 8-10 and 14",
+    "overview": "Español tiene dos verbos para 'to be'. SER dice qué o cómo es algo por naturaleza: identidad, origen, profesión, características, material, la hora y la fecha, y dónde ocurre un evento. ESTAR dice dónde está algo y cómo está ahora: ubicación, estados y emociones, y la forma progresiva (estoy hablando). HAY (de haber) dice que algo existe: hay un perro en el jardín.",
+    "forms": {
+      "ser": {
+        "yo": "soy",
+        "tú": "eres",
+        "él/ella/usted": "es",
+        "nosotros": "somos",
+        "ellos/ustedes": "son"
+      },
+      "estar": {
+        "yo": "estoy",
+        "tú": "estás",
+        "él/ella/usted": "está",
+        "nosotros": "estamos",
+        "ellos/ustedes": "están"
+      },
+      "haber": {
+        "existe": "hay (para singular y plural)"
+      }
+    },
+    "uses": [
+      {
+        "name": "SER: identidad, profesión, relación",
+        "description": "Ella es médica. Ellos son mis primos."
+      },
+      {
+        "name": "SER: origen y material",
+        "description": "Somos de Estados Unidos. La mesa es de madera."
+      },
+      {
+        "name": "SER: características",
+        "description": "Tú eres simpático. El café de Ecuador es muy bueno."
+      },
+      {
+        "name": "SER: hora, fecha, posesión",
+        "description": "Son las tres. Hoy es martes. El libro es de Ana."
+      },
+      {
+        "name": "SER: dónde ocurre un evento",
+        "description": "La fiesta es en el parque (pero: el parque está en el centro)."
+      },
+      {
+        "name": "ESTAR: ubicación",
+        "description": "Quito está en Ecuador. ¿Dónde están las llaves?"
+      },
+      {
+        "name": "ESTAR: estados, emociones, resultados",
+        "description": "Estoy cansado. La sopa está fría. La tienda está cerrada."
+      },
+      {
+        "name": "ESTAR + gerundio",
+        "description": "Están trabajando ahora."
+      },
+      {
+        "name": "HAY: existencia",
+        "description": "Hay un banco cerca. No hay leche. (Con el/la + cosa concreta: el banco está al lado del parque.)"
+      }
+    ],
+    "meaning_change": [
+      {
+        "adjective": "listo",
+        "ser": "clever",
+        "estar": "ready"
+      },
+      {
+        "adjective": "aburrido",
+        "ser": "boring",
+        "estar": "bored"
+      },
+      {
+        "adjective": "verde",
+        "ser": "green (colour)",
+        "estar": "unripe"
+      },
+      {
+        "adjective": "malo",
+        "ser": "bad (quality, character)",
+        "estar": "ill"
+      },
+      {
+        "adjective": "rico",
+        "ser": "rich",
+        "estar": "tasty"
+      }
+    ],
+    "sentences": [
+      {
+        "sentence": "Mi hermana ___ médica.",
+        "answer": "es",
+        "use": "SER: profesión",
+        "english": "My sister is a doctor."
+      },
+      {
+        "sentence": "Nosotros ___ de Estados Unidos.",
+        "answer": "somos",
+        "use": "SER: origen",
+        "english": "We're from the United States."
+      },
+      {
+        "sentence": "La mesa ___ de madera.",
+        "answer": "es",
+        "use": "SER: material",
+        "english": "The table is made of wood."
+      },
+      {
+        "sentence": "Hoy ___ martes.",
+        "answer": "es",
+        "use": "SER: fecha",
+        "english": "Today is Tuesday."
+      },
+      {
+        "sentence": "___ las tres de la tarde.",
+        "answer": "son",
+        "use": "SER: hora",
+        "english": "It's three in the afternoon."
+      },
+      {
+        "sentence": "Este libro ___ de Ana.",
+        "answer": "es",
+        "use": "SER: posesión",
+        "english": "This book is Ana's."
+      },
+      {
+        "sentence": "Tú ___ muy simpático.",
+        "answer": "eres",
+        "use": "SER: característica",
+        "english": "You're very nice."
+      },
+      {
+        "sentence": "Ellos ___ mis primos.",
+        "answer": "son",
+        "use": "SER: relación",
+        "english": "They're my cousins."
+      },
+      {
+        "sentence": "Ustedes ___ muy altos.",
+        "answer": "son",
+        "use": "SER: característica",
+        "english": "You (all) are very tall."
+      },
+      {
+        "sentence": "La fiesta ___ en el parque.",
+        "answer": "es",
+        "use": "SER: dónde ocurre un evento",
+        "english": "The party is in the park."
+      },
+      {
+        "sentence": "Quito ___ en Ecuador.",
+        "answer": "está",
+        "use": "ESTAR: ubicación",
+        "english": "Quito is in Ecuador."
+      },
+      {
+        "sentence": "Yo ___ cansado hoy.",
+        "answer": "estoy",
+        "use": "ESTAR: estado",
+        "english": "I'm tired today."
+      },
+      {
+        "sentence": "¿Dónde ___ las llaves?",
+        "answer": "están",
+        "use": "ESTAR: ubicación",
+        "english": "Where are the keys?"
+      },
+      {
+        "sentence": "La sopa ___ fría.",
+        "answer": "está",
+        "use": "ESTAR: estado",
+        "english": "The soup is cold."
+      },
+      {
+        "sentence": "Nosotros ___ muy contentos con la clase.",
+        "answer": "estamos",
+        "use": "ESTAR: emoción",
+        "english": "We're very happy with the class."
+      },
+      {
+        "sentence": "Mi madre ___ enferma esta semana.",
+        "answer": "está",
+        "use": "ESTAR: estado",
+        "english": "My mother is ill this week."
+      },
+      {
+        "sentence": "¿Cómo ___ tú?",
+        "answer": "estás",
+        "use": "ESTAR: estado",
+        "english": "How are you?"
+      },
+      {
+        "sentence": "Ellos ___ trabajando ahora.",
+        "answer": "están",
+        "use": "ESTAR + gerundio",
+        "english": "They're working now."
+      },
+      {
+        "sentence": "La tienda ___ cerrada los domingos.",
+        "answer": "está",
+        "use": "ESTAR: resultado",
+        "english": "The shop is closed on Sundays."
+      },
+      {
+        "sentence": "El parque ___ en el centro.",
+        "answer": "está",
+        "use": "ESTAR: ubicación",
+        "english": "The park is downtown."
+      },
+      {
+        "sentence": "El banco ___ al lado del parque.",
+        "answer": "está",
+        "use": "ESTAR: ubicación de algo concreto",
+        "english": "The bank is next to the park."
+      },
+      {
+        "sentence": "___ un perro en el jardín.",
+        "answer": "hay",
+        "use": "HAY: existencia",
+        "english": "There's a dog in the garden."
+      },
+      {
+        "sentence": "¿___ un banco cerca de aquí?",
+        "answer": "hay",
+        "use": "HAY: existencia",
+        "english": "Is there a bank near here?"
+      },
+      {
+        "sentence": "No ___ leche en la refrigeradora.",
+        "answer": "hay",
+        "use": "HAY: existencia",
+        "english": "There's no milk in the fridge."
+      },
+      {
+        "sentence": "___ muchas personas en la playa.",
+        "answer": "hay",
+        "use": "HAY: existencia",
+        "english": "There are lots of people on the beach."
+      },
+      {
+        "sentence": "Mi hijo ___ listo; aprende muy rápido.",
+        "answer": "es",
+        "use": "SER listo = clever",
+        "english": "My son is clever; he learns very fast."
+      },
+      {
+        "sentence": "Yo ___ listo; ¡vamos!",
+        "answer": "estoy",
+        "use": "ESTAR listo = ready",
+        "english": "I'm ready; let's go!"
+      },
+      {
+        "sentence": "Esta película ___ aburrida.",
+        "answer": "es",
+        "use": "SER aburrido = boring",
+        "english": "This film is boring."
+      },
+      {
+        "sentence": "Yo ___ aburrido; no hay nada que hacer.",
+        "answer": "estoy",
+        "use": "ESTAR aburrido = bored",
+        "english": "I'm bored; there's nothing to do."
+      },
+      {
+        "sentence": "Esta manzana ___ verde; todavía no se puede comer.",
+        "answer": "está",
+        "use": "ESTAR verde = unripe",
+        "english": "This apple is unripe; you can't eat it yet."
+      },
+      {
+        "sentence": "Mi coche ___ verde.",
+        "answer": "es",
+        "use": "SER verde = green (colour)",
+        "english": "My car is green."
+      },
+      {
+        "sentence": "Ella ___ mala; tiene gripe.",
+        "answer": "está",
+        "use": "ESTAR malo = ill",
+        "english": "She's ill; she has the flu."
+      },
+      {
+        "sentence": "¡Esta sopa ___ muy rica!",
+        "answer": "está",
+        "use": "ESTAR rico = tasty",
+        "english": "This soup is delicious!"
+      }
+    ]
+  }
+}

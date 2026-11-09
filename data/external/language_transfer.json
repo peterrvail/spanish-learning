@@ -1,0 +1,1157 @@
+{
+ "_meta": {
+  "course": "Language Transfer – Complete Spanish (free audio course, 90 tracks)",
+  "links": {
+   "course": "https://www.languagetransfer.org/complete-spanish",
+   "track_notes": "https://motifluent.com/language-transfer/spanish",
+   "transcript": "https://static1.squarespace.com/static/5c69bfa4f4e531370e74fa44/t/5cdacdf3eef1a1286d2a2b0c/1557843500162/Complete+Spanish+transcript+-+2019+final.pdf",
+   "tribute": "http://languagetransfertribute.com/lessons/"
+  },
+  "status_values": {
+   "covered": "in your lessons and drilled in the app",
+   "covered_no_drill": "in your lessons, no drill yet",
+   "covered_partial_lt": "in your lessons; Language Transfer only touches it",
+   "gap": "in Language Transfer, not yet in your lessons"
+  },
+  "source": "Coverage map from EXTERNAL_RESOURCES.md (2026-11-08). Track titles are empty: the notes site was not reachable when this file was made; fill in 'title' to show them."
+ },
+ "topics": [
+  {
+   "id": "cognados",
+   "label": "Turning English words into Spanish (-ción, -mente, -able, -ante)",
+   "lt_tracks": [
+    2,
+    3,
+    4,
+    5,
+    12
+   ],
+   "your_lessons": [],
+   "app_modules": [],
+   "status": "gap"
+  },
+  {
+   "id": "presente",
+   "label": "Present tense and verb patterns",
+   "lt_tracks": [
+    10,
+    11,
+    12,
+    13,
+    17,
+    18
+   ],
+   "your_lessons": [
+    12,
+    17,
+    21
+   ],
+   "app_modules": [
+    "rutina"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "cambios_raiz",
+   "label": "Stem-changing verbs",
+   "lt_tracks": [
+    15,
+    16
+   ],
+   "your_lessons": [
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28
+   ],
+   "app_modules": [
+    "cambios"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "verbo_infinitivo",
+   "label": "Ir a, tener que, deber, querer + infinitive",
+   "lt_tracks": [
+    7,
+    8,
+    9,
+    14,
+    19,
+    20
+   ],
+   "your_lessons": [
+    18,
+    20
+   ],
+   "app_modules": [
+    "estructuras"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "ser_estar",
+   "label": "Ser vs. estar, haber",
+   "lt_tracks": [
+    21,
+    29,
+    30,
+    31,
+    32,
+    33
+   ],
+   "your_lessons": [
+    8,
+    9,
+    10,
+    14
+   ],
+   "app_modules": [
+    "ser_estar"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "estar_gerundio",
+   "label": "Estar + gerund",
+   "lt_tracks": [
+    34,
+    35
+   ],
+   "your_lessons": [
+    13,
+    119
+   ],
+   "app_modules": [
+    "estar_gerundio"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "reflexivos",
+   "label": "Reflexives and quedarse",
+   "lt_tracks": [
+    4,
+    5,
+    26
+   ],
+   "your_lessons": [
+    29,
+    30,
+    31,
+    101,
+    102
+   ],
+   "app_modules": [
+    "reflexivos"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "pronombres",
+   "label": "Direct, indirect and double object pronouns",
+   "lt_tracks": [
+    24,
+    25,
+    37,
+    38,
+    39
+   ],
+   "your_lessons": [
+    32,
+    33,
+    34,
+    36,
+    84,
+    85,
+    86
+   ],
+   "app_modules": [
+    "pronombres"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "perfecto",
+   "label": "Present perfect",
+   "lt_tracks": [
+    21,
+    22,
+    23,
+    54
+   ],
+   "your_lessons": [
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    116,
+    117
+   ],
+   "app_modules": [
+    "participios"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "futuro",
+   "label": "Future simple and future perfect",
+   "lt_tracks": [
+    20,
+    36,
+    41,
+    86
+   ],
+   "your_lessons": [
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83
+   ],
+   "app_modules": [
+    "futuro"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "condicional",
+   "label": "Simple conditional",
+   "lt_tracks": [
+    41
+   ],
+   "your_lessons": [
+    87,
+    88,
+    89,
+    90,
+    91
+   ],
+   "app_modules": [
+    "condicional"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "demostrativos",
+   "label": "Demonstratives",
+   "lt_tracks": [
+    44
+   ],
+   "your_lessons": [
+    4,
+    5
+   ],
+   "app_modules": [
+    "demostrativos"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "imperfecto",
+   "label": "Imperfect",
+   "lt_tracks": [
+    46,
+    48,
+    49,
+    53
+   ],
+   "your_lessons": [
+    53,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63
+   ],
+   "app_modules": [
+    "pasado"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "por_para",
+   "label": "Por vs. para and prepositions",
+   "lt_tracks": [
+    40,
+    50,
+    51,
+    52,
+    56
+   ],
+   "your_lessons": [
+    47,
+    48,
+    49,
+    51
+   ],
+   "app_modules": [
+    "por_para",
+    "preposiciones"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "preterito",
+   "label": "Preterite, regular and irregular",
+   "lt_tracks": [
+    58,
+    59,
+    60,
+    62,
+    63,
+    64,
+    88,
+    89
+   ],
+   "your_lessons": [
+    37,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    111,
+    112,
+    113,
+    114,
+    115
+   ],
+   "app_modules": [
+    "preterito"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "preterito_vs_imperfecto",
+   "label": "Preterite vs. imperfect together",
+   "lt_tracks": [
+    61,
+    87
+   ],
+   "your_lessons": [
+    59,
+    60,
+    115
+   ],
+   "app_modules": [
+    "pasado",
+    "preterito"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "adjetivos",
+   "label": "Adjective placement and short forms",
+   "lt_tracks": [
+    27
+   ],
+   "your_lessons": [
+    10,
+    95
+   ],
+   "app_modules": [
+    "adjetivos"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "negativos",
+   "label": "Nothing, nobody, never",
+   "lt_tracks": [
+    65
+   ],
+   "your_lessons": [
+    52
+   ],
+   "app_modules": [
+    "indefinidos"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "imperativo",
+   "label": "Commands (affirmative, negative, with pronouns)",
+   "lt_tracks": [
+    72,
+    73,
+    75
+   ],
+   "your_lessons": [
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110
+   ],
+   "app_modules": [
+    "imperativo"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "pluscuamperfecto",
+   "label": "Past perfect (pluscuamperfecto)",
+   "lt_tracks": [
+    87
+   ],
+   "your_lessons": [
+    71,
+    72,
+    73,
+    74
+   ],
+   "app_modules": [
+    "pluscuam"
+   ],
+   "status": "covered_partial_lt"
+  },
+  {
+   "id": "gustar",
+   "label": "Gustar-type verbs as one pattern",
+   "lt_tracks": [
+    42,
+    45,
+    63
+   ],
+   "your_lessons": [],
+   "app_modules": [],
+   "status": "gap"
+  },
+  {
+   "id": "se",
+   "label": "Se constructions (accidental, impersonal, 'by itself')",
+   "lt_tracks": [
+    47,
+    80
+   ],
+   "your_lessons": [],
+   "app_modules": [],
+   "status": "gap"
+  },
+  {
+   "id": "habria",
+   "label": "Would have / should have / could have",
+   "lt_tracks": [
+    43,
+    55
+   ],
+   "your_lessons": [],
+   "app_modules": [],
+   "status": "gap"
+  },
+  {
+   "id": "subjuntivo",
+   "label": "Present subjunctive beyond commands",
+   "lt_tracks": [
+    69,
+    70,
+    71,
+    74,
+    76,
+    77,
+    79,
+    81,
+    82,
+    85
+   ],
+   "your_lessons": [],
+   "app_modules": [],
+   "status": "gap"
+  },
+  {
+   "id": "si_hipotetico",
+   "label": "Hypothetical 'what if' sentences",
+   "lt_tracks": [
+    78
+   ],
+   "your_lessons": [],
+   "app_modules": [],
+   "status": "gap"
+  },
+  {
+   "id": "relativos",
+   "label": "Relative pronouns (que, quien, lo que, cuyo)",
+   "lt_tracks": [
+    83
+   ],
+   "your_lessons": [],
+   "app_modules": [],
+   "status": "gap"
+  },
+  {
+   "id": "varios",
+   "label": "Lo neutral, possessives, accents, quantity, 'hace' = ago",
+   "lt_tracks": [
+    57,
+    64,
+    66,
+    67,
+    68
+   ],
+   "your_lessons": [],
+   "app_modules": [],
+   "status": "gap"
+  }
+ ],
+ "tracks": [
+  {
+   "track": 1,
+   "title": "",
+   "topics": [],
+   "kind": "method"
+  },
+  {
+   "track": 2,
+   "title": "",
+   "topics": [
+    "cognados"
+   ]
+  },
+  {
+   "track": 3,
+   "title": "",
+   "topics": [
+    "cognados"
+   ]
+  },
+  {
+   "track": 4,
+   "title": "",
+   "topics": [
+    "cognados",
+    "reflexivos"
+   ]
+  },
+  {
+   "track": 5,
+   "title": "",
+   "topics": [
+    "cognados",
+    "reflexivos"
+   ]
+  },
+  {
+   "track": 6,
+   "title": "",
+   "topics": [],
+   "kind": "method"
+  },
+  {
+   "track": 7,
+   "title": "",
+   "topics": [
+    "verbo_infinitivo"
+   ]
+  },
+  {
+   "track": 8,
+   "title": "",
+   "topics": [
+    "verbo_infinitivo"
+   ]
+  },
+  {
+   "track": 9,
+   "title": "",
+   "topics": [
+    "verbo_infinitivo"
+   ]
+  },
+  {
+   "track": 10,
+   "title": "",
+   "topics": [
+    "presente"
+   ]
+  },
+  {
+   "track": 11,
+   "title": "",
+   "topics": [
+    "presente"
+   ]
+  },
+  {
+   "track": 12,
+   "title": "",
+   "topics": [
+    "cognados",
+    "presente"
+   ]
+  },
+  {
+   "track": 13,
+   "title": "",
+   "topics": [
+    "presente"
+   ]
+  },
+  {
+   "track": 14,
+   "title": "",
+   "topics": [
+    "verbo_infinitivo"
+   ]
+  },
+  {
+   "track": 15,
+   "title": "",
+   "topics": [
+    "cambios_raiz"
+   ]
+  },
+  {
+   "track": 16,
+   "title": "",
+   "topics": [
+    "cambios_raiz"
+   ]
+  },
+  {
+   "track": 17,
+   "title": "",
+   "topics": [
+    "presente"
+   ]
+  },
+  {
+   "track": 18,
+   "title": "",
+   "topics": [
+    "presente"
+   ]
+  },
+  {
+   "track": 19,
+   "title": "",
+   "topics": [
+    "verbo_infinitivo"
+   ]
+  },
+  {
+   "track": 20,
+   "title": "",
+   "topics": [
+    "verbo_infinitivo",
+    "futuro"
+   ]
+  },
+  {
+   "track": 21,
+   "title": "",
+   "topics": [
+    "ser_estar",
+    "perfecto"
+   ]
+  },
+  {
+   "track": 22,
+   "title": "",
+   "topics": [
+    "perfecto"
+   ]
+  },
+  {
+   "track": 23,
+   "title": "",
+   "topics": [
+    "perfecto"
+   ]
+  },
+  {
+   "track": 24,
+   "title": "",
+   "topics": [
+    "pronombres"
+   ]
+  },
+  {
+   "track": 25,
+   "title": "",
+   "topics": [
+    "pronombres"
+   ]
+  },
+  {
+   "track": 26,
+   "title": "",
+   "topics": [
+    "reflexivos"
+   ]
+  },
+  {
+   "track": 27,
+   "title": "",
+   "topics": [
+    "adjetivos"
+   ]
+  },
+  {
+   "track": 28,
+   "title": "",
+   "topics": [],
+   "kind": "method"
+  },
+  {
+   "track": 29,
+   "title": "",
+   "topics": [
+    "ser_estar"
+   ]
+  },
+  {
+   "track": 30,
+   "title": "",
+   "topics": [
+    "ser_estar"
+   ]
+  },
+  {
+   "track": 31,
+   "title": "",
+   "topics": [
+    "ser_estar"
+   ]
+  },
+  {
+   "track": 32,
+   "title": "",
+   "topics": [
+    "ser_estar"
+   ]
+  },
+  {
+   "track": 33,
+   "title": "",
+   "topics": [
+    "ser_estar"
+   ]
+  },
+  {
+   "track": 34,
+   "title": "",
+   "topics": [
+    "estar_gerundio"
+   ]
+  },
+  {
+   "track": 35,
+   "title": "",
+   "topics": [
+    "estar_gerundio"
+   ]
+  },
+  {
+   "track": 36,
+   "title": "",
+   "topics": [
+    "futuro"
+   ]
+  },
+  {
+   "track": 37,
+   "title": "",
+   "topics": [
+    "pronombres"
+   ]
+  },
+  {
+   "track": 38,
+   "title": "",
+   "topics": [
+    "pronombres"
+   ]
+  },
+  {
+   "track": 39,
+   "title": "",
+   "topics": [
+    "pronombres"
+   ]
+  },
+  {
+   "track": 40,
+   "title": "",
+   "topics": [
+    "por_para"
+   ]
+  },
+  {
+   "track": 41,
+   "title": "",
+   "topics": [
+    "futuro",
+    "condicional"
+   ]
+  },
+  {
+   "track": 42,
+   "title": "",
+   "topics": [
+    "gustar"
+   ]
+  },
+  {
+   "track": 43,
+   "title": "",
+   "topics": [
+    "habria"
+   ]
+  },
+  {
+   "track": 44,
+   "title": "",
+   "topics": [
+    "demostrativos"
+   ]
+  },
+  {
+   "track": 45,
+   "title": "",
+   "topics": [
+    "gustar"
+   ]
+  },
+  {
+   "track": 46,
+   "title": "",
+   "topics": [
+    "imperfecto"
+   ]
+  },
+  {
+   "track": 47,
+   "title": "",
+   "topics": [
+    "se"
+   ]
+  },
+  {
+   "track": 48,
+   "title": "",
+   "topics": [
+    "imperfecto"
+   ]
+  },
+  {
+   "track": 49,
+   "title": "",
+   "topics": [
+    "imperfecto"
+   ]
+  },
+  {
+   "track": 50,
+   "title": "",
+   "topics": [
+    "por_para"
+   ]
+  },
+  {
+   "track": 51,
+   "title": "",
+   "topics": [
+    "por_para"
+   ]
+  },
+  {
+   "track": 52,
+   "title": "",
+   "topics": [
+    "por_para"
+   ]
+  },
+  {
+   "track": 53,
+   "title": "",
+   "topics": [
+    "imperfecto"
+   ]
+  },
+  {
+   "track": 54,
+   "title": "",
+   "topics": [
+    "perfecto"
+   ]
+  },
+  {
+   "track": 55,
+   "title": "",
+   "topics": [
+    "habria"
+   ]
+  },
+  {
+   "track": 56,
+   "title": "",
+   "topics": [
+    "por_para"
+   ]
+  },
+  {
+   "track": 57,
+   "title": "",
+   "topics": [
+    "varios"
+   ]
+  },
+  {
+   "track": 58,
+   "title": "",
+   "topics": [
+    "preterito"
+   ]
+  },
+  {
+   "track": 59,
+   "title": "",
+   "topics": [
+    "preterito"
+   ]
+  },
+  {
+   "track": 60,
+   "title": "",
+   "topics": [
+    "preterito"
+   ]
+  },
+  {
+   "track": 61,
+   "title": "",
+   "topics": [
+    "preterito_vs_imperfecto"
+   ]
+  },
+  {
+   "track": 62,
+   "title": "",
+   "topics": [
+    "preterito"
+   ]
+  },
+  {
+   "track": 63,
+   "title": "",
+   "topics": [
+    "preterito",
+    "gustar"
+   ]
+  },
+  {
+   "track": 64,
+   "title": "",
+   "topics": [
+    "preterito",
+    "varios"
+   ]
+  },
+  {
+   "track": 65,
+   "title": "",
+   "topics": [
+    "negativos"
+   ]
+  },
+  {
+   "track": 66,
+   "title": "",
+   "topics": [
+    "varios"
+   ]
+  },
+  {
+   "track": 67,
+   "title": "",
+   "topics": [
+    "varios"
+   ]
+  },
+  {
+   "track": 68,
+   "title": "",
+   "topics": [
+    "varios"
+   ]
+  },
+  {
+   "track": 69,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 70,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 71,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 72,
+   "title": "",
+   "topics": [
+    "imperativo"
+   ]
+  },
+  {
+   "track": 73,
+   "title": "",
+   "topics": [
+    "imperativo"
+   ]
+  },
+  {
+   "track": 74,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 75,
+   "title": "",
+   "topics": [
+    "imperativo"
+   ]
+  },
+  {
+   "track": 76,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 77,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 78,
+   "title": "",
+   "topics": [
+    "si_hipotetico"
+   ]
+  },
+  {
+   "track": 79,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 80,
+   "title": "",
+   "topics": [
+    "se"
+   ]
+  },
+  {
+   "track": 81,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 82,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 83,
+   "title": "",
+   "topics": [
+    "relativos"
+   ]
+  },
+  {
+   "track": 84,
+   "title": "",
+   "topics": [],
+   "kind": "dialect / overview"
+  },
+  {
+   "track": 85,
+   "title": "",
+   "topics": [
+    "subjuntivo"
+   ]
+  },
+  {
+   "track": 86,
+   "title": "",
+   "topics": [
+    "futuro"
+   ]
+  },
+  {
+   "track": 87,
+   "title": "",
+   "topics": [
+    "preterito_vs_imperfecto",
+    "pluscuamperfecto"
+   ]
+  },
+  {
+   "track": 88,
+   "title": "",
+   "topics": [
+    "preterito"
+   ]
+  },
+  {
+   "track": 89,
+   "title": "",
+   "topics": [
+    "preterito"
+   ]
+  },
+  {
+   "track": 90,
+   "title": "",
+   "topics": [],
+   "kind": "overview"
+  }
+ ]
+}

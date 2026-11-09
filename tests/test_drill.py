@@ -6,6 +6,7 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app"))
 import conversation  # noqa: E402
+import external  # noqa: E402
 import flashcards  # noqa: E402
 import grading  # noqa: E402
 import progress  # noqa: E402
@@ -84,7 +85,8 @@ def test_every_module_builds_items_that_grade_themselves():
     for module in ["imperativo", "pronombres", "cambios", "pasado", "preterito", "pluscuam", "por_para",
                    "demostrativos", "adverbios", "adjetivos", "numeros", "reflexivos", "participios",
                    "futuro", "estructuras", "lugares", "rutina", "gerundio", "vocabulario",
-                   "indefinidos", "preposiciones", "ejercicio", "estar_gerundio", "mixto"]:
+                   "indefinidos", "preposiciones", "ejercicio", "estar_gerundio", "condicional",
+                   "ser_estar", "mixto"]:
         items = sd.get_drill_items(module)
         assert items, module
         for it in items:
@@ -681,3 +683,62 @@ def test_flashcards_by_lesson_range(db):
     cards = {c["id"]: c for c in flashcards.load_cards()}
     queue = at.session_state["fc"]["queue"]
     assert queue and all(cards[cid]["lesson_num"] == 119 for cid in queue)
+
+
+
+def test_language_transfer_data():
+    data = external.load_lt()
+    assert len(data["topics"]) == 27 and [t["track"] for t in data["tracks"]] == list(range(1, 91))
+    assert [t["track"] for t in data["tracks"] if not t["topics"]] == [1, 6, 28, 84, 90]
+    modules = {m for t in data["topics"] for m in t["app_modules"]}
+    assert modules <= sd.KNOWN_MODULES                                    # every mapped drill exists
+    for t in data["topics"]:
+        assert (t["status"] == "gap") == (not t["app_modules"])             # gaps are the topics with no drill
+
+
+def test_language_transfer_tracks_per_module():
+    assert external.ranges(external.tracks_for_module("preterito")) == "58–64, 87–89"
+    assert external.tracks_for_module("numeros") == []
+    assert external.tracks_for_module("condicional") == [41]
+    assert external.tracks_for_module("estar_gerundio") == [34, 35]
+    assert external.ranges([1, 2, 3, 5, 7, 8]) == "1–3, 5, 7–8"
+
+
+def test_repaso_shows_language_transfer_tracks(db):
+    at = _app()
+    at.session_state["active_command"] = "!repasar preterito"
+    at.run()
+    assert any("Language Transfer" in m.value and "58–64, 87–89" in m.value for m in at.markdown)
+    at = _app()
+    at.session_state["active_command"] = "!repasar numeros"
+    at.run()
+    assert not any("Language Transfer" in m.value for m in at.markdown)
+
+
+def test_language_transfer_ticks_survive_a_restart(db):
+    at = _app()
+    at.session_state["active_command"] = "!lt"
+    at.run()
+    assert any("0 / 90" in m.value for m in at.markdown)
+    at.checkbox(key="lt_1").check().run()
+    at.checkbox(key="lt_2").check().run()
+    assert not at.exception
+    at = _app()                                                           # a fresh app: nothing in session state
+    at.session_state["active_command"] = "!lt"
+    at.run()
+    assert any("2 / 90" in m.value and "siguiente: **3**" in m.value for m in at.markdown)
+    assert at.checkbox(key="lt_1").value and not at.checkbox(key="lt_3").value
+    at.checkbox(key="lt_1").uncheck().run()
+    assert external.load_done(external.progress_path(progress.db_path())) == {2}
+
+
+def test_condicional_and_ser_estar_drills():
+    cond = sd.get_condicional_drill_items()
+    assert len(cond) == 15
+    tener = [i for _ in range(40) for i in sd.get_condicional_drill_items() if "'tener'" in i["prompt"]]
+    assert all(i["target_form"].startswith("tendr") for i in tener) and tener
+    types = {i["exercise_type"] for _ in range(20) for i in sd.get_ser_estar_drill_items()}
+    assert types == {"ser_estar_ser", "ser_estar_estar", "ser_estar_hay"}
+    for module, label in [("condicional", "🤔 Condicional"), ("ser_estar", "⚖️ Ser, estar y hay")]:
+        assert (label, f"!drill {module}") in sd.DRILL_COMMANDS and sd.get_module_concept(module)
+        assert module in sd._MIXTO_MODULES
