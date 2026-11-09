@@ -71,6 +71,7 @@ def items(module, rng=random, grammar_dir=GRAMMAR_DIR):
                 "explanation": explanation, "also_accepted": list(also)}
         if choices:
             item["choices"] = list(choices)
+            item["fixed_choices"] = True  # its own options: kept when the item goes to review
         out.append(item)
 
     for kind, n in MODULES[module]["mix"].items():

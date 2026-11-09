@@ -898,3 +898,47 @@ def test_pattern_module_is_wired_in(module, db):
     at.run()
     assert not at.exception
     assert any("Language Transfer" in m.value for m in at.markdown)
+
+
+def test_review_queue_keeps_alternatives_and_own_choices(db):
+    classify = next(i for _ in range(30) for i in pattern_modules.items("se") if i["exercise_type"] == "se_classify")
+    translate = next(i for _ in range(30) for i in sd.get_gustar_drill_items()
+                     if i["exercise_type"] == "gustar_traducir" and i["also_accepted"])
+    random_mc = dict(translate, prompt="mc: " + translate["prompt"], choices=["a", "b", "c", translate["target_form"]])
+    for item in (classify, translate, random_mc):
+        progress.record_attempt(item, False, module="x")
+    review = {i["prompt"]: i for i in progress.due_items()}
+    assert sorted(review[classify["prompt"]]["choices"]) == sorted(classify["choices"])   # asked as multiple choice again
+    back = review[translate["prompt"]]
+    assert all(sd.check_answer(alt, back)[0] for alt in translate["also_accepted"])     # alternatives still count
+    assert "choices" not in review[random_mc["prompt"]]                                   # random MC options aren't kept
+
+
+def test_no_deprecated_use_container_width():
+    source = open(os.path.join(os.path.dirname(__file__), "..", "app", "spanish_drill.py")).read()
+    assert "use_container_width=True" not in source                       # deprecated; FULL_WIDTH picks per version
+    assert sd.FULL_WIDTH in ({"width": "stretch"}, {"use_container_width": True})
+
+
+def test_backup_round_trip(db, tmp_path, monkeypatch):
+    t0 = datetime(2026, 3, 1, 9)
+    progress.record_attempt(item("fui"), False, module="preterito", now=t0)
+    progress.record_attempt(item("tengo"), True, module="ser_estar", now=t0)
+    backup = progress.export_backup(extra={"lt_done": [1, 2]})
+    assert backup["app"] == "spanish-learning" and len(backup["attempts"]) == 2 and backup["lt_done"] == [1, 2]
+    # A fresh database (what Streamlit Cloud leaves after a redeploy), then restore.
+    monkeypatch.setenv("SPANISH_PROGRESS_DB", str(tmp_path / "fresh.db"))
+    assert progress.due_count(now=t0) == 0
+    assert progress.import_backup(backup) == (2, 2)
+    assert progress.due_count(now=t0) == 1
+    assert progress.import_backup(backup) == (0, 0)                     # importing twice adds nothing
+    with pytest.raises(ValueError):
+        progress.import_backup({"something": "else"})
+
+
+def test_progress_page_offers_backup_even_when_empty(db):
+    at = _app()
+    at.session_state["active_command"] = "!progreso"
+    at.run()
+    assert not at.exception
+    assert any("Copia de seguridad" in e.label for e in at.expander)
