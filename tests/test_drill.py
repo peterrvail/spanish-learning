@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app"))
 import conversation  # noqa: E402
 import external  # noqa: E402
 import flashcards  # noqa: E402
+import pattern_modules  # noqa: E402
 import grading  # noqa: E402
 import progress  # noqa: E402
 import spanish_drill as sd  # noqa: E402
@@ -87,7 +88,8 @@ def test_every_module_builds_items_that_grade_themselves():
                    "demostrativos", "adverbios", "adjetivos", "numeros", "reflexivos", "participios",
                    "futuro", "estructuras", "lugares", "rutina", "gerundio", "vocabulario",
                    "indefinidos", "preposiciones", "ejercicio", "estar_gerundio", "condicional",
-                   "ser_estar", "subjuntivo", "gustar", "mixto"]:
+                   "ser_estar", "subjuntivo", "gustar", "se", "relativos", "cond_perfecto",
+                   "si_hipotetico", "cognados", "mixto"]:
         items = sd.get_drill_items(module)
         assert items, module
         for it in items:
@@ -843,3 +845,56 @@ def test_gustar_is_wired_in(db):
     at.session_state["active_command"] = "!repasar gustar"
     at.run()
     assert not at.exception and any("42, 45, 63" in m.value for m in at.markdown)
+
+
+def test_stale_helper_modules_are_reloaded():
+    """A redeploy can leave an old copy of a helper module loaded while the new
+    script calls functions it doesn't have (AttributeError: module 'progress'
+    has no attribute 'due_keys' on Streamlit Cloud)."""
+    del progress.due_keys, progress._SOURCE_MTIME          # what a pre-fix, stale copy looks like
+    sd._reload_stale_modules(progress)
+    assert callable(progress.due_keys)
+    progress._SOURCE_MTIME = 0                              # the file changed after it was loaded
+    sd._reload_stale_modules(progress)
+    assert progress._SOURCE_MTIME == os.path.getmtime(progress.__file__)
+    unchanged = progress.due_keys
+    sd._reload_stale_modules(progress)                      # nothing changed: no reload
+    assert progress.due_keys is unchanged
+
+PATTERN_TRACKS = {"se": [47, 80], "relativos": [83], "cond_perfecto": [43, 55],
+                  "si_hipotetico": [78], "cognados": [2, 3, 4, 5, 12]}
+
+
+@pytest.mark.parametrize("module", list(pattern_modules.MODULES))
+def test_pattern_module_data_is_valid(module):
+    assert pattern_modules.validate(module) == []
+
+
+@pytest.mark.parametrize("module", list(pattern_modules.MODULES))
+def test_pattern_module_runs_grade_their_own_answers(module):
+    import collections
+    mix = pattern_modules.MODULES[module]["mix"]
+    for _ in range(10):
+        items = sd.get_drill_items(module)
+        kinds = collections.Counter(i["exercise_type"].split(f"{module}_", 1)[1] for i in items)
+        assert dict(kinds) == mix
+        for i in items:
+            for answer in [i["target_form"]] + i.get("also_accepted", []):
+                assert sd.check_answer(answer, i)[0], (module, i["prompt"], answer)
+            if i["exercise_type"].endswith("_classify"):
+                d = pattern_modules.load(module)
+                assert sorted(i["choices"]) == sorted(d["labels"])         # its own labels, not recognition variants
+
+
+@pytest.mark.parametrize("module", list(pattern_modules.MODULES))
+def test_pattern_module_is_wired_in(module, db):
+    label = pattern_modules.MODULES[module]["label"]
+    assert (label, f"!drill {module}") in sd.DRILL_CATEGORIES["🚀 Adelantado (aún no en clase)"]
+    assert module in sd._MIXTO_MODULES and module in sd.KNOWN_MODULES
+    assert sd.get_module_concept(module)["uses"]
+    assert external.tracks_for_module(module) == PATTERN_TRACKS[module]
+    at = _app()
+    at.session_state["active_command"] = f"!repasar {module}"
+    at.run()
+    assert not at.exception
+    assert any("Language Transfer" in m.value for m in at.markdown)

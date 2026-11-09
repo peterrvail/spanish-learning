@@ -8,10 +8,15 @@ the grammar point being drilled. Without credentials, or if the call fails,
 grading stays exact."""
 import difflib
 import json
+import os
 import re
 import unicodedata
 
 from conversation import FALLBACK_BETA, MODEL, anthropic
+
+# Recorded so spanish_drill.py can tell when this file changed under a running
+# app and reload it (see _reload_stale_modules there).
+_SOURCE_MTIME = os.path.getmtime(__file__)
 
 # Answers this long count as sentences even without final punctuation.
 MIN_WORDS = 4

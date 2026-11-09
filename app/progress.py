@@ -10,6 +10,10 @@ import sqlite3
 from collections import OrderedDict
 from datetime import datetime, timedelta
 
+# Recorded so spanish_drill.py can tell when this file changed under a running
+# app and reload it (see _reload_stale_modules there).
+_SOURCE_MTIME = os.path.getmtime(__file__)
+
 DEFAULT_DB = os.path.join(os.path.dirname(__file__), "..", "data", "progress", "progress.db")
 
 # Leitner boxes: box 0 = missed (review now); each correct answer moves a card

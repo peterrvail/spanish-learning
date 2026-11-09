@@ -1,0 +1,429 @@
+{
+  "relative_pronouns": {
+    "source": "claude-draft: written for the app; Language Transfer track 83",
+    "overview": "Los pronombres relativos unen dos ideas y evitan repetir un nombre. El más común es que, que sirve para personas y cosas y nunca se omite, a diferencia del inglés. Después de una preposición se usa quien (para personas) o el que / la que / los que / las que. Para hablar de una idea completa se usa lo que, para un lugar donde, y para la posesión cuyo, que concuerda con lo poseído. Recuerda: en español la preposición va siempre antes del relativo.",
+    "uses": [
+      {
+        "name": "que",
+        "description": "The most common relative pronoun; it refers to people or things and is never dropped. Ejemplo: El libro que compré es bueno. / La mujer que vive aquí es médica. (English can say 'the book I bought'; Spanish must say que.)"
+      },
+      {
+        "name": "quien / quienes",
+        "description": "Only for people. Used after a preposition or between commas. Ejemplo: La chica con quien hablé es mi prima. / Mis tíos, quienes viven en Cuenca, vienen mañana. Plural: quienes."
+      },
+      {
+        "name": "lo que",
+        "description": "Means 'what' or 'the thing that'; it refers to an idea, not to a specific noun. Ejemplo: No entiendo lo que dices. / Todo lo que dijo es verdad. Also 'which' about a whole clause: Llegó tarde, lo que me molestó."
+      },
+      {
+        "name": "el que / la que / los que / las que",
+        "description": "'The one(s) who/that'. Used after prepositions (for things and people) and when there is no noun. Ejemplo: La empresa para la que trabajo es grande. / De las dos camisas, prefiero la que compraste ayer. Also el cual / la cual in more formal Spanish."
+      },
+      {
+        "name": "donde",
+        "description": "Place; equals en que / en el que / en la que. Ejemplo: Esta es la casa donde vivo. / La ciudad de donde vengo es pequeña."
+      },
+      {
+        "name": "cuyo / cuya / cuyos / cuyas",
+        "description": "'Whose'. It agrees with the thing possessed, not the owner, and it replaces the article. Ejemplo: El hombre cuya hija es doctora vive aquí. / Una amiga cuyos padres son argentinos."
+      },
+      {
+        "name": "La preposición va antes",
+        "description": "English often ends a clause with a preposition ('the girl I talked to'). Spanish never does: the preposition goes BEFORE the relative. Ejemplo: La chica con quien hablé / con la que hablé (not 'La chica que hablé con'). Use quien only for people; for things use el que / la que."
+      }
+    ],
+    "instructions": {
+      "fill_in": "Completa con el pronombre relativo"
+    },
+    "fill_in": [
+      {
+        "sentence": "El libro ___ compré ayer es muy interesante.",
+        "answer": "que",
+        "english": "The book that I bought yesterday is very interesting."
+      },
+      {
+        "sentence": "La mujer ___ vive al lado es médica.",
+        "answer": "que",
+        "english": "The woman who lives next door is a doctor.",
+        "note": "que is the usual relative for people when it is the subject"
+      },
+      {
+        "sentence": "Las flores ___ me regalaste están preciosas.",
+        "answer": "que",
+        "english": "The flowers that you gave me are beautiful."
+      },
+      {
+        "sentence": "Los estudiantes ___ llegaron tarde perdieron la explicación.",
+        "answer": "que",
+        "english": "The students who arrived late missed the explanation."
+      },
+      {
+        "sentence": "Mi hermana, ___ vive en Guayaquil, viene mañana.",
+        "answer": "que",
+        "english": "My sister, who lives in Guayaquil, is coming tomorrow.",
+        "note": "between commas you can also use quien / la cual",
+        "also_accepted": [
+          "quien",
+          "la cual"
+        ]
+      },
+      {
+        "sentence": "Mi tío, ___ trabaja en un banco, me prestó dinero.",
+        "answer": "que",
+        "english": "My uncle, who works at a bank, lent me money.",
+        "note": "between commas you can also use quien / el cual",
+        "also_accepted": [
+          "quien",
+          "el cual"
+        ]
+      },
+      {
+        "sentence": "Las películas ___ vimos anoche eran muy largas.",
+        "answer": "que",
+        "english": "The movies we saw last night were very long."
+      },
+      {
+        "sentence": "Esta es la casa ___ vive mi abuela.",
+        "answer": "donde",
+        "english": "This is the house where my grandmother lives.",
+        "note": "donde = en que / en la que",
+        "also_accepted": [
+          "en la que",
+          "en que",
+          "en la cual"
+        ]
+      },
+      {
+        "sentence": "Me gusta la ciudad ___ nací.",
+        "answer": "donde",
+        "english": "I like the city where I was born.",
+        "also_accepted": [
+          "en la que",
+          "en que",
+          "en la cual"
+        ]
+      },
+      {
+        "sentence": "El restaurante ___ cenamos anoche cierra los domingos.",
+        "answer": "donde",
+        "english": "The restaurant where we had dinner last night closes on Sundays.",
+        "also_accepted": [
+          "en el que",
+          "en que",
+          "en el cual"
+        ]
+      },
+      {
+        "sentence": "La ciudad de ___ vengo es pequeña.",
+        "answer": "donde",
+        "english": "The city I come from is small.",
+        "note": "de donde = de la que",
+        "also_accepted": [
+          "la que",
+          "la cual"
+        ]
+      },
+      {
+        "sentence": "No entiendo ___ dices.",
+        "answer": "lo que",
+        "english": "I don't understand what you are saying.",
+        "note": "lo que refers to an idea or 'the thing that'"
+      },
+      {
+        "sentence": "Hice ___ me pediste.",
+        "answer": "lo que",
+        "english": "I did what you asked me."
+      },
+      {
+        "sentence": "Todo ___ ella dijo es verdad.",
+        "answer": "lo que",
+        "english": "Everything she said is true.",
+        "note": "todo lo que = everything that"
+      },
+      {
+        "sentence": "Ella llegó tarde, ___ me molestó mucho.",
+        "answer": "lo que",
+        "english": "She arrived late, which annoyed me a lot.",
+        "note": "lo que / lo cual refer back to the whole clause",
+        "also_accepted": [
+          "lo cual"
+        ]
+      },
+      {
+        "sentence": "Eso es exactamente ___ quería decir.",
+        "answer": "lo que",
+        "english": "That is exactly what I wanted to say."
+      },
+      {
+        "sentence": "El hombre ___ hija es doctora vive aquí.",
+        "answer": "cuya",
+        "english": "The man whose daughter is a doctor lives here.",
+        "note": "cuya agrees with hija, not with hombre"
+      },
+      {
+        "sentence": "Tengo una amiga ___ padres son argentinos.",
+        "answer": "cuyos",
+        "english": "I have a friend whose parents are Argentine.",
+        "note": "cuyos agrees with padres"
+      },
+      {
+        "sentence": "Conozco a un escritor ___ libros se venden en todo el mundo.",
+        "answer": "cuyos",
+        "english": "I know a writer whose books sell all over the world."
+      },
+      {
+        "sentence": "Esa es la casa ___ ventanas están rotas.",
+        "answer": "cuyas",
+        "english": "That is the house whose windows are broken."
+      },
+      {
+        "sentence": "Hablé con el jefe, ___ oficina está en el tercer piso.",
+        "answer": "cuya",
+        "english": "I spoke with the boss, whose office is on the third floor."
+      },
+      {
+        "sentence": "Busco un apartamento ___ alquiler no sea muy caro.",
+        "answer": "cuyo",
+        "english": "I'm looking for an apartment whose rent is not too expensive."
+      },
+      {
+        "sentence": "La chica con ___ hablé es mi prima.",
+        "answer": "quien",
+        "english": "The girl I talked to is my cousin.",
+        "note": "the preposition goes before the relative",
+        "also_accepted": [
+          "la que",
+          "la cual"
+        ]
+      },
+      {
+        "sentence": "El profesor de ___ te hablé es ecuatoriano.",
+        "answer": "quien",
+        "english": "The teacher I told you about is Ecuadorian.",
+        "also_accepted": [
+          "el que",
+          "el cual"
+        ]
+      },
+      {
+        "sentence": "Los amigos con ___ viajé viven en Cuenca.",
+        "answer": "quienes",
+        "english": "The friends I traveled with live in Cuenca.",
+        "note": "quienes is the plural of quien",
+        "also_accepted": [
+          "los que",
+          "los cuales"
+        ]
+      },
+      {
+        "sentence": "Las personas a ___ ayudamos nos dieron las gracias.",
+        "answer": "quienes",
+        "english": "The people we helped thanked us.",
+        "also_accepted": [
+          "las que",
+          "las cuales"
+        ]
+      },
+      {
+        "sentence": "La empresa para ___ trabajo es muy grande.",
+        "answer": "la que",
+        "english": "The company I work for is very big.",
+        "note": "quien is for people; for things use el/la que",
+        "also_accepted": [
+          "la cual"
+        ]
+      },
+      {
+        "sentence": "El lápiz con ___ escribo era de mi abuelo.",
+        "answer": "el que",
+        "english": "The pencil I write with was my grandfather's.",
+        "also_accepted": [
+          "el cual"
+        ]
+      },
+      {
+        "sentence": "Ese es el motivo por ___ no fui.",
+        "answer": "el que",
+        "english": "That is the reason I didn't go.",
+        "note": "por el que = for which / why",
+        "also_accepted": [
+          "el cual"
+        ]
+      },
+      {
+        "sentence": "De las dos camisas, prefiero ___ compraste ayer.",
+        "answer": "la que",
+        "english": "Of the two shirts, I prefer the one you bought yesterday.",
+        "note": "la que = 'the one that'"
+      },
+      {
+        "sentence": "Mi coche es más rápido que ___ tienes tú.",
+        "answer": "el que",
+        "english": "My car is faster than the one you have.",
+        "note": "el que = 'the one that'"
+      }
+    ],
+    "translate": [
+      {
+        "english": "The book that I'm reading is very good.",
+        "spanish": "El libro que estoy leyendo es muy bueno.",
+        "also_accepted": [
+          "El libro que leo es muy bueno.",
+          "El libro que estoy leyendo está muy bueno."
+        ]
+      },
+      {
+        "english": "The girl I talked to is my cousin.",
+        "spanish": "La chica con quien hablé es mi prima.",
+        "also_accepted": [
+          "La chica con la que hablé es mi prima.",
+          "La chica con la cual hablé es mi prima.",
+          "La muchacha con quien hablé es mi prima.",
+          "La muchacha con la que hablé es mi prima."
+        ]
+      },
+      {
+        "english": "I don't know what you want.",
+        "spanish": "No sé lo que quieres.",
+        "also_accepted": [
+          "No sé qué quieres."
+        ]
+      },
+      {
+        "english": "This is the town where I was born.",
+        "spanish": "Este es el pueblo donde nací.",
+        "also_accepted": [
+          "Este es el pueblo en el que nací.",
+          "Este es el pueblo en que nací.",
+          "Este es el pueblo en el cual nací."
+        ]
+      },
+      {
+        "english": "The man whose car was stolen called the police.",
+        "spanish": "El hombre cuyo carro fue robado llamó a la policía.",
+        "also_accepted": [
+          "El hombre cuyo coche fue robado llamó a la policía.",
+          "El hombre cuyo auto fue robado llamó a la policía."
+        ]
+      },
+      {
+        "english": "My sister, who lives in Quito, is a nurse.",
+        "spanish": "Mi hermana, que vive en Quito, es enfermera.",
+        "also_accepted": [
+          "Mi hermana, quien vive en Quito, es enfermera.",
+          "Mi hermana, la cual vive en Quito, es enfermera."
+        ]
+      },
+      {
+        "english": "Everything that you said is true.",
+        "spanish": "Todo lo que dijiste es verdad.",
+        "also_accepted": [
+          "Todo lo que dices es verdad."
+        ]
+      },
+      {
+        "english": "The women whose children study here are teachers.",
+        "spanish": "Las mujeres cuyos hijos estudian aquí son maestras.",
+        "also_accepted": [
+          "Las mujeres cuyos hijos estudian aquí son profesoras."
+        ]
+      },
+      {
+        "english": "The company I work for is very big.",
+        "spanish": "La empresa para la que trabajo es muy grande.",
+        "also_accepted": [
+          "La empresa para la cual trabajo es muy grande.",
+          "La compañía para la que trabajo es muy grande.",
+          "La compañía para la cual trabajo es muy grande."
+        ]
+      },
+      {
+        "english": "That is what I wanted to tell you.",
+        "spanish": "Eso es lo que quería decirte.",
+        "also_accepted": [
+          "Eso es lo que te quería decir."
+        ]
+      },
+      {
+        "english": "The friends I traveled with live in Cuenca.",
+        "spanish": "Los amigos con quienes viajé viven en Cuenca.",
+        "also_accepted": [
+          "Los amigos con los que viajé viven en Cuenca.",
+          "Los amigos con los cuales viajé viven en Cuenca."
+        ]
+      }
+    ],
+    "correct": [
+      {
+        "wrong": "La persona que hablé con es mi jefe.",
+        "right": "La persona con quien hablé es mi jefe.",
+        "why": "The preposition cannot be left at the end; put it before the relative (con quien / con la que).",
+        "also_accepted": [
+          "La persona con la que hablé es mi jefe.",
+          "La persona con la cual hablé es mi jefe."
+        ]
+      },
+      {
+        "wrong": "Que me gusta es la comida ecuatoriana.",
+        "right": "Lo que me gusta es la comida ecuatoriana.",
+        "why": "'What' meaning 'the thing that' is lo que, not que.",
+        "also_accepted": [
+          "Lo que me gusta de Ecuador es la comida."
+        ]
+      },
+      {
+        "wrong": "Es una mujer cuya libros son famosos.",
+        "right": "Es una mujer cuyos libros son famosos.",
+        "why": "cuyo agrees with the thing possessed (libros), not with the owner (mujer).",
+        "also_accepted": []
+      },
+      {
+        "wrong": "Mi vecina, cuyo hijos tocan música, es muy amable.",
+        "right": "Mi vecina, cuyos hijos tocan música, es muy amable.",
+        "why": "cuyos agrees in number and gender with hijos.",
+        "also_accepted": []
+      },
+      {
+        "wrong": "Esta es la herramienta con quien trabajo.",
+        "right": "Esta es la herramienta con la que trabajo.",
+        "why": "quien is only for people; for things use el que / la que / el cual.",
+        "also_accepted": [
+          "Esta es la herramienta con la cual trabajo."
+        ]
+      },
+      {
+        "wrong": "El libro leí es muy bueno.",
+        "right": "El libro que leí es muy bueno.",
+        "why": "Spanish never drops the relative 'que' (English can drop 'that').",
+        "also_accepted": []
+      },
+      {
+        "wrong": "La casa que vivo es vieja.",
+        "right": "La casa donde vivo es vieja.",
+        "why": "For a place use donde (or en la que); que alone cannot replace 'en que'.",
+        "also_accepted": [
+          "La casa en la que vivo es vieja.",
+          "La casa en que vivo es vieja.",
+          "La casa en la cual vivo es vieja."
+        ]
+      },
+      {
+        "wrong": "El amigo de que te hablé llegó hoy.",
+        "right": "El amigo de quien te hablé llegó hoy.",
+        "why": "After a preposition que needs an article (del que) or use quien for people.",
+        "also_accepted": [
+          "El amigo del que te hablé llegó hoy.",
+          "El amigo del cual te hablé llegó hoy."
+        ]
+      },
+      {
+        "wrong": "No entiendo que dices.",
+        "right": "No entiendo lo que dices.",
+        "why": "'what' as 'the thing that' is lo que.",
+        "also_accepted": [
+          "No entiendo qué dices."
+        ]
+      }
+    ]
+  }
+}

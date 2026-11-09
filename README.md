@@ -84,6 +84,12 @@ Spanish/
 - `!drill condicional` — Simple conditional: irregular stems (tendría, diría...), regular forms, and translations of the seven uses
 - `!drill subjuntivo` — Present subjunctive: forms (regular, dé/vaya/sea/haya/esté/sepa, -go/-zco, stem changes incl. durmamos, -car/-gar/-zar) and sentences where the trigger decides the mood — including indicative contrasts (creo que tiene, cuando + habit), so it drills *when*, not just *how*. Ahead of the lessons; Language Transfer tracks 69–85
 - `!drill gustar` — Gustar-type verbs as one pattern (gustar, encantar, doler, importar, molestar, interesar, faltar, hacer falta): pronoun + verb fill-ins in present and past, translations, and correcting the classic mistakes (Yo gusto el café → Me gusta el café). Language Transfer tracks 42, 45, 63
+- **🚀 Adelantado (aún no en clase)** — topics Language Transfer teaches before the lessons do, built on one shared data shape (`app/pattern_modules.py`: fill-ins, translations, "which type?" questions, mistakes to correct):
+  - `!drill se` — accidental se (se me olvidaron), impersonal and passive se, and telling se apart (reflexive, reciprocal, se = le). LT 47, 80
+  - `!drill relativos` — que, quien, lo que, el que, donde, cuyo (+ the preposition-first rule). LT 83
+  - `!drill cond_perfecto` — habría / debería haber / podría haber + participle. LT 43, 55
+  - `!drill si_hipotetico` — si clauses: real, hypothetical (si tuviera… viajaría) and impossible past. LT 78
+  - `!drill cognados` — English → Spanish suffix rules (-ción, -mente, -dad…) and false friends. LT 2–5, 12
 - `!drill ser_estar` — Ser, estar or hay in context, including adjectives that change meaning (ser listo / estar listo)
 - `!lt` — 🎧 Language Transfer tracker: the free 90-track Complete Spanish course mapped to your lessons (`data/external/language_transfer.json`). Tick tracks as you listen (saved to `data/progress/lt_progress.json`, so it survives restarts); 🆕 marks topics your lessons haven't covered yet. Every Repaso screen also lists the tracks that explain its grammar.
 - `!drill estar_gerundio` — Gerunds (regular + the o→u, i→y, e→i irregulars) and estar + gerundio in present, future and four pasts: imperfecto (estaba), pretérito indefinido (estuve), pretérito perfecto (he estado), pluscuamperfecto (había estado)

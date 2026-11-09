@@ -1,0 +1,469 @@
+{
+  "conditional_perfect": {
+    "source": "claude-draft: written for the app; Language Transfer tracks 43, 55",
+    "overview": "Para hablar de lo que habría pasado, lo que deberíamos haber hecho o lo que podríamos haber hecho en el pasado, usamos el condicional de haber más un participio pasado. Con habría + participio expresamos 'would have' (Yo habría ido, pero estaba enfermo). Con debería haber + participio decimos 'should have' (Deberías haber estudiado más) y con podría haber + participio, 'could have' (Podrías haber llamado). Solo cambia el verbo auxiliar: el participio queda siempre igual, y los irregulares (hecho, dicho, visto, puesto, escrito, vuelto, roto, abierto) hay que memorizarlos.",
+    "uses": [
+      {
+        "name": "habría + participio = would have",
+        "description": "Algo que no ocurrió, pero que habría ocurrido en otras circunstancias. Se usa el condicional de haber (habría, habrías, habría, habríamos, habrían) y el participio. Ejemplo: Yo habría ido a la fiesta, pero estaba enfermo. (Repasa el condicional simple: habría, podría, debería, lecciones 87-91.)"
+      },
+      {
+        "name": "debería haber + participio = should have",
+        "description": "Un reproche o un arrepentimiento sobre el pasado. Ejemplo: Deberías haber estudiado más. También se oye debí haber estudiado o debería de haber estudiado, pero la forma principal es debería haber + participio. Solo el verbo deber cambia de persona; haber queda en infinitivo."
+      },
+      {
+        "name": "podría haber + participio = could have / habría podido + infinitivo",
+        "description": "Una posibilidad que existía en el pasado y no se aprovechó. Ejemplo: Podrías haber llamado. También se dice habría podido + infinitivo: Habrías podido llamar. Ambas formas significan lo mismo."
+      },
+      {
+        "name": "Participios regulares",
+        "description": "Los verbos en -ar forman el participio con -ado (llamar: llamado) y los verbos en -er e -ir con -ido (comer: comido, vivir: vivido). Ejemplo: Habríamos comido más si hubiéramos tenido hambre. (Repasa los participios, lecciones 64-70.)"
+      },
+      {
+        "name": "Participios irregulares",
+        "description": "Aprende estos de memoria: hecho, dicho, visto, puesto, escrito, vuelto, roto, abierto, muerto, resuelto, descubierto, cubierto. Ejemplos: Habría hecho la tarea. Deberíamos haber dicho la verdad. Podría haber abierto la puerta. Nunca digas hacido, escribido ni ponido."
+      },
+      {
+        "name": "Contraste con el pluscuamperfecto",
+        "description": "Había ido significa 'had gone' (un hecho pasado anterior a otro), mientras que habría ido significa 'would have gone' (una situación hipotética). Ejemplo: Cuando llegué, ella ya había salido (hecho real) frente a Yo habría salido antes (hipótesis)."
+      }
+    ],
+    "instructions": {
+      "fill_in": "Completa con habría / debería haber / podría haber + participio"
+    },
+    "fill_in": [
+      {
+        "sentence": "Yo ___ (ir) a la fiesta, pero estaba enfermo.",
+        "answer": "habría ido",
+        "english": "I would have gone to the party, but I was sick.",
+        "also_accepted": [
+          "hubiera ido"
+        ]
+      },
+      {
+        "sentence": "Tú ___ (deber + estudiar) más para el examen.",
+        "answer": "deberías haber estudiado",
+        "english": "You should have studied more for the exam.",
+        "note": "debiste haber estudiado is also common",
+        "also_accepted": [
+          "debiste haber estudiado",
+          "deberías de haber estudiado"
+        ]
+      },
+      {
+        "sentence": "Nosotros ___ (poder + llegar) antes si hubiéramos salido temprano.",
+        "answer": "podríamos haber llegado",
+        "english": "We could have arrived earlier if we had left early.",
+        "also_accepted": [
+          "habríamos podido llegar"
+        ]
+      },
+      {
+        "sentence": "Ella ___ (hacer) la tarea, pero no tenía tiempo.",
+        "answer": "habría hecho",
+        "english": "She would have done the homework, but she didn't have time.",
+        "note": "hecho is irregular",
+        "also_accepted": [
+          "hubiera hecho"
+        ]
+      },
+      {
+        "sentence": "Ustedes ___ (deber + decir) la verdad.",
+        "answer": "deberían haber dicho",
+        "english": "You (all) should have told the truth.",
+        "note": "dicho is irregular",
+        "also_accepted": [
+          "debieron haber dicho",
+          "deberían de haber dicho"
+        ]
+      },
+      {
+        "sentence": "Él ___ (poder + ver) la película, pero se quedó dormido.",
+        "answer": "podría haber visto",
+        "english": "He could have seen the movie, but he fell asleep.",
+        "note": "visto is irregular",
+        "also_accepted": [
+          "habría podido ver"
+        ]
+      },
+      {
+        "sentence": "Yo ___ (poner) la mesa, pero no sabía que venían.",
+        "answer": "habría puesto",
+        "english": "I would have set the table, but I didn't know they were coming.",
+        "note": "puesto is irregular",
+        "also_accepted": [
+          "hubiera puesto"
+        ]
+      },
+      {
+        "sentence": "Tú ___ (escribir) un correo más claro.",
+        "answer": "habrías escrito",
+        "english": "You would have written a clearer email.",
+        "note": "escrito is irregular",
+        "also_accepted": [
+          "hubieras escrito"
+        ]
+      },
+      {
+        "sentence": "Nosotros ___ (deber + volver) más temprano.",
+        "answer": "deberíamos haber vuelto",
+        "english": "We should have come back earlier.",
+        "note": "vuelto is irregular",
+        "also_accepted": [
+          "debimos haber vuelto",
+          "deberíamos de haber vuelto"
+        ]
+      },
+      {
+        "sentence": "Los niños ___ (romper) la ventana con esa pelota.",
+        "answer": "habrían roto",
+        "english": "The kids would have broken the window with that ball.",
+        "note": "roto is irregular",
+        "also_accepted": [
+          "hubieran roto"
+        ]
+      },
+      {
+        "sentence": "Usted ___ (poder + abrir) la puerta con esta llave.",
+        "answer": "podría haber abierto",
+        "english": "You (formal) could have opened the door with this key.",
+        "note": "abierto is irregular",
+        "also_accepted": [
+          "habría podido abrir"
+        ]
+      },
+      {
+        "sentence": "Yo ___ (deber + resolver) el problema antes de la reunión.",
+        "answer": "debería haber resuelto",
+        "english": "I should have solved the problem before the meeting.",
+        "note": "resuelto is irregular",
+        "also_accepted": [
+          "debí haber resuelto",
+          "debería de haber resuelto"
+        ]
+      },
+      {
+        "sentence": "Ana ___ (descubrir) la verdad si hubiera leído la carta.",
+        "answer": "habría descubierto",
+        "english": "Ana would have discovered the truth if she had read the letter.",
+        "note": "descubierto is irregular",
+        "also_accepted": [
+          "hubiera descubierto"
+        ]
+      },
+      {
+        "sentence": "Nosotros ___ (cubrir) el sofá, pero no teníamos tela.",
+        "answer": "habríamos cubierto",
+        "english": "We would have covered the sofa, but we didn't have any fabric.",
+        "note": "cubierto is irregular",
+        "also_accepted": [
+          "hubiéramos cubierto"
+        ]
+      },
+      {
+        "sentence": "Tú ___ (poder + escribir) una carta en vez de llamar.",
+        "answer": "podrías haber escrito",
+        "english": "You could have written a letter instead of calling.",
+        "also_accepted": [
+          "habrías podido escribir"
+        ]
+      },
+      {
+        "sentence": "Mis abuelos ___ (querer) conocerte.",
+        "answer": "habrían querido",
+        "english": "My grandparents would have wanted to meet you.",
+        "also_accepted": [
+          "hubieran querido"
+        ]
+      },
+      {
+        "sentence": "Ellos ___ (deber + preguntar) antes de entrar.",
+        "answer": "deberían haber preguntado",
+        "english": "They should have asked before coming in.",
+        "also_accepted": [
+          "debieron haber preguntado",
+          "deberían de haber preguntado"
+        ]
+      },
+      {
+        "sentence": "Yo ___ (comer) más, pero ya estaba lleno.",
+        "answer": "habría comido",
+        "english": "I would have eaten more, but I was already full.",
+        "also_accepted": [
+          "hubiera comido"
+        ]
+      },
+      {
+        "sentence": "Ustedes ___ (poder + ganar) el partido.",
+        "answer": "podrían haber ganado",
+        "english": "You (all) could have won the game.",
+        "also_accepted": [
+          "habrían podido ganar"
+        ]
+      },
+      {
+        "sentence": "Ella ___ (deber + ver) al médico antes.",
+        "answer": "debería haber visto",
+        "english": "She should have seen the doctor earlier.",
+        "note": "visto is irregular",
+        "also_accepted": [
+          "debió haber visto",
+          "debería de haber visto"
+        ]
+      },
+      {
+        "sentence": "Yo ___ (decir) algo, pero no quería discutir.",
+        "answer": "habría dicho",
+        "english": "I would have said something, but I didn't want to argue.",
+        "note": "dicho is irregular",
+        "also_accepted": [
+          "hubiera dicho"
+        ]
+      },
+      {
+        "sentence": "Tú te ___ (morir) de risa con esa película.",
+        "answer": "habrías muerto",
+        "english": "You would have died laughing in that movie.",
+        "note": "morirse de risa: te habrías muerto de risa",
+        "also_accepted": [
+          "hubieras muerto"
+        ]
+      },
+      {
+        "sentence": "Nosotros ___ (deber + poner) las llaves en la mesa.",
+        "answer": "deberíamos haber puesto",
+        "english": "We should have put the keys on the table.",
+        "note": "puesto is irregular",
+        "also_accepted": [
+          "debimos haber puesto",
+          "deberíamos de haber puesto"
+        ]
+      },
+      {
+        "sentence": "Él ___ (poder + resolver) el misterio solo.",
+        "answer": "podría haber resuelto",
+        "english": "He could have solved the mystery by himself.",
+        "note": "resuelto is irregular",
+        "also_accepted": [
+          "habría podido resolver"
+        ]
+      },
+      {
+        "sentence": "Ustedes ___ (abrir) la tienda más temprano, pero no había clientes.",
+        "answer": "habrían abierto",
+        "english": "You (all) would have opened the store earlier, but there were no customers.",
+        "note": "abierto is irregular",
+        "also_accepted": [
+          "hubieran abierto"
+        ]
+      },
+      {
+        "sentence": "Yo ___ (deber + hacer) ejercicio ayer.",
+        "answer": "debería haber hecho",
+        "english": "I should have exercised yesterday.",
+        "note": "hecho is irregular",
+        "also_accepted": [
+          "debí haber hecho",
+          "debería de haber hecho"
+        ]
+      },
+      {
+        "sentence": "Ellos ___ (volver) a casa, pero había mucho tráfico.",
+        "answer": "habrían vuelto",
+        "english": "They would have gone back home, but there was a lot of traffic.",
+        "note": "vuelto is irregular",
+        "also_accepted": [
+          "hubieran vuelto"
+        ]
+      },
+      {
+        "sentence": "Tú ___ (poder + descubrir) el error antes de enviarlo.",
+        "answer": "podrías haber descubierto",
+        "english": "You could have discovered the mistake before sending it.",
+        "note": "descubierto is irregular",
+        "also_accepted": [
+          "habrías podido descubrir"
+        ]
+      }
+    ],
+    "translate": [
+      {
+        "english": "I would have called you.",
+        "spanish": "Te habría llamado.",
+        "also_accepted": [
+          "Yo te habría llamado.",
+          "Te hubiera llamado.",
+          "Yo te hubiera llamado."
+        ]
+      },
+      {
+        "english": "You should have studied more.",
+        "spanish": "Deberías haber estudiado más.",
+        "also_accepted": [
+          "Tú deberías haber estudiado más.",
+          "Debiste haber estudiado más.",
+          "Deberías de haber estudiado más."
+        ]
+      },
+      {
+        "english": "We could have arrived earlier.",
+        "spanish": "Podríamos haber llegado antes.",
+        "also_accepted": [
+          "Nosotros podríamos haber llegado antes.",
+          "Habríamos podido llegar antes."
+        ]
+      },
+      {
+        "english": "She would have said no.",
+        "spanish": "Ella habría dicho que no.",
+        "also_accepted": [
+          "Habría dicho que no.",
+          "Ella hubiera dicho que no.",
+          "Hubiera dicho que no."
+        ]
+      },
+      {
+        "english": "They should have opened the window.",
+        "spanish": "Deberían haber abierto la ventana.",
+        "also_accepted": [
+          "Ellos deberían haber abierto la ventana.",
+          "Debieron haber abierto la ventana.",
+          "Deberían de haber abierto la ventana."
+        ]
+      },
+      {
+        "english": "I could have seen the accident.",
+        "spanish": "Podría haber visto el accidente.",
+        "also_accepted": [
+          "Yo podría haber visto el accidente.",
+          "Habría podido ver el accidente."
+        ]
+      },
+      {
+        "english": "We would have done it differently.",
+        "spanish": "Lo habríamos hecho de otra manera.",
+        "also_accepted": [
+          "Nosotros lo habríamos hecho de otra manera.",
+          "Lo habríamos hecho diferente.",
+          "Lo hubiéramos hecho de otra manera."
+        ]
+      },
+      {
+        "english": "You (formal) should have put the keys here.",
+        "spanish": "Usted debería haber puesto las llaves aquí.",
+        "also_accepted": [
+          "Debería haber puesto las llaves aquí.",
+          "Usted debió haber puesto las llaves aquí."
+        ]
+      },
+      {
+        "english": "He would have come back earlier.",
+        "spanish": "Habría vuelto más temprano.",
+        "also_accepted": [
+          "Él habría vuelto más temprano.",
+          "Hubiera vuelto más temprano.",
+          "Él hubiera vuelto más temprano."
+        ]
+      },
+      {
+        "english": "I should have told you the truth.",
+        "spanish": "Debería haberte dicho la verdad.",
+        "also_accepted": [
+          "Yo debería haberte dicho la verdad.",
+          "Te debería haber dicho la verdad.",
+          "Debí haberte dicho la verdad."
+        ]
+      },
+      {
+        "english": "Could you have solved the problem?",
+        "spanish": "¿Podrías haber resuelto el problema?",
+        "also_accepted": [
+          "¿Tú podrías haber resuelto el problema?",
+          "¿Habrías podido resolver el problema?"
+        ]
+      },
+      {
+        "english": "They would have discovered the secret.",
+        "spanish": "Habrían descubierto el secreto.",
+        "also_accepted": [
+          "Ellos habrían descubierto el secreto.",
+          "Hubieran descubierto el secreto.",
+          "Ellos hubieran descubierto el secreto."
+        ]
+      }
+    ],
+    "correct": [
+      {
+        "wrong": "Yo había ido a la fiesta, pero estaba enfermo.",
+        "right": "Yo habría ido a la fiesta, pero estaba enfermo.",
+        "why": "Había ido es el pluscuamperfecto ('had gone'). Para 'would have gone' se usa el condicional: habría ido.",
+        "also_accepted": [
+          "Habría ido a la fiesta, pero estaba enfermo.",
+          "Yo hubiera ido a la fiesta, pero estaba enfermo."
+        ]
+      },
+      {
+        "wrong": "Debería haber estudiar más.",
+        "right": "Debería haber estudiado más.",
+        "why": "Después de haber hace falta el participio (estudiado), no el infinitivo.",
+        "also_accepted": [
+          "Yo debería haber estudiado más."
+        ]
+      },
+      {
+        "wrong": "Ella habría hacido la cena.",
+        "right": "Ella habría hecho la cena.",
+        "why": "Hacer tiene un participio irregular: hecho.",
+        "also_accepted": [
+          "Habría hecho la cena.",
+          "Ella hubiera hecho la cena."
+        ]
+      },
+      {
+        "wrong": "Nosotros habríamos escribido una carta.",
+        "right": "Nosotros habríamos escrito una carta.",
+        "why": "Escribir tiene un participio irregular: escrito.",
+        "also_accepted": [
+          "Habríamos escrito una carta.",
+          "Nosotros hubiéramos escrito una carta."
+        ]
+      },
+      {
+        "wrong": "Tú deberías estudiado más.",
+        "right": "Tú deberías haber estudiado más.",
+        "why": "Falta haber: should have se dice debería haber + participio.",
+        "also_accepted": [
+          "Deberías haber estudiado más.",
+          "Tú debiste haber estudiado más."
+        ]
+      },
+      {
+        "wrong": "Ellos habrían abrido la puerta.",
+        "right": "Ellos habrían abierto la puerta.",
+        "why": "Abrir tiene un participio irregular: abierto.",
+        "also_accepted": [
+          "Habrían abierto la puerta.",
+          "Ellos hubieran abierto la puerta."
+        ]
+      },
+      {
+        "wrong": "Yo podría haber vido la película.",
+        "right": "Yo podría haber visto la película.",
+        "why": "Ver tiene un participio irregular: visto.",
+        "also_accepted": [
+          "Podría haber visto la película.",
+          "Yo habría podido ver la película."
+        ]
+      },
+      {
+        "wrong": "Él habría ponido la mesa.",
+        "right": "Él habría puesto la mesa.",
+        "why": "Poner tiene un participio irregular: puesto.",
+        "also_accepted": [
+          "Habría puesto la mesa.",
+          "Él hubiera puesto la mesa."
+        ]
+      }
+    ]
+  }
+}

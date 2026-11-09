@@ -5,6 +5,10 @@ import json
 import os
 from datetime import datetime
 
+# Recorded so spanish_drill.py can tell when this file changed under a running
+# app and reload it (see _reload_stale_modules there).
+_SOURCE_MTIME = os.path.getmtime(__file__)
+
 LT_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "external", "language_transfer.json")
 
 _cache = {}

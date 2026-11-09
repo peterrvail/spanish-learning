@@ -27,7 +27,9 @@
     12
    ],
    "your_lessons": [],
-   "app_modules": [],
+   "app_modules": [
+    "cognados"
+   ],
    "status": "gap"
   },
   {
@@ -452,7 +454,9 @@
     80
    ],
    "your_lessons": [],
-   "app_modules": [],
+   "app_modules": [
+    "se"
+   ],
    "status": "gap"
   },
   {
@@ -463,7 +467,9 @@
     55
    ],
    "your_lessons": [],
-   "app_modules": [],
+   "app_modules": [
+    "cond_perfecto"
+   ],
    "status": "gap"
   },
   {
@@ -494,7 +500,9 @@
     78
    ],
    "your_lessons": [],
-   "app_modules": [],
+   "app_modules": [
+    "si_hipotetico"
+   ],
    "status": "gap"
   },
   {
@@ -504,7 +512,9 @@
     83
    ],
    "your_lessons": [],
-   "app_modules": [],
+   "app_modules": [
+    "relativos"
+   ],
    "status": "gap"
   },
   {
