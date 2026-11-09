@@ -104,6 +104,17 @@ def due_items(limit=20, now=None):
     return [json.loads(r["item_json"]) for r in rows]
 
 
+def due_keys(now=None):
+    """card_key()s of every card due for review (missed and not yet relearned)."""
+    now = now or datetime.now()
+    try:
+        with _connect() as conn:
+            rows = conn.execute("SELECT key FROM cards WHERE misses > 0 AND due <= ?", (now.isoformat(),)).fetchall()
+    except (sqlite3.Error, OSError):
+        return set()
+    return {r["key"] for r in rows}
+
+
 def due_count(now=None):
     now = now or datetime.now()
     try:

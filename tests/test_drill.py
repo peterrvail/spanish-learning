@@ -6,6 +6,7 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app"))
 import conversation  # noqa: E402
+import flashcards  # noqa: E402
 import grading  # noqa: E402
 import progress  # noqa: E402
 import spanish_drill as sd  # noqa: E402
@@ -569,3 +570,114 @@ def test_estar_gerundio_is_in_menu_review_and_mixto():
     sentences = json.load(open(os.path.join(sd.GRAMMAR_DIR, "estar_gerundio.json")))["estar_gerundio"]["sentences"]
     oir = next(x for x in sentences if x["answer"] == "estaba oyendo")
     assert "estaba escuchando" in oir["also_accepted"]
+
+
+
+def test_flashcard_deck_building_and_requeue():
+    import random as _r
+    cards = [{"id": str(i), "deck": "a" if i < 8 else "b"} for i in range(12)]
+    deck = flashcards.build_deck(cards, {"a"}, 5, due_keys={"6", "7"}, key_of=lambda c: c["id"], rng=_r.Random(1))
+    assert len(deck) == 5 and {c["id"] for c in deck[:2]} == {"6", "7"} and all(c["deck"] == "a" for c in deck)
+    assert len(flashcards.build_deck(cards, {"a", "b"}, 0)) == 12
+    assert flashcards.requeue(list("abcdef"), 0) == list("bcdaef")
+    assert flashcards.requeue(list("ab"), 0) == list("ba")
+
+
+def test_flashcard_html_is_one_line_and_escaped():
+    card = {"spanish": "<b>x</b>", "english": "y", "category": "c", "gender": "", "note": "", "example": "",
+            "example_english": "", "is_number": False}
+    markup = flashcards.card_html(card, "es_en", "f1")
+    assert "\n" not in markup and "<b>x</b>" not in markup and "&lt;b&gt;" in markup
+
+
+def test_flashcards_flow(db):
+    at = _app()
+    at.session_state["active_command"] = "!tarjetas"
+    at.run()
+    next(r for r in at.radio if r.label == "Tarjetas").set_value("10")
+    next(b for b in at.button if "Empezar" in b.label).click()
+    at.run()
+    assert not at.exception and at.session_state["fc"]["total"] == 10
+    first = at.session_state["fc"]["queue"][0]
+    next(b for b in at.button if "Otra vez" in b.label).click()
+    at.run()
+    assert at.session_state["fc"]["queue"].index(first) == 3          # comes back 3 cards later
+    assert progress.due_count() == 1                                   # and into the review queue
+    for _ in range(10):                                                # 10 cards, the missed one included
+        next(b for b in at.button if "Lo sabía" in b.label).click()
+        at.run()
+    assert any("Mazo terminado" in s.value for s in at.success)
+    assert any("9 de 10" in s.value for s in at.success)
+    assert progress.due_count() == 0                                   # relearned: due tomorrow, not now
+    next(b for b in at.button if "Nuevo mazo" in b.label).click()
+    at.run()
+    assert "fc" not in at.session_state
+
+
+
+def _reference():
+    import json
+    return json.load(open(flashcards.REFERENCE_FILE))
+
+
+def test_reference_matches_the_document():
+    ref = _reference()
+    entries = [e for p in ref["parts"] for g in p["groups"] for e in g["entries"]]
+    assert len(entries) == ref["_meta"]["total"] == 3563
+    sizes = {p["id"]: sum(len(g["entries"]) for g in p["groups"]) for p in ref["parts"]}
+    assert sizes == {"expresiones": 640, "verbos": 533, "sustantivos_vida_diaria": 787,
+                     "sustantivos_mundo": 858, "adjetivos": 407, "palabras_pequenas": 338}
+    assert all(e["spanish"] and e["english"] and e["first_seen"] for e in entries)
+
+
+def test_flashcards_are_built_from_the_reference():
+    cards = flashcards.load_cards()
+    ref_cards = [c for c in cards if not c["deck"].startswith("notas_de_clase")]
+    assert len(ref_cards) == 3563 and len({c["id"] for c in cards}) == len(cards)
+    decks = flashcards.decks(cards)
+    assert len([d for d in decks if d.startswith("expresiones:")]) == 9      # one deck per situation
+    assert decks["verbos:todos"] == 533 and decks["adjetivos:todos"] == 407  # verbs, adjectives: one deck each
+    assert flashcards.deck_label("expresiones:saludos_y_cortesia") == "💬 Expresiones: saludos y cortesía"
+    spanish = {c["spanish"] for c in cards}
+    assert {"el", "él", "si", "sí"} <= spanish                                # accent pairs stay separate
+    cocina = next(c for c in cards if c["spanish"] == "la cocina")
+    assert cocina["gender"] == "f" and cocina["lesson_num"] is not None
+    assert not any(c["gender"] for c in cards if c["deck"].startswith(("verbos", "adjetivos", "expresiones")))
+    acabar = next(c for c in cards if c["spanish"] == "acabar de")
+    assert acabar["lesson"] == "Lección 23" and acabar["example"] == "Acabo de llegar a casa"
+    assert "Lección 23" in flashcards.card_html(acabar, "es_en", "x")
+
+
+def test_class_note_examples_attach_to_reference_cards_and_extras_are_kept():
+    cards = flashcards.load_cards()
+    gotera = next(c for c in cards if c["spanish"] == "la gotera")
+    assert not gotera["deck"].startswith("notas_de_clase")                    # it's a reference card...
+    assert gotera["example_from_class"] and gotera["example_english"]         # ...with the whiteboard example
+    extras = {c["spanish"] for c in cards if c["deck"] == "notas_de_clase:extra"}
+    assert "Vaya recto." in extras and "la gotera" not in extras
+    assert sum(1 for c in cards if c["example"]) > 600
+
+
+def test_flashcard_lesson_helpers():
+    assert flashcards.lesson_number("L95") == 95 and flashcards.lesson_number("L112.5") == 112.5
+    assert flashcards.lesson_number("Pasado simple") is None
+    assert flashcards.lesson_range(flashcards.load_cards()) == (1, 119)
+    assert flashcards._key("¿A quién le importa?") == flashcards._key("a quien le importa")
+    assert "inclinado" in flashcards._match_keys("inclinado/a")
+    assert "la pasa" in flashcards._match_keys("las pasas")
+
+
+def test_flashcards_by_lesson_range(db):
+    at = _app()
+    at.session_state["active_command"] = "!tarjetas"
+    at.run()
+    next(r for r in at.radio if r.label == "Elegir por").set_value("Lección")
+    at.run()
+    assert at.slider[0].value == (110, 119)                                   # default: last ten lessons
+    at.slider[0].set_value((119, 119))
+    next(r for r in at.radio if r.label == "Tarjetas").set_value("Todas")
+    next(b for b in at.button if "Empezar" in b.label).click()
+    at.run()
+    cards = {c["id"]: c for c in flashcards.load_cards()}
+    queue = at.session_state["fc"]["queue"]
+    assert queue and all(cards[cid]["lesson_num"] == 119 for cid in queue)

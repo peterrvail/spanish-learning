@@ -1,0 +1,1208 @@
+{
+  "_meta": {
+    "source": "Class whiteboard screenshots (recent lessons, ~Lección 113-119), sent in chat 2026-11-08",
+    "notes": "Spanish as written on the board, with spelling fixed where noted ('valde' -> 'balde'). English glosses and notes written by Claude: review them. Words already in other vocabulary files were left out. Each card has an example sentence: example_source 'pizarra' means it is from the board (spelling fixed), 'claude-draft' means Claude wrote it."
+  },
+  "casa_y_reparaciones": [
+    {
+      "spanish": "la gotera",
+      "english": "leak (in a roof or ceiling)",
+      "gender": "feminine",
+      "example": "Tenemos una gotera también.",
+      "example_english": "We have a leak too.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el balde",
+      "english": "bucket",
+      "gender": "masculine",
+      "note": "en la pizarra: 'valde'; también 'la cubeta'",
+      "example": "Pon un balde debajo de la gotera.",
+      "example_english": "Put a bucket under the leak.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el maestro (de obra)",
+      "english": "builder, handyman",
+      "gender": "masculine",
+      "note": "el maestro que repara techos",
+      "example": "Llamé al maestro que repara techos.",
+      "example_english": "I called the man who repairs roofs.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "las herramientas",
+      "english": "tools",
+      "gender": "feminine",
+      "example": "Necesito herramientas y equipos adecuados.",
+      "example_english": "I need the right tools and equipment.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el equipo adecuado",
+      "english": "the right equipment",
+      "gender": "masculine",
+      "example": "Sin el equipo adecuado, es peligroso subir al techo.",
+      "example_english": "Without the right equipment, it's dangerous to go up on the roof.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "inclinado/a",
+      "english": "sloping, steep",
+      "example": "El techo es muy inclinado.",
+      "example_english": "The roof is very steep.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el piso de cerámica",
+      "english": "tile floor",
+      "gender": "masculine",
+      "example": "Prefiero el piso de cerámica en la cocina.",
+      "example_english": "I prefer a tile floor in the kitchen.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el piso de madera",
+      "english": "wooden floor",
+      "gender": "masculine",
+      "example": "El agua de la gotera ha dañado el piso de madera.",
+      "example_english": "The water from the leak has damaged the wooden floor.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la lluvia torrencial",
+      "english": "torrential rain, downpour",
+      "gender": "feminine",
+      "example": "Anoche hubo una lluvia torrencial.",
+      "example_english": "Last night there was a torrential downpour.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "inundado/a",
+      "english": "flooded",
+      "example": "La calle estaba inundada.",
+      "example_english": "The street was flooded.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la humedad",
+      "english": "damp, humidity",
+      "gender": "feminine",
+      "example": "Hay mucha humedad en el baño.",
+      "example_english": "There's a lot of damp in the bathroom.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el compañero / la compañera de piso",
+      "english": "roommate, flatmate",
+      "gender": "masculine/feminine",
+      "example": "Mi compañero de piso está cocinando.",
+      "example_english": "My roommate is cooking.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el cubo de hielo",
+      "english": "ice cube",
+      "gender": "masculine",
+      "example": "Me he puesto cubos de hielo en mi gorra.",
+      "example_english": "I've put ice cubes in my cap.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "empacar",
+      "english": "to pack (a suitcase)",
+      "example": "Odio empacar las maletas.",
+      "example_english": "I hate packing suitcases.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "los productos de limpieza",
+      "english": "cleaning products",
+      "gender": "masculine",
+      "example": "Ahí está la tienda de productos de limpieza.",
+      "example_english": "There's the cleaning-products shop.",
+      "example_source": "pizarra"
+    }
+  ],
+  "naturaleza_y_animales": [
+    {
+      "spanish": "la pluma (de ave)",
+      "english": "feather",
+      "gender": "feminine",
+      "note": "también 'pen' en otros contextos",
+      "example": "El ganso tiene plumas blancas.",
+      "example_english": "The goose has white feathers.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "emigrar",
+      "english": "to migrate",
+      "example": "¿Los pájaros emigran en invierno?",
+      "example_english": "Do the birds migrate in winter?",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "alimentar",
+      "english": "to feed",
+      "example": "¿Con qué alimentan a los gansos?",
+      "example_english": "What do they feed the geese?",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el pico",
+      "english": "beak",
+      "gender": "masculine",
+      "example": "El pico evoluciona en diferentes islas.",
+      "example_english": "The beak evolves on different islands.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "evolucionar",
+      "english": "to evolve",
+      "note": "El pico evoluciona en diferentes islas.",
+      "example": "Las especies evolucionan con el tiempo.",
+      "example_english": "Species evolve over time.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la tortuga terrestre",
+      "english": "tortoise (land turtle)",
+      "gender": "feminine",
+      "example": "Las tortugas terrestres viven muchos años.",
+      "example_english": "Tortoises live for many years.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la tortuga marina",
+      "english": "sea turtle",
+      "gender": "feminine",
+      "example": "Hemos visto una tortuga marina en la playa.",
+      "example_english": "We've seen a sea turtle on the beach.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el insecto",
+      "english": "insect",
+      "gender": "masculine",
+      "example": "A mi gato le gusta atrapar cualquier insecto.",
+      "example_english": "My cat likes to catch any insect.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la ardilla",
+      "english": "squirrel",
+      "gender": "feminine",
+      "example": "Hay muchas ardillas en el jardín.",
+      "example_english": "There are lots of squirrels in the garden.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el ganso",
+      "english": "goose",
+      "gender": "masculine",
+      "example": "Hay dos gansos guardianes en la granja.",
+      "example_english": "There are two guard geese on the farm.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el pato",
+      "english": "duck",
+      "gender": "masculine",
+      "example": "Dos patos agresivos me persiguieron.",
+      "example_english": "Two aggressive ducks chased me.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el cisne",
+      "english": "swan",
+      "gender": "masculine",
+      "example": "El cisne está nadando en el lago.",
+      "example_english": "The swan is swimming in the lake.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el pelaje",
+      "english": "fur, coat (of an animal)",
+      "gender": "masculine",
+      "example": "El conejo tiene un pelaje muy suave.",
+      "example_english": "The rabbit has very soft fur.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "agresivo/a",
+      "english": "aggressive",
+      "example": "El ganso es agresivo con los extraños.",
+      "example_english": "The goose is aggressive with strangers.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el mapache",
+      "english": "raccoon",
+      "gender": "masculine",
+      "example": "Un mapache se comió nuestra basura.",
+      "example_english": "A raccoon ate our garbage.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el zorrillo",
+      "english": "skunk",
+      "gender": "masculine",
+      "example": "¡Ay! Hay un zorrillo en el jardín.",
+      "example_english": "Oh no! There's a skunk in the garden.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la zarigüeya",
+      "english": "opossum",
+      "gender": "feminine",
+      "example": "Anoche vimos una zarigüeya cerca de la casa.",
+      "example_english": "Last night we saw an opossum near the house.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la loma / la colina",
+      "english": "hill",
+      "gender": "feminine",
+      "example": "Caminamos hasta la cima de la colina.",
+      "example_english": "We walked to the top of the hill.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la neblina",
+      "english": "mist, fog",
+      "gender": "feminine",
+      "example": "Ha sido un día gris, con neblina.",
+      "example_english": "It's been a gray day, with mist.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "amanecer",
+      "english": "to dawn; (n.) dawn",
+      "note": "Hoy amaneció gris.",
+      "example": "Hoy amaneció nublado.",
+      "example_english": "Today it dawned cloudy.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "un día gris",
+      "english": "a gray, overcast day",
+      "example": "Ha sido un día gris.",
+      "example_english": "It's been a gray day.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "sembrar",
+      "english": "to sow, to plant",
+      "example": "Estamos sembrando ocho tomates en el jardín.",
+      "example_english": "We're planting eight tomatoes in the garden.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "las hierbas",
+      "english": "herbs",
+      "gender": "feminine",
+      "example": "Tratamos de sembrar hierbas.",
+      "example_english": "We tried to plant herbs.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la albahaca",
+      "english": "basil",
+      "gender": "feminine",
+      "example": "La albahaca crece muy bien al sol.",
+      "example_english": "Basil grows very well in the sun.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el cilantro",
+      "english": "cilantro, coriander",
+      "gender": "masculine",
+      "example": "Le pongo cilantro a la sopa.",
+      "example_english": "I put cilantro in the soup.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el perejil",
+      "english": "parsley",
+      "gender": "masculine",
+      "example": "Necesito un poco de perejil para la salsa.",
+      "example_english": "I need a little parsley for the sauce.",
+      "example_source": "claude-draft"
+    }
+  ],
+  "comida_y_compras": [
+    {
+      "spanish": "el ají",
+      "english": "chili pepper; hot sauce",
+      "gender": "masculine",
+      "example": "En Ecuador siempre hay ají en la mesa.",
+      "example_english": "In Ecuador there's always hot sauce on the table.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "mi plato favorito",
+      "english": "my favorite dish",
+      "example": "Mi plato favorito de mi mamá es la sopa de pollo.",
+      "example_english": "My favorite of my mom's dishes is chicken soup.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la funda de caramelos",
+      "english": "bag of candy",
+      "gender": "feminine",
+      "note": "Ecuador: funda = bolsa",
+      "example": "Los niños tenían muchas fundas de caramelos.",
+      "example_english": "The children had lots of bags of candy.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "los bombones",
+      "english": "chocolates (bonbons)",
+      "gender": "masculine",
+      "example": "Me regalaron una caja de bombones.",
+      "example_english": "They gave me a box of chocolates.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "las caries",
+      "english": "cavities (in teeth)",
+      "gender": "feminine",
+      "example": "Tantos dulces te van a dar caries.",
+      "example_english": "So many sweets are going to give you cavities.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el ron",
+      "english": "rum",
+      "gender": "masculine",
+      "example": "Los borrachitos tienen un poco de ron.",
+      "example_english": "Borrachitos have a little rum in them.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "las pasas",
+      "english": "raisins",
+      "gender": "feminine",
+      "example": "No me gusta el pan con pasas.",
+      "example_english": "I don't like bread with raisins.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "los borrachitos",
+      "english": "rum-soaked candies",
+      "gender": "masculine",
+      "note": "Ecuador",
+      "example": "Compramos borrachitos en la Dulcería La Palma.",
+      "example_english": "We bought borrachitos at the Dulcería La Palma.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la dulcería",
+      "english": "candy shop",
+      "gender": "feminine",
+      "example": "La dulcería está al lado de la panadería.",
+      "example_english": "The candy shop is next to the bakery.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "un pedazo de torta",
+      "english": "a piece of cake",
+      "note": "torta = pastel",
+      "example": "¿Quieres un pedazo de torta?",
+      "example_english": "Do you want a piece of cake?",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el morocho",
+      "english": "morocho (thick sweet corn-and-milk drink)",
+      "gender": "masculine",
+      "note": "Ecuador",
+      "example": "El morocho es más espeso que la avena.",
+      "example_english": "Morocho is thicker than the oat drink.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "espeso/a",
+      "english": "thick (liquid)",
+      "example": "Esta colada está muy espesa.",
+      "example_english": "This colada is very thick.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "líquido/a",
+      "english": "runny, liquid",
+      "example": "Prefiero la avena más líquida.",
+      "example_english": "I prefer the oat drink runnier.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la colada",
+      "english": "colada (thick hot drink of fruit or grain)",
+      "gender": "feminine",
+      "note": "Ecuador",
+      "example": "Hemos tomado colada de naranjilla.",
+      "example_english": "We've had naranjilla colada.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la naranjilla",
+      "english": "naranjilla (lulo, a tart Andean fruit)",
+      "gender": "feminine",
+      "note": "Ecuador",
+      "example": "El jugo de naranjilla es ácido pero rico.",
+      "example_english": "Naranjilla juice is tart but tasty.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el pan de yuca",
+      "english": "cassava bread",
+      "gender": "masculine",
+      "note": "Ecuador",
+      "example": "Desayuné pan de yuca con yogur.",
+      "example_english": "I had cassava bread with yogurt for breakfast.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "amargo/a",
+      "english": "bitter",
+      "example": "Este café está muy amargo.",
+      "example_english": "This coffee is very bitter.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "los mariscos",
+      "english": "seafood, shellfish",
+      "gender": "masculine",
+      "example": "¿Dónde puedo comprar mariscos frescos?",
+      "example_english": "Where can I buy fresh seafood?",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la pescadería",
+      "english": "fish shop",
+      "gender": "feminine",
+      "example": "Vaya recto y la pescadería está a la derecha.",
+      "example_english": "Go straight and the fish shop is on the right.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el salmón",
+      "english": "salmon",
+      "gender": "masculine",
+      "example": "Quiero comprar tres libras de salmón, por favor.",
+      "example_english": "I'd like to buy three pounds of salmon, please.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la libra",
+      "english": "pound (weight)",
+      "gender": "feminine",
+      "note": "Quiero comprar 3 libras de salmón.",
+      "example": "El salmón cuesta diez dólares la libra.",
+      "example_english": "Salmon costs ten dollars a pound.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la mantequilla de maní",
+      "english": "peanut butter",
+      "gender": "feminine",
+      "note": "también 'pasta de maní'",
+      "example": "Me encanta el pan con mantequilla de maní.",
+      "example_english": "I love bread with peanut butter.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "los lácteos",
+      "english": "dairy products",
+      "gender": "masculine",
+      "example": "Los lácteos y los quesos están al fondo.",
+      "example_english": "The dairy products and cheeses are at the back.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la tienda de quesos",
+      "english": "cheese shop",
+      "gender": "feminine",
+      "example": "¿Cómo puedo llegar a la tienda de quesos?",
+      "example_english": "How can I get to the cheese shop?",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la intoxicación (alimentaria)",
+      "english": "food poisoning",
+      "gender": "feminine",
+      "example": "Comió mariscos y tuvo una intoxicación.",
+      "example_english": "He ate seafood and got food poisoning.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "pesado/a",
+      "english": "heavy; (food) heavy, hard to digest",
+      "note": "Las compras están pesadas. La comida está pesada.",
+      "example": "Las compras están pesadas.",
+      "example_english": "The shopping is heavy.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "hacer compras",
+      "english": "to go shopping",
+      "example": "Hoy fui a hacer compras.",
+      "example_english": "Today I went shopping.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "¿Cuánto es?",
+      "english": "How much is it?",
+      "example": "¿Cuánto es? — Son cinco dólares.",
+      "example_english": "How much is it? — It's five dollars.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la preventa",
+      "english": "presale",
+      "gender": "feminine",
+      "example": "Compré los disfraces en preventa.",
+      "example_english": "I bought the costumes in the presale.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el disfraz",
+      "english": "costume",
+      "gender": "masculine",
+      "note": "plural: los disfraces",
+      "example": "¿De qué es tu disfraz este año?",
+      "example_english": "What's your costume this year?",
+      "example_source": "claude-draft"
+    }
+  ],
+  "cuerpo_y_salud": [
+    {
+      "spanish": "el resfriado",
+      "english": "cold (illness)",
+      "gender": "masculine",
+      "example": "Tengo un resfriado y me siento mal.",
+      "example_english": "I have a cold and I feel bad.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "darse cuenta (de)",
+      "english": "to realize",
+      "note": "Me doy cuenta que me siento mal.",
+      "example": "Me doy cuenta de que me siento mal.",
+      "example_english": "I realize I feel bad.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "sentirse mal",
+      "english": "to feel ill, to feel bad",
+      "example": "Ayer me sentí mal todo el día.",
+      "example_english": "Yesterday I felt bad all day.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "sudar",
+      "english": "to sweat",
+      "example": "Durante el día hace calor y sudo mucho.",
+      "example_english": "During the day it's hot and I sweat a lot.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el sudor",
+      "english": "sweat",
+      "gender": "masculine",
+      "example": "Después de correr, una ducha fría quita el sudor.",
+      "example_english": "After running, a cold shower washes off the sweat.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la ducha fría",
+      "english": "cold shower",
+      "gender": "feminine",
+      "example": "A veces a la gente le gusta ducharse con agua fría.",
+      "example_english": "Sometimes people like to shower with cold water.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "estirarse",
+      "english": "to stretch",
+      "example": "Antes de correr, estírese bien.",
+      "example_english": "Before running, stretch well.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "moverse",
+      "english": "to move (oneself)",
+      "example": "En la merienda te estiras y te mueves.",
+      "example_english": "At snack time you stretch and move around.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "las canas",
+      "english": "gray hairs",
+      "gender": "feminine",
+      "example": "Le están saliendo canas.",
+      "example_english": "He's starting to get gray hairs.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "sensible",
+      "english": "sensitive",
+      "note": "¡ojo! no significa 'sensible' (= sensato)",
+      "example": "Me pongo emocional, soy muy sensible.",
+      "example_english": "I get emotional, I'm very sensitive.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "emocional",
+      "english": "emotional",
+      "note": "Me pongo emocional.",
+      "example": "Con esa película me pongo emocional.",
+      "example_english": "That film makes me emotional.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "inquieto/a",
+      "english": "restless, fidgety",
+      "note": "Una niña inquieta.",
+      "example": "Es una niña inquieta; le gustan las cosas diferentes.",
+      "example_english": "She's a restless little girl; she likes different things.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "llorar",
+      "english": "to cry",
+      "example": "El bebé ha estado llorando toda la noche.",
+      "example_english": "The baby has been crying all night.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "pelear",
+      "english": "to fight, to argue",
+      "note": "Están peleando.",
+      "example": "Los niños están peleando otra vez.",
+      "example_english": "The children are fighting again.",
+      "example_source": "pizarra"
+    }
+  ],
+  "ciudad_y_direcciones": [
+    {
+      "spanish": "el hueco / el bache",
+      "english": "pothole",
+      "gender": "masculine",
+      "example": "Cuando hay un bache, yo me levanto en la bicicleta.",
+      "example_english": "When there's a pothole, I stand up on the bike.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el tranvía",
+      "english": "tram, streetcar",
+      "gender": "masculine",
+      "example": "En noviembre caminaré junto al tranvía.",
+      "example_english": "In November I'll walk alongside the tram.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "los rieles",
+      "english": "rails, train tracks",
+      "gender": "masculine",
+      "example": "Los rieles del tren están cerca del borde del río.",
+      "example_english": "The train tracks are near the edge of the river.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el borde",
+      "english": "edge",
+      "gender": "masculine",
+      "example": "No camines tan cerca del borde.",
+      "example_english": "Don't walk so close to the edge.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la medianoche",
+      "english": "midnight",
+      "gender": "feminine",
+      "example": "Trabajé hasta la medianoche.",
+      "example_english": "I worked until midnight.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "frecuente",
+      "english": "frequent",
+      "example": "Ya no es frecuente; vienen menos trenes.",
+      "example_english": "It's not frequent any more; fewer trains come.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el puesto",
+      "english": "(market) stall",
+      "gender": "masculine",
+      "example": "En el mercado hay puestos de bolsos y mochilas de tela.",
+      "example_english": "At the market there are stalls with bags and cloth backpacks.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el bolso",
+      "english": "bag, handbag",
+      "gender": "masculine",
+      "example": "Olvidé mi bolso en el taxi.",
+      "example_english": "I left my bag in the taxi.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la mochila de tela",
+      "english": "cloth backpack",
+      "gender": "feminine",
+      "example": "Compré una mochila de tela en el mercado.",
+      "example_english": "I bought a cloth backpack at the market.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "atraer a los clientes",
+      "english": "to attract customers",
+      "example": "Ponen música para atraer a los clientes.",
+      "example_english": "They play music to attract customers.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el pasaje",
+      "english": "ticket (plane, bus)",
+      "gender": "masculine",
+      "example": "Si encuentro un pasaje barato, viajo a Quito.",
+      "example_english": "If I find a cheap ticket, I'll travel to Quito.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "resbaloso/a",
+      "english": "slippery",
+      "example": "Estas medias son resbalosas en el piso de madera.",
+      "example_english": "These socks are slippery on the wooden floor.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "los zapatos deportivos",
+      "english": "sneakers, trainers",
+      "gender": "masculine",
+      "example": "Al principio de este año compré nuevos zapatos deportivos.",
+      "example_english": "At the beginning of this year I bought new sneakers.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la capucha",
+      "english": "hood",
+      "gender": "feminine",
+      "example": "Es otoño; ponte la capucha.",
+      "example_english": "It's autumn; put your hood up.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la gorra",
+      "english": "cap",
+      "gender": "feminine",
+      "example": "Siempre llevo una gorra cuando hace sol.",
+      "example_english": "I always wear a cap when it's sunny.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el botón",
+      "english": "button",
+      "gender": "masculine",
+      "example": "Se me cayó un botón de la camisa.",
+      "example_english": "A button came off my shirt.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "Vaya recto.",
+      "english": "Go straight.",
+      "example": "Vaya recto hasta el parque.",
+      "example_english": "Go straight on to the park.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "Siga adelante.",
+      "english": "Keep going.",
+      "example": "Siga adelante dos cuadras más.",
+      "example_english": "Keep going two more blocks.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "Vire a la izquierda / a la derecha.",
+      "english": "Turn left / right.",
+      "note": "virar = girar, doblar",
+      "example": "Vire a la derecha y ahí está la tienda.",
+      "example_english": "Turn right and the shop is there.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "Dé la vuelta.",
+      "english": "Turn around.",
+      "example": "Aquí no es; dé la vuelta, vamos al otro lado.",
+      "example_english": "It's not here; turn around, we're going to the other side.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "Dé retro.",
+      "english": "Back up (reverse).",
+      "note": "Ecuador",
+      "example": "Dé retro un poco, por favor.",
+      "example_english": "Back up a little, please.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "Pare aquí.",
+      "english": "Stop here.",
+      "example": "Pare aquí, por favor. ¿Cuánto es?",
+      "example_english": "Stop here, please. How much is it?",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "¿Cómo puedo llegar a...?",
+      "english": "How can I get to...?",
+      "example": "¿Cómo puedo llegar a la pescadería?",
+      "example_english": "How can I get to the fish shop?",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "Ya voy.",
+      "english": "I'm coming. / On my way.",
+      "example": "¡Ya voy! Un momento.",
+      "example_english": "Coming! Just a moment.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "Ya salgo.",
+      "english": "I'm just leaving. / I'll be right out.",
+      "example": "Ya salgo de la oficina, llego en diez minutos.",
+      "example_english": "I'm just leaving the office, I'll be there in ten minutes.",
+      "example_source": "claude-draft"
+    }
+  ],
+  "tiempo_libre_y_trabajo": [
+    {
+      "spanish": "los subtítulos",
+      "english": "subtitles",
+      "gender": "masculine",
+      "example": "Veo las series con subtítulos en español.",
+      "example_english": "I watch series with Spanish subtitles.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "doblado/a",
+      "english": "dubbed (film)",
+      "example": "No me gustan las películas dobladas.",
+      "example_english": "I don't like dubbed films.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la moraleja",
+      "english": "moral (of a story)",
+      "gender": "feminine",
+      "example": "¿Cuál es la moraleja de la historia?",
+      "example_english": "What's the moral of the story?",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "los dibujos animados",
+      "english": "cartoons",
+      "gender": "masculine",
+      "example": "Los niños están viendo dibujos animados.",
+      "example_english": "The children are watching cartoons.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la canción",
+      "english": "song",
+      "gender": "feminine",
+      "example": "Esta canción de Julieta Venegas me encanta.",
+      "example_english": "I love this song by Julieta Venegas.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la melodía",
+      "english": "melody, tune",
+      "gender": "feminine",
+      "example": "La melodía es fácil de recordar.",
+      "example_english": "The tune is easy to remember.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la letra (de una canción)",
+      "english": "lyrics",
+      "gender": "feminine",
+      "example": "Estoy aprendiendo la letra de las canciones de Carlos Vives.",
+      "example_english": "I'm learning the lyrics to Carlos Vives's songs.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la cámara",
+      "english": "camera",
+      "gender": "feminine",
+      "example": "Usualmente tengo una cámara arriba.",
+      "example_english": "I usually have a camera up above.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el ángulo",
+      "english": "angle",
+      "gender": "masculine",
+      "example": "Saca la foto desde un ángulo diferente.",
+      "example_english": "Take the photo from a different angle.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "grabar",
+      "english": "to record, to film",
+      "example": "Este mes lo ha grabado el pintor.",
+      "example_english": "The painter has recorded it this month.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el pintor / la pintora",
+      "english": "painter",
+      "gender": "masculine/feminine",
+      "example": "El pintor ha terminado su obra de arte.",
+      "example_english": "The painter has finished his work of art.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la obra de arte",
+      "english": "work of art",
+      "gender": "feminine",
+      "example": "Este mes ha terminado su obra de arte.",
+      "example_english": "This month he has finished his work of art.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "la competencia",
+      "english": "competition",
+      "gender": "feminine",
+      "note": "en España: la competición",
+      "example": "Nunca he participado en ninguna competencia.",
+      "example_english": "I've never taken part in any competition.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "participar (en)",
+      "english": "to take part (in)",
+      "example": "¿Has participado alguna vez en una carrera?",
+      "example_english": "Have you ever taken part in a race?",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "obtener",
+      "english": "to obtain, to get",
+      "example": "No hemos obtenido ningún trofeo.",
+      "example_english": "We haven't won any trophy.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el trofeo",
+      "english": "trophy",
+      "gender": "masculine",
+      "example": "El equipo ha ganado un trofeo.",
+      "example_english": "The team has won a trophy.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "el partido",
+      "english": "match, game",
+      "gender": "masculine",
+      "example": "El partido estaba aburrido.",
+      "example_english": "The match was boring.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la pretemporada",
+      "english": "preseason",
+      "gender": "feminine",
+      "example": "El miércoles empieza la pretemporada.",
+      "example_english": "Preseason starts on Wednesday.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la despedida",
+      "english": "farewell (party), send-off",
+      "gender": "feminine",
+      "example": "Fuimos a la despedida de nuestra amiga.",
+      "example_english": "We went to our friend's farewell party.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el papeleo",
+      "english": "paperwork",
+      "gender": "masculine",
+      "example": "Tengo mucho papeleo esta semana.",
+      "example_english": "I have a lot of paperwork this week.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "los trámites",
+      "english": "formalities, procedures (paperwork)",
+      "gender": "masculine",
+      "example": "Tengo trámites para el gobierno.",
+      "example_english": "I have paperwork to do for the government.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la reunión",
+      "english": "meeting",
+      "gender": "feminine",
+      "example": "Hoy he tenido tres reuniones.",
+      "example_english": "Today I've had three meetings.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "el gobierno",
+      "english": "government",
+      "gender": "masculine",
+      "example": "El gobierno ha cambiado las reglas.",
+      "example_english": "The government has changed the rules.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "los comienzos",
+      "english": "beginnings",
+      "gender": "masculine",
+      "example": "Ayer celebramos juntos nuestros nuevos comienzos.",
+      "example_english": "Yesterday we celebrated our new beginnings together.",
+      "example_source": "pizarra"
+    }
+  ],
+  "verbos_y_expresiones": [
+    {
+      "spanish": "suceder",
+      "english": "to happen",
+      "example": "Ya han sucedido muchas cosas.",
+      "example_english": "A lot of things have happened already.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "desaparecer",
+      "english": "to disappear",
+      "example": "El gato desapareció y nadie lo ha visto.",
+      "example_english": "The cat disappeared and nobody has seen it.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "dirigirse a",
+      "english": "to head for, to make one's way to",
+      "example": "Se dirigió a la puerta sin decir nada.",
+      "example_english": "He headed for the door without saying anything.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "ponerse a (+ infinitivo)",
+      "english": "to start (doing something)",
+      "example": "Se puso a llorar.",
+      "example_english": "She started to cry.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "encontrarse con",
+      "english": "to meet up with",
+      "example": "Fui a un bar para encontrarme con mi amigo Steven.",
+      "example_english": "I went to a bar to meet up with my friend Steven.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "preocuparse",
+      "english": "to worry",
+      "example": "No hay razón para preocuparse.",
+      "example_english": "There's no reason to worry.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "reírse de",
+      "english": "to laugh at",
+      "note": "Se ríe de mí.",
+      "example": "Mi hermano se ríe de mí.",
+      "example_english": "My brother laughs at me.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "estar acostumbrado/a (a)",
+      "english": "to be used to",
+      "example": "No estoy acostumbrado al frío.",
+      "example_english": "I'm not used to the cold.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "¿Qué importa?",
+      "english": "What does it matter?",
+      "example": "Llegamos tarde, ¿y qué importa?",
+      "example_english": "We're late, so what does it matter?",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "¿A quién le importa?",
+      "english": "Who cares?",
+      "example": "¿A quién le importa lo que piensen?",
+      "example_english": "Who cares what they think?",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "los recuerdos",
+      "english": "memories",
+      "gender": "masculine",
+      "example": "Tú y yo hicimos buenos recuerdos.",
+      "example_english": "You and I made good memories.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "mayormente",
+      "english": "mostly",
+      "example": "Mayormente trabajo desde casa.",
+      "example_english": "I mostly work from home.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "usualmente",
+      "english": "usually",
+      "example": "Usualmente viajamos a la ciudad cada día.",
+      "example_english": "We usually travel to the city every day.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "la mayoría de las veces",
+      "english": "most of the time",
+      "example": "La mayoría de las veces, el mar es seguro para aprender a nadar.",
+      "example_english": "Most of the time the sea is safe for learning to swim.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "al principio",
+      "english": "at the beginning",
+      "example": "Al principio no entendía nada.",
+      "example_english": "At first I didn't understand anything.",
+      "example_source": "claude-draft"
+    },
+    {
+      "spanish": "en buenas condiciones",
+      "english": "in good condition",
+      "example": "Si está en buenas condiciones, podrías venderlo.",
+      "example_english": "If it's in good condition, you could sell it.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "seguro/a",
+      "english": "safe; sure",
+      "example": "Este lugar es seguro para nadar.",
+      "example_english": "This place is safe for swimming.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "turbulento/a",
+      "english": "rough, turbulent",
+      "example": "El mar no es turbulento hoy.",
+      "example_english": "The sea isn't rough today.",
+      "example_source": "pizarra"
+    },
+    {
+      "spanish": "andar de pelo suelto",
+      "english": "to go about with your hair down (to be free-spirited)",
+      "note": "Gloria Trevi, 'Pelo suelto'",
+      "example": "A mí me gusta andar de pelo suelto.",
+      "example_english": "I like going around with my hair down.",
+      "example_source": "pizarra"
+    }
+  ]
+}
