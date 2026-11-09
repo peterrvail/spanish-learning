@@ -7,13 +7,14 @@ You've got everything set up. Here's how to get started immediately.
 ## 1. Install Dependencies (One-Time)
 
 ```bash
-cd /Users/petervail/Documents/Spanish
+cd <your clone of this repo>
 pip install -r requirements.txt
 ```
 
 This installs:
-- `streamlit` — Web app framework
+- `streamlit>=1.46` — Web app framework
 - `pyyaml` & `python-dateutil` — Data parsing
+- `anthropic>=2.3.0` — Optional: in-app `!hablar` / `!rol` chat and Claude grading (needs an API key; drills work without it)
 
 ---
 
@@ -77,28 +78,22 @@ Provide a list of lessons you want ingested (e.g., "All Leccion 100-110 imperati
 3. Merge into the appropriate modules
 4. Report the results
 
-**For now**, the `!drill imperativo` command uses the 12 seeded verbs. As we ingest your materials, more verbs, vocabulary, and scenarios unlock.
+**For now**, the `!drill imperativo` command uses the 12 core verbs. As we ingest your materials, more verbs, vocabulary, and scenarios unlock.
 
 ---
 
-## 5. Available Commands (Current & Coming Soon)
+## 5. What's in the app
 
-### Active Now ✅
+The full command list (every menu button, grouped by section) is in the **Commands Reference** of `README.md`.
 
-```
-!drill imperativo      → 5-min imperative conjugation drill
-```
-
-### Coming Next (After Ingestion)
-
-```
-!drill pronombres      → Double-object pronoun mechanics
-!drill aspecto         → Preterite vs. Imperfect
-!hablar                → Conversational partner mode
-!rol [tema]            → Roleplay scenario with persona
-!pausa                 → Step out for English explanation
-!resumen               → Session diagnostic & summary
-```
+- **Drills** — grammar, verb tense and vocabulary drills (`!drill <module>`), plus 🚀 Adelantado topics ahead of your lessons
+- 🎲 **Mixto** — `!drill mixto` interleaves all topics
+- 🔁 **Review queue** — `!drill fallos` (quiz) / `!repasar fallos` (read-through) for what you missed
+- 🃏 **Flashcards** — `!tarjetas` from your lesson vocabulary
+- 📈 **Progress** — `!progreso` for streak, accuracy and spaced-repetition boxes
+- 🎧 **Language Transfer** — `!lt` tracker
+- 🗣️ `!hablar` / 🎭 `!rol [tema]` — conversation and roleplay (in-app with an Anthropic API key)
+- ⏸️ `!pausa` / 📋 `!resumen` — step out for an English explanation / end-of-session summary
 
 ---
 
@@ -111,16 +106,20 @@ Spanish/
 ├── INGESTION.md                  # How to ingest lesson materials
 ├── requirements.txt              # Python dependencies
 ├── app/
-│   └── spanish_drill.py          # Streamlit app with drill engine
+│   ├── spanish_drill.py          # Streamlit app: commands, drills, UI
+│   └── ...                       # conversation, grading, flashcards, progress, external, pattern_modules
+├── tests/                        # pytest suite
 ├── data/
 │   ├── verbs/
-│   │   └── verbs.json            # 12 seeded irregular verbs (ready to expand)
-│   ├── grammar/                  # (Ready for ingestion)
-│   ├── vocabulary/               # (Ready for ingestion)
-│   ├── scenarios/                # (Ready for ingestion)
-│   ├── expressions/              # (Ready for ingestion)
-│   ├── readings/                 # (Ready for ingestion)
-│   └── speaking/                 # (Ready for ingestion)
+│   │   └── verbs.json            # 12 core verbs (3 regular, 9 irregular)
+│   ├── grammar/                  # One file per topic
+│   ├── vocabulary/               # One file per theme
+│   ├── reference/                # Complete lesson vocabulary (for !tarjetas)
+│   ├── scenarios/                # !rol scenario cards
+│   ├── expressions/
+│   ├── exercises/
+│   ├── external/                 # Language Transfer mapping
+│   └── progress/                 # Local progress (git-ignored)
 └── reference/
     ├── SCHEMAS.md                # Canonical JSON schemas
     └── CLITIC_RULES.md           # Deep dive on clitic mechanics
@@ -146,15 +145,11 @@ Spanish/
 
 - Ingest all Leccion 97–110 (imperatives, pronouns) materials
 - Ingest pronoun lessons (Leccion 84–86)
-- Activate `!drill pronombres` command
-- Activate `!rol` and scenario system
 
 ### Long-term (Ongoing)
 
 - Ingest all lesson materials systematically
-- Build out vocabulary, grammar, reading, and speaking modules
-- Unlock `!hablar` conversational mode
-- Set up spaced-repetition scheduling based on drill accuracy
+- Build out vocabulary, grammar, and scenario data
 
 ---
 
@@ -165,7 +160,7 @@ Spanish/
 Make sure you're in the right directory:
 
 ```bash
-cd /Users/petervail/Documents/Spanish
+cd <your clone of this repo>
 ```
 
 And that `data/verbs/verbs.json` exists:
@@ -177,7 +172,7 @@ ls -la data/verbs/verbs.json
 ### Streamlit won't start
 
 ```bash
-# Check Python version (needs 3.8+)
+# Check Python version (runtime.txt pins 3.11; Streamlit 1.46+ is required)
 python --version
 
 # Reinstall streamlit
@@ -204,7 +199,7 @@ Press `Ctrl+C` in the terminal.
 
 ## 10. Got Questions?
 
-- **How does the drill work?** See the "Drill Engine" section in `README.md`
+- **How does the drill work?** See the **Commands Reference** section in `README.md`
 - **How do I ingest lessons?** See `INGESTION.md` with detailed examples
 - **Grammar rules?** Check `reference/CLITIC_RULES.md` for pronouns; schema reference in `reference/SCHEMAS.md`
 - **Data format?** See `reference/SCHEMAS.md` for all JSON structures
@@ -214,7 +209,7 @@ Press `Ctrl+C` in the terminal.
 ## Ready?
 
 ```bash
-cd /Users/petervail/Documents/Spanish
+cd <your clone of this repo>
 pip install -r requirements.txt
 streamlit run app/spanish_drill.py
 ```

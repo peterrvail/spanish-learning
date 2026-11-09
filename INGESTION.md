@@ -10,7 +10,7 @@ Convert your raw lesson materials (homework, screenshots, notes) into structured
 2. **Describe** using the ingestion template below
 3. **Paste/upload** the raw content
 4. **I parse** and extract into canonical JSON schemas (see `reference/SCHEMAS.md`)
-5. **Data merged** into the appropriate module (`verbs.json`, `vocabulary.json`, etc.)
+5. **Data merged** into the appropriate module (`data/verbs/verbs.json`, a per-topic file in `data/vocabulary/`, etc.)
 
 ---
 
@@ -76,7 +76,7 @@ Use this template to structure your submission:
 }
 ```
 
-**Result**: New entries added to `data/vocabulary/vocabulary.json` for retraso, compensación, parada, andén, taquilla with gender, pronunciation, collocations, and examples.
+**Result**: New entries added to a per-topic file in `data/vocabulary/` (e.g. `places.json`) for retraso, compensación, parada, andén, taquilla with gender, pronunciation, collocations, and examples.
 
 ---
 
@@ -98,7 +98,7 @@ Use this template to structure your submission:
 }
 ```
 
-**Result**: New grammar rule entry added to `data/grammar/grammar_rules.json` with the rule, examples, special cases, and related rules.
+**Result**: New grammar rule entry added to a per-topic file in `data/grammar/` (e.g. `subjunctive.json`) with the rule, examples, special cases, and related rules.
 
 ---
 

@@ -1,5 +1,7 @@
 # Data Ingestion Complete: TIER 1-3 ✅
 
+> **Historical snapshot (2026-08-16).** For the current app see `README.md`. Since then: grammar grew from 15 to 27 files, vocabulary from 4 to 18, and the app now has ~36 drills (see the README command list). Counts below are as of the snapshot.
+
 **Last Updated:** 2026-08-16
 **Status:** TIER 1-3 Complete — Full grammar system operational
 
@@ -46,7 +48,7 @@
 
 ---
 
-## Active Drill Commands
+## Active Drill Commands (as of the snapshot)
 
 ```
 !drill imperativo       → Imperative conjugation (tú, usted, nosotros)
@@ -57,7 +59,7 @@
 !drill pluscuam         → Past perfect (pluscuamperfecto) usage
 ```
 
-**All 6 drills are wired into `app/spanish_drill.py` and pull live from the JSON data files.**
+*(Snapshot: the app now has ~36 drills, see `README.md`.)* **All 6 drills were wired into `app/spanish_drill.py` and pull live from the JSON data files.**
 
 ---
 
@@ -78,11 +80,11 @@ Your original spec's core focus areas are now fully backed by structured data:
 
 These weren't strongly represented in your lesson materials but could be added if needed:
 
-- **Subjunctive triggers** (doubt/emotion/volition beyond imperative usage) — only present subjunctive forms for imperatives were covered
-- **Relative pronouns** (que, quien, cuyo) — not found in scanned lessons
+- ~~**Subjunctive triggers**~~ — **done**: `data/grammar/subjunctive.json`, `!drill subjuntivo`
+- ~~**Relative pronouns**~~ — **done**: `data/grammar/relative_pronouns.json`, `!drill relativos`
 - **Structured reading passages** — your "Historia" lessons are vocabulary-dense practice sentences rather than continuous narratives; would need original story-writing to populate `data/readings/` properly
-- **Scenario cards for `!rol`** — not yet built; would synthesize from vocabulary + grammar already ingested
-- **Household/places/people vocabulary** — partially covered via restaurant vocab; dedicated lessons on these topics weren't found in the scanned set
+- ~~**Scenario cards for `!rol`**~~ — **done**: `data/scenarios/scenarios.json`
+- ~~**Household/places/people vocabulary**~~ — **done**: `household_and_rooms.json`, `places.json`, `family_and_people.json`
 
 ---
 
@@ -101,7 +103,7 @@ done
 ## Try It Now
 
 ```bash
-cd /Users/petervail/Documents/Spanish
+cd <your clone of this repo>
 streamlit run app/spanish_drill.py
 ```
 
@@ -116,8 +118,8 @@ Try any of the 6 active drills, e.g.:
 ## Suggested Next Steps
 
 1. **Test the drills** — run through each of the 6 active commands and flag anything confusing
-2. **Build `!rol` scenarios** — I can synthesize scenario cards now that grammar + vocab exist
+2. ~~**Build `!rol` scenarios**~~ — done
 3. **Write original reading passages** — targeted short stories contrasting preterite/imperfect, using the imperative, etc.
-4. **Add subjunctive module** — if you want doubt/emotion/volition triggers beyond imperative-linked subjunctive
+4. ~~**Add subjunctive module**~~ — done (`!drill subjuntivo`)
 
 Let me know which of these to tackle next.
