@@ -843,3 +843,18 @@ def test_gustar_is_wired_in(db):
     at.session_state["active_command"] = "!repasar gustar"
     at.run()
     assert not at.exception and any("42, 45, 63" in m.value for m in at.markdown)
+
+
+def test_stale_helper_modules_are_reloaded():
+    """A redeploy can leave an old copy of a helper module loaded while the new
+    script calls functions it doesn't have (AttributeError: module 'progress'
+    has no attribute 'due_keys' on Streamlit Cloud)."""
+    del progress.due_keys, progress._SOURCE_MTIME          # what a pre-fix, stale copy looks like
+    sd._reload_stale_modules(progress)
+    assert callable(progress.due_keys)
+    progress._SOURCE_MTIME = 0                              # the file changed after it was loaded
+    sd._reload_stale_modules(progress)
+    assert progress._SOURCE_MTIME == os.path.getmtime(progress.__file__)
+    unchanged = progress.due_keys
+    sd._reload_stale_modules(progress)                      # nothing changed: no reload
+    assert progress.due_keys is unchanged

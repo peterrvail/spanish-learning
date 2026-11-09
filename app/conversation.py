@@ -15,6 +15,10 @@ try:
 except ImportError:  # the drills work without it; only the chat needs it
     anthropic = None
 
+# Recorded so spanish_drill.py can tell when this file changed under a running
+# app and reload it (see _reload_stale_modules there).
+_SOURCE_MTIME = os.path.getmtime(__file__)
+
 MODEL = "claude-opus-5-5"
 # On a safety-classifier decline, the API re-runs the request on the model
 # Anthropic recommends for that refusal category instead of just refusing.

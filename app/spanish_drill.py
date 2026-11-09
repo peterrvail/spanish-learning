@@ -12,6 +12,28 @@ import external
 import flashcards
 import grading
 import progress
+import importlib
+
+
+def _reload_stale_modules(*modules):
+    """Streamlit re-executes this script on every run but keeps the helper
+    modules it has already imported. After an update to a running app
+    (e.g. a redeploy on Streamlit Cloud) the new script could then call a
+    function the old, still-loaded helper doesn't have: "AttributeError:
+    module 'progress' has no attribute 'due_keys'". Each helper records its
+    file's modification time when it loads; reload any helper whose file has
+    changed since, or that was loaded before it recorded one."""
+    for module in modules:
+        try:
+            current = os.path.getmtime(module.__file__)
+        except OSError:
+            continue
+        if getattr(module, "_SOURCE_MTIME", None) != current:
+            importlib.reload(module)
+
+
+# conversation before grading, which imports from it.
+_reload_stale_modules(conversation, grading, external, flashcards, progress)
 
 # Load data
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
