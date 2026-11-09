@@ -7,7 +7,7 @@ A modular, B1→B2 Spanish immersion environment built for rapid drills, convers
 ### 1. Install Dependencies
 
 ```bash
-cd /Users/petervail/Documents/Spanish
+cd <your clone of this repo>
 pip install -r requirements.txt
 ```
 
@@ -58,18 +58,28 @@ This launches a 5-minute imperative conjugation drill with 20 randomized questio
 ```
 Spanish/
 ├── data/
-│   ├── grammar/          # Syntax rules, clitic laws, relative pronouns
-│   ├── verbs/            # Conjugation paradigms, mood triggers
-│   │   └── verbs.json    # Master verb database (imperative focus)
-│   ├── vocabulary/       # Thematic lexical sets
-│   ├── scenarios/        # Situational dialogues & roleplay cards
-│   ├── expressions/      # Idioms, discourse markers
-│   ├── readings/         # Annotated short stories
-│   └── speaking/         # Oral prompts, discussion topics
+│   ├── grammar/          # One file per topic (27): clitics, tenses, subjunctive, relatives, se, si-clauses...
+│   ├── verbs/
+│   │   └── verbs.json    # 12 core verbs (3 regular: hablar, comer, vivir) with full paradigms
+│   ├── vocabulary/       # One file per theme (18): food, household, places, body, clothing, class notes...
+│   ├── reference/        # Complete lesson vocabulary reference (used by !tarjetas)
+│   ├── scenarios/        # Roleplay scenario cards for !rol
+│   ├── expressions/      # Greetings, classroom phrases, discourse markers
+│   ├── exercises/        # Homework exercises (e.g. preterite review, for !drill ejercicio)
+│   ├── external/         # Language Transfer track mapping (for !lt)
+│   └── progress/         # Local progress data (SQLite + LT ticks); git-ignored
 ├── reference/
-│   └── SCHEMAS.md        # Canonical JSON schemas for all data modules
+│   ├── SCHEMAS.md        # Canonical JSON schemas for all data modules
+│   └── CLITIC_RULES.md   # Clitic placement and ordering rules
 ├── app/
-│   └── spanish_drill.py  # Streamlit interface & drill runner
+│   ├── spanish_drill.py  # Streamlit interface, command parser & drill runner
+│   ├── pattern_modules.py# Shared drill engine for the 🚀 Adelantado topics (se, relativos, ...)
+│   ├── conversation.py   # In-app !hablar / !rol chat via the Claude API
+│   ├── grading.py        # Claude grading of sentence answers (optional)
+│   ├── flashcards.py     # !tarjetas decks and card logic
+│   ├── progress.py       # Attempt log, Leitner queue, stats for !progreso
+│   └── external.py       # Language Transfer tracker (!lt)
+├── tests/                # pytest suite
 └── README.md             # This file
 ```
 
@@ -77,7 +87,75 @@ Spanish/
 
 ## Commands Reference
 
-### Drills
+### All menu commands
+
+Every button in the app's menu, grouped by menu section (source: `DRILL_CATEGORIES` in `app/spanish_drill.py`). Longer descriptions of some of them follow below.
+
+**🎲 Repaso interleaved**
+
+- `!drill mixto` — 🎲 Mixto (todos los temas)
+
+**🔁 Repaso espaciado**
+
+- `!drill fallos` — 🔁 Quiz: lo que fallé
+- `!repasar fallos` — 📖 Repasar solo lo que falle
+- `!progreso` — 📈 Mi progreso
+
+**Verbos y Tiempos**
+
+- `!drill rutina` — ☀️ Rutina diaria (presente)
+- `!drill imperativo` — ⚡ Imperativo
+- `!drill cambios` — 🔄 Cambios de raíz
+- `!drill pasado` — ⏳ Pasado (imperfecto)
+- `!drill estar_gerundio` — 🎬 Estar + gerundio
+- `!drill preterito` — 📜 Pretérito irregular
+- `!drill pluscuam` — ⏮ Pluscuamperfecto
+- `!drill futuro` — 🔮 Futuro irregular
+- `!drill condicional` — 🤔 Condicional
+- `!drill participios` — ✅ Participios
+- `!drill ejercicio` — 📝 Ejercicio (homework)
+
+**Gramática**
+
+- `!drill ser_estar` — ⚖️ Ser, estar y hay
+- `!drill gustar` — 💛 Gustar y similares
+- `!drill pronombres` — 🔀 Pronombres dobles
+- `!drill por_para` — ↔️ Por vs. Para
+- `!drill preposiciones` — 🧩 Otras preposiciones
+- `!drill demostrativos` — 👉 Demostrativos
+- `!drill adjetivos` — 🔤 Adjetivos cortos
+- `!drill reflexivos` — 🪞 Reflexivos/Recíprocos
+- `!drill indefinidos` — 🚫 Indefinidos/Negativos
+- `!drill estructuras` — 🗣️ Estructuras + preguntas
+
+**Vocabulario**
+
+- `!tarjetas` — 🃏 Tarjetas (mis lecciones)
+- `!drill vocabulario` — 📚 Mis lecciones
+- `!drill vocab_comun` — 🌍 Común (general)
+- `!drill vocab_mezcla` — 🔀 Mezcla
+- `!drill numeros` — 🔢 Números
+- `!drill adverbios` — 🧭 Adverbios
+- `!drill lugares` — 📍 Lugares
+
+**🚀 Adelantado (aún no en clase)**
+
+- `!drill subjuntivo` — 🌱 Subjuntivo presente
+- `!drill se` — 🔄 Se: accidental, impersonal y pasivo
+- `!drill relativos` — 🔗 Relativos (que, quien, lo que, cuyo)
+- `!drill cond_perfecto` — 🕰️ Habría / debería haber
+- `!drill si_hipotetico` — 💭 Si + hipótesis
+- `!drill cognados` — 🔤 Cognados (-ción, -mente, -dad…)
+
+**🎧 Escuchar**
+
+- `!lt` — 🎧 Language Transfer
+
+**👵 De mi Suegra**
+
+- `!drill gerundio` — 🚂 Ir + Gerundio
+
+### Drills (details)
 
 - `!drill imperativo` — 5-min imperative conjugation drill (tú, usted, nosotros, ustedes; affirmative + negative)
 - `!tarjetas` — Flashcards from your complete lesson vocabulary: `data/reference/vocabulary_reference.json`, the "Spanish Vocabulary — Complete Lesson Reference" (3,563 words and phrases from Lessons 1–119), as 36 decks (expressions by situation, verbs, nouns by topic, adjectives, small words), plus **📝 Notas de clase (extra)** for class-notes phrases the reference leaves out. Choose by topic, or by lesson range (default: your last ten lessons). Cards show the lesson where each word first appeared, and an example sentence where there is one (from the reference's notes, or the whiteboard examples in `class_notes_recent.json`). Tap the card to flip it, then "Otra vez" (it comes back a few cards later) or "Lo sabía". Results feed the spaced-repetition queue, so missed words also show up in `!drill fallos`.
@@ -93,10 +171,10 @@ Spanish/
 - `!drill ser_estar` — Ser, estar or hay in context, including adjectives that change meaning (ser listo / estar listo)
 - `!lt` — 🎧 Language Transfer tracker: the free 90-track Complete Spanish course mapped to your lessons (`data/external/language_transfer.json`). Tick tracks as you listen (saved to `data/progress/lt_progress.json`, so it survives restarts); 🆕 marks topics your lessons haven't covered yet. Every Repaso screen also lists the tracks that explain its grammar.
 - `!drill estar_gerundio` — Gerunds (regular + the o→u, i→y, e→i irregulars) and estar + gerundio in present, future and four pasts: imperfecto (estaba), pretérito indefinido (estuve), pretérito perfecto (he estado), pluscuamperfecto (había estado)
-- `!drill pronombres` — Double object pronoun mechanics (coming soon)
-- `!drill aspecto` — Preterite vs. Imperfect (coming soon)
 
 ### Immersion Modes
+
+Typed commands also include `!hablar`, `!rol [tema]` (themes: restaurante, transporte, vecinos, salud, narrativa, viajes, compras, convivencia), `!pausa`, `!resumen`, `!progreso`, `!tarjetas` and `!lt`.
 
 - `!hablar` — Conversational partner mode (100% Spanish, 2–4 sentence turns, corrections after each reply)
 - `!rol [tema]` — Launch a roleplay scenario with persona and objective
@@ -113,7 +191,7 @@ With Claude API access the conversation happens inside the app (see **In-app con
 
 ### Progress & spaced repetition
 
-Every graded answer is logged to a local SQLite file (`data/progress/progress.db`, git-ignored; override with `SPANISH_PROGRESS_DB`). Missed items enter a Leitner queue: a miss is due again immediately, one correct answer pushes it out a day, two a week (then two weeks).
+Every graded answer is logged to a local SQLite file (`data/progress/progress.db`, git-ignored; override with `SPANISH_PROGRESS_DB`). **On Streamlit Community Cloud this file does not survive a reboot or redeploy** (files the app writes are wiped), so 📈 `!progreso` has a 💾 *Copia de seguridad* section: download a backup (review history + Language Transfer ticks) and upload it again after an update; restoring merges and never undoes newer progress. Missed items enter a Leitner queue: a miss is due again immediately, one correct answer pushes it out a day, two a week (then two weeks).
 
 - `!drill fallos` — timed quiz on what is due
 - `!repasar fallos` — read-through of the same queue ("Repasar solo lo que falle")
@@ -169,11 +247,10 @@ Have lesson screenshots, homework assignments, or notes you want to convert into
 ### Supported Data Types
 
 - `verbs` → `data/verbs/verbs.json`
-- `vocabulary` → `data/vocabulary/vocabulary.json`
-- `grammar_rule` → `data/grammar/grammar_rules.json`
+- `vocabulary` → a per-topic file in `data/vocabulary/` (e.g. `places.json`)
+- `grammar_rule` → a per-topic file in `data/grammar/` (e.g. `subjunctive.json`)
 - `scenario` → `data/scenarios/scenarios.json`
-- `expression` → `data/expressions/expressions.json`
-- `reading` → `data/readings/readings.json`
+- `expression` → a file in `data/expressions/` (e.g. `greetings_and_classroom.json`)
 
 See `reference/SCHEMAS.md` for the complete JSON schema reference.
 
@@ -181,28 +258,23 @@ See `reference/SCHEMAS.md` for the complete JSON schema reference.
 
 ## Feature Roadmap
 
-### Current (Phase 1-3)
+### Done
 
 ✅ Directory structure & base schemas  
-✅ `data/verbs/` with 12 common irregular verbs  
-✅ `!drill imperativo` runner  
-🔄 Ingestion workflow for raw materials  
+✅ `data/verbs/` with 12 core verbs (3 regular, 9 irregular)  
+✅ Ingestion workflow; vocabulary, grammar and expression data populated  
+✅ Drills for every menu command listed above, incl. `!drill pronombres`, `!drill mixto` and the 🚀 Adelantado topics  
+✅ Scenario cards for `!rol`  
+✅ `!hablar` and `!rol` conversation with Claude inside the app (`app/conversation.py`)  
+✅ Session analytics & spaced repetition (`app/progress.py`, `!drill fallos`, `!progreso`)  
+✅ `!tarjetas` flashcards and `!lt` Language Transfer tracker  
 
-### Next (Phase 4)
+### Ideas
 
-- [ ] `data/vocabulary/` seeding from ingestion
-- [ ] `data/grammar/` clitic rules & examples
-- [ ] `!drill pronombres` for double-object pronoun mechanics
-- [ ] Scenario card system for `!rol` command
-- [ ] Expression & discourse marker database
-
-### Future
-
-- [ ] `!hablar` conversational partner with LLM
-- [ ] `!drill aspecto` for Preterite vs. Imperfect
+- [ ] Listening / TTS practice
+- [ ] Spanish → English flashcards
 - [ ] Readings with comprehension questions
-- [ ] Speaking module with dictation feedback
-- [ ] Session analytics & spaced repetition scheduling
+- [ ] Dictation / speaking feedback
 
 ---
 
@@ -272,7 +344,7 @@ See `reference/SCHEMAS.md` for the complete JSON schema reference.
 ## Questions or Issues?
 
 - Check `reference/SCHEMAS.md` for data format questions
-- Review `reference/CLITIC_RULES.md` (coming soon) for grammar deep dives
+- Review `reference/CLITIC_RULES.md` for grammar deep dives
 - Submit ingestion materials via `INGESTION.md`
 
 ¡Buena suerte! 🚀

@@ -14,6 +14,7 @@ import pattern_modules
 import grading
 import progress
 import importlib
+import inspect
 
 
 def _reload_stale_modules(*modules):
@@ -35,6 +36,12 @@ def _reload_stale_modules(*modules):
 
 # conversation before grading, which imports from it.
 _reload_stale_modules(conversation, grading, external, flashcards, pattern_modules, progress)
+
+# Full-width buttons and tables. Streamlit deprecated use_container_width
+# (to be removed "after 2025-12-31") in favour of width="stretch", but the
+# oldest supported version (1.46) only knows use_container_width for buttons.
+FULL_WIDTH = ({"width": "stretch"} if "width" in inspect.signature(st.button).parameters
+              else {"use_container_width": True})
 
 # Load data
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
@@ -282,14 +289,14 @@ def _render_button_grid(commands, columns, key_prefix):
             if has_concept:
                 bcol, rcol = st.columns([5, 1.5])
                 with bcol:
-                    if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
+                    if st.button(label, **FULL_WIDTH, key=f"{key_prefix}_{cmd}"):
                         _set_active_command(cmd)
                 with rcol:
-                    if st.button("📖", use_container_width=True, key=f"{key_prefix}_repasar_{cmd}",
+                    if st.button("📖", **FULL_WIDTH, key=f"{key_prefix}_repasar_{cmd}",
                                  help="Repasar (sin quiz, a tu ritmo)"):
                         _set_active_command(f"!repasar {module}")
             else:
-                if st.button(label, use_container_width=True, key=f"{key_prefix}_{cmd}"):
+                if st.button(label, **FULL_WIDTH, key=f"{key_prefix}_{cmd}"):
                     _set_active_command(cmd)
 
 def render_command_menu(columns=2):
@@ -1599,11 +1606,11 @@ def run_drill(module_type="imperativo", duration_seconds=None):
 
     pausa_col, resumen_col = st.container(key="row_drill_tools").columns(2)
     with pausa_col:
-        if st.button("⏸️ Pausa (explicar)", use_container_width=True):
+        if st.button("⏸️ Pausa (explicar)", **FULL_WIDTH):
             st.session_state.active_command = "!pausa"
             st.rerun()
     with resumen_col:
-        if st.button("📋 Resumen", use_container_width=True):
+        if st.button("📋 Resumen", **FULL_WIDTH):
             st.session_state.active_command = "!resumen"
             st.rerun()
 
@@ -1627,12 +1634,12 @@ def run_drill(module_type="imperativo", duration_seconds=None):
 
         col_a, col_b = st.columns(2)
         with col_a:
-            if st.button("🔄 Start New Drill", use_container_width=True):
+            if st.button("🔄 Start New Drill", **FULL_WIDTH):
                 st.session_state.drill_active = False
                 st.rerun()
         with col_b:
             missed = sum(1 for a in st.session_state.answers if not a["is_correct"] or a.get("hinted"))
-            if st.button(f"📖 Repasar lo que fallé ({missed})", use_container_width=True, disabled=not missed):
+            if st.button(f"📖 Repasar lo que fallé ({missed})", **FULL_WIDTH, disabled=not missed):
                 _set_active_command("!repasar fallos")
 
         return
@@ -1678,7 +1685,7 @@ def run_drill(module_type="imperativo", duration_seconds=None):
             if pending.get("ai_unavailable"):
                 st.caption("(No se pudo consultar a Claude; solo se comparó con la respuesta modelo.)")
 
-            if st.button("➡️ Continuar", use_container_width=True):
+            if st.button("➡️ Continuar", **FULL_WIDTH):
                 st.session_state.pending_feedback = None
                 st.session_state.current_item_index += 1
                 st.rerun()
@@ -1694,7 +1701,7 @@ def run_drill(module_type="imperativo", duration_seconds=None):
             with st.form(key=f"answer_form_{item['id']}"):
                 user_answer = st.radio("Elige la forma correcta:", item["choices"],
                                        index=None, key=f"choice_{item['id']}")
-                submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
+                submitted = st.form_submit_button("✅ Submit Answer", **FULL_WIDTH)
             user_answer = user_answer or ""
         else:
             if hint_level:
@@ -1705,11 +1712,11 @@ def run_drill(module_type="imperativo", duration_seconds=None):
             # the form would rerun without the half-typed text, wiping it out.
             with st.form(key=f"answer_form_{item['id']}"):
                 user_answer = st.text_input("Your answer:", key=answer_key)
-                submitted = st.form_submit_button("✅ Submit Answer", use_container_width=True)
+                submitted = st.form_submit_button("✅ Submit Answer", **FULL_WIDTH)
                 accent_cols = st.container(key="row_accents").columns(len(ACCENT_KEYS))
                 for col, ch in zip(accent_cols, ACCENT_KEYS):
                     with col:
-                        st.form_submit_button(ch, use_container_width=True,
+                        st.form_submit_button(ch, **FULL_WIDTH,
                                               on_click=_append_accent, args=(answer_key, ch))
 
         if submitted:
@@ -1729,14 +1736,14 @@ def run_drill(module_type="imperativo", duration_seconds=None):
 
         with col2:
             can_hint = not item.get("choices") and hint_level < len(item["target_form"]) - 1
-            if st.button("💡 Pista (una letra más)", use_container_width=True, disabled=not can_hint):
+            if st.button("💡 Pista (una letra más)", **FULL_WIDTH, disabled=not can_hint):
                 st.session_state[hint_key] = hint_level + 1
                 st.rerun()
 
         with col3:
             # "I don't know" shows the answer and counts as a miss, so the item
             # lands in the review queue instead of silently disappearing.
-            if st.button("🤷 No sé (mostrar)", use_container_width=True):
+            if st.button("🤷 No sé (mostrar)", **FULL_WIDTH):
                 _record_answer(item, "", False, revealed=True)
                 st.rerun()
 
@@ -2037,11 +2044,11 @@ def run_repaso(module_type="imperativo"):
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("⬅️ Anterior", use_container_width=True):
+        if st.button("⬅️ Anterior", **FULL_WIDTH):
             st.session_state[idx_key] = (idx - 1) % len(items)
             st.rerun()
     with col2:
-        if st.button("Siguiente ➡️", use_container_width=True):
+        if st.button("Siguiente ➡️", **FULL_WIDTH):
             st.session_state[idx_key] = (idx + 1) % len(items)
             st.rerun()
 
@@ -2344,7 +2351,7 @@ def run_tarjetas():
         direction = c1.radio("Dirección", list(_DIRECTIONS), index=0)
         size = c2.radio("Tarjetas", list(_DECK_SIZES), index=1, horizontal=True)
         due_first = st.checkbox("Primero las que tengo pendientes de repaso", value=True)
-        if st.button("🃏 Empezar", use_container_width=True, disabled=not pool):
+        if st.button("🃏 Empezar", **FULL_WIDTH, disabled=not pool):
             due = progress.due_keys() if due_first else set()
             key_of = lambda c: progress.card_key(flashcards.quiz_item(c, split_alternates))
             deck = flashcards.build_deck(pool, set(chosen), _DECK_SIZES[size], due, key_of)
@@ -2363,11 +2370,11 @@ def run_tarjetas():
                 if cid in cards:
                     st.markdown(f"- **{cards[cid]['spanish']}** — {cards[cid]['english']}")
         a, b = st.container(key="row_fc_end").columns(2)
-        if missed and a.button(f"🔁 Otra vez las falladas ({len(missed)})", use_container_width=True):
+        if missed and a.button(f"🔁 Otra vez las falladas ({len(missed)})", **FULL_WIDTH):
             _start_flashcards([cid for cid in missed if cid in cards],
                               "mix" if len(set(session["dirs"].values())) > 1 else next(iter(session["dirs"].values())))
             st.rerun()
-        if b.button("🃏 Nuevo mazo", use_container_width=True):
+        if b.button("🃏 Nuevo mazo", **FULL_WIDTH):
             st.session_state.pop("fc", None)
             st.rerun()
         return
@@ -2382,14 +2389,14 @@ def run_tarjetas():
                 unsafe_allow_html=True)
 
     again, knew = st.container(key="row_fc_grade").columns(2)
-    if again.button("🔁 Otra vez", use_container_width=True):
+    if again.button("🔁 Otra vez", **FULL_WIDTH):
         progress.record_attempt(flashcards.quiz_item(card, split_alternates), False)
         if card["id"] not in session["missed"]:
             session["missed"].append(card["id"])
         flashcards.requeue(queue, 0)
         session["flips"] += 1
         st.rerun()
-    if knew.button("✅ Lo sabía", use_container_width=True):
+    if knew.button("✅ Lo sabía", **FULL_WIDTH):
         progress.record_attempt(flashcards.quiz_item(card, split_alternates), True)
         queue.pop(0)
         session["done"] += 1
@@ -2454,12 +2461,45 @@ def _module_label(module):
             return label
     return module.replace("_", " ")
 
+def _render_backup(empty):
+    """Download / restore everything the app remembers. On Streamlit Community
+    Cloud files the app writes are wiped on every reboot or redeploy, so
+    without this the spaced-repetition history resets on each update."""
+    if st.session_state.get("backup_message"):
+        st.success(st.session_state.pop("backup_message"))
+    with st.expander("💾 Copia de seguridad del progreso", expanded=empty):
+        st.caption("En Streamlit Cloud el progreso se borra cada vez que la app se reinicia o se "
+                   "actualiza. Descarga una copia de vez en cuando y súbela después de una actualización.")
+        lt_path = _lt_progress_file()
+        backup = progress.export_backup(extra={"lt_done": sorted(external.load_done(lt_path))})
+        st.download_button("⬇️ Descargar copia", data=json.dumps(backup, ensure_ascii=False),
+                           file_name=f"progreso_espanol_{datetime.now():%Y-%m-%d}.json",
+                           mime="application/json", **FULL_WIDTH)
+        upload = st.file_uploader("⬆️ Restaurar una copia", type=["json"], key="backup_upload")
+        if upload is not None:
+            raw = upload.getvalue()
+            # Streamlit reruns with the same file still attached: import it once.
+            if st.session_state.get("backup_imported") != hash(raw):
+                try:
+                    restored = json.loads(raw)
+                    added, cards = progress.import_backup(restored)
+                    done = external.load_done(lt_path) | set(restored.get("lt_done", []))
+                    external.save_done(lt_path, done)
+                    st.session_state.backup_imported = hash(raw)
+                    # Rerun so the stats on this page include what was just restored.
+                    st.session_state.backup_message = f"✅ Restaurado: {added} intentos y {cards} tarjetas de repaso."
+                    st.rerun()
+                except (ValueError, KeyError, TypeError) as e:
+                    st.error(f"No se pudo restaurar: {e}")
+
 def run_progreso():
     """Long-term view built from the attempt log: streak, weekly accuracy,
     daily volume, where cards sit in the Leitner boxes, and per-topic accuracy
     with the weakest topics first."""
     st.title("📈 Mi progreso")
     data = progress.stats()
+    # First, and even when empty: an empty log is exactly when a restore is needed.
+    _render_backup(empty=not data or not data["total"])
     if data is None:
         st.warning("No se pudo leer el registro de progreso.")
         return
@@ -2479,7 +2519,7 @@ def run_progreso():
               delta=f"{week_pct - prev_pct:+.0f} pts vs. semana anterior"
               if week_pct is not None and prev_pct is not None else None)
     c4.metric("Para repasar hoy", data["due"])
-    if data["due"] and st.button(f"🔁 Repasar ahora ({data['due']})", use_container_width=True):
+    if data["due"] and st.button(f"🔁 Repasar ahora ({data['due']})", **FULL_WIDTH):
         _set_active_command("!drill fallos")
 
     st.markdown("### 🔁 Repaso espaciado")
@@ -2504,7 +2544,7 @@ def run_progreso():
             "Última vez": [last.strftime("%d/%m") for _, _, _, last in data["by_module"]],
         },
         hide_index=True,
-        use_container_width=True,
+        **FULL_WIDTH,
         column_config={"Precisión": st.column_config.ProgressColumn(
             "Precisión", min_value=0, max_value=100, format="%d%%")},
     )
@@ -2613,7 +2653,7 @@ def main():
             st.title("🎯 Spanish Learning System")
 
         if st.session_state.active_command:
-            if st.button("🏠 Home", use_container_width=True):
+            if st.button("🏠 Home", **FULL_WIDTH):
                 st.session_state.active_command = None
                 st.session_state.drill_active = False
                 st.rerun()

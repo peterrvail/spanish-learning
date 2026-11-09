@@ -20,7 +20,12 @@ DEFAULT_DB = os.path.join(os.path.dirname(__file__), "..", "data", "progress", "
 # up one box and pushes its next review out by the matching interval.
 BOX_INTERVAL_DAYS = [0, 1, 7, 14]
 
-_ITEM_FIELDS = ("prompt", "target_form", "accepted_forms", "exercise_type", "explanation", "module")
+# What a missed item keeps so "!drill fallos" can ask it again as it was:
+# its other right answers (also_accepted) and, for questions that come with
+# their own options (e.g. "which kind of se?"), those options. Options that
+# the drill added at random for multiple choice are not kept.
+_ITEM_FIELDS = ("prompt", "target_form", "accepted_forms", "also_accepted", "exercise_type", "explanation",
+                "module", "fixed_choices")
 
 
 def db_path():
@@ -82,6 +87,8 @@ def record_attempt(item, is_correct, module=None, now=None):
             # A first-ever correct answer starts in box 0 and moves to box 1.
             new_box, due = next_state(box, bool(is_correct), now)
             stored = {k: item[k] for k in _ITEM_FIELDS if k in item}
+            if item.get("fixed_choices"):
+                stored["choices"] = item["choices"]
             stored["module"] = module
             conn.execute(
                 """INSERT INTO cards (key, item_json, box, due, attempts, misses) VALUES (?,?,?,?,1,?)
@@ -201,3 +208,59 @@ def stats(now=None, window_days=14):
         "boxes": {box: n for box, n in box_rows},
         "due": due,
     }
+
+
+# --- backup / restore -----------------------------------------------------------
+# Streamlit Community Cloud does not keep files the app writes: every reboot or
+# redeploy starts from a fresh copy of the repo, so the progress database is
+# lost. These let the learner download everything and upload it again later.
+
+BACKUP_VERSION = 1
+
+
+def export_backup(extra=None, now=None):
+    """Everything in the progress database as a JSON-safe dict (plus any
+    `extra` fields, e.g. listening progress)."""
+    now = now or datetime.now()
+    try:
+        with _connect() as conn:
+            attempts = [dict(r) for r in conn.execute(
+                "SELECT ts, module, exercise_type, target_form, is_correct FROM attempts ORDER BY id")]
+            cards = [dict(r) for r in conn.execute(
+                "SELECT key, item_json, box, due, attempts, misses FROM cards")]
+    except (sqlite3.Error, OSError):
+        attempts, cards = [], []
+    return {"app": "spanish-learning", "version": BACKUP_VERSION, "exported": now.isoformat(timespec="seconds"),
+            "attempts": attempts, "cards": cards, **(extra or {})}
+
+
+def import_backup(data):
+    """Merge a backup into the database. Attempts already present (same
+    time, item and result) are skipped; for a card in both, the one with
+    more recorded attempts wins, so restoring an old file never undoes newer
+    progress. Returns (attempts added, cards added or updated)."""
+    if not isinstance(data, dict) or data.get("app") != "spanish-learning":
+        raise ValueError("Este archivo no es una copia de seguridad de la app.")
+    added_attempts = changed_cards = 0
+    with _connect() as conn:
+        existing = {(r["ts"], r["target_form"], r["is_correct"]) for r in
+                    conn.execute("SELECT ts, target_form, is_correct FROM attempts")}
+        for a in data.get("attempts", []):
+            key = (a["ts"], a["target_form"], int(a["is_correct"]))
+            if key in existing:
+                continue
+            conn.execute("INSERT INTO attempts (ts, module, exercise_type, target_form, is_correct) VALUES (?,?,?,?,?)",
+                         (a["ts"], a.get("module"), a.get("exercise_type"), a["target_form"], int(a["is_correct"])))
+            existing.add(key)
+            added_attempts += 1
+        for c in data.get("cards", []):
+            row = conn.execute("SELECT attempts FROM cards WHERE key=?", (c["key"],)).fetchone()
+            if row is not None and row["attempts"] >= c["attempts"]:
+                continue
+            conn.execute(
+                """INSERT INTO cards (key, item_json, box, due, attempts, misses) VALUES (?,?,?,?,?,?)
+                   ON CONFLICT(key) DO UPDATE SET item_json=excluded.item_json, box=excluded.box,
+                   due=excluded.due, attempts=excluded.attempts, misses=excluded.misses""",
+                (c["key"], c["item_json"], c["box"], c["due"], c["attempts"], c["misses"]))
+            changed_cards += 1
+    return added_attempts, changed_cards
