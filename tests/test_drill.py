@@ -87,7 +87,7 @@ def test_every_module_builds_items_that_grade_themselves():
                    "demostrativos", "adverbios", "adjetivos", "numeros", "reflexivos", "participios",
                    "futuro", "estructuras", "lugares", "rutina", "gerundio", "vocabulario",
                    "indefinidos", "preposiciones", "ejercicio", "estar_gerundio", "condicional",
-                   "ser_estar", "subjuntivo", "mixto"]:
+                   "ser_estar", "subjuntivo", "gustar", "mixto"]:
         items = sd.get_drill_items(module)
         assert items, module
         for it in items:
@@ -801,3 +801,45 @@ def test_explanations_show_the_completed_sentence():
     for gen in (sd.get_subjuntivo_drill_items, sd.get_estar_gerundio_drill_items, sd.get_ser_estar_drill_items):
         for item in gen():
             assert "___" not in item["explanation"] and not re.search(r"\w \(\w+\) ", item["explanation"].split(" — ")[0])
+
+
+
+def _gustar():
+    import json
+    return json.load(open(os.path.join(sd.GRAMMAR_DIR, "gustar_verbs.json")))["gustar_verbs"]
+
+
+def test_gustar_data_agrees():
+    d = _gustar()
+    person = {"mí": "me", "ti": "te", "nosotros": "nos", "ellos": "les", "ellas": "les", "ustedes": "les", "los niños": "les"}
+    for x in d["fill_in"]:
+        who = re.search(r"\b[Aa] (mí|ti|nosotros|ellos|ellas|ustedes|los niños)\b", x["sentence"])
+        assert x["answer"].split()[0] == (person[who.group(1)] if who else "le"), x
+    singular_infinitives = next(x for x in d["fill_in"] if "bailar y cantar" in x["sentence"])
+    assert singular_infinitives["answer"] == "me gusta"                     # two infinitives, still singular
+    assert {v["infinitive"]: v["first_seen"] for v in d["verbs"]}["gustar"] == "L9"
+
+
+def test_gustar_drill_mix_and_answers():
+    for _ in range(30):
+        items = sd.get_gustar_drill_items()
+        kinds = [i["exercise_type"] for i in items]
+        assert (kinds.count("gustar_completar"), kinds.count("gustar_traducir"), kinds.count("gustar_corregir")) == (8, 4, 3)
+    d = _gustar()
+    item = lambda x: {"target_form": x["spanish"], "also_accepted": x["also_accepted"]}
+    coffee = next(x for x in d["translate"] if x["english"] == "I like coffee.")
+    assert sd.check_answer("A mí me gusta el café", item(coffee))[0]        # with or without "a mí"
+    yo_gusto = next(x for x in d["correct"] if x["english"] == "Yo gusto el café.")
+    assert not sd.check_answer("Yo gusto el café.", item(yo_gusto))[0]       # leaving the mistake is wrong
+
+
+def test_gustar_is_wired_in(db):
+    assert ("💛 Gustar y similares", "!drill gustar") in sd.DRILL_COMMANDS
+    assert "gustar" in sd._MIXTO_MODULES and sd.drill_duration("gustar") == 420
+    concept = sd.get_module_concept("gustar")
+    assert any("lección 9" in u["description"] for u in concept["uses"])   # links back to the lessons
+    assert external.tracks_for_module("gustar") == [42, 45, 63]
+    at = _app()
+    at.session_state["active_command"] = "!repasar gustar"
+    at.run()
+    assert not at.exception and any("42, 45, 63" in m.value for m in at.markdown)

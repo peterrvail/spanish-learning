@@ -1,0 +1,389 @@
+{
+ "gustar_verbs": {
+  "source": "claude-draft: written for the app (Language Transfer tracks 42, 45, 63). The verbs appeared one by one in the lessons; this teaches them as one pattern.",
+  "overview": "Con GUSTAR la cosa que gusta es el sujeto, y la persona es el objeto indirecto: 'Me gusta el café' es literalmente 'el café me agrada'. Por eso el verbo concuerda con la cosa: gusta (una cosa o un infinitivo) / gustan (varias cosas). Encantar, doler, importar, molestar, interesar, faltar y hacer falta funcionan igual.",
+  "pattern": "(A + persona) + me / te / le / nos / les + verbo en 3ª persona (singular o plural) + la cosa",
+  "pronouns": [
+   {
+    "emphasis": "a mí",
+    "pronoun": "me"
+   },
+   {
+    "emphasis": "a ti",
+    "pronoun": "te"
+   },
+   {
+    "emphasis": "a él / a ella / a usted",
+    "pronoun": "le"
+   },
+   {
+    "emphasis": "a nosotros/as",
+    "pronoun": "nos"
+   },
+   {
+    "emphasis": "a ellos / a ellas / a ustedes",
+    "pronoun": "les"
+   }
+  ],
+  "emphasis_note": "'A mí', 'a ti', 'a Ana'... aclaran o enfatizan; el pronombre (me, te, le...) va siempre. Ejemplo de clase: 'A mí me gusta andar de pelo suelto.'",
+  "verbs": [
+   {
+    "infinitive": "gustar",
+    "english": "to be pleasing (to like)",
+    "note": "Me gusta el café. Me gustan los perros.",
+    "first_seen": "L9"
+   },
+   {
+    "infinitive": "encantar",
+    "english": "to delight (to love)",
+    "note": "Me encanta bailar. Nos encantan las flores.",
+    "first_seen": "L34"
+   },
+   {
+    "infinitive": "doler",
+    "english": "to hurt",
+    "note": "o→ue: me duele la cabeza, me duelen los pies.",
+    "first_seen": "L21"
+   },
+   {
+    "infinitive": "importar",
+    "english": "to matter (to care about)",
+    "note": "No me importa el precio.",
+    "first_seen": "L51"
+   },
+   {
+    "infinitive": "molestar",
+    "english": "to bother",
+    "note": "¿Le molesta si abro la ventana?",
+    "first_seen": "L65"
+   },
+   {
+    "infinitive": "interesar",
+    "english": "to interest",
+    "note": "Nos interesa la historia.",
+    "first_seen": "L63"
+   },
+   {
+    "infinitive": "faltar",
+    "english": "to be missing / lacking",
+    "note": "Me faltan dos páginas.",
+    "first_seen": "L36"
+   },
+   {
+    "infinitive": "hacer falta",
+    "english": "to be needed",
+    "note": "¿Qué le hace falta? — Me hace falta tiempo.",
+    "first_seen": "L52"
+   }
+  ],
+  "fill_in": [
+   {
+    "sentence": "A mí ___ (gustar) el café.",
+    "answer": "me gusta",
+    "english": "I like coffee.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A mí ___ (gustar) los tacos.",
+    "answer": "me gustan",
+    "english": "I like tacos.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "¿A ti ___ (gustar) bailar?",
+    "answer": "te gusta",
+    "english": "Do you like dancing?",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A mi madre ___ (encantar) las flores.",
+    "answer": "le encantan",
+    "english": "My mother loves flowers.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A nosotros ___ (encantar) viajar.",
+    "answer": "nos encanta",
+    "english": "We love travelling.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A ellos ___ (molestar) el ruido.",
+    "answer": "les molesta",
+    "english": "The noise bothers them.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A Pedro no ___ (gustar) las películas de terror.",
+    "answer": "le gustan",
+    "english": "Pedro doesn't like horror films.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A mí ___ (doler) la cabeza.",
+    "answer": "me duele",
+    "english": "My head hurts.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A mi abuelo ___ (doler) las rodillas.",
+    "answer": "le duelen",
+    "english": "My grandfather's knees hurt.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "¿A ustedes ___ (interesar) la historia?",
+    "answer": "les interesa",
+    "english": "Are you (all) interested in history?",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A ti ___ (importar) mucho tu familia.",
+    "answer": "te importa",
+    "english": "Your family matters a lot to you.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A nosotros ___ (faltar) dos sillas.",
+    "answer": "nos faltan",
+    "english": "We're two chairs short.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A mí ___ (faltar) tiempo.",
+    "answer": "me falta",
+    "english": "I don't have enough time.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A los niños ___ (encantar) los dibujos animados.",
+    "answer": "les encantan",
+    "english": "The children love cartoons.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "¿A usted ___ (molestar) si abro la ventana?",
+    "answer": "le molesta",
+    "english": "Do you mind if I open the window?",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A mi hermana ___ (interesar) los idiomas.",
+    "answer": "le interesan",
+    "english": "My sister is interested in languages.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A ellas no ___ (importar) el precio.",
+    "answer": "les importa",
+    "english": "The price doesn't matter to them.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A mí ___ (gustar) bailar y cantar.",
+    "answer": "me gusta",
+    "english": "I like dancing and singing.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "¿A ti ___ (doler) los pies después de correr?",
+    "answer": "te duelen",
+    "english": "Do your feet hurt after running?",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A nosotros ___ (gustar) la comida ecuatoriana.",
+    "answer": "nos gusta",
+    "english": "We like Ecuadorian food.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "A Luis ___ (hacer falta) un abrigo.",
+    "answer": "le hace falta",
+    "english": "Luis needs a coat.",
+    "tense": "presente"
+   },
+   {
+    "sentence": "Ayer a mí ___ (doler) el estómago.",
+    "answer": "me dolió",
+    "english": "Yesterday my stomach hurt.",
+    "tense": "pretérito"
+   },
+   {
+    "sentence": "A Ana ___ (encantar) la película.",
+    "answer": "le encantó",
+    "english": "Ana loved the film.",
+    "tense": "pretérito"
+   },
+   {
+    "sentence": "A nosotros ___ (gustar) los conciertos.",
+    "answer": "nos gustaron",
+    "english": "We liked the concerts.",
+    "tense": "pretérito"
+   },
+   {
+    "sentence": "¿A ti ___ (gustar) el regalo?",
+    "answer": "te gustó",
+    "english": "Did you like the present?",
+    "tense": "pretérito"
+   },
+   {
+    "sentence": "De niño, a mí ___ (gustar) los dulces.",
+    "answer": "me gustaban",
+    "english": "As a child, I liked sweets.",
+    "tense": "imperfecto"
+   },
+   {
+    "sentence": "A ellos ___ (faltar) dinero para el viaje.",
+    "answer": "les faltaba",
+    "english": "They were short of money for the trip.",
+    "tense": "imperfecto"
+   }
+  ],
+  "translate": [
+   {
+    "english": "I like coffee.",
+    "spanish": "Me gusta el café.",
+    "also_accepted": [
+     "A mí me gusta el café."
+    ]
+   },
+   {
+    "english": "I love dogs.",
+    "spanish": "Me encantan los perros.",
+    "also_accepted": [
+     "A mí me encantan los perros."
+    ]
+   },
+   {
+    "english": "My back hurts.",
+    "spanish": "Me duele la espalda.",
+    "also_accepted": [
+     "A mí me duele la espalda."
+    ]
+   },
+   {
+    "english": "We're missing two chairs.",
+    "spanish": "Nos faltan dos sillas.",
+    "also_accepted": [
+     "A nosotros nos faltan dos sillas."
+    ]
+   },
+   {
+    "english": "Do you (tú) like dancing?",
+    "spanish": "¿Te gusta bailar?",
+    "also_accepted": [
+     "¿A ti te gusta bailar?"
+    ]
+   },
+   {
+    "english": "She doesn't care about money.",
+    "spanish": "No le importa el dinero.",
+    "also_accepted": [
+     "A ella no le importa el dinero."
+    ]
+   },
+   {
+    "english": "The noise bothers them.",
+    "spanish": "Les molesta el ruido.",
+    "also_accepted": [
+     "A ellos les molesta el ruido.",
+     "El ruido les molesta."
+    ]
+   },
+   {
+    "english": "Are you (usted) interested in art?",
+    "spanish": "¿Le interesa el arte?",
+    "also_accepted": [
+     "¿A usted le interesa el arte?"
+    ]
+   },
+   {
+    "english": "My feet hurt.",
+    "spanish": "Me duelen los pies.",
+    "also_accepted": [
+     "A mí me duelen los pies."
+    ]
+   },
+   {
+    "english": "We loved the film.",
+    "spanish": "Nos encantó la película.",
+    "also_accepted": [
+     "A nosotros nos encantó la película."
+    ]
+   },
+   {
+    "english": "Did you (tú) like the concert?",
+    "spanish": "¿Te gustó el concierto?",
+    "also_accepted": [
+     "¿A ti te gustó el concierto?"
+    ]
+   },
+   {
+    "english": "My children like cartoons.",
+    "spanish": "A mis hijos les gustan los dibujos animados.",
+    "also_accepted": []
+   }
+  ],
+  "correct": [
+   {
+    "english": "Yo gusto el café.",
+    "spanish": "Me gusta el café.",
+    "also_accepted": [
+     "A mí me gusta el café."
+    ],
+    "why": "The thing liked is the subject: el café me gusta."
+   },
+   {
+    "english": "Me gusta los perros.",
+    "spanish": "Me gustan los perros.",
+    "also_accepted": [
+     "A mí me gustan los perros."
+    ],
+    "why": "Plural thing → gustan."
+   },
+   {
+    "english": "Mi madre le encanta cocinar.",
+    "spanish": "A mi madre le encanta cocinar.",
+    "also_accepted": [],
+    "why": "The person needs 'a': A mi madre le..."
+   },
+   {
+    "english": "Ellos les gusta el fútbol.",
+    "spanish": "A ellos les gusta el fútbol.",
+    "also_accepted": [],
+    "why": "The person needs 'a': A ellos les..."
+   },
+   {
+    "english": "Me duelen la cabeza.",
+    "spanish": "Me duele la cabeza.",
+    "also_accepted": [
+     "A mí me duele la cabeza."
+    ],
+    "why": "One head → duele."
+   },
+   {
+    "english": "Le gustan bailar y cantar.",
+    "spanish": "Le gusta bailar y cantar.",
+    "also_accepted": [],
+    "why": "Infinitives, even several, take the singular: gusta."
+   },
+   {
+    "english": "Nosotros nos encanta la playa.",
+    "spanish": "A nosotros nos encanta la playa.",
+    "also_accepted": [
+     "Nos encanta la playa."
+    ],
+    "why": "A nosotros, not nosotros: the person isn't the subject."
+   },
+   {
+    "english": "¿Tú gustas las películas?",
+    "spanish": "¿Te gustan las películas?",
+    "also_accepted": [
+     "¿A ti te gustan las películas?"
+    ],
+    "why": "Te gustan: the films are the subject."
+   }
+  ]
+ }
+}
