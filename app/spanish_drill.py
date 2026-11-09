@@ -2121,19 +2121,28 @@ def run_tarjetas():
     session = st.session_state.get("fc")
 
     if session is None:
-        st.caption(f"{len(cards)} palabras y frases de tus clases, en {len(flashcards.decks(cards.values()))} temas.")
-        counts = flashcards.decks(cards.values())
-        # Empty means every topic, so the picker starts as one line, not 16 chips.
-        chosen = st.multiselect("Temas", list(counts), placeholder="Todos los temas (o elige algunos)",
-                                format_func=lambda d: f"{flashcards.deck_label(d)} ({counts[d]})") or list(counts)
+        first, last = flashcards.lesson_range(cards.values())
+        st.caption(f"{len(cards):,} palabras y frases de tus clases (lecciones {first}–{last}).".replace(",", "."))
+        pool = list(cards.values())
+        counts = flashcards.decks(pool)
+        if st.radio("Elegir por", ["Tema", "Lección"], horizontal=True) == "Tema":
+            # Empty means every topic, so the picker starts as one line, not 37 chips.
+            chosen = st.multiselect("Temas", list(counts), placeholder="Todos los temas (o elige algunos)",
+                                    format_func=lambda d: f"{flashcards.deck_label(d)} ({counts[d]})") or list(counts)
+        else:
+            # Default to the last ten lessons: the newest vocabulary.
+            lo, hi = st.slider("Lecciones", first, last, (max(first, last - 9), last))
+            pool = [c for c in pool if c["lesson_num"] is not None and lo <= c["lesson_num"] < hi + 1]
+            chosen = list(counts)
+            st.caption(f"{len(pool)} palabras y frases aparecieron por primera vez en las lecciones {lo}–{hi}.")
         c1, c2 = st.container(key="row_fc_setup").columns(2)
         direction = c1.radio("Dirección", list(_DIRECTIONS), index=0)
         size = c2.radio("Tarjetas", list(_DECK_SIZES), index=1, horizontal=True)
         due_first = st.checkbox("Primero las que tengo pendientes de repaso", value=True)
-        if st.button("🃏 Empezar", use_container_width=True):
+        if st.button("🃏 Empezar", use_container_width=True, disabled=not pool):
             due = progress.due_keys() if due_first else set()
             key_of = lambda c: progress.card_key(flashcards.quiz_item(c, split_alternates))
-            deck = flashcards.build_deck(list(cards.values()), set(chosen), _DECK_SIZES[size], due, key_of)
+            deck = flashcards.build_deck(pool, set(chosen), _DECK_SIZES[size], due, key_of)
             _start_flashcards([c["id"] for c in deck], _DIRECTIONS[direction])
             st.rerun()
         return

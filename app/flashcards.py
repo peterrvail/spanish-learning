@@ -1,10 +1,13 @@
-"""Flashcard decks built from the vocabulary in the user's class screenshots.
+"""Flashcard decks built from the user's lesson vocabulary.
 
-Every file in data/vocabulary/ except common_words.json was extracted from the
-lesson screenshots, so each one becomes a deck. Adding a file there (e.g.
-after ingesting newer lessons) adds a deck with no code change. Kept free of
-Streamlit so it can be tested on its own."""
-import glob
+The source is data/reference/vocabulary_reference.json, the "Spanish
+Vocabulary — Complete Lesson Reference" (3,563 words and phrases from every
+lesson screenshot and PDF, Lessons 1–119). Each group in it is a deck, except
+verbs and adjectives, which are one deck each. Example sentences already in
+the app (the whiteboard examples in class_notes_recent.json, core_verbs.json)
+are attached to the matching cards, and the few class-notes entries the
+reference doesn't have form an extra deck. Kept free of Streamlit so it can be
+tested on its own."""
 import html
 import json
 import os
@@ -12,102 +15,21 @@ import random
 import re
 import unicodedata
 
-VOCAB_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "vocabulary")
-# General word-frequency list, not from the lessons (see its _meta).
-NOT_FROM_LESSONS = {"common_words.json"}
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+REFERENCE_FILE = os.path.join(DATA_DIR, "reference", "vocabulary_reference.json")
+VOCAB_DIR = os.path.join(DATA_DIR, "vocabulary")
+# Older extracted files whose example sentences are worth keeping on the cards.
+EXAMPLE_SOURCES = ["class_notes_recent.json", "core_verbs.json", "food_and_restaurant.json",
+                   "numbers_and_money.json"]
+EXTRA_DECK = ("notas_de_clase:extra", "📝 Notas de clase (extra)")
+_NOUN_PARTS = {"sustantivos_vida_diaria", "sustantivos_mundo"}
+_QUOTED = re.compile(r'^"[^"]+"(\s*;\s*"[^"]+")*$')
 
-DECK_LABELS = {
-    "additional_verbs": "🏃 Verbos (más)",
-    "adverbs": "🧭 Adverbios",
-    "body_and_health": "🩺 Cuerpo y salud",
-    "class_notes_recent": "📝 Clases recientes",
-    "clothing": "👕 Ropa",
-    "expressions_reference": "💬 Expresiones",
-    "core_verbs": "⚙️ Verbos básicos",
-    "emotions_and_adjectives": "😊 Emociones y adjetivos",
-    "family_and_people": "👪 Familia y personas",
-    "food_and_restaurant": "🍽 Restaurante",
-    "food_extended": "🥖 Comida",
-    "household_and_rooms": "🏠 Casa",
-    "llevar_vs_traer": "📦 Llevar y traer",
-    "misc_common_nouns": "🧩 Sustantivos comunes",
-    "nature_weather_animals": "🌦 Naturaleza y animales",
-    "numbers_and_money": "🔢 Números y dinero",
-    "places": "📍 Lugares",
-    "time_and_calendar": "📅 Tiempo y calendario",
-}
-
-# Group names inside files that are split into one deck per group.
-SUB_LABELS = {
-    "saludos_y_cortesia": "saludos y cortesía",
-    "conversacion_y_sentimientos": "conversación y sentimientos",
-    "tiempo_y_frecuencia": "tiempo y frecuencia",
-    "estructuras_utiles": "estructuras útiles",
-    "clima_y_naturaleza": "clima y naturaleza",
-    "salud_y_cuerpo": "salud y cuerpo",
-    "viajes_y_direcciones": "viajes y direcciones",
-    "comida_casa_y_compras": "comida, casa y compras",
-    "personas_trabajo_y_sociedad": "personas, trabajo y sociedad",
-}
-
-# List keys that only group entries; the category is the key above them.
-_GROUPING_KEYS = {"words", "examples", "verbs", "places", "numbers"}
-
-
-def _sub_label(key):
-    return SUB_LABELS.get(key, key.replace("_", " "))
+_labels = {}  # deck id -> label, filled by load_cards()
 
 
 def deck_label(deck):
-    """'places' -> '📍 Lugares'; split decks 'file:group' -> '💬 Expresiones: saludos y cortesía'."""
-    base, _, sub = deck.partition(":")
-    label = DECK_LABELS.get(base, base.replace("_", " ").capitalize())
-    return f"{label}: {_sub_label(sub)}" if sub else label
-
-
-def _front_back(entry):
-    """(spanish, english) for an entry, or None if it has no English side.
-    Numbers and years have no English, so the digits stand in for it."""
-    spanish = entry.get("spanish")
-    if not isinstance(spanish, str) or not spanish.strip():
-        return None
-    for key in ("english", "number", "year"):
-        if isinstance(entry.get(key), (str, int)) and str(entry[key]).strip():
-            return spanish.strip(), str(entry[key]).strip()
-    return None
-
-
-def _walk(node, path, out):
-    if isinstance(node, dict):
-        if isinstance(node.get("spanish"), str):
-            out.append((path, node))
-        for key, value in node.items():
-            if not key.startswith("_"):
-                _walk(value, path + [key], out)
-    elif isinstance(node, list):
-        for value in node:
-            _walk(value, path, out)
-
-
-def _category(path):
-    keys = [k for k in path if k not in _GROUPING_KEYS] or path or ["general"]
-    return _sub_label(keys[-1])
-
-
-def _gender(entry):
-    g = str(entry.get("gender", "")).lower()
-    if g.startswith("masc") and "fem" not in g:
-        return "m"
-    if g.startswith("fem"):
-        return "f"
-    # No gender field: guess from the article, but only for "article + one
-    # word" - a phrase like "la cuenta, por favor" is not a feminine noun.
-    words = entry.get("spanish", "").lower().split()
-    if not g and len(words) == 2 and words[0] in ("el", "los", "un"):
-        return "m"
-    if not g and len(words) == 2 and words[0] in ("la", "las", "una"):
-        return "f"
-    return ""
+    return _labels.get(deck, deck)
 
 
 def _key(text):
@@ -118,57 +40,142 @@ def _key(text):
     return " ".join(re.sub(r"[¿?¡!.,()]", " ", text).split())
 
 
-def _lesson_label(first_seen):
-    """'L95' -> 'Lección 95'; other labels ('Pasado simple') as they are."""
+_SINGULAR_ARTICLE = {"los": "el", "las": "la"}
+
+
+def _match_keys(spanish):
+    """Ways an older file may write a reference entry: 'inclinado/a' for
+    'inclinado', 'las pasas' for 'la pasa', 'el maestro (de obra)', or one
+    half of 'la loma / la colina'."""
+    out = set()
+    base = re.sub(r"\s*\([^)]*\)", "", spanish)
+    for chunk in [spanish, base] + base.split(" / "):
+        words = _key(re.sub(r"/a\b", "", chunk)).split()
+        if not words:
+            continue
+        out.add(" ".join(words))
+        if len(words) >= 2 and words[0] in _SINGULAR_ARTICLE:
+            singular = _SINGULAR_ARTICLE[words[0]]
+            out.add(" ".join([singular, re.sub(r"s$", "", words[1])] + words[2:]))
+            if words[1].endswith("es") and len(words[1]) > 4:
+                out.add(" ".join([singular, words[1][:-2]] + words[2:]))
+    return out
+
+
+def _gender(spanish):
+    """Nouns carry their article; 'el tío / la tía' (both forms) gets none."""
+    words = spanish.lower().split()
+    if " / " in spanish or not words:
+        return ""
+    return {"el": "m", "los": "m", "un": "m", "la": "f", "las": "f", "una": "f"}.get(words[0], "")
+
+
+def lesson_number(first_seen):
+    """'L95' -> 95.0, 'L112.5' -> 112.5; named sources ('Pasado simple') -> None."""
     m = re.fullmatch(r"L(\d+(?:\.\d+)?)", first_seen or "")
-    if m:
-        return f"Lección {m.group(1)}"
+    return float(m.group(1)) if m else None
+
+
+def _lesson_label(first_seen):
+    num = lesson_number(first_seen)
+    if num is not None:
+        return f"Lección {num:g}"
     return "" if first_seen in ("", "Untitled") else first_seen
 
 
-def load_cards(vocab_dir=VOCAB_DIR):
-    """Every lesson word or phrase as a card dict, deduplicated across files
-    (the same word extracted from two lessons is one card)."""
-    cards, seen = [], set()
-    for path in sorted(glob.glob(os.path.join(vocab_dir, "*.json"))):
-        name = os.path.basename(path)
-        if name in NOT_FROM_LESSONS:
+def _older_examples():
+    """{match key: (example, english, from the whiteboard?)} from older files."""
+    found = {}
+    for name in EXAMPLE_SOURCES:
+        path = os.path.join(VOCAB_DIR, name)
+        if not os.path.exists(path):
             continue
-        file_deck = name[:-len(".json")]
-        with open(path, encoding="utf-8") as f:
-            data = json.load(f)
-        # A file can ask to be one deck per top-level group (e.g. 640
-        # expressions, grouped by situation) instead of one big deck.
-        split = isinstance(data.get("_meta"), dict) and data["_meta"].get("split_decks")
-        entries = []
-        _walk(data, [], entries)
-        for entry_path, entry in entries:
-            deck = f"{file_deck}:{entry_path[0]}" if split and entry_path else file_deck
-            sides = _front_back(entry)
-            if not sides:
+        stack = [json.load(open(path, encoding="utf-8"))]
+        while stack:
+            node = stack.pop()
+            if isinstance(node, dict):
+                if isinstance(node.get("spanish"), str) and node.get("example"):
+                    value = (node["example"], node.get("example_english", ""), node.get("example_source") == "pizarra")
+                    for key in _match_keys(node["spanish"]):
+                        found.setdefault(key, value)
+                stack.extend(v for k, v in node.items() if not k.startswith("_"))
+            elif isinstance(node, list):
+                stack.extend(node)
+    return found
+
+
+def _card(deck, category, entry, gender, examples):
+    note = entry.get("note", "")
+    example, example_english, from_class = "", "", False
+    if note and _QUOTED.match(note):  # a note that is only a quoted class sentence
+        example, note = " / ".join(q.strip().strip('"') for q in note.split(";")), ""
+    older = next((examples[k] for k in _match_keys(entry["spanish"]) if k in examples), None)
+    if older and (not example or older[2]):  # prefer a translated whiteboard example
+        example, example_english, from_class = older
+    return {
+        # Exact text, accents included: el / él and si / sí are different words.
+        "id": f"{deck}:{entry['spanish'].strip()}",
+        "deck": deck,
+        "category": category,
+        "spanish": entry["spanish"],
+        "english": entry["english"],
+        "gender": gender,
+        "note": note,
+        "example": example,
+        "example_english": example_english,
+        "example_from_class": from_class,
+        "lesson": _lesson_label(entry.get("first_seen", "")),
+        "lesson_num": lesson_number(entry.get("first_seen", "")),
+    }
+
+
+def load_cards(reference_file=REFERENCE_FILE):
+    """Every reference entry as a card, plus the class-notes extras."""
+    with open(reference_file, encoding="utf-8") as f:
+        ref = json.load(f)
+    examples = _older_examples()
+    cards, seen = [], set()
+    for part in ref["parts"]:
+        for group in part["groups"]:
+            deck = f"{part['id']}:{group['id']}"
+            if part["id"] == "expresiones":
+                label = f"{part['label']}: {group['label']}"
+            else:
+                label = group["label"]
+            _labels[deck] = label
+            category = re.sub(r"^\W+\s*", "", label)  # label without its emoji
+            for entry in group["entries"]:
+                gender = _gender(entry["spanish"]) if part["id"] in _NOUN_PARTS else ""
+                cards.append(_card(deck, category, entry, gender, examples))
+                seen |= _match_keys(entry["spanish"])
+
+    # Class-notes words the reference doesn't have (mostly commands like
+    # "Vaya recto", which it leaves out as conjugated forms).
+    extra_path = os.path.join(VOCAB_DIR, "class_notes_recent.json")
+    if os.path.exists(extra_path):
+        deck, label = EXTRA_DECK
+        _labels[deck] = label
+        notes = json.load(open(extra_path, encoding="utf-8"))
+        for key, entries in notes.items():
+            if key.startswith("_"):
                 continue
-            spanish, english = sides
-            if (_key(spanish), _key(english)) in seen:
-                continue
-            seen.add((_key(spanish), _key(english)))
-            note = entry.get("note") or entry.get("type") or ""
-            if entry.get("alternate"):
-                note = (note + " · " if note else "") + f"también: {entry['alternate']}"
-            cards.append({
-                "id": f"{deck}:{len(cards)}",
-                "deck": deck,
-                "category": "año" if "year" in entry else "número" if "number" in entry else _category(entry_path),
-                "spanish": spanish,
-                "english": english,
-                "gender": _gender(entry),
-                "note": str(note),
-                "example": entry.get("example", ""),
-                "example_english": entry.get("example_english", ""),
-                "example_from_class": entry.get("example_source") == "pizarra",
-                "is_number": "number" in entry or "year" in entry,
-                "lesson": _lesson_label(entry.get("first_seen", "")),
-            })
+            for entry in entries:
+                if _match_keys(entry["spanish"]) & seen:
+                    continue
+                card = _card(deck, "notas de clase", {**entry, "first_seen": ""},
+                             "m" if entry.get("gender") == "masculine" else "f" if entry.get("gender") == "feminine" else "",
+                             examples)
+                card["example"], card["example_english"] = entry.get("example", ""), entry.get("example_english", "")
+                card["example_from_class"] = entry.get("example_source") == "pizarra"
+                card["lesson"] = "Lecciones 113–119"
+                cards.append(card)
     return cards
+
+
+def lesson_range(cards):
+    """(first, last) lesson number among the cards."""
+    nums = [c["lesson_num"] for c in cards if c["lesson_num"] is not None]
+    return (int(min(nums)), int(max(nums))) if nums else (0, 0)
 
 
 def decks(cards):
@@ -182,18 +189,13 @@ def decks(cards):
 def quiz_item(card, split_alternates):
     """The card as a typed English→Spanish drill item, which is what goes into
     the spaced-repetition log: a missed card comes back in "!drill fallos" as
-    a question to type, not just to flip. Numbers reuse the numeros drill's
-    prompt so both drills share one review card per number."""
+    a question to type, not just to flip."""
     forms = split_alternates(card["spanish"])
-    if card["is_number"]:
-        prompt = f"Write this number in Spanish: {card['english']}"
-    else:
-        prompt = f"Translate to Spanish ({card['category']}): {card['english']}"
     return {
-        "prompt": prompt,
+        "prompt": f"Translate to Spanish ({card['category']}): {card['english']}",
         "target_form": forms[0],
         "accepted_forms": forms,
-        "exercise_type": f"tarjetas_{card['deck']}",
+        "exercise_type": f"tarjetas_{card['deck'].replace(':', '_')}",
         "explanation": f"{card['spanish']} — {card['english']}",
         "module": "tarjetas",
     }
