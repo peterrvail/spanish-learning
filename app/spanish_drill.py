@@ -40,6 +40,7 @@ DRILL_CATEGORIES = {
         ("⏮ Pluscuamperfecto", "!drill pluscuam"),
         ("🔮 Futuro irregular", "!drill futuro"),
         ("🤔 Condicional", "!drill condicional"),
+        ("🌱 Subjuntivo presente", "!drill subjuntivo"),
         ("✅ Participios", "!drill participios"),
         ("📝 Ejercicio (homework)", "!drill ejercicio"),
     ],
@@ -94,6 +95,7 @@ MODULE_DURATIONS = {
     "preterito": 420,    # 20 items, longer conjugations
     "preterite": 420,
     "estar_gerundio": 420,  # 16 items, some 3-word answers (habíamos estado corriendo)
+    "subjuntivo": 420,      # 16 items, 10 of them sentences to read
     "progresivo": 420,
     "numeros": 180,
     "adjetivos": 180,
@@ -954,6 +956,11 @@ def get_rutina_drill_items(count=15):
     random.shuffle(items)
     return items[:count]
 
+def fill_blank(sentence, answer):
+    """'Ayer yo ___ (dormir).' -> 'Ayer yo estaba durmiendo.': the blank and
+    the verb hint after it, so the explanation reads as a real sentence."""
+    return re.sub(r"___(\s*\([^)]*\))?", answer, sentence, count=1)
+
 _TENSE_LABELS = {
     "presente": "presente",
     "imperfecto": "imperfecto",
@@ -1012,7 +1019,7 @@ def get_estar_gerundio_drill_items(count=16):
             if by_tense[tense] and len(items) < count:
                 x = by_tense[tense].pop()
                 add(f"Completa con estar + gerundio en {_TENSE_LABELS[tense]}: {x['sentence']}", x["answer"],
-                    f"estar_gerundio_{tense}", f"{x['sentence'].replace('___', x['answer'])} — {x['english']}",
+                    f"estar_gerundio_{tense}", f"{fill_blank(x['sentence'], x['answer'])} — {x['english']}",
                     x.get("also_accepted", []))
 
     random.shuffle(items)
@@ -1061,9 +1068,44 @@ def get_ser_estar_drill_items(count=15):
             "prompt": f"Ser, estar o hay: {x['sentence']}",
             "target_form": x["answer"],
             "exercise_type": f"ser_estar_{verb}",
-            "explanation": f"{x['sentence'].replace('___', x['answer'])} — {x['english']} ({x['use']})",
+            "explanation": f"{fill_blank(x['sentence'], x['answer'])} — {x['english']} ({x['use']})",
         })
     return items
+
+def get_subjuntivo_drill_items(count=16):
+    """Present subjunctive (Language Transfer tracks 69-85; not yet in the
+    lessons beyond the command forms). Six form questions, mostly from the
+    irregular groups, then ten sentences where the trigger decides the mood.
+    About a third of those need the INDICATIVE (creo que tiene, cuando +
+    habit): always answering subjunctive would teach the forms but not when
+    to use them."""
+    d = load_grammar("subjunctive.json")["subjunctive"]
+    items = []
+
+    def add(prompt, target, exercise_type, explanation):
+        items.append({"id": len(items), "prompt": prompt, "target_form": target,
+                      "exercise_type": exercise_type, "explanation": explanation})
+
+    groups = {g["id"]: g for g in d["groups"]}
+    askable = lambda v: not v.get("third_person_only")  # no "yo llueva"
+    picks = [("regulares", random.choice([v for v in groups["regulares"]["verbs"] if askable(v)]))]
+    irregular = [(g["id"], v) for g in d["groups"] if g["id"] != "regulares" for v in g["verbs"] if askable(v)]
+    picks += random.sample(irregular, 5)
+    for group_id, verb in picks:
+        person = random.choice(d["persons"])
+        add(f"Presente de subjuntivo de '{verb['infinitive']}' ({verb['english']}) — {person}",
+            verb["forms"][person], "subjuntivo_formas",
+            f"{groups[group_id]['name']}: {', '.join(verb['forms'].values())}. {groups[group_id]['rule']}")
+
+    subj = [x for x in d["sentences"] if x["mood"] == "subjuntivo"]
+    ind = [x for x in d["sentences"] if x["mood"] == "indicativo"]
+    n_ind = min(len(ind), round((count - len(items)) * 0.3))
+    for x in random.sample(subj, count - len(items) - n_ind) + random.sample(ind, n_ind):
+        add(f"¿Subjuntivo o indicativo? {x['sentence']}", x["answer"],
+            "subjuntivo_frase" if x["mood"] == "subjuntivo" else "indicativo_contraste",
+            f"{fill_blank(x['sentence'], x['answer'])} — {x['english']} ({x['mood']}: {x['trigger']})")
+    random.shuffle(items)
+    return items[:count]
 
 def get_ir_gerundio_drill_items(count=12):
     """Generate IR (conjugated) + gerundio drill items (action while in motion)."""
@@ -1270,7 +1312,7 @@ KNOWN_MODULES = {
     "porpara", "demostrativos", "distancias", "adverbios", "adjetivos", "numeros", "reflexivos",
     "participios", "futuro_irregular", "futuro", "estructuras", "preguntas", "lugares", "rutina",
     "ir_gerundio", "gerundio", "estar_gerundio", "progresivo", "condicional", "conditional",
-    "ser_estar", "serestar", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
+    "ser_estar", "serestar", "subjuntivo", "subjunctive", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
     "preposiciones",
 }
 
@@ -1320,6 +1362,8 @@ def _build_drill_items(module_type):
         return get_condicional_drill_items()
     elif module_type in ("ser_estar", "serestar"):
         return get_ser_estar_drill_items()
+    elif module_type in ("subjuntivo", "subjunctive"):
+        return get_subjuntivo_drill_items()
     elif module_type == "vocabulario" or module_type == "comunes":
         return get_vocabulario_drill_items(source="mio")
     elif module_type == "vocab_comun":
@@ -1339,7 +1383,7 @@ def _build_drill_items(module_type):
 _MIXTO_MODULES = [
     "imperativo", "pronombres", "cambios", "pasado", "preterito", "pluscuam",
     "por_para", "demostrativos", "adjetivos", "reflexivos", "participios",
-    "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "condicional", "ser_estar", "indefinidos",
+    "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "condicional", "ser_estar", "subjuntivo", "indefinidos",
     "preposiciones", "adverbios", "lugares", "numeros", "vocabulario",
 ]
 
@@ -1794,6 +1838,14 @@ def get_module_concept(module_type):
             stems = ", ".join(f"{v['infinitive']} → {v['stem']}" for v in d["irregular_stems"]["verbs"])
             uses = [{"name": "Formación", "description": f"{d['construction']['rule']}. {d['construction']['note']}"},
                     {"name": "Raíces irregulares", "description": stems}] + d["uses"]
+            return {"overview": d["overview"], "uses": uses}
+        elif module_type in ("subjuntivo", "subjunctive"):
+            d = load_grammar("subjunctive.json")["subjunctive"]
+            uses = [{"name": "Formación", "description": d["construction"]}]
+            for g in d["groups"]:
+                sample = ", ".join(f"{v['infinitive']} → {v['forms']['yo']}" for v in g["verbs"][:6])
+                uses.append({"name": g["name"], "description": f"{g['rule']} ({sample}...)"})
+            uses += [{"name": f"Cuándo: {t['name']}", "description": t["examples"]} for t in d["triggers"]]
             return {"overview": d["overview"], "uses": uses}
         elif module_type in ("ser_estar", "serestar"):
             d = load_grammar("ser_estar.json")["ser_estar"]

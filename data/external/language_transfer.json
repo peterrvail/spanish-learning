@@ -480,7 +480,9 @@
     85
    ],
    "your_lessons": [],
-   "app_modules": [],
+   "app_modules": [
+    "subjuntivo"
+   ],
    "status": "gap"
   },
   {

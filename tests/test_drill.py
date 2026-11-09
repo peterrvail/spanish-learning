@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 from datetime import datetime, timedelta
 
@@ -86,7 +87,7 @@ def test_every_module_builds_items_that_grade_themselves():
                    "demostrativos", "adverbios", "adjetivos", "numeros", "reflexivos", "participios",
                    "futuro", "estructuras", "lugares", "rutina", "gerundio", "vocabulario",
                    "indefinidos", "preposiciones", "ejercicio", "estar_gerundio", "condicional",
-                   "ser_estar", "mixto"]:
+                   "ser_estar", "subjuntivo", "mixto"]:
         items = sd.get_drill_items(module)
         assert items, module
         for it in items:
@@ -693,7 +694,10 @@ def test_language_transfer_data():
     modules = {m for t in data["topics"] for m in t["app_modules"]}
     assert modules <= sd.KNOWN_MODULES                                    # every mapped drill exists
     for t in data["topics"]:
-        assert (t["status"] == "gap") == (not t["app_modules"])             # gaps are the topics with no drill
+        if t["status"] != "gap":
+            assert t["app_modules"], t["id"]                                  # covered topics are drilled
+    # A gap topic can be drilled ahead of the lessons: the subjunctive is.
+    assert next(t for t in data["topics"] if t["id"] == "subjuntivo")["app_modules"] == ["subjuntivo"]
 
 
 def test_language_transfer_tracks_per_module():
@@ -742,3 +746,58 @@ def test_condicional_and_ser_estar_drills():
     for module, label in [("condicional", "🤔 Condicional"), ("ser_estar", "⚖️ Ser, estar y hay")]:
         assert (label, f"!drill {module}") in sd.DRILL_COMMANDS and sd.get_module_concept(module)
         assert module in sd._MIXTO_MODULES
+
+
+
+def _subj_forms():
+    import json
+    d = json.load(open(os.path.join(sd.GRAMMAR_DIR, "subjunctive.json")))["subjunctive"]
+    return d, {v["infinitive"]: v for g in d["groups"] for v in g["verbs"]}
+
+
+def test_subjunctive_forms():
+    d, verbs = _subj_forms()
+    f = lambda inf, person: verbs[inf]["forms"][person]
+    assert [f("dar", p) for p in ("yo", "nosotros")] == ["dé", "demos"]
+    assert f("dormir", "nosotros") == "durmamos" and f("dormir", "tú") == "duermas"   # -ir: o→u in nosotros
+    assert f("sentir", "nosotros") == "sintamos" and f("pensar", "nosotros") == "pensemos"
+    assert f("empezar", "yo") == "empiece" and f("empezar", "nosotros") == "empecemos"
+    assert f("conocer", "ellos/ustedes") == "conozcan" and f("buscar", "yo") == "busque"
+    # Agrees with the subjunctive already in verbs.json for its 12 verbs.
+    import json
+    core = {v["infinitive"]: v["moods"]["present_subjunctive"]
+            for v in json.load(open(os.path.join(sd.DATA_DIR, "verbs", "verbs.json")))["verbs"]}
+    for inf, forms in core.items():
+        assert verbs[inf]["forms"]["nosotros"] == forms["nosotros"] and verbs[inf]["forms"]["yo"] == forms["yo"]
+
+
+def test_subjunctive_drill_mix():
+    for _ in range(50):
+        items = sd.get_subjuntivo_drill_items()
+        kinds = [i["exercise_type"] for i in items]
+        assert len(items) == 16 and kinds.count("subjuntivo_formas") == 6
+        assert kinds.count("indicativo_contraste") == 3                        # knowing WHEN, not just the forms
+        for i in items:
+            if i["exercise_type"] == "subjuntivo_formas":
+                assert "'llover'" not in i["prompt"] and "'gustar'" not in i["prompt"]   # no "yo llueva"
+
+
+def test_subjunctive_is_wired_in(db):
+    assert ("🌱 Subjuntivo presente", "!drill subjuntivo") in sd.DRILL_COMMANDS
+    assert "subjuntivo" in sd._MIXTO_MODULES and sd.drill_duration("subjuntivo") == 420
+    concept = sd.get_module_concept("subjuntivo")
+    assert any(u["name"].startswith("Cuándo: Pero indicativo") for u in concept["uses"])
+    assert external.ranges(external.tracks_for_module("subjuntivo")) == "69–71, 74, 76–77, 79, 81–82, 85"
+    at = _app()
+    at.session_state["active_command"] = "!repasar subjuntivo"
+    at.run()
+    assert not at.exception
+    assert any("69–71, 74, 76–77, 79, 81–82, 85" in m.value for m in at.markdown)
+
+
+def test_explanations_show_the_completed_sentence():
+    assert sd.fill_blank("Cuando yo ___ (tener) tiempo, leo.", "tengo") == "Cuando yo tengo tiempo, leo."
+    assert sd.fill_blank("Hoy ___ martes.", "es") == "Hoy es martes."
+    for gen in (sd.get_subjuntivo_drill_items, sd.get_estar_gerundio_drill_items, sd.get_ser_estar_drill_items):
+        for item in gen():
+            assert "___" not in item["explanation"] and not re.search(r"\w \(\w+\) ", item["explanation"].split(" — ")[0])
