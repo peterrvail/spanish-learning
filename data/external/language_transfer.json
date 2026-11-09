@@ -439,7 +439,9 @@
     63
    ],
    "your_lessons": [],
-   "app_modules": [],
+   "app_modules": [
+    "gustar"
+   ],
    "status": "gap"
   },
   {

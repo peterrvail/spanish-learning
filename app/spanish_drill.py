@@ -46,6 +46,7 @@ DRILL_CATEGORIES = {
     ],
     "Gramática": [
         ("⚖️ Ser, estar y hay", "!drill ser_estar"),
+        ("💛 Gustar y similares", "!drill gustar"),
         ("🔀 Pronombres dobles", "!drill pronombres"),
         ("↔️ Por vs. Para", "!drill por_para"),
         ("🧩 Otras preposiciones", "!drill preposiciones"),
@@ -96,6 +97,7 @@ MODULE_DURATIONS = {
     "preterite": 420,
     "estar_gerundio": 420,  # 16 items, some 3-word answers (habíamos estado corriendo)
     "subjuntivo": 420,      # 16 items, 10 of them sentences to read
+    "gustar": 420,          # 15 items, 7 of them whole sentences to type
     "progresivo": 420,
     "numeros": 180,
     "adjetivos": 180,
@@ -1107,6 +1109,30 @@ def get_subjuntivo_drill_items(count=16):
     random.shuffle(items)
     return items[:count]
 
+def get_gustar_drill_items(count=15):
+    """Gustar-type verbs as one pattern (Language Transfer tracks 42, 45, 63):
+    the thing liked is the subject, the person an indirect-object pronoun.
+    Eight pronoun + verb fill-ins (some past tense), four translations, and
+    three of the classic mistakes to correct (Yo gusto el café)."""
+    d = load_grammar("gustar_verbs.json")["gustar_verbs"]
+    items = []
+
+    def add(prompt, target, exercise_type, explanation, also=()):
+        items.append({"id": len(items), "prompt": prompt, "target_form": target,
+                      "exercise_type": exercise_type, "explanation": explanation, "also_accepted": list(also)})
+
+    for x in random.sample(d["fill_in"], 8):
+        add(f"Pronombre + verbo ({x['tense']}): {x['sentence']}", x["answer"], "gustar_completar",
+            f"{fill_blank(x['sentence'], x['answer'])} — {x['english']}")
+    for x in random.sample(d["translate"], 4):
+        add(f"Translate to Spanish: {x['english']}", x["spanish"], "gustar_traducir",
+            f"{x['spanish']} — {d['pattern']}", x["also_accepted"])
+    for x in random.sample(d["correct"], 3):
+        add(f"Corrige la frase: {x['english']}", x["spanish"], "gustar_corregir",
+            f"✗ {x['english']} → ✓ {x['spanish']} — {x['why']}", x["also_accepted"])
+    random.shuffle(items)
+    return items[:count]
+
 def get_ir_gerundio_drill_items(count=12):
     """Generate IR (conjugated) + gerundio drill items (action while in motion)."""
     data = load_grammar("ir_gerundio.json")
@@ -1312,7 +1338,8 @@ KNOWN_MODULES = {
     "porpara", "demostrativos", "distancias", "adverbios", "adjetivos", "numeros", "reflexivos",
     "participios", "futuro_irregular", "futuro", "estructuras", "preguntas", "lugares", "rutina",
     "ir_gerundio", "gerundio", "estar_gerundio", "progresivo", "condicional", "conditional",
-    "ser_estar", "serestar", "subjuntivo", "subjunctive", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
+    "ser_estar", "serestar", "subjuntivo", "subjunctive",
+    "gustar", "gustar_verbos", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
     "preposiciones",
 }
 
@@ -1364,6 +1391,8 @@ def _build_drill_items(module_type):
         return get_ser_estar_drill_items()
     elif module_type in ("subjuntivo", "subjunctive"):
         return get_subjuntivo_drill_items()
+    elif module_type in ("gustar", "gustar_verbos"):
+        return get_gustar_drill_items()
     elif module_type == "vocabulario" or module_type == "comunes":
         return get_vocabulario_drill_items(source="mio")
     elif module_type == "vocab_comun":
@@ -1383,7 +1412,7 @@ def _build_drill_items(module_type):
 _MIXTO_MODULES = [
     "imperativo", "pronombres", "cambios", "pasado", "preterito", "pluscuam",
     "por_para", "demostrativos", "adjetivos", "reflexivos", "participios",
-    "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "condicional", "ser_estar", "subjuntivo", "indefinidos",
+    "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "condicional", "ser_estar", "subjuntivo", "gustar", "indefinidos",
     "preposiciones", "adverbios", "lugares", "numeros", "vocabulario",
 ]
 
@@ -1838,6 +1867,17 @@ def get_module_concept(module_type):
             stems = ", ".join(f"{v['infinitive']} → {v['stem']}" for v in d["irregular_stems"]["verbs"])
             uses = [{"name": "Formación", "description": f"{d['construction']['rule']}. {d['construction']['note']}"},
                     {"name": "Raíces irregulares", "description": stems}] + d["uses"]
+            return {"overview": d["overview"], "uses": uses}
+        elif module_type in ("gustar", "gustar_verbos"):
+            d = load_grammar("gustar_verbs.json")["gustar_verbs"]
+            pronouns = ", ".join(f"{p['emphasis']} → {p['pronoun']}" for p in d["pronouns"])
+            uses = [{"name": "El patrón", "description": d["pattern"]},
+                    {"name": "Pronombres", "description": f"{pronouns}. {d['emphasis_note']}"}]
+            for v in d["verbs"]:
+                seen = f" (lo viste en la lección {v['first_seen'][1:]})" if v["first_seen"].startswith("L") else ""
+                uses.append({"name": f"{v['infinitive']} — {v['english']}", "description": v["note"] + seen})
+            uses.append({"name": "Errores típicos",
+                         "description": " · ".join(f"✗ {c['english']} → ✓ {c['spanish']}" for c in d["correct"][:5])})
             return {"overview": d["overview"], "uses": uses}
         elif module_type in ("subjuntivo", "subjunctive"):
             d = load_grammar("subjunctive.json")["subjunctive"]
