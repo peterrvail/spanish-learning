@@ -1,0 +1,824 @@
+{
+ "subjunctive": {
+  "source": "claude-draft: written for the app (Language Transfer tracks 69-71, 74, 76-77, 79, 81-82, 85); not yet covered in the lessons, apart from the command forms (lessons 97-110)",
+  "overview": "El subjuntivo presente es el modo de lo que no es un hecho: deseos, consejos, emociones, dudas, y cosas que todavía no pasan. Casi siempre va después de 'que' cuando la primera parte de la frase expresa una de esas ideas: Quiero QUE VENGAS. Ya conoces sus formas: los mandatos de usted y los negativos son subjuntivo (hable, no hables, no salgas).",
+  "construction": "Forma YO del presente sin -o + terminación 'opuesta': -AR → -e, -es, -e, -emos, -en; -ER / -IR → -a, -as, -a, -amos, -an. hablo → hable, como → coma, tengo → tenga.",
+  "persons": [
+   "yo",
+   "tú",
+   "él/ella/usted",
+   "nosotros",
+   "ellos/ustedes"
+  ],
+  "groups": [
+   {
+    "id": "regulares",
+    "name": "Regulares",
+    "rule": "Forma YO del presente sin -o + la terminación 'opuesta': -AR → -e; -ER / -IR → -a.",
+    "verbs": [
+     {
+      "infinitive": "hablar",
+      "english": "to speak",
+      "forms": {
+       "yo": "hable",
+       "tú": "hables",
+       "él/ella/usted": "hable",
+       "nosotros": "hablemos",
+       "ellos/ustedes": "hablen"
+      }
+     },
+     {
+      "infinitive": "trabajar",
+      "english": "to work",
+      "forms": {
+       "yo": "trabaje",
+       "tú": "trabajes",
+       "él/ella/usted": "trabaje",
+       "nosotros": "trabajemos",
+       "ellos/ustedes": "trabajen"
+      }
+     },
+     {
+      "infinitive": "estudiar",
+      "english": "to study",
+      "forms": {
+       "yo": "estudie",
+       "tú": "estudies",
+       "él/ella/usted": "estudie",
+       "nosotros": "estudiemos",
+       "ellos/ustedes": "estudien"
+      }
+     },
+     {
+      "infinitive": "ayudar",
+      "english": "to help",
+      "forms": {
+       "yo": "ayude",
+       "tú": "ayudes",
+       "él/ella/usted": "ayude",
+       "nosotros": "ayudemos",
+       "ellos/ustedes": "ayuden"
+      }
+     },
+     {
+      "infinitive": "ganar",
+      "english": "to win",
+      "forms": {
+       "yo": "gane",
+       "tú": "ganes",
+       "él/ella/usted": "gane",
+       "nosotros": "ganemos",
+       "ellos/ustedes": "ganen"
+      }
+     },
+     {
+      "infinitive": "terminar",
+      "english": "to finish",
+      "forms": {
+       "yo": "termine",
+       "tú": "termines",
+       "él/ella/usted": "termine",
+       "nosotros": "terminemos",
+       "ellos/ustedes": "terminen"
+      }
+     },
+     {
+      "infinitive": "comer",
+      "english": "to eat",
+      "forms": {
+       "yo": "coma",
+       "tú": "comas",
+       "él/ella/usted": "coma",
+       "nosotros": "comamos",
+       "ellos/ustedes": "coman"
+      }
+     },
+     {
+      "infinitive": "aprender",
+      "english": "to learn",
+      "forms": {
+       "yo": "aprenda",
+       "tú": "aprendas",
+       "él/ella/usted": "aprenda",
+       "nosotros": "aprendamos",
+       "ellos/ustedes": "aprendan"
+      }
+     },
+     {
+      "infinitive": "beber",
+      "english": "to drink",
+      "forms": {
+       "yo": "beba",
+       "tú": "bebas",
+       "él/ella/usted": "beba",
+       "nosotros": "bebamos",
+       "ellos/ustedes": "beban"
+      }
+     },
+     {
+      "infinitive": "vivir",
+      "english": "to live",
+      "forms": {
+       "yo": "viva",
+       "tú": "vivas",
+       "él/ella/usted": "viva",
+       "nosotros": "vivamos",
+       "ellos/ustedes": "vivan"
+      }
+     },
+     {
+      "infinitive": "escribir",
+      "english": "to write",
+      "forms": {
+       "yo": "escriba",
+       "tú": "escribas",
+       "él/ella/usted": "escriba",
+       "nosotros": "escribamos",
+       "ellos/ustedes": "escriban"
+      }
+     },
+     {
+      "infinitive": "abrir",
+      "english": "to open",
+      "forms": {
+       "yo": "abra",
+       "tú": "abras",
+       "él/ella/usted": "abra",
+       "nosotros": "abramos",
+       "ellos/ustedes": "abran"
+      }
+     }
+    ]
+   },
+   {
+    "id": "dishes",
+    "name": "Los seis irregulares (dé, vaya, sea, haya, esté, sepa)",
+    "rule": "No salen de la forma yo: hay que aprenderlos de memoria.",
+    "verbs": [
+     {
+      "infinitive": "dar",
+      "english": "to give",
+      "forms": {
+       "yo": "dé",
+       "tú": "des",
+       "él/ella/usted": "dé",
+       "nosotros": "demos",
+       "ellos/ustedes": "den"
+      }
+     },
+     {
+      "infinitive": "ir",
+      "english": "to go",
+      "forms": {
+       "yo": "vaya",
+       "tú": "vayas",
+       "él/ella/usted": "vaya",
+       "nosotros": "vayamos",
+       "ellos/ustedes": "vayan"
+      }
+     },
+     {
+      "infinitive": "ser",
+      "english": "to be",
+      "forms": {
+       "yo": "sea",
+       "tú": "seas",
+       "él/ella/usted": "sea",
+       "nosotros": "seamos",
+       "ellos/ustedes": "sean"
+      }
+     },
+     {
+      "infinitive": "haber",
+      "english": "there to be / to have (aux.)",
+      "forms": {
+       "yo": "haya",
+       "tú": "hayas",
+       "él/ella/usted": "haya",
+       "nosotros": "hayamos",
+       "ellos/ustedes": "hayan"
+      }
+     },
+     {
+      "infinitive": "estar",
+      "english": "to be",
+      "forms": {
+       "yo": "esté",
+       "tú": "estés",
+       "él/ella/usted": "esté",
+       "nosotros": "estemos",
+       "ellos/ustedes": "estén"
+      }
+     },
+     {
+      "infinitive": "saber",
+      "english": "to know",
+      "forms": {
+       "yo": "sepa",
+       "tú": "sepas",
+       "él/ella/usted": "sepa",
+       "nosotros": "sepamos",
+       "ellos/ustedes": "sepan"
+      }
+     }
+    ]
+   },
+   {
+    "id": "yo_irregular",
+    "name": "YO irregular (-go, -zco...)",
+    "rule": "La irregularidad de la forma yo pasa a todas las personas: tengo → tenga, conozco → conozca.",
+    "verbs": [
+     {
+      "infinitive": "tener",
+      "english": "to have",
+      "forms": {
+       "yo": "tenga",
+       "tú": "tengas",
+       "él/ella/usted": "tenga",
+       "nosotros": "tengamos",
+       "ellos/ustedes": "tengan"
+      }
+     },
+     {
+      "infinitive": "hacer",
+      "english": "to do / make",
+      "forms": {
+       "yo": "haga",
+       "tú": "hagas",
+       "él/ella/usted": "haga",
+       "nosotros": "hagamos",
+       "ellos/ustedes": "hagan"
+      }
+     },
+     {
+      "infinitive": "decir",
+      "english": "to say",
+      "forms": {
+       "yo": "diga",
+       "tú": "digas",
+       "él/ella/usted": "diga",
+       "nosotros": "digamos",
+       "ellos/ustedes": "digan"
+      }
+     },
+     {
+      "infinitive": "salir",
+      "english": "to leave",
+      "forms": {
+       "yo": "salga",
+       "tú": "salgas",
+       "él/ella/usted": "salga",
+       "nosotros": "salgamos",
+       "ellos/ustedes": "salgan"
+      }
+     },
+     {
+      "infinitive": "venir",
+      "english": "to come",
+      "forms": {
+       "yo": "venga",
+       "tú": "vengas",
+       "él/ella/usted": "venga",
+       "nosotros": "vengamos",
+       "ellos/ustedes": "vengan"
+      }
+     },
+     {
+      "infinitive": "poner",
+      "english": "to put",
+      "forms": {
+       "yo": "ponga",
+       "tú": "pongas",
+       "él/ella/usted": "ponga",
+       "nosotros": "pongamos",
+       "ellos/ustedes": "pongan"
+      }
+     },
+     {
+      "infinitive": "traer",
+      "english": "to bring",
+      "forms": {
+       "yo": "traiga",
+       "tú": "traigas",
+       "él/ella/usted": "traiga",
+       "nosotros": "traigamos",
+       "ellos/ustedes": "traigan"
+      }
+     },
+     {
+      "infinitive": "oír",
+      "english": "to hear",
+      "forms": {
+       "yo": "oiga",
+       "tú": "oigas",
+       "él/ella/usted": "oiga",
+       "nosotros": "oigamos",
+       "ellos/ustedes": "oigan"
+      }
+     },
+     {
+      "infinitive": "conocer",
+      "english": "to know (a person)",
+      "forms": {
+       "yo": "conozca",
+       "tú": "conozcas",
+       "él/ella/usted": "conozca",
+       "nosotros": "conozcamos",
+       "ellos/ustedes": "conozcan"
+      }
+     },
+     {
+      "infinitive": "ver",
+      "english": "to see",
+      "forms": {
+       "yo": "vea",
+       "tú": "veas",
+       "él/ella/usted": "vea",
+       "nosotros": "veamos",
+       "ellos/ustedes": "vean"
+      }
+     }
+    ]
+   },
+   {
+    "id": "cambio_raiz",
+    "name": "Cambio de raíz",
+    "rule": "El cambio del presente (e→ie, o→ue, e→i) se mantiene, menos en nosotros; los verbos -IR también cambian en nosotros (e→i, o→u): durmamos, pidamos, sintamos.",
+    "verbs": [
+     {
+      "infinitive": "pensar",
+      "english": "to think",
+      "forms": {
+       "yo": "piense",
+       "tú": "pienses",
+       "él/ella/usted": "piense",
+       "nosotros": "pensemos",
+       "ellos/ustedes": "piensen"
+      }
+     },
+     {
+      "infinitive": "querer",
+      "english": "to want",
+      "forms": {
+       "yo": "quiera",
+       "tú": "quieras",
+       "él/ella/usted": "quiera",
+       "nosotros": "queramos",
+       "ellos/ustedes": "quieran"
+      }
+     },
+     {
+      "infinitive": "poder",
+      "english": "to be able",
+      "forms": {
+       "yo": "pueda",
+       "tú": "puedas",
+       "él/ella/usted": "pueda",
+       "nosotros": "podamos",
+       "ellos/ustedes": "puedan"
+      }
+     },
+     {
+      "infinitive": "volver",
+      "english": "to return",
+      "forms": {
+       "yo": "vuelva",
+       "tú": "vuelvas",
+       "él/ella/usted": "vuelva",
+       "nosotros": "volvamos",
+       "ellos/ustedes": "vuelvan"
+      }
+     },
+     {
+      "infinitive": "entender",
+      "english": "to understand",
+      "forms": {
+       "yo": "entienda",
+       "tú": "entiendas",
+       "él/ella/usted": "entienda",
+       "nosotros": "entendamos",
+       "ellos/ustedes": "entiendan"
+      }
+     },
+     {
+      "infinitive": "probar",
+      "english": "to try",
+      "forms": {
+       "yo": "pruebe",
+       "tú": "pruebes",
+       "él/ella/usted": "pruebe",
+       "nosotros": "probemos",
+       "ellos/ustedes": "prueben"
+      }
+     },
+     {
+      "infinitive": "llover",
+      "english": "to rain",
+      "forms": {
+       "yo": "llueva",
+       "tú": "lluevas",
+       "él/ella/usted": "llueva",
+       "nosotros": "llovamos",
+       "ellos/ustedes": "lluevan"
+      },
+      "third_person_only": true
+     },
+     {
+      "infinitive": "morder",
+      "english": "to bite",
+      "forms": {
+       "yo": "muerda",
+       "tú": "muerdas",
+       "él/ella/usted": "muerda",
+       "nosotros": "mordamos",
+       "ellos/ustedes": "muerdan"
+      }
+     },
+     {
+      "infinitive": "dormir",
+      "english": "to sleep",
+      "forms": {
+       "yo": "duerma",
+       "tú": "duermas",
+       "él/ella/usted": "duerma",
+       "nosotros": "durmamos",
+       "ellos/ustedes": "duerman"
+      }
+     },
+     {
+      "infinitive": "pedir",
+      "english": "to ask for",
+      "forms": {
+       "yo": "pida",
+       "tú": "pidas",
+       "él/ella/usted": "pida",
+       "nosotros": "pidamos",
+       "ellos/ustedes": "pidan"
+      }
+     },
+     {
+      "infinitive": "sentir",
+      "english": "to feel",
+      "forms": {
+       "yo": "sienta",
+       "tú": "sientas",
+       "él/ella/usted": "sienta",
+       "nosotros": "sintamos",
+       "ellos/ustedes": "sientan"
+      }
+     }
+    ]
+   },
+   {
+    "id": "ortografico",
+    "name": "Cambios ortográficos (-car, -gar, -zar)",
+    "rule": "Se cambia la letra para mantener el sonido: c→qu, g→gu, z→c (como en el pretérito yo).",
+    "verbs": [
+     {
+      "infinitive": "buscar",
+      "english": "to look for",
+      "forms": {
+       "yo": "busque",
+       "tú": "busques",
+       "él/ella/usted": "busque",
+       "nosotros": "busquemos",
+       "ellos/ustedes": "busquen"
+      }
+     },
+     {
+      "infinitive": "llegar",
+      "english": "to arrive",
+      "forms": {
+       "yo": "llegue",
+       "tú": "llegues",
+       "él/ella/usted": "llegue",
+       "nosotros": "lleguemos",
+       "ellos/ustedes": "lleguen"
+      }
+     },
+     {
+      "infinitive": "pagar",
+      "english": "to pay",
+      "forms": {
+       "yo": "pague",
+       "tú": "pagues",
+       "él/ella/usted": "pague",
+       "nosotros": "paguemos",
+       "ellos/ustedes": "paguen"
+      }
+     },
+     {
+      "infinitive": "empezar",
+      "english": "to begin",
+      "forms": {
+       "yo": "empiece",
+       "tú": "empieces",
+       "él/ella/usted": "empiece",
+       "nosotros": "empecemos",
+       "ellos/ustedes": "empiecen"
+      }
+     },
+     {
+      "infinitive": "gustar",
+      "english": "to please",
+      "forms": {
+       "yo": "guste",
+       "tú": "gustes",
+       "él/ella/usted": "guste",
+       "nosotros": "gustemos",
+       "ellos/ustedes": "gusten"
+      },
+      "third_person_only": true
+     }
+    ]
+   }
+  ],
+  "triggers": [
+   {
+    "name": "Deseo y voluntad",
+    "examples": "quiero que, espero que, prefiero que, necesito que, ojalá (que)"
+   },
+   {
+    "name": "Consejo y necesidad",
+    "examples": "te recomiendo que, te pido que, es importante que, es necesario que, es mejor que"
+   },
+   {
+    "name": "Emoción",
+    "examples": "me alegra que, me molesta que, siento que, tengo miedo de que, es una lástima que"
+   },
+   {
+    "name": "Duda y negación",
+    "examples": "dudo que, no creo que, no es verdad que, es posible que"
+   },
+   {
+    "name": "Finalidad y tiempo futuro",
+    "examples": "para que, sin que, antes de que, hasta que, cuando (+ futuro)"
+   },
+   {
+    "name": "Pero indicativo con certeza",
+    "examples": "creo que, pienso que, sé que, es verdad que, estoy seguro de que, no dudo que; y cuando + hábito (cuando tengo tiempo, leo)"
+   }
+  ],
+  "sentences": [
+   {
+    "sentence": "Quiero que tú ___ (venir) a la fiesta.",
+    "answer": "vengas",
+    "mood": "subjuntivo",
+    "trigger": "deseo: quiero que",
+    "english": "I want you to come to the party."
+   },
+   {
+    "sentence": "Espero que ustedes ___ (tener) un buen viaje.",
+    "answer": "tengan",
+    "mood": "subjuntivo",
+    "trigger": "deseo: espero que",
+    "english": "I hope you (all) have a good trip."
+   },
+   {
+    "sentence": "Ojalá que no ___ (llover) mañana.",
+    "answer": "llueva",
+    "mood": "subjuntivo",
+    "trigger": "deseo: ojalá",
+    "english": "Hopefully it won't rain tomorrow."
+   },
+   {
+    "sentence": "Mi madre prefiere que yo ___ (estudiar) por la noche.",
+    "answer": "estudie",
+    "mood": "subjuntivo",
+    "trigger": "deseo: prefiere que",
+    "english": "My mother prefers that I study at night."
+   },
+   {
+    "sentence": "Necesito que tú me ___ (ayudar) con la maleta.",
+    "answer": "ayudes",
+    "mood": "subjuntivo",
+    "trigger": "deseo: necesito que",
+    "english": "I need you to help me with the suitcase."
+   },
+   {
+    "sentence": "Ojalá que mi equipo ___ (ganar) el partido.",
+    "answer": "gane",
+    "mood": "subjuntivo",
+    "trigger": "deseo: ojalá",
+    "english": "I hope my team wins the match."
+   },
+   {
+    "sentence": "Quiero que mis hijos ___ (aprender) español.",
+    "answer": "aprendan",
+    "mood": "subjuntivo",
+    "trigger": "deseo: quiero que",
+    "english": "I want my children to learn Spanish."
+   },
+   {
+    "sentence": "El médico recomienda que yo ___ (dormir) ocho horas.",
+    "answer": "duerma",
+    "mood": "subjuntivo",
+    "trigger": "consejo: recomienda que",
+    "english": "The doctor recommends that I sleep eight hours."
+   },
+   {
+    "sentence": "Es importante que nosotros ___ (llegar) temprano.",
+    "answer": "lleguemos",
+    "mood": "subjuntivo",
+    "trigger": "consejo: es importante que",
+    "english": "It's important that we arrive early."
+   },
+   {
+    "sentence": "Es necesario que tú ___ (hacer) la tarea.",
+    "answer": "hagas",
+    "mood": "subjuntivo",
+    "trigger": "consejo: es necesario que",
+    "english": "You need to do the homework."
+   },
+   {
+    "sentence": "Es mejor que ella ___ (decir) la verdad.",
+    "answer": "diga",
+    "mood": "subjuntivo",
+    "trigger": "consejo: es mejor que",
+    "english": "It's better that she tells the truth."
+   },
+   {
+    "sentence": "Mis padres piden que nosotros no ___ (salir) tarde.",
+    "answer": "salgamos",
+    "mood": "subjuntivo",
+    "trigger": "petición: piden que",
+    "english": "My parents ask us not to go out late."
+   },
+   {
+    "sentence": "Te recomiendo que ___ (probar) la colada morada.",
+    "answer": "pruebes",
+    "mood": "subjuntivo",
+    "trigger": "consejo: te recomiendo que",
+    "english": "I recommend you try colada morada."
+   },
+   {
+    "sentence": "Me alegra que tú ___ (estar) aquí.",
+    "answer": "estés",
+    "mood": "subjuntivo",
+    "trigger": "emoción: me alegra que",
+    "english": "I'm glad you're here."
+   },
+   {
+    "sentence": "Me molesta que el vecino ___ (poner) la música tan alta.",
+    "answer": "ponga",
+    "mood": "subjuntivo",
+    "trigger": "emoción: me molesta que",
+    "english": "It bothers me that the neighbour plays music so loud."
+   },
+   {
+    "sentence": "Tengo miedo de que el perro ___ (morder) a alguien.",
+    "answer": "muerda",
+    "mood": "subjuntivo",
+    "trigger": "emoción: tengo miedo de que",
+    "english": "I'm afraid the dog will bite someone."
+   },
+   {
+    "sentence": "Siento mucho que ustedes no ___ (poder) venir.",
+    "answer": "puedan",
+    "mood": "subjuntivo",
+    "trigger": "emoción: siento que",
+    "english": "I'm very sorry you (all) can't come."
+   },
+   {
+    "sentence": "Espero que te ___ (gustar) el regalo.",
+    "answer": "guste",
+    "mood": "subjuntivo",
+    "trigger": "deseo: espero que",
+    "english": "I hope you like the present."
+   },
+   {
+    "sentence": "Es una lástima que ___ (hacer) tanto frío.",
+    "answer": "haga",
+    "mood": "subjuntivo",
+    "trigger": "emoción: es una lástima que",
+    "english": "It's a shame it's so cold."
+   },
+   {
+    "sentence": "Dudo que él ___ (saber) la respuesta.",
+    "answer": "sepa",
+    "mood": "subjuntivo",
+    "trigger": "duda: dudo que",
+    "english": "I doubt he knows the answer."
+   },
+   {
+    "sentence": "No creo que el examen ___ (ser) tan difícil.",
+    "answer": "sea",
+    "mood": "subjuntivo",
+    "trigger": "duda: no creo que",
+    "english": "I don't think the exam is that hard."
+   },
+   {
+    "sentence": "Es posible que nosotros ___ (ir) a Quito en diciembre.",
+    "answer": "vayamos",
+    "mood": "subjuntivo",
+    "trigger": "duda: es posible que",
+    "english": "We might go to Quito in December."
+   },
+   {
+    "sentence": "No es verdad que yo ___ (querer) irme.",
+    "answer": "quiera",
+    "mood": "subjuntivo",
+    "trigger": "negación: no es verdad que",
+    "english": "It's not true that I want to leave."
+   },
+   {
+    "sentence": "Te lo explico para que tú lo ___ (entender).",
+    "answer": "entiendas",
+    "mood": "subjuntivo",
+    "trigger": "finalidad: para que",
+    "english": "I'm explaining it so that you understand it."
+   },
+   {
+    "sentence": "Llámame cuando tú ___ (llegar) a casa.",
+    "answer": "llegues",
+    "mood": "subjuntivo",
+    "trigger": "futuro: cuando",
+    "english": "Call me when you get home."
+   },
+   {
+    "sentence": "Vamos a esperar hasta que ___ (terminar) la lluvia.",
+    "answer": "termine",
+    "mood": "subjuntivo",
+    "trigger": "futuro: hasta que",
+    "english": "Let's wait until the rain stops."
+   },
+   {
+    "sentence": "Limpia la casa antes de que ___ (venir) los invitados.",
+    "answer": "vengan",
+    "mood": "subjuntivo",
+    "trigger": "tiempo: antes de que",
+    "english": "Clean the house before the guests come."
+   },
+   {
+    "sentence": "Voy a salir sin que mis padres lo ___ (saber).",
+    "answer": "sepan",
+    "mood": "subjuntivo",
+    "trigger": "sin que",
+    "english": "I'm going to go out without my parents knowing."
+   },
+   {
+    "sentence": "Cuando yo ___ (tener) dinero, voy a viajar.",
+    "answer": "tenga",
+    "mood": "subjuntivo",
+    "trigger": "futuro: cuando",
+    "english": "When I have money, I'm going to travel."
+   },
+   {
+    "sentence": "Creo que él ___ (tener) razón.",
+    "answer": "tiene",
+    "mood": "indicativo",
+    "trigger": "certeza: creo que → indicativo",
+    "english": "I think he's right."
+   },
+   {
+    "sentence": "Es verdad que nosotros ___ (hablar) mucho.",
+    "answer": "hablamos",
+    "mood": "indicativo",
+    "trigger": "certeza: es verdad que → indicativo",
+    "english": "It's true that we talk a lot."
+   },
+   {
+    "sentence": "Sé que tú ___ (estar) cansado.",
+    "answer": "estás",
+    "mood": "indicativo",
+    "trigger": "certeza: sé que → indicativo",
+    "english": "I know you're tired."
+   },
+   {
+    "sentence": "Cuando yo ___ (tener) tiempo, siempre leo.",
+    "answer": "tengo",
+    "mood": "indicativo",
+    "trigger": "hábito: cuando + siempre → indicativo",
+    "english": "When I have time, I always read."
+   },
+   {
+    "sentence": "Pienso que hoy ___ (ir) a llover.",
+    "answer": "va",
+    "mood": "indicativo",
+    "trigger": "opinión afirmativa: pienso que → indicativo",
+    "english": "I think it's going to rain today."
+   },
+   {
+    "sentence": "Estoy seguro de que ellos ___ (venir) mañana.",
+    "answer": "vienen",
+    "mood": "indicativo",
+    "trigger": "certeza: estoy seguro de que → indicativo",
+    "english": "I'm sure they're coming tomorrow."
+   },
+   {
+    "sentence": "No dudo que ella ___ (saber) cocinar.",
+    "answer": "sabe",
+    "mood": "indicativo",
+    "trigger": "certeza: no dudo que → indicativo",
+    "english": "I don't doubt she knows how to cook."
+   },
+   {
+    "sentence": "Es obvio que tú ___ (querer) ganar.",
+    "answer": "quieres",
+    "mood": "indicativo",
+    "trigger": "certeza: es obvio que → indicativo",
+    "english": "It's obvious you want to win."
+   }
+  ]
+ }
+}
