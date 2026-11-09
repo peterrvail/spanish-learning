@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 import os
 
 import conversation
+import external
 import flashcards
 import grading
 import progress
@@ -38,10 +39,12 @@ DRILL_CATEGORIES = {
         ("📜 Pretérito irregular", "!drill preterito"),
         ("⏮ Pluscuamperfecto", "!drill pluscuam"),
         ("🔮 Futuro irregular", "!drill futuro"),
+        ("🤔 Condicional", "!drill condicional"),
         ("✅ Participios", "!drill participios"),
         ("📝 Ejercicio (homework)", "!drill ejercicio"),
     ],
     "Gramática": [
+        ("⚖️ Ser, estar y hay", "!drill ser_estar"),
         ("🔀 Pronombres dobles", "!drill pronombres"),
         ("↔️ Por vs. Para", "!drill por_para"),
         ("🧩 Otras preposiciones", "!drill preposiciones"),
@@ -59,6 +62,9 @@ DRILL_CATEGORIES = {
         ("🔢 Números", "!drill numeros"),
         ("🧭 Adverbios", "!drill adverbios"),
         ("📍 Lugares", "!drill lugares"),
+    ],
+    "🎧 Escuchar": [
+        ("🎧 Language Transfer", "!lt"),
     ],
     "👵 De mi Suegra": [
         ("🚂 Ir + Gerundio", "!drill gerundio"),
@@ -1012,6 +1018,53 @@ def get_estar_gerundio_drill_items(count=16):
     random.shuffle(items)
     return items[:count]
 
+_CONDITIONAL_PERSONS = [("yo", "ía"), ("tú", "ías"), ("él/ella/usted", "ía"), ("nosotros", "íamos"), ("ellos/ustedes", "ían")]
+
+def get_condicional_drill_items(count=15):
+    """Simple conditional (lessons 87-91): conjugated forms built the same way
+    as the future (infinitive or irregular future stem + -ía endings), plus
+    translations of the worked examples under each of its seven uses."""
+    cond = load_grammar("conditional_complete.json")["conditional_simple"]
+    regular = [v["infinitive"] for v in load_grammar("preterite_complete.json")["preterite_tense"]
+               ["regular_conjugation"]["common_regular_verbs"]]
+    items = []
+
+    def add(prompt, target, exercise_type, explanation):
+        items.append({"id": len(items), "prompt": prompt, "target_form": target,
+                      "exercise_type": exercise_type, "explanation": explanation})
+
+    for verb in random.sample(cond["irregular_stems"]["verbs"], 6):
+        person, ending = random.choice(_CONDITIONAL_PERSONS)
+        stem = verb["stem"].rstrip("-")
+        add(f"Condicional de '{verb['infinitive']}' — {person}", stem + ending, "condicional_irregular",
+            f"{verb['infinitive']} → {verb['stem']} (la misma raíz que el futuro) + -{ending} = {stem + ending}")
+    for infinitive in random.sample(regular, 4):
+        person, ending = random.choice(_CONDITIONAL_PERSONS)
+        add(f"Condicional de '{infinitive}' — {person}", infinitive + ending, "condicional_regular",
+            f"Regular: infinitivo completo + -{ending} = {infinitive + ending}")
+    examples = [(use, ex) for use in cond["uses"] for ex in use.get("examples", [])]
+    for use, ex in random.sample(examples, min(count - len(items), len(examples))):
+        add(f"Translate to Spanish (condicional — {use['name']}): {ex['english']}", ex["spanish"],
+            "condicional_uso", f"{ex['spanish']} — {ex.get('explanation', use['name'])}")
+    random.shuffle(items)
+    return items[:count]
+
+def get_ser_estar_drill_items(count=15):
+    """Ser, estar or hay in a sentence (lessons 8-10, 14), including the
+    adjectives whose meaning changes with the verb (ser listo / estar listo)."""
+    d = load_grammar("ser_estar.json")["ser_estar"]
+    items = []
+    for x in random.sample(d["sentences"], min(count, len(d["sentences"]))):
+        verb = "hay" if x["use"].startswith("HAY") else "estar" if x["use"].startswith("ESTAR") else "ser"
+        items.append({
+            "id": len(items),
+            "prompt": f"Ser, estar o hay: {x['sentence']}",
+            "target_form": x["answer"],
+            "exercise_type": f"ser_estar_{verb}",
+            "explanation": f"{x['sentence'].replace('___', x['answer'])} — {x['english']} ({x['use']})",
+        })
+    return items
+
 def get_ir_gerundio_drill_items(count=12):
     """Generate IR (conjugated) + gerundio drill items (action while in motion)."""
     data = load_grammar("ir_gerundio.json")
@@ -1216,7 +1269,8 @@ KNOWN_MODULES = {
     "preterito", "preterite", "pluscuamperfecto", "pluscuam", "ejercicio", "review111", "por_para",
     "porpara", "demostrativos", "distancias", "adverbios", "adjetivos", "numeros", "reflexivos",
     "participios", "futuro_irregular", "futuro", "estructuras", "preguntas", "lugares", "rutina",
-    "ir_gerundio", "gerundio", "estar_gerundio", "progresivo", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
+    "ir_gerundio", "gerundio", "estar_gerundio", "progresivo", "condicional", "conditional",
+    "ser_estar", "serestar", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
     "preposiciones",
 }
 
@@ -1262,6 +1316,10 @@ def _build_drill_items(module_type):
         return get_ir_gerundio_drill_items()
     elif module_type in ("estar_gerundio", "progresivo"):
         return get_estar_gerundio_drill_items()
+    elif module_type in ("condicional", "conditional"):
+        return get_condicional_drill_items()
+    elif module_type in ("ser_estar", "serestar"):
+        return get_ser_estar_drill_items()
     elif module_type == "vocabulario" or module_type == "comunes":
         return get_vocabulario_drill_items(source="mio")
     elif module_type == "vocab_comun":
@@ -1281,7 +1339,7 @@ def _build_drill_items(module_type):
 _MIXTO_MODULES = [
     "imperativo", "pronombres", "cambios", "pasado", "preterito", "pluscuam",
     "por_para", "demostrativos", "adjetivos", "reflexivos", "participios",
-    "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "indefinidos",
+    "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "condicional", "ser_estar", "indefinidos",
     "preposiciones", "adverbios", "lugares", "numeros", "vocabulario",
 ]
 
@@ -1731,6 +1789,17 @@ def get_module_concept(module_type):
         elif module_type in ("ir_gerundio", "gerundio"):
             d = load_grammar("ir_gerundio.json")["ir_gerundio"]
             return {"overview": d["overview"], "uses": d["meaning_and_use"]}
+        elif module_type in ("condicional", "conditional"):
+            d = load_grammar("conditional_complete.json")["conditional_simple"]
+            stems = ", ".join(f"{v['infinitive']} → {v['stem']}" for v in d["irregular_stems"]["verbs"])
+            uses = [{"name": "Formación", "description": f"{d['construction']['rule']}. {d['construction']['note']}"},
+                    {"name": "Raíces irregulares", "description": stems}] + d["uses"]
+            return {"overview": d["overview"], "uses": uses}
+        elif module_type in ("ser_estar", "serestar"):
+            d = load_grammar("ser_estar.json")["ser_estar"]
+            changes = "; ".join(f"{m['adjective']}: ser = {m['ser']}, estar = {m['estar']}" for m in d["meaning_change"])
+            uses = d["uses"] + [{"name": "Cambian de significado", "description": changes}]
+            return {"overview": d["overview"], "uses": uses}
         elif module_type in ("estar_gerundio", "progresivo"):
             d = load_grammar("estar_gerundio.json")["estar_gerundio"]
             uses = [{"name": "Formación (regular)", "description": f"{d['formation']['ar']}; {d['formation']['er_ir']}"}]
@@ -1776,7 +1845,19 @@ def _render_module_concept(module_type):
         en = example.get("english") or example.get("example_english")
         if sp:
             st.markdown(f"  *{sp}*" + (f" — {en}" if en else ""))
+    _render_lt_tracks(module_type)
     st.markdown("---")
+
+def _render_lt_tracks(module_type):
+    """Which Language Transfer tracks explain this module's grammar."""
+    try:
+        tracks = external.tracks_for_module(module_type)
+        links = external.load_lt()["_meta"]["links"]
+    except (OSError, ValueError, KeyError):
+        return
+    if tracks:
+        st.markdown(f"**🎧 Language Transfer:** pistas {external.ranges(tracks)} · "
+                    f"[notas por pista]({links['track_notes']}) · [curso]({links['course']})")
 
 def _render_repaso_entry(item, heading=None):
     """Render one item as a fully-visible bilingual explanation card — no
@@ -2194,6 +2275,54 @@ def run_tarjetas():
         st.session_state.pop("fc", None)
         st.rerun()
 
+def _lt_progress_file():
+    return external.progress_path(progress.db_path())
+
+def _toggle_lt_track(track, key):
+    """Checkbox callback: save the tick right away, so it survives a restart."""
+    path = _lt_progress_file()
+    done = external.load_done(path)
+    (done.add if st.session_state[key] else done.discard)(track)
+    if not external.save_done(path, done):
+        st.session_state["lt_save_failed"] = True
+
+def run_lt():
+    """Listening tracker for Language Transfer – Complete Spanish: the 90
+    tracks with the topics each teaches, ticked off as you listen. Ticks are
+    saved to data/progress/lt_progress.json, not just the session."""
+    st.title("🎧 Language Transfer")
+    data = external.load_lt()
+    links = data["_meta"]["links"]
+    done = external.load_done(_lt_progress_file())
+    tracks = data["tracks"]
+    nxt = external.next_track(done, len(tracks))
+    st.progress(len(done) / len(tracks))
+    st.markdown(f"**{len(done)} / {len(tracks)} pistas**" + (f" · siguiente: **{nxt}**" if nxt else " · ¡curso completo! 🎉"))
+    st.caption(f"[Curso gratis]({links['course']}) · [Notas por pista]({links['track_notes']}) · "
+               f"[Transcripción (PDF)]({links['transcript']})")
+    if st.session_state.pop("lt_save_failed", False):
+        st.warning("No se pudo guardar el progreso en el disco.")
+
+    gaps_only = st.toggle("Solo pistas con temas que tus clases aún no han visto")
+    if gaps_only:
+        st.caption("Para escuchar antes de que lleguen a clase: subjuntivo, 'would have', 'what if', se, gustar…")
+    for start in range(0, len(tracks), 10):
+        block = [t for t in tracks[start:start + 10] if not gaps_only or external.is_gap_track(t, data)]
+        if not block:
+            continue
+        first, last = tracks[start]["track"], tracks[min(start + 9, len(tracks) - 1)]["track"]
+        ticked = sum(1 for t in block if t["track"] in done)
+        with st.expander(f"Pistas {first}–{last} ({ticked}/{len(block)})", expanded=nxt is not None and first <= nxt <= last):
+            for t in block:
+                labels = external.topic_labels(t, data) or [t.get("kind", "")]
+                title = t["title"] or " · ".join(label for label in labels if label)
+                badge = " 🆕" if external.is_gap_track(t, data) else ""
+                key = f"lt_{t['track']}"
+                st.session_state[key] = t["track"] in done
+                st.checkbox(f"**{t['track']}** — {title}{badge}", key=key,
+                            on_change=_toggle_lt_track, args=(t["track"], key))
+    st.caption("🆕 = tema que tus clases todavía no han cubierto.")
+
 def _module_label(module):
     """'preterito' -> '📜 Pretérito irregular', using the menu's own labels."""
     for label, cmd in DRILL_COMMANDS:
@@ -2280,6 +2409,8 @@ def parse_command(command_input):
         return ("progreso", None)
     elif parts[0] == "!tarjetas":
         return ("tarjetas", None)
+    elif parts[0] == "!lt":
+        return ("lt", None)
 
     return None
 
@@ -2317,6 +2448,8 @@ def dispatch_command(command_str):
         run_progreso()
     elif command_type == "tarjetas":
         run_tarjetas()
+    elif command_type == "lt":
+        run_lt()
 
 def render_landing():
     st.markdown("""
