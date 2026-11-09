@@ -1,0 +1,604 @@
+{
+  "cognates": {
+    "source": "claude-draft: written for the app; Language Transfer tracks 2-5, 12",
+    "overview": "Miles de palabras inglesas se convierten en español con unas pocas reglas de sufijos: -tion se vuelve -ción, -ty se vuelve -dad y -ly se vuelve -mente. Así, nation es nación, university es universidad y rapidly es rápidamente. Muchas palabras casi no cambian (possible es posible), pero fíjate en los acentos y en el género de los sustantivos. Ojo con los falsos amigos: palabras que se parecen pero significan otra cosa, como embarazada (pregnant, no embarrassed). Si una palabra te suena demasiado parecida, comprueba su significado antes de usarla.",
+    "uses": [
+      {
+        "name": "-tion → -ción",
+        "description": "nation → nación, information → información, education → educación (femenino: la nación)"
+      },
+      {
+        "name": "-sion → -sión",
+        "description": "decision → decisión, television → televisión (femenino: la decisión)"
+      },
+      {
+        "name": "-ly → -mente",
+        "description": "rapidly → rápidamente, probably → probablemente. Se añade -mente al adjetivo y este conserva su acento."
+      },
+      {
+        "name": "-ty → -dad",
+        "description": "possibility → posibilidad, university → universidad (femenino: la universidad)"
+      },
+      {
+        "name": "-ble → -ble",
+        "description": "possible → posible, terrible → terrible, probable → probable"
+      },
+      {
+        "name": "-ant → -ante",
+        "description": "important → importante, distant → distante, elegant → elegante"
+      },
+      {
+        "name": "-ent → -ente",
+        "description": "different → diferente, intelligent → inteligente, excellent → excelente"
+      },
+      {
+        "name": "-ence → -encia",
+        "description": "patience → paciencia, experience → experiencia (femenino: la paciencia)"
+      },
+      {
+        "name": "-ance → -ancia",
+        "description": "importance → importancia, distance → distancia (femenino: la importancia)"
+      },
+      {
+        "name": "-ous → -oso",
+        "description": "famous → famoso, delicious → delicioso, nervous → nervioso (famosa en femenino)"
+      },
+      {
+        "name": "-ic → -ico",
+        "description": "public → público, fantastic → fantástico, economic → económico (con acento escrito)"
+      },
+      {
+        "name": "-ist → -ista",
+        "description": "artist → artista, tourist → turista (el artista / la artista)"
+      },
+      {
+        "name": "-ism → -ismo",
+        "description": "tourism → turismo, optimism → optimismo (masculino: el turismo)"
+      },
+      {
+        "name": "-ary → -ario",
+        "description": "dictionary → diccionario, necessary → necesario (masculino: el diccionario)"
+      },
+      {
+        "name": "-ize → -izar",
+        "description": "organize → organizar, analyze → analizar, modernize → modernizar"
+      },
+      {
+        "name": "-ify → -ificar",
+        "description": "classify → clasificar, identify → identificar, justify → justificar"
+      },
+      {
+        "name": "-ure → -ura",
+        "description": "culture → cultura, adventure → aventura (femenino: la cultura)"
+      },
+      {
+        "name": "-al → -al",
+        "description": "normal → normal, natural → natural, hospital → hospital (el hospital)"
+      },
+      {
+        "name": "Falsos amigos",
+        "description": "embarazada = pregnant; librería = bookshop; actualmente = currently; sensible = sensitive; carpeta = folder; éxito = success; realizar = to carry out; asistir = to attend; molestar = to bother; constipado = having a cold"
+      }
+    ],
+    "instructions": {
+      "classify": "¿Cognado verdadero o falso amigo?"
+    },
+    "translate": [
+      {
+        "english": "nation",
+        "spanish": "nación",
+        "note": "-tion → -ción",
+        "also_accepted": [
+          "la nación"
+        ]
+      },
+      {
+        "english": "information",
+        "spanish": "información",
+        "note": "-tion → -ción",
+        "also_accepted": [
+          "la información"
+        ]
+      },
+      {
+        "english": "education",
+        "spanish": "educación",
+        "note": "-tion → -ción",
+        "also_accepted": [
+          "la educación"
+        ]
+      },
+      {
+        "english": "decision",
+        "spanish": "decisión",
+        "note": "-sion → -sión",
+        "also_accepted": [
+          "la decisión"
+        ]
+      },
+      {
+        "english": "television",
+        "spanish": "televisión",
+        "note": "-sion → -sión",
+        "also_accepted": [
+          "la televisión"
+        ]
+      },
+      {
+        "english": "conclusion",
+        "spanish": "conclusión",
+        "note": "-sion → -sión",
+        "also_accepted": [
+          "la conclusión"
+        ]
+      },
+      {
+        "english": "rapidly",
+        "spanish": "rápidamente",
+        "note": "-ly → -mente",
+        "also_accepted": []
+      },
+      {
+        "english": "probably",
+        "spanish": "probablemente",
+        "note": "-ly → -mente",
+        "also_accepted": []
+      },
+      {
+        "english": "finally",
+        "spanish": "finalmente",
+        "note": "-ly → -mente",
+        "also_accepted": []
+      },
+      {
+        "english": "possibility",
+        "spanish": "posibilidad",
+        "note": "-ty → -dad",
+        "also_accepted": [
+          "la posibilidad"
+        ]
+      },
+      {
+        "english": "university",
+        "spanish": "universidad",
+        "note": "-ty → -dad",
+        "also_accepted": [
+          "la universidad"
+        ]
+      },
+      {
+        "english": "activity",
+        "spanish": "actividad",
+        "note": "-ty → -dad",
+        "also_accepted": [
+          "la actividad"
+        ]
+      },
+      {
+        "english": "possible",
+        "spanish": "posible",
+        "note": "-ble → -ble",
+        "also_accepted": []
+      },
+      {
+        "english": "terrible",
+        "spanish": "terrible",
+        "note": "-ble → -ble",
+        "also_accepted": []
+      },
+      {
+        "english": "probable",
+        "spanish": "probable",
+        "note": "-ble → -ble",
+        "also_accepted": []
+      },
+      {
+        "english": "important",
+        "spanish": "importante",
+        "note": "-ant → -ante",
+        "also_accepted": []
+      },
+      {
+        "english": "distant",
+        "spanish": "distante",
+        "note": "-ant → -ante",
+        "also_accepted": []
+      },
+      {
+        "english": "elegant",
+        "spanish": "elegante",
+        "note": "-ant → -ante",
+        "also_accepted": []
+      },
+      {
+        "english": "different",
+        "spanish": "diferente",
+        "note": "-ent → -ente",
+        "also_accepted": []
+      },
+      {
+        "english": "intelligent",
+        "spanish": "inteligente",
+        "note": "-ent → -ente",
+        "also_accepted": []
+      },
+      {
+        "english": "excellent",
+        "spanish": "excelente",
+        "note": "-ent → -ente",
+        "also_accepted": []
+      },
+      {
+        "english": "patience",
+        "spanish": "paciencia",
+        "note": "-ence → -encia",
+        "also_accepted": [
+          "la paciencia"
+        ]
+      },
+      {
+        "english": "experience",
+        "spanish": "experiencia",
+        "note": "-ence → -encia",
+        "also_accepted": [
+          "la experiencia"
+        ]
+      },
+      {
+        "english": "violence",
+        "spanish": "violencia",
+        "note": "-ence → -encia",
+        "also_accepted": [
+          "la violencia"
+        ]
+      },
+      {
+        "english": "importance",
+        "spanish": "importancia",
+        "note": "-ance → -ancia",
+        "also_accepted": [
+          "la importancia"
+        ]
+      },
+      {
+        "english": "distance",
+        "spanish": "distancia",
+        "note": "-ance → -ancia",
+        "also_accepted": [
+          "la distancia"
+        ]
+      },
+      {
+        "english": "ignorance",
+        "spanish": "ignorancia",
+        "note": "-ance → -ancia",
+        "also_accepted": [
+          "la ignorancia"
+        ]
+      },
+      {
+        "english": "famous",
+        "spanish": "famoso",
+        "note": "-ous → -oso",
+        "also_accepted": [
+          "famosa"
+        ]
+      },
+      {
+        "english": "delicious",
+        "spanish": "delicioso",
+        "note": "-ous → -oso",
+        "also_accepted": [
+          "deliciosa"
+        ]
+      },
+      {
+        "english": "nervous",
+        "spanish": "nervioso",
+        "note": "-ous → -oso",
+        "also_accepted": [
+          "nerviosa"
+        ]
+      },
+      {
+        "english": "curious",
+        "spanish": "curioso",
+        "note": "-ous → -oso",
+        "also_accepted": [
+          "curiosa"
+        ]
+      },
+      {
+        "english": "public",
+        "spanish": "público",
+        "note": "-ic → -ico",
+        "also_accepted": [
+          "pública"
+        ]
+      },
+      {
+        "english": "fantastic",
+        "spanish": "fantástico",
+        "note": "-ic → -ico",
+        "also_accepted": [
+          "fantástica"
+        ]
+      },
+      {
+        "english": "economic",
+        "spanish": "económico",
+        "note": "-ic → -ico",
+        "also_accepted": [
+          "económica"
+        ]
+      },
+      {
+        "english": "artist",
+        "spanish": "artista",
+        "note": "-ist → -ista",
+        "also_accepted": [
+          "el artista",
+          "la artista"
+        ]
+      },
+      {
+        "english": "tourist",
+        "spanish": "turista",
+        "note": "-ist → -ista",
+        "also_accepted": [
+          "el turista",
+          "la turista"
+        ]
+      },
+      {
+        "english": "optimist",
+        "spanish": "optimista",
+        "note": "-ist → -ista",
+        "also_accepted": [
+          "el optimista",
+          "la optimista"
+        ]
+      },
+      {
+        "english": "tourism",
+        "spanish": "turismo",
+        "note": "-ism → -ismo",
+        "also_accepted": [
+          "el turismo"
+        ]
+      },
+      {
+        "english": "optimism",
+        "spanish": "optimismo",
+        "note": "-ism → -ismo",
+        "also_accepted": [
+          "el optimismo"
+        ]
+      },
+      {
+        "english": "realism",
+        "spanish": "realismo",
+        "note": "-ism → -ismo",
+        "also_accepted": [
+          "el realismo"
+        ]
+      },
+      {
+        "english": "dictionary",
+        "spanish": "diccionario",
+        "note": "-ary → -ario",
+        "also_accepted": [
+          "el diccionario"
+        ]
+      },
+      {
+        "english": "necessary",
+        "spanish": "necesario",
+        "note": "-ary → -ario",
+        "also_accepted": [
+          "necesaria"
+        ]
+      },
+      {
+        "english": "vocabulary",
+        "spanish": "vocabulario",
+        "note": "-ary → -ario",
+        "also_accepted": [
+          "el vocabulario"
+        ]
+      },
+      {
+        "english": "organize",
+        "spanish": "organizar",
+        "note": "-ize → -izar",
+        "also_accepted": []
+      },
+      {
+        "english": "analyze",
+        "spanish": "analizar",
+        "note": "-ize → -izar",
+        "also_accepted": []
+      },
+      {
+        "english": "modernize",
+        "spanish": "modernizar",
+        "note": "-ize → -izar",
+        "also_accepted": []
+      },
+      {
+        "english": "classify",
+        "spanish": "clasificar",
+        "note": "-ify → -ificar",
+        "also_accepted": []
+      },
+      {
+        "english": "identify",
+        "spanish": "identificar",
+        "note": "-ify → -ificar",
+        "also_accepted": []
+      },
+      {
+        "english": "justify",
+        "spanish": "justificar",
+        "note": "-ify → -ificar",
+        "also_accepted": []
+      },
+      {
+        "english": "simplify",
+        "spanish": "simplificar",
+        "note": "-ify → -ificar",
+        "also_accepted": []
+      },
+      {
+        "english": "culture",
+        "spanish": "cultura",
+        "note": "-ure → -ura",
+        "also_accepted": [
+          "la cultura"
+        ]
+      },
+      {
+        "english": "adventure",
+        "spanish": "aventura",
+        "note": "-ure → -ura",
+        "also_accepted": [
+          "la aventura"
+        ]
+      },
+      {
+        "english": "temperature",
+        "spanish": "temperatura",
+        "note": "-ure → -ura",
+        "also_accepted": [
+          "la temperatura"
+        ]
+      },
+      {
+        "english": "normal",
+        "spanish": "normal",
+        "note": "-al → -al",
+        "also_accepted": []
+      },
+      {
+        "english": "natural",
+        "spanish": "natural",
+        "note": "-al → -al",
+        "also_accepted": []
+      },
+      {
+        "english": "hospital",
+        "spanish": "hospital",
+        "note": "-al → -al",
+        "also_accepted": [
+          "el hospital"
+        ]
+      }
+    ],
+    "labels": [
+      "cognado verdadero",
+      "falso amigo"
+    ],
+    "classify": [
+      {
+        "sentence": "embarazada = embarrassed?",
+        "answer": "falso amigo",
+        "why": "embarazada significa pregnant (encinta)"
+      },
+      {
+        "sentence": "librería = library?",
+        "answer": "falso amigo",
+        "why": "librería es bookshop/bookstore; library = biblioteca"
+      },
+      {
+        "sentence": "actualmente = actually?",
+        "answer": "falso amigo",
+        "why": "actualmente significa currently; actually = en realidad"
+      },
+      {
+        "sentence": "sensible = sensible?",
+        "answer": "falso amigo",
+        "why": "sensible significa sensitive; sensible = sensato"
+      },
+      {
+        "sentence": "carpeta = carpet?",
+        "answer": "falso amigo",
+        "why": "carpeta significa folder; carpet = alfombra"
+      },
+      {
+        "sentence": "éxito = exit?",
+        "answer": "falso amigo",
+        "why": "éxito significa success; exit = salida"
+      },
+      {
+        "sentence": "realizar = to realize?",
+        "answer": "falso amigo",
+        "why": "realizar significa to carry out; to realize = darse cuenta"
+      },
+      {
+        "sentence": "asistir = to assist?",
+        "answer": "falso amigo",
+        "why": "asistir a significa to attend; to assist = ayudar"
+      },
+      {
+        "sentence": "molestar = to molest?",
+        "answer": "falso amigo",
+        "why": "molestar significa to bother, to annoy"
+      },
+      {
+        "sentence": "constipado = constipated?",
+        "answer": "falso amigo",
+        "why": "estar constipado significa to have a cold; constipated = estreñido"
+      },
+      {
+        "sentence": "nación = nation?",
+        "answer": "cognado verdadero",
+        "why": "nación = nation"
+      },
+      {
+        "sentence": "famoso = famous?",
+        "answer": "cognado verdadero",
+        "why": "famoso = famous"
+      },
+      {
+        "sentence": "importante = important?",
+        "answer": "cognado verdadero",
+        "why": "importante = important"
+      },
+      {
+        "sentence": "diferente = different?",
+        "answer": "cognado verdadero",
+        "why": "diferente = different"
+      },
+      {
+        "sentence": "universidad = university?",
+        "answer": "cognado verdadero",
+        "why": "universidad = university"
+      },
+      {
+        "sentence": "posibilidad = possibility?",
+        "answer": "cognado verdadero",
+        "why": "posibilidad = possibility"
+      },
+      {
+        "sentence": "público = public?",
+        "answer": "cognado verdadero",
+        "why": "público = public"
+      },
+      {
+        "sentence": "cultura = culture?",
+        "answer": "cognado verdadero",
+        "why": "cultura = culture"
+      },
+      {
+        "sentence": "organizar = to organize?",
+        "answer": "cognado verdadero",
+        "why": "organizar = to organize"
+      },
+      {
+        "sentence": "diccionario = dictionary?",
+        "answer": "cognado verdadero",
+        "why": "diccionario = dictionary"
+      }
+    ]
+  }
+}

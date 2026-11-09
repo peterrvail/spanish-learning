@@ -1,0 +1,437 @@
+{
+  "si_clauses": {
+    "source": "claude-draft: written for the app; Language Transfer track 78 (if-clauses); builds on preterite (lessons 37-45, 111-115) and conditional (lessons 87-91)",
+    "overview": "Las frases con si expresan una condición y su resultado. Cuando la condición es real o probable, usamos si + presente en la condición y presente, futuro o imperativo en el resultado. Cuando la condición es hipotética (poco probable o contraria a la realidad), usamos si + imperfecto de subjuntivo y el condicional en el resultado: Si tuviera dinero, viajaría por el mundo. Para lo que ya no se puede cambiar en el pasado, usamos si + pluscuamperfecto de subjuntivo y el condicional perfecto. Nunca se usa el presente de subjuntivo ni el condicional después de si.",
+    "uses": [
+      {
+        "name": "Condición real o probable",
+        "description": "Si + presente → presente, futuro o imperativo. Es algo que puede pasar de verdad: Si llueve, me quedo en casa / me quedaré en casa / quédate en casa."
+      },
+      {
+        "name": "Condición hipotética (el objetivo principal)",
+        "description": "Si + imperfecto de subjuntivo → condicional. Imaginamos algo irreal o poco probable en el presente o el futuro: Si tuviera dinero, viajaría por el mundo."
+      },
+      {
+        "name": "Condición imposible en el pasado",
+        "description": "Si + pluscuamperfecto de subjuntivo (hubiera + participio) → condicional perfecto (habría + participio): Si hubiera estudiado, habría aprobado. Ya no se puede cambiar."
+      },
+      {
+        "name": "Cómo formar el imperfecto de subjuntivo",
+        "description": "Toma el pretérito de ellos, quita -ron y añade -ra, -ras, -ra, -ramos, -ran. Tuvieron → tuviera, tuvieras, tuviera, tuviéramos, tuvieran. Fueron → fuera; pudieron → pudiera; hicieron → hiciera; dijeron → dijera; supieron → supiera; estuvieron → estuviera. Ya conoces el pretérito (lecciones 37-45, 111-115) y el condicional simple (lecciones 87-91): aquí se combinan. Ojo con el acento en nosotros: tuviéramos, fuéramos, pudiéramos."
+      },
+      {
+        "name": "La forma en -se es equivalente",
+        "description": "Además de -ra existe la terminación -se (-se, -ses, -se, -semos, -sen) con el mismo significado: Si tuviese dinero, viajaría por el mundo. En la conversación se usa más la forma en -ra."
+      },
+      {
+        "name": "Nunca si + condicional ni si + presente de subjuntivo",
+        "description": "Después de si no va el condicional ni el presente de subjuntivo. Incorrecto: Si tendría dinero, viajaría. / Si tenga dinero, viajaré. Correcto: Si tuviera dinero, viajaría. El condicional va solo en la parte del resultado."
+      }
+    ],
+    "instructions": {
+      "fill_in": "Completa la frase con si",
+      "classify": "¿Qué tipo de condición es?"
+    },
+    "labels": [
+      "real (si + presente)",
+      "hipotética (si + imperfecto de subjuntivo)",
+      "imposible en el pasado (si + pluscuamperfecto)"
+    ],
+    "fill_in": [
+      {
+        "sentence": "Si yo ___ (tener) más tiempo, aprendería a tocar la guitarra.",
+        "answer": "tuviera",
+        "also_accepted": [
+          "tuviese"
+        ],
+        "english": "If I had more time, I would learn to play the guitar."
+      },
+      {
+        "sentence": "Si tuviera dinero, ___ (viajar) por el mundo.",
+        "answer": "viajaría",
+        "english": "If I had money, I would travel the world."
+      },
+      {
+        "sentence": "Si nosotros ___ (ser) ricos, compraríamos una casa en la playa.",
+        "answer": "fuéramos",
+        "also_accepted": [
+          "fuésemos"
+        ],
+        "english": "If we were rich, we would buy a house on the beach.",
+        "note": "nosotros takes an accent: fuéramos"
+      },
+      {
+        "sentence": "Si tú ___ (ir) a Quito conmigo, te mostraría el centro histórico.",
+        "answer": "fueras",
+        "also_accepted": [
+          "fueses"
+        ],
+        "english": "If you went to Quito with me, I would show you the historic center.",
+        "note": "ir uses the same preterite stem as ser: fueron → fuera"
+      },
+      {
+        "sentence": "Si ellos ___ (poder), vendrían a la fiesta.",
+        "answer": "pudieran",
+        "also_accepted": [
+          "pudiesen"
+        ],
+        "english": "If they could, they would come to the party."
+      },
+      {
+        "sentence": "Si yo ___ (saber) cocinar, prepararía la cena todas las noches.",
+        "answer": "supiera",
+        "also_accepted": [
+          "supiese"
+        ],
+        "english": "If I knew how to cook, I would make dinner every night."
+      },
+      {
+        "sentence": "Si ella ___ (hacer) más ejercicio, se sentiría mejor.",
+        "answer": "hiciera",
+        "also_accepted": [
+          "hiciese"
+        ],
+        "english": "If she did more exercise, she would feel better."
+      },
+      {
+        "sentence": "Si tú me ___ (decir) la verdad, no me enojaría.",
+        "answer": "dijeras",
+        "also_accepted": [
+          "dijeses"
+        ],
+        "english": "If you told me the truth, I would not get angry.",
+        "note": "dijeron → dijera (no i before -ra)"
+      },
+      {
+        "sentence": "Si yo ___ (estar) en tu lugar, hablaría con el jefe.",
+        "answer": "estuviera",
+        "also_accepted": [
+          "estuviese"
+        ],
+        "english": "If I were in your place, I would talk to the boss."
+      },
+      {
+        "sentence": "Si tú ___ (querer), podrías cambiar de trabajo.",
+        "answer": "quisieras",
+        "also_accepted": [
+          "quisieses"
+        ],
+        "english": "If you wanted to, you could change jobs."
+      },
+      {
+        "sentence": "Si Pedro ___ (venir) hoy, podríamos terminar el proyecto.",
+        "answer": "viniera",
+        "also_accepted": [
+          "viniese"
+        ],
+        "english": "If Pedro came today, we could finish the project."
+      },
+      {
+        "sentence": "Si tuviera más tiempo, ___ (aprender) japonés.",
+        "answer": "aprendería",
+        "english": "If I had more time, I would learn Japanese."
+      },
+      {
+        "sentence": "Si ganáramos la lotería, ___ (dejar, nosotros) de trabajar.",
+        "answer": "dejaríamos",
+        "english": "If we won the lottery, we would stop working.",
+        "note": "the main clause takes the conditional: -íamos"
+      },
+      {
+        "sentence": "Si yo fuera tú, ___ (aceptar) la oferta.",
+        "answer": "aceptaría",
+        "english": "If I were you, I would accept the offer."
+      },
+      {
+        "sentence": "Si ellos tuvieran un coche, ___ (viajar) más.",
+        "answer": "viajarían",
+        "english": "If they had a car, they would travel more."
+      },
+      {
+        "sentence": "Si ustedes ___ (hablar) más despacio, los entendería mejor.",
+        "answer": "hablaran",
+        "also_accepted": [
+          "hablasen"
+        ],
+        "english": "If you (all) spoke more slowly, I would understand you better."
+      },
+      {
+        "sentence": "Si vivieras cerca, te ___ (visitar, yo) todos los días.",
+        "answer": "visitaría",
+        "english": "If you lived nearby, I would visit you every day."
+      },
+      {
+        "sentence": "Si Ana ___ (poder) elegir, se quedaría en casa.",
+        "answer": "pudiera",
+        "also_accepted": [
+          "pudiese"
+        ],
+        "english": "If Ana could choose, she would stay home."
+      },
+      {
+        "sentence": "Si no hiciera tanto frío, ___ (salir, nosotros) a caminar.",
+        "answer": "saldríamos",
+        "english": "If it were not so cold, we would go out for a walk.",
+        "note": "salir has an irregular conditional stem: saldr-"
+      },
+      {
+        "sentence": "Si nosotros ___ (tener) un jardín más grande, tendríamos un perro.",
+        "answer": "tuviéramos",
+        "also_accepted": [
+          "tuviésemos"
+        ],
+        "english": "If we had a bigger garden, we would have a dog.",
+        "note": "nosotros takes an accent: tuviéramos"
+      },
+      {
+        "sentence": "Si mañana ___ (llover), me quedo en casa.",
+        "answer": "llueve",
+        "english": "If it rains tomorrow, I stay home.",
+        "note": "real condition: si + presente, not the imperfect subjunctive"
+      },
+      {
+        "sentence": "Si tienes tiempo mañana, ___ (ir, nosotros) al cine.",
+        "answer": "iremos",
+        "also_accepted": [
+          "vamos"
+        ],
+        "english": "If you have time tomorrow, we will go to the cinema.",
+        "note": "real condition: the result is the future or the present"
+      },
+      {
+        "sentence": "Si no ___ (venir, tú) a la fiesta, Marta se pondrá triste.",
+        "answer": "vienes",
+        "english": "If you do not come to the party, Marta will be sad.",
+        "note": "real condition: si + presente"
+      },
+      {
+        "sentence": "Si estás cansado, ___ (descansar, tú) un rato.",
+        "answer": "descansa",
+        "english": "If you are tired, rest for a while.",
+        "note": "real condition: the result can be an imperative"
+      },
+      {
+        "sentence": "Si ellos ___ (saber) la respuesta, te la dirán.",
+        "answer": "saben",
+        "english": "If they know the answer, they will tell you.",
+        "note": "real condition: si + presente"
+      },
+      {
+        "sentence": "Si yo ___ (estudiar) más, habría aprobado el examen.",
+        "answer": "hubiera estudiado",
+        "also_accepted": [
+          "hubiese estudiado"
+        ],
+        "english": "If I had studied more, I would have passed the exam.",
+        "note": "impossible past: si + pluscuamperfecto de subjuntivo"
+      },
+      {
+        "sentence": "Si hubiéramos salido más temprano, ___ (llegar, nosotros) a tiempo.",
+        "answer": "habríamos llegado",
+        "english": "If we had left earlier, we would have arrived on time.",
+        "note": "conditional perfect: habría + participio",
+        "also_accepted": [
+          "hubiéramos llegado",
+          "hubiésemos llegado"
+        ]
+      },
+      {
+        "sentence": "Si ella ___ (decir) la verdad, no habría pasado nada.",
+        "answer": "hubiera dicho",
+        "also_accepted": [
+          "hubiese dicho"
+        ],
+        "english": "If she had told the truth, nothing would have happened.",
+        "note": "decir has an irregular participle: dicho"
+      },
+      {
+        "sentence": "Si ustedes me hubieran avisado, yo ___ (venir) con ustedes.",
+        "answer": "habría venido",
+        "english": "If you (all) had let me know, I would have come with you.",
+        "note": "conditional perfect: habría + participio",
+        "also_accepted": [
+          "hubiera venido",
+          "hubiese venido"
+        ]
+      }
+    ],
+    "translate": [
+      {
+        "english": "If I had money, I would travel the world.",
+        "spanish": "Si tuviera dinero, viajaría por el mundo.",
+        "also_accepted": [
+          "Si tuviese dinero, viajaría por el mundo.",
+          "Viajaría por el mundo si tuviera dinero.",
+          "Viajaría por el mundo si tuviese dinero.",
+          "Si yo tuviera dinero, viajaría por el mundo."
+        ]
+      },
+      {
+        "english": "If it rains, I will stay home.",
+        "spanish": "Si llueve, me quedaré en casa.",
+        "also_accepted": [
+          "Me quedaré en casa si llueve.",
+          "Si llueve, me quedo en casa.",
+          "Me quedo en casa si llueve."
+        ]
+      },
+      {
+        "english": "If I were you, I would talk to her.",
+        "spanish": "Si yo fuera tú, hablaría con ella.",
+        "also_accepted": [
+          "Si fuera tú, hablaría con ella.",
+          "Si yo fuese tú, hablaría con ella.",
+          "Si fuese tú, hablaría con ella.",
+          "Hablaría con ella si yo fuera tú.",
+          "Hablaría con ella si fuera tú."
+        ]
+      },
+      {
+        "english": "If we could, we would come.",
+        "spanish": "Si pudiéramos, vendríamos.",
+        "also_accepted": [
+          "Si pudiésemos, vendríamos.",
+          "Vendríamos si pudiéramos.",
+          "Vendríamos si pudiésemos."
+        ]
+      },
+      {
+        "english": "If I had studied, I would have passed.",
+        "spanish": "Si hubiera estudiado, habría aprobado.",
+        "also_accepted": [
+          "Si hubiese estudiado, habría aprobado.",
+          "Habría aprobado si hubiera estudiado.",
+          "Habría aprobado si hubiese estudiado."
+        ]
+      },
+      {
+        "english": "If you knew the answer, you would tell me.",
+        "spanish": "Si supieras la respuesta, me la dirías.",
+        "also_accepted": [
+          "Si supieses la respuesta, me la dirías.",
+          "Me la dirías si supieras la respuesta.",
+          "Me dirías la respuesta si supieras.",
+          "Si tú supieras la respuesta, me la dirías."
+        ]
+      },
+      {
+        "english": "If she did more exercise, she would feel better.",
+        "spanish": "Si hiciera más ejercicio, se sentiría mejor.",
+        "also_accepted": [
+          "Si hiciese más ejercicio, se sentiría mejor.",
+          "Se sentiría mejor si hiciera más ejercicio.",
+          "Se sentiría mejor si hiciese más ejercicio.",
+          "Si ella hiciera más ejercicio, se sentiría mejor."
+        ]
+      },
+      {
+        "english": "If they were here, we would be happier.",
+        "spanish": "Si ellos estuvieran aquí, estaríamos más contentos.",
+        "also_accepted": [
+          "Si estuvieran aquí, estaríamos más contentos.",
+          "Si estuviesen aquí, estaríamos más contentos.",
+          "Estaríamos más contentos si estuvieran aquí.",
+          "Si ellos estuvieran aquí, estaríamos más felices."
+        ]
+      },
+      {
+        "english": "If you call me, I will come.",
+        "spanish": "Si me llamas, iré.",
+        "also_accepted": [
+          "Si me llamas, voy.",
+          "Iré si me llamas.",
+          "Voy si me llamas.",
+          "Si me llamas, vendré."
+        ]
+      },
+      {
+        "english": "If we had left earlier, we would have arrived on time.",
+        "spanish": "Si hubiéramos salido más temprano, habríamos llegado a tiempo.",
+        "also_accepted": [
+          "Si hubiésemos salido más temprano, habríamos llegado a tiempo.",
+          "Habríamos llegado a tiempo si hubiéramos salido más temprano.",
+          "Habríamos llegado a tiempo si hubiésemos salido más temprano."
+        ]
+      },
+      {
+        "english": "If I knew how to cook, I would make dinner every day.",
+        "spanish": "Si supiera cocinar, prepararía la cena todos los días.",
+        "also_accepted": [
+          "Si supiese cocinar, prepararía la cena todos los días.",
+          "Prepararía la cena todos los días si supiera cocinar.",
+          "Si yo supiera cocinar, prepararía la cena todos los días.",
+          "Si supiera cocinar, haría la cena todos los días."
+        ]
+      },
+      {
+        "english": "If he said that, I would not believe him.",
+        "spanish": "Si él dijera eso, no le creería.",
+        "also_accepted": [
+          "Si dijera eso, no le creería.",
+          "Si él dijese eso, no le creería.",
+          "Si dijese eso, no le creería.",
+          "No le creería si él dijera eso.",
+          "No le creería si dijera eso."
+        ]
+      },
+      {
+        "english": "If you (all) wanted to, we could go out tonight.",
+        "spanish": "Si ustedes quisieran, podríamos salir esta noche.",
+        "also_accepted": [
+          "Si quisieran, podríamos salir esta noche.",
+          "Si ustedes quisiesen, podríamos salir esta noche.",
+          "Si quisiesen, podríamos salir esta noche.",
+          "Podríamos salir esta noche si ustedes quisieran.",
+          "Podríamos salir esta noche si quisieran."
+        ]
+      }
+    ],
+    "classify": [
+      {
+        "sentence": "Si tienes hambre, come algo.",
+        "answer": "real (si + presente)",
+        "why": "Si + presente con un imperativo en el resultado: es una situación real."
+      },
+      {
+        "sentence": "Si estudio hoy, mañana tendré más tiempo libre.",
+        "answer": "real (si + presente)",
+        "why": "Si + presente → futuro: la condición es posible y probable."
+      },
+      {
+        "sentence": "Si llego temprano, te llamo.",
+        "answer": "real (si + presente)",
+        "why": "Si + presente → presente: condición real."
+      },
+      {
+        "sentence": "Si fuéramos más jóvenes, viviríamos en otro país.",
+        "answer": "hipotética (si + imperfecto de subjuntivo)",
+        "why": "Fuéramos es imperfecto de subjuntivo y viviríamos es condicional: algo irreal en el presente."
+      },
+      {
+        "sentence": "Si ella tuviera tiempo, nos ayudaría.",
+        "answer": "hipotética (si + imperfecto de subjuntivo)",
+        "why": "Si + imperfecto de subjuntivo → condicional: no tiene tiempo ahora."
+      },
+      {
+        "sentence": "Si pudieras elegir, ¿adónde irías?",
+        "answer": "hipotética (si + imperfecto de subjuntivo)",
+        "why": "Pudieras es imperfecto de subjuntivo e irías es condicional: imaginamos una situación."
+      },
+      {
+        "sentence": "Si hubieras llamado, te habríamos ayudado.",
+        "answer": "imposible en el pasado (si + pluscuamperfecto)",
+        "why": "Hubieras llamado es pluscuamperfecto de subjuntivo y habríamos ayudado es condicional perfecto: ya pasó."
+      },
+      {
+        "sentence": "Si no hubiera llovido, habríamos ido a la playa.",
+        "answer": "imposible en el pasado (si + pluscuamperfecto)",
+        "why": "Hubiera + participio y habríamos + participio: es imposible cambiar lo que pasó."
+      },
+      {
+        "sentence": "Si lo hubiera sabido, te lo habría dicho.",
+        "answer": "imposible en el pasado (si + pluscuamperfecto)",
+        "why": "Pluscuamperfecto de subjuntivo → condicional perfecto: no lo supo en ese momento."
+      }
+    ]
+  }
+}

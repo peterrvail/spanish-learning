@@ -10,6 +10,7 @@ import os
 import conversation
 import external
 import flashcards
+import pattern_modules
 import grading
 import progress
 import importlib
@@ -33,7 +34,7 @@ def _reload_stale_modules(*modules):
 
 
 # conversation before grading, which imports from it.
-_reload_stale_modules(conversation, grading, external, flashcards, progress)
+_reload_stale_modules(conversation, grading, external, flashcards, pattern_modules, progress)
 
 # Load data
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
@@ -62,7 +63,6 @@ DRILL_CATEGORIES = {
         ("⏮ Pluscuamperfecto", "!drill pluscuam"),
         ("🔮 Futuro irregular", "!drill futuro"),
         ("🤔 Condicional", "!drill condicional"),
-        ("🌱 Subjuntivo presente", "!drill subjuntivo"),
         ("✅ Participios", "!drill participios"),
         ("📝 Ejercicio (homework)", "!drill ejercicio"),
     ],
@@ -87,6 +87,10 @@ DRILL_CATEGORIES = {
         ("🧭 Adverbios", "!drill adverbios"),
         ("📍 Lugares", "!drill lugares"),
     ],
+    # Topics Language Transfer teaches that the lessons haven't reached yet.
+    "🚀 Adelantado (aún no en clase)": [
+        ("🌱 Subjuntivo presente", "!drill subjuntivo"),
+    ] + [(spec["label"], f"!drill {module}") for module, spec in pattern_modules.MODULES.items()],
     "🎧 Escuchar": [
         ("🎧 Language Transfer", "!lt"),
     ],
@@ -120,6 +124,7 @@ MODULE_DURATIONS = {
     "estar_gerundio": 420,  # 16 items, some 3-word answers (habíamos estado corriendo)
     "subjuntivo": 420,      # 16 items, 10 of them sentences to read
     "gustar": 420,          # 15 items, 7 of them whole sentences to type
+    "se": 420, "relativos": 420, "cond_perfecto": 420, "si_hipotetico": 420,
     "progresivo": 420,
     "numeros": 180,
     "adjetivos": 180,
@@ -1361,7 +1366,7 @@ KNOWN_MODULES = {
     "participios", "futuro_irregular", "futuro", "estructuras", "preguntas", "lugares", "rutina",
     "ir_gerundio", "gerundio", "estar_gerundio", "progresivo", "condicional", "conditional",
     "ser_estar", "serestar", "subjuntivo", "subjunctive",
-    "gustar", "gustar_verbos", "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
+    "gustar", "gustar_verbos", *pattern_modules.MODULES, "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
     "preposiciones",
 }
 
@@ -1415,6 +1420,8 @@ def _build_drill_items(module_type):
         return get_subjuntivo_drill_items()
     elif module_type in ("gustar", "gustar_verbos"):
         return get_gustar_drill_items()
+    elif module_type in pattern_modules.MODULES:
+        return pattern_modules.items(module_type)
     elif module_type == "vocabulario" or module_type == "comunes":
         return get_vocabulario_drill_items(source="mio")
     elif module_type == "vocab_comun":
@@ -1434,7 +1441,7 @@ def _build_drill_items(module_type):
 _MIXTO_MODULES = [
     "imperativo", "pronombres", "cambios", "pasado", "preterito", "pluscuam",
     "por_para", "demostrativos", "adjetivos", "reflexivos", "participios",
-    "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "condicional", "ser_estar", "subjuntivo", "gustar", "indefinidos",
+    "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "condicional", "ser_estar", "subjuntivo", "gustar", *pattern_modules.MODULES, "indefinidos",
     "preposiciones", "adverbios", "lugares", "numeros", "vocabulario",
 ]
 
@@ -1473,7 +1480,8 @@ def _add_recognition_variants(items, fraction=0.3):
 
     Distractors only come from the same module, so a mixed review queue
     ('fallos') never offers a number as a wrong answer to a verb question."""
-    candidates = [it for it in items if len(it["target_form"].split()) <= 3]
+    # Items that bring their own options (e.g. "which kind of se?") keep them.
+    candidates = [it for it in items if len(it["target_form"].split()) <= 3 and not it.get("choices")]
     forms_by_module = {}
     for it in candidates:
         forms_by_module.setdefault(it.get("module"), []).append(it["target_form"])
@@ -1890,6 +1898,8 @@ def get_module_concept(module_type):
             uses = [{"name": "Formación", "description": f"{d['construction']['rule']}. {d['construction']['note']}"},
                     {"name": "Raíces irregulares", "description": stems}] + d["uses"]
             return {"overview": d["overview"], "uses": uses}
+        elif module_type in pattern_modules.MODULES:
+            return pattern_modules.concept(module_type)
         elif module_type in ("gustar", "gustar_verbos"):
             d = load_grammar("gustar_verbs.json")["gustar_verbs"]
             pronouns = ", ".join(f"{p['emphasis']} → {p['pronoun']}" for p in d["pronouns"])

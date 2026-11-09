@@ -1,0 +1,347 @@
+{
+  "se_constructions": {
+    "source": "claude-draft: written for the app; Language Transfer tracks 47, 80",
+    "overview": "La palabra «se» tiene varios usos en español. Con un pronombre de objeto indirecto (me, te, le, nos, les) expresa que algo pasó sin querer: «se me olvidó la llave». Sin persona concreta, sirve para hablar en general: «se vive bien aquí» o «se venden casas». Además, «se» puede ser reflexivo («se lava las manos»), recíproco («se quieren mucho») o reemplazar a «le» antes de «lo/la/los/las» («se lo di a mi madre»). Para elegir bien, fíjate en quién hace la acción y con qué concuerda el verbo.",
+    "uses": [
+      {
+        "name": "Se accidental (se + me/te/le/nos/les)",
+        "description": "Se usa para acciones que ocurren sin querer: olvidos, pérdidas, roturas. El verbo concuerda con la COSA, no con la persona: «Se me olvidó la llave» / «Se me olvidaron las llaves». Lo viste en la lección 19 con «se me olvidó» y «se me perdió»."
+      },
+      {
+        "name": "Más ejemplos de se accidental",
+        "description": "El pronombre indica a quién le pasó: «Se le cayó el vaso» (a él/ella/usted), «Se nos acabó la leche» (a nosotros), «Se te quedó el paraguas» (a ti), «Se les escapó el gato» (a ellos). También: «Se me ocurrió una idea»."
+      },
+      {
+        "name": "Se impersonal",
+        "description": "Habla de una acción en general, sin decir quién la hace. El verbo va en tercera persona del singular: «Se vive bien aquí», «No se puede fumar» (lección 69), «Se dice que va a llover» (lección 70)."
+      },
+      {
+        "name": "Pregunta con se: ¿Cómo se dice...?",
+        "description": "Es un uso impersonal muy útil en clase y de viaje: «¿Cómo se dice «window» en español?» (lo viste en la lección 2). También: «¿Cómo se escribe?», «¿Cómo se pronuncia?»."
+      },
+      {
+        "name": "Se pasivo",
+        "description": "Se + verbo, y el verbo concuerda con la cosa que es el sujeto: «Se vende una casa» / «Se venden casas», «Se habla español», «Se busca camarero», «Se alquilan habitaciones», «Se necesitan voluntarios». Es común en anuncios y carteles."
+      },
+      {
+        "name": "Se reflexivo y se recíproco",
+        "description": "Reflexivo: la persona se hace la acción a sí misma: «Ella se lava las manos». Recíproco: varias personas se hacen la acción entre sí: «Se quieren mucho», «Se escriben todos los días». No son construcciones accidentales ni impersonales."
+      },
+      {
+        "name": "Se = le / les antes de lo, la, los, las",
+        "description": "Cuando «le» o «les» aparece junto a «lo/la/los/las», cambia a «se» para evitar «le lo»: «Se lo di a mi madre» (= le di el regalo). Aquí «se» no tiene significado propio; solo es el objeto indirecto."
+      }
+    ],
+    "instructions": {
+      "fill_in": "Completa con la forma de se correcta",
+      "classify": "¿Qué tipo de «se» es?"
+    },
+    "fill_in": [
+      {
+        "sentence": "A mí ___ (olvidar) las llaves ayer.",
+        "answer": "se me olvidaron",
+        "english": "I forgot my keys yesterday.",
+        "note": "the verb agrees with the keys (plural)"
+      },
+      {
+        "sentence": "A Luis ___ (caer) el vaso anoche.",
+        "answer": "se le cayó",
+        "english": "Luis dropped the glass last night.",
+        "note": "le = a Luis; the glass is singular"
+      },
+      {
+        "sentence": "A nosotros ___ (acabar) la leche esta mañana.",
+        "answer": "se nos acabó",
+        "english": "We ran out of milk this morning."
+      },
+      {
+        "sentence": "A ti ___ (romper) el teléfono ayer.",
+        "answer": "se te rompió",
+        "english": "Your phone broke yesterday."
+      },
+      {
+        "sentence": "A mí ___ (perder) el pasaporte durante el viaje.",
+        "answer": "se me perdió",
+        "english": "I lost my passport during the trip."
+      },
+      {
+        "sentence": "A ellos ___ (quedar) los boletos en casa esta mañana.",
+        "answer": "se les quedaron",
+        "english": "They left the tickets at home this morning.",
+        "note": "boletos is plural"
+      },
+      {
+        "sentence": "A Marta ___ (escapar) el gato ayer.",
+        "answer": "se le escapó",
+        "english": "Marta's cat got away yesterday."
+      },
+      {
+        "sentence": "A mí ___ (ocurrir) una idea anoche.",
+        "answer": "se me ocurrió",
+        "english": "An idea occurred to me last night."
+      },
+      {
+        "sentence": "A ustedes ___ (olvidar) los documentos esta mañana.",
+        "answer": "se les olvidaron",
+        "english": "You (pl.) forgot the documents this morning."
+      },
+      {
+        "sentence": "A mí siempre ___ (olvidar) las contraseñas.",
+        "answer": "se me olvidan",
+        "english": "I always forget my passwords.",
+        "note": "present tense; contraseñas is plural"
+      },
+      {
+        "sentence": "A mi hermano siempre ___ (caer) las cosas.",
+        "answer": "se le caen",
+        "english": "My brother always drops things."
+      },
+      {
+        "sentence": "A nosotros siempre ___ (acabar) el dinero antes de fin de mes.",
+        "answer": "se nos acaba",
+        "english": "We always run out of money before the end of the month.",
+        "note": "present tense; dinero is singular"
+      },
+      {
+        "sentence": "A Ana ___ (romper) los lentes anoche.",
+        "answer": "se le rompieron",
+        "english": "Ana broke her glasses last night."
+      },
+      {
+        "sentence": "A mí ___ (perder) las llaves del carro el lunes.",
+        "answer": "se me perdieron",
+        "english": "I lost my car keys on Monday."
+      },
+      {
+        "sentence": "A los niños ___ (caer) el helado al suelo ayer.",
+        "answer": "se les cayó",
+        "english": "The children dropped their ice cream on the floor yesterday.",
+        "note": "the verb agrees with el helado (singular)"
+      },
+      {
+        "sentence": "A ti ___ (quedar) el paraguas en la oficina ayer.",
+        "answer": "se te quedó",
+        "english": "You left your umbrella at the office yesterday."
+      },
+      {
+        "sentence": "A mi madre nunca ___ (olvidar) los cumpleaños.",
+        "answer": "se le olvidan",
+        "english": "My mother never forgets birthdays.",
+        "note": "present tense; cumpleaños is plural"
+      },
+      {
+        "sentence": "A mí ___ (acabar) la paciencia ayer.",
+        "answer": "se me acabó",
+        "english": "I ran out of patience yesterday."
+      },
+      {
+        "sentence": "En Ecuador ___ (comer) mucho arroz.",
+        "answer": "se come",
+        "english": "In Ecuador a lot of rice is eaten.",
+        "note": "mucho arroz is singular"
+      },
+      {
+        "sentence": "___ (vender) casas en este barrio.",
+        "answer": "se venden",
+        "english": "Houses are sold in this neighborhood.",
+        "note": "the verb agrees with casas (plural)"
+      },
+      {
+        "sentence": "En esta tienda ___ (hablar) inglés.",
+        "answer": "se habla",
+        "english": "English is spoken in this store."
+      },
+      {
+        "sentence": "___ (buscar) camarero con experiencia.",
+        "answer": "se busca",
+        "english": "Experienced waiter wanted."
+      },
+      {
+        "sentence": "___ (alquilar) habitaciones cerca del centro.",
+        "answer": "se alquilan",
+        "english": "Rooms for rent near the center."
+      },
+      {
+        "sentence": "___ (necesitar) voluntarios para el festival.",
+        "answer": "se necesitan",
+        "english": "Volunteers are needed for the festival."
+      },
+      {
+        "sentence": "Aquí no ___ (poder) fumar.",
+        "answer": "se puede",
+        "english": "You can't smoke here.",
+        "note": "impersonal se: always third person singular"
+      },
+      {
+        "sentence": "En esta ciudad ___ (vivir) muy bien.",
+        "answer": "se vive",
+        "english": "In this city you live very well."
+      },
+      {
+        "sentence": "¿Cómo ___ (decir) «please» en español?",
+        "answer": "se dice",
+        "english": "How do you say \"please\" in Spanish?"
+      },
+      {
+        "sentence": "___ (decir) que va a llover mañana.",
+        "answer": "se dice",
+        "english": "They say it is going to rain tomorrow."
+      },
+      {
+        "sentence": "En la panadería ___ (vender) pan fresco todos los días.",
+        "answer": "se vende",
+        "english": "Fresh bread is sold at the bakery every day."
+      },
+      {
+        "sentence": "___ (reparar) computadoras en este local.",
+        "answer": "se reparan",
+        "english": "Computers are repaired at this shop."
+      }
+    ],
+    "translate": [
+      {
+        "english": "I forgot my keys. (use se)",
+        "spanish": "Se me olvidaron las llaves.",
+        "also_accepted": [
+          "A mí se me olvidaron las llaves.",
+          "Se me olvidaron mis llaves."
+        ]
+      },
+      {
+        "english": "Juan dropped the glass. (use se)",
+        "spanish": "Se le cayó el vaso a Juan.",
+        "also_accepted": [
+          "A Juan se le cayó el vaso."
+        ]
+      },
+      {
+        "english": "We ran out of milk. (use se)",
+        "spanish": "Se nos acabó la leche.",
+        "also_accepted": [
+          "A nosotros se nos acabó la leche."
+        ]
+      },
+      {
+        "english": "My phone broke. (use se)",
+        "spanish": "Se me rompió el teléfono.",
+        "also_accepted": [
+          "A mí se me rompió el teléfono.",
+          "Se me rompió el celular.",
+          "Se me rompió mi teléfono."
+        ]
+      },
+      {
+        "english": "I lost my wallet. (use se)",
+        "spanish": "Se me perdió la billetera.",
+        "also_accepted": [
+          "A mí se me perdió la billetera.",
+          "Se me perdió mi billetera."
+        ]
+      },
+      {
+        "english": "An idea occurred to me. (use se)",
+        "spanish": "Se me ocurrió una idea.",
+        "also_accepted": [
+          "A mí se me ocurrió una idea."
+        ]
+      },
+      {
+        "english": "Spanish is spoken here. (use se)",
+        "spanish": "Aquí se habla español.",
+        "also_accepted": [
+          "Se habla español aquí."
+        ]
+      },
+      {
+        "english": "Houses are sold in this neighborhood. (use se)",
+        "spanish": "En este barrio se venden casas.",
+        "also_accepted": [
+          "Se venden casas en este barrio."
+        ]
+      },
+      {
+        "english": "You can't smoke here. (use se)",
+        "spanish": "No se puede fumar aquí.",
+        "also_accepted": [
+          "Aquí no se puede fumar."
+        ]
+      },
+      {
+        "english": "How do you say it in Spanish? (use se)",
+        "spanish": "¿Cómo se dice en español?",
+        "also_accepted": [
+          "¿En español cómo se dice?"
+        ]
+      },
+      {
+        "english": "They say that the exam is difficult. (use se)",
+        "spanish": "Se dice que el examen es difícil.",
+        "also_accepted": []
+      },
+      {
+        "english": "Waiters are needed. (use se)",
+        "spanish": "Se necesitan camareros.",
+        "also_accepted": []
+      }
+    ],
+    "labels": [
+      "accidental (se me…)",
+      "impersonal o pasiva (se + 3ª persona)",
+      "reflexivo (a uno mismo)",
+      "recíproco (uno al otro)",
+      "se = le (se lo…)"
+    ],
+    "classify": [
+      {
+        "sentence": "Se me perdieron los lentes.",
+        "answer": "accidental (se me…)",
+        "why": "«se me» + verbo que concuerda con la cosa: algo pasó sin querer."
+      },
+      {
+        "sentence": "A Pedro se le olvidó la cita.",
+        "answer": "accidental (se me…)",
+        "why": "«se le» indica a quién le pasó; fue un olvido sin querer."
+      },
+      {
+        "sentence": "Se venden carros usados.",
+        "answer": "impersonal o pasiva (se + 3ª persona)",
+        "why": "No hay persona concreta y el verbo concuerda con «carros»."
+      },
+      {
+        "sentence": "No se puede entrar.",
+        "answer": "impersonal o pasiva (se + 3ª persona)",
+        "why": "Habla en general (nadie en particular); el verbo va en tercera persona del singular."
+      },
+      {
+        "sentence": "Mi padre se lava las manos antes de comer.",
+        "answer": "reflexivo (a uno mismo)",
+        "why": "El sujeto se hace la acción a sí mismo."
+      },
+      {
+        "sentence": "Ella se levanta a las seis.",
+        "answer": "reflexivo (a uno mismo)",
+        "why": "Ella se levanta a sí misma: acción reflexiva."
+      },
+      {
+        "sentence": "Mis abuelos se quieren mucho.",
+        "answer": "recíproco (uno al otro)",
+        "why": "Los dos se quieren el uno al otro."
+      },
+      {
+        "sentence": "Ana y Pablo se escriben todos los días.",
+        "answer": "recíproco (uno al otro)",
+        "why": "Ana le escribe a Pablo y Pablo a Ana."
+      },
+      {
+        "sentence": "Se lo di a mi madre.",
+        "answer": "se = le (se lo…)",
+        "why": "«Se» sustituye a «le» antes de «lo»: le di algo a mi madre."
+      },
+      {
+        "sentence": "Se la expliqué a los estudiantes.",
+        "answer": "se = le (se lo…)",
+        "why": "«Se» sustituye a «les» antes de «la»: les expliqué la lección."
+      }
+    ]
+  }
+}
