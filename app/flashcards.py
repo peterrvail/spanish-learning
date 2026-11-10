@@ -190,11 +190,24 @@ def decks(cards):
     return out
 
 
-def quiz_item(card, split_alternates):
+def same_meaning(cards, split_alternates):
+    """(category, english) -> every Spanish form given for it. Some English
+    prompts have more than one card ("me too": yo también / a mí también),
+    and either answer is right."""
+    index = {}
+    for c in cards:
+        forms = index.setdefault((c["category"], c["english"]), [])
+        forms.extend(f for f in split_alternates(c["spanish"]) if f not in forms)
+    return index
+
+
+def quiz_item(card, split_alternates, same=None):
     """The card as a typed English→Spanish drill item, which is what goes into
     the spaced-repetition log: a missed card comes back in "!drill fallos" as
-    a question to type, not just to flip."""
+    a question to type, not just to flip. `same` is same_meaning()'s index,
+    so the other cards' answers to the same prompt count too."""
     forms = split_alternates(card["spanish"])
+    forms += [f for f in (same or {}).get((card["category"], card["english"]), []) if f not in forms]
     return {
         "prompt": f"Translate to Spanish ({card['category']}): {card['english']}",
         "target_form": forms[0],
