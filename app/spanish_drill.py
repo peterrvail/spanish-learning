@@ -1736,7 +1736,11 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                         st.form_submit_button(ch, **FULL_WIDTH,
                                               on_click=_append_accent, args=(answer_key, ch))
 
-        if submitted:
+        if submitted and not user_answer.strip():
+            # An accidental Enter on an empty box is not an answer; "No sé" is
+            # how to give up on a question.
+            st.warning("Escribe o elige una respuesta primero (o pulsa 🤷 No sé).")
+        elif submitted:
             is_correct, matched_form, needs_accent_fix = check_answer(user_answer, item)
             review, unavailable = None, False
             if not is_correct and user_answer.strip() and grading.eligible(item) and _chat_available():

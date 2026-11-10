@@ -1001,3 +1001,27 @@ def test_changing_duration_mid_drill_keeps_its_length(db):
     assert at.session_state["drill_active"]
     assert not any("Complete" in t.value for t in at.success)
     assert not at.exception
+
+
+def test_blank_submit_is_not_counted(db):
+    at = _app()
+    item = _start_typed_drill(at, "numeros")
+    next(b for b in at.button if "Submit" in b.label).click()
+    at.run()
+    assert at.session_state["answers"] == []
+    assert any("No sé" in w.value for w in at.warning)
+    assert at.text_input(key=f"answer_{item['id']}") is not None  # still on the question
+    assert progress.due_count() == 0
+
+
+def test_blank_multiple_choice_submit_is_not_counted(db):
+    at = _app()
+    at.session_state["active_command"] = "!drill numeros"
+    at.run()
+    for it in at.session_state["drill_items"]:
+        it["choices"] = [it["target_form"], "otra"]
+    at.run()
+    next(b for b in at.button if "Submit" in b.label).click()
+    at.run()
+    assert at.session_state["answers"] == []
+    assert not at.exception
