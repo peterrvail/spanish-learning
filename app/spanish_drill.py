@@ -445,10 +445,10 @@ def accepted_forms_for(item):
 def check_answer(user_answer, item):
     """Grade an answer against every accepted form for this item.
 
-    Returns (is_correct, matched_form, needs_accent_fix). Accents and
-    punctuation are forgiven so a missing tilde isn't scored as a wrong
-    answer, but the match is reported back so the drill can still show the
-    correctly accented spelling instead of quietly teaching the wrong one."""
+    Returns (is_correct, matched_form, needs_accent_fix). An answer that is
+    right apart from its accents matches here with needs_accent_fix set; the
+    drill scores that as a miss (a tilde can change the word: hablo / habló)
+    and shows the correctly accented spelling."""
     accepted = accepted_forms_for(item)
     typed = user_answer.strip()
     if not typed:
@@ -1692,6 +1692,9 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                     st.caption("💡 Con pista — volverá a salir en el repaso espaciado.")
             else:
                 st.error(f"❌ Incorrect. The correct form is: '{pending['target_form']}'")
+                if pending.get("accent_fix"):
+                    st.warning(f"✍️ Solo te faltó la tilde: se escribe **{pending['accent_fix']}**. "
+                               "La tilde cambia la palabra (hablo / habló), así que cuenta como fallo.")
                 diff = grading.word_diff(pending.get("user_answer", ""), pending["target_form"])
                 if diff:
                     st.markdown(f"🔍 {diff}")
@@ -1742,8 +1745,12 @@ def run_drill(module_type="imperativo", duration_seconds=None):
             st.warning("Escribe o elige una respuesta primero (o pulsa 🤷 No sé).")
         elif submitted:
             is_correct, matched_form, needs_accent_fix = check_answer(user_answer, item)
+            # A missing accent can be a different word or tense (hablo / habló),
+            # so it counts as a miss; the feedback still shows the right spelling.
+            if needs_accent_fix:
+                is_correct = False
             review, unavailable = None, False
-            if not is_correct and user_answer.strip() and grading.eligible(item) and _chat_available():
+            if not is_correct and not needs_accent_fix and grading.eligible(item) and _chat_available():
                 review = _claude_review(item, user_answer)
                 unavailable = review is None
                 if review:
@@ -2305,12 +2312,20 @@ def run_resumen():
     which items to go back and review."""
     st.title("📋 Resumen de la Sesión")
 
-    if not st.session_state.get("drill_active") or not st.session_state.get("answers"):
+    if not st.session_state.get("drill_active"):
         st.info(
             "Todavía no has respondido ninguna pregunta en esta sesión. "
             "Empieza un drill con `!drill [módulo]`, contesta algunas "
             "preguntas, y luego escribe `!resumen` para ver tu progreso."
         )
+        return
+    if not st.session_state.get("answers"):
+        # A drill is running but nothing is answered yet: say so, and keep the
+        # way back to it (otherwise only the sidebar is left, which ends it).
+        st.info("Todavía no has respondido ninguna pregunta de este drill.")
+        if st.button("▶️ Volver al drill"):
+            st.session_state.active_command = f"!drill {st.session_state.drill_module}"
+            st.rerun()
         return
 
     _pause_drill()
@@ -2346,10 +2361,16 @@ def run_resumen():
 _DIRECTIONS = {"Español → inglés": "es_en", "Inglés → español": "en_es", "Mezcla": "mix"}
 _DECK_SIZES = {"10": 10, "20": 20, "30": 30, "Todas": 0}
 
-def _card_quiz_item(card, cards):
+@st.cache_resource
+def _same_meaning_index():
+    """Built once per server process rather than on every flashcard tap."""
+    return flashcards.same_meaning(flashcards.load_cards(), split_alternates)
+
+
+def _card_quiz_item(card):
     """The card as a typed review item that also accepts the other cards'
     answers to the same English prompt."""
-    return flashcards.quiz_item(card, split_alternates, flashcards.same_meaning(cards.values(), split_alternates))
+    return flashcards.quiz_item(card, split_alternates, _same_meaning_index())
 
 
 def _start_flashcards(card_ids, direction):
@@ -2433,14 +2454,14 @@ def run_tarjetas():
 
     again, knew = st.container(key="row_fc_grade").columns(2)
     if again.button("🔁 Otra vez", **FULL_WIDTH):
-        progress.record_attempt(_card_quiz_item(card, cards), False)
+        progress.record_attempt(_card_quiz_item(card), False)
         if card["id"] not in session["missed"]:
             session["missed"].append(card["id"])
         flashcards.requeue(queue, 0)
         session["flips"] += 1
         st.rerun()
     if knew.button("✅ Lo sabía", **FULL_WIDTH):
-        progress.record_attempt(_card_quiz_item(card, cards), True)
+        progress.record_attempt(_card_quiz_item(card), True)
         queue.pop(0)
         session["done"] += 1
         session["flips"] += 1

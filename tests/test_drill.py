@@ -1078,3 +1078,44 @@ def test_redo_missed_flashcards_keeps_mixed_direction(db):
     at.run()
     assert at.session_state["fc"]["direction"] == "mix"
     assert not at.exception
+
+
+def test_answering_again_refreshes_the_stored_review_item(db):
+    old = {"prompt": "p", "target_form": "yo también"}
+    progress.record_attempt(old, False)
+    progress.record_attempt(dict(old, accepted_forms=["yo también", "a mí también"]), False)
+    assert progress.due_items()[0]["accepted_forms"] == ["yo también", "a mí también"]
+
+
+def test_backup_with_rows_that_are_not_records_gets_a_readable_error(db):
+    with pytest.raises(ValueError, match="fecha"):
+        progress.import_backup({"app": "spanish-learning", "attempts": ["x"]})
+
+
+def test_missing_accent_counts_as_a_miss_and_shows_the_spelling(db):
+    at = _app()
+    _start_typed_drill(at, "preterito")
+    items = at.session_state["drill_items"]
+    item = dict(items[0], target_form="habló", accepted_forms=["habló"], also_accepted=[])
+    items[0] = item
+    at.run()
+    plain = "hablo"
+    at.text_input(key=f"answer_{item['id']}").set_value(plain)
+    next(b for b in at.button if "Submit" in b.label).click()
+    at.run()
+    assert at.session_state["answers"][0]["is_correct"] is False
+    assert any("tilde" in w.value for w in at.warning)
+    assert progress.due_count() == 1
+
+
+def test_resumen_before_any_answer_keeps_the_way_back(db):
+    at = _app()
+    at.session_state["active_command"] = "!drill numeros"
+    at.run()
+    next(b for b in at.button if "Resumen" in b.label).click()
+    at.run()
+    next(b for b in at.button if "Volver al drill" in b.label).click()
+    at.run()
+    assert at.session_state["drill_module"] == "numeros" and at.session_state["drill_active"]
+    assert at.session_state["active_command"] == "!drill numeros"
+    assert not at.exception

@@ -85,6 +85,8 @@ def record_attempt(item, is_correct, module=None, now=None):
             row = conn.execute("SELECT box, misses FROM cards WHERE key=?", (key,)).fetchone()
             box, misses = (row["box"], row["misses"]) if row else (0, 0)
             # A first-ever correct answer starts in box 0 and moves to box 1.
+            # The stored item is refreshed on every attempt, so a card saved
+            # before the app learned more right answers picks them up.
             new_box, due = next_state(box, bool(is_correct), now)
             stored = {k: item[k] for k in _ITEM_FIELDS if k in item}
             if item.get("fixed_choices"):
@@ -92,8 +94,8 @@ def record_attempt(item, is_correct, module=None, now=None):
             stored["module"] = module
             conn.execute(
                 """INSERT INTO cards (key, item_json, box, due, attempts, misses) VALUES (?,?,?,?,1,?)
-                   ON CONFLICT(key) DO UPDATE SET box=excluded.box, due=excluded.due,
-                   attempts=attempts+1, misses=misses+excluded.misses""",
+                   ON CONFLICT(key) DO UPDATE SET item_json=excluded.item_json, box=excluded.box,
+                   due=excluded.due, attempts=attempts+1, misses=misses+excluded.misses""",
                 (key, json.dumps(stored, ensure_ascii=False), new_box, due.isoformat(), 0 if is_correct else 1),
             )
         return True
@@ -242,10 +244,11 @@ def _check_backup_dates(data):
     one bad date in the log would otherwise break the progress page later."""
     for what, rows, field in (("intento", data.get("attempts", []), "ts"), ("tarjeta", data.get("cards", []), "due")):
         for row in rows:
+            value = row.get(field) if isinstance(row, dict) else None
             try:
-                datetime.fromisoformat(row[field])
+                datetime.fromisoformat(value)
             except (TypeError, ValueError):
-                raise ValueError(f"Hay un {what} con una fecha que no se puede leer: {row[field]!r}") from None
+                raise ValueError(f"Hay un {what} con una fecha que no se puede leer: {value!r}") from None
 
 
 def import_backup(data):
