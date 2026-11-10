@@ -1025,3 +1025,56 @@ def test_blank_multiple_choice_submit_is_not_counted(db):
     at.run()
     assert at.session_state["answers"] == []
     assert not at.exception
+
+
+def test_backup_with_unreadable_date_is_refused_and_stats_survive_bad_rows(db):
+    bad = {"app": "spanish-learning", "attempts": [{"ts": "garbage", "target_form": "x", "is_correct": 1}]}
+    with pytest.raises(ValueError):
+        progress.import_backup(bad)
+    assert progress.stats()["total"] == 0  # nothing was stored
+    # A bad row already in the log is skipped, not a crash.
+    import sqlite3
+    with sqlite3.connect(progress.db_path()) as conn:
+        conn.execute("INSERT INTO attempts (ts, target_form, is_correct) VALUES ('garbage', 'x', 1)")
+    assert progress.stats() is not None
+
+
+def test_flashcard_review_item_accepts_other_cards_for_same_prompt():
+    cards = [
+        {"id": "a", "category": "frases", "english": "me too", "spanish": "yo también", "deck": "d"},
+        {"id": "b", "category": "frases", "english": "me too", "spanish": "a mí también", "deck": "d"},
+    ]
+    same = flashcards.same_meaning(cards, sd.split_alternates)
+    item = flashcards.quiz_item(cards[0], sd.split_alternates, same)
+    assert item["target_form"] == "yo también"
+    assert sd.check_answer("a mí también", item)[0]
+    # The review card's identity doesn't change.
+    assert progress.card_key(item) == progress.card_key(flashcards.quiz_item(cards[0], sd.split_alternates))
+
+
+def test_unexpected_api_error_becomes_chat_error():
+    anthropic = pytest.importorskip("anthropic")
+
+    class Client:
+        class beta:
+            class messages:
+                @staticmethod
+                def stream(**kw):
+                    raise anthropic.APIError("boom", None, body=None)
+
+    with pytest.raises(conversation.ChatError):
+        list(conversation.stream_reply(Client, "s", [{"role": "user", "content": "hola"}], {}))
+
+
+def test_redo_missed_flashcards_keeps_mixed_direction(db):
+    at = _app()
+    at.session_state["active_command"] = "!tarjetas"
+    at.run()
+    cid = next(iter(flashcards.load_cards()))["id"]
+    at.session_state["fc"] = {"direction": "mix", "queue": [], "dirs": {cid: "es_en"}, "missed": [cid],
+                              "done": 1, "total": 1, "flips": 0}
+    at.run()
+    next(b for b in at.button if "Otra vez las falladas" in b.label).click()
+    at.run()
+    assert at.session_state["fc"]["direction"] == "mix"
+    assert not at.exception

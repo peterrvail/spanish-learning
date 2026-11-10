@@ -2238,6 +2238,7 @@ def _render_chat(conv_key, system):
     if history and st.button("🧹 Nueva conversación"):
         st.session_state.pop(conv_key, None)
         st.rerun()
+    prompt = (prompt or "").strip()
     if not prompt:
         return
 
@@ -2345,8 +2346,15 @@ def run_resumen():
 _DIRECTIONS = {"Español → inglés": "es_en", "Inglés → español": "en_es", "Mezcla": "mix"}
 _DECK_SIZES = {"10": 10, "20": 20, "30": 30, "Todas": 0}
 
+def _card_quiz_item(card, cards):
+    """The card as a typed review item that also accepts the other cards'
+    answers to the same English prompt."""
+    return flashcards.quiz_item(card, split_alternates, flashcards.same_meaning(cards.values(), split_alternates))
+
+
 def _start_flashcards(card_ids, direction):
     st.session_state.fc = {
+        "direction": direction,  # as chosen, so a redo of the missed cards keeps "mix"
         "queue": list(card_ids),
         "dirs": {cid: (random.choice(["es_en", "en_es"]) if direction == "mix" else direction) for cid in card_ids},
         "missed": [],        # ids marked "otra vez" at least once, in order
@@ -2379,7 +2387,9 @@ def run_tarjetas():
             lo, hi = st.slider("Lecciones", first, last, (max(first, last - 9), last))
             pool = [c for c in pool if c["lesson_num"] is not None and lo <= c["lesson_num"] < hi + 1]
             chosen = list(counts)
-            st.caption(f"{len(pool)} palabras y frases aparecieron por primera vez en las lecciones {lo}–{hi}.")
+            undated = sum(1 for c in cards.values() if c["lesson_num"] is None)
+            st.caption(f"{len(pool)} palabras y frases aparecieron por primera vez en las lecciones {lo}–{hi}."
+                       + (f" ({undated} sin número de lección están en «Tema».)" if undated else ""))
         c1, c2 = st.container(key="row_fc_setup").columns(2)
         direction = c1.radio("Dirección", list(_DIRECTIONS), index=0)
         size = c2.radio("Tarjetas", list(_DECK_SIZES), index=1, horizontal=True)
@@ -2404,8 +2414,8 @@ def run_tarjetas():
                     st.markdown(f"- **{cards[cid]['spanish']}** — {cards[cid]['english']}")
         a, b = st.container(key="row_fc_end").columns(2)
         if missed and a.button(f"🔁 Otra vez las falladas ({len(missed)})", **FULL_WIDTH):
-            _start_flashcards([cid for cid in missed if cid in cards],
-                              "mix" if len(set(session["dirs"].values())) > 1 else next(iter(session["dirs"].values())))
+            _start_flashcards([cid for cid in missed if cid in cards], session.get("direction") or
+                              ("mix" if len(set(session["dirs"].values())) > 1 else next(iter(session["dirs"].values()))))
             st.rerun()
         if b.button("🃏 Nuevo mazo", **FULL_WIDTH):
             st.session_state.pop("fc", None)
@@ -2423,14 +2433,14 @@ def run_tarjetas():
 
     again, knew = st.container(key="row_fc_grade").columns(2)
     if again.button("🔁 Otra vez", **FULL_WIDTH):
-        progress.record_attempt(flashcards.quiz_item(card, split_alternates), False)
+        progress.record_attempt(_card_quiz_item(card, cards), False)
         if card["id"] not in session["missed"]:
             session["missed"].append(card["id"])
         flashcards.requeue(queue, 0)
         session["flips"] += 1
         st.rerun()
     if knew.button("✅ Lo sabía", **FULL_WIDTH):
-        progress.record_attempt(flashcards.quiz_item(card, split_alternates), True)
+        progress.record_attempt(_card_quiz_item(card, cards), True)
         queue.pop(0)
         session["done"] += 1
         session["flips"] += 1

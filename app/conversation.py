@@ -108,6 +108,9 @@ def stream_reply(client, system, history, result):
         raise ChatError(f"Error de la API de Claude ({e.status_code}). Inténtalo de nuevo.")
     except anthropic.APIConnectionError:
         raise ChatError("No hay conexión con la API de Claude. Comprueba tu conexión a internet.")
+    except anthropic.APIError:
+        # Anything else the SDK raises (e.g. an error event mid-stream).
+        raise ChatError("La API de Claude devolvió un error. Inténtalo de nuevo.")
     except TypeError as e:
         # The SDK has no typed error for "no credentials at all" (e.g. a stale
         # ~/.config/anthropic folder made credentials_configured() say yes).

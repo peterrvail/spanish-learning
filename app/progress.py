@@ -183,7 +183,10 @@ def stats(now=None, window_days=14):
     by_module, per_day = {}, {}
     week, prev_week = [0, 0], [0, 0]
     for ts, module, ok in rows:
-        day = datetime.fromisoformat(ts).date()
+        try:
+            day = datetime.fromisoformat(ts).date()
+        except (TypeError, ValueError):
+            continue  # an unreadable row must not take the whole page down
         per_day[day] = per_day.get(day, 0) + 1
         m = by_module.setdefault(module or "otros", [0, 0, day])
         m[0] += ok
@@ -234,6 +237,17 @@ def export_backup(extra=None, now=None):
             "attempts": attempts, "cards": cards, **(extra or {})}
 
 
+def _check_backup_dates(data):
+    """Reject a backup whose dates can't be read before anything is stored:
+    one bad date in the log would otherwise break the progress page later."""
+    for what, rows, field in (("intento", data.get("attempts", []), "ts"), ("tarjeta", data.get("cards", []), "due")):
+        for row in rows:
+            try:
+                datetime.fromisoformat(row[field])
+            except (TypeError, ValueError):
+                raise ValueError(f"Hay un {what} con una fecha que no se puede leer: {row[field]!r}") from None
+
+
 def import_backup(data):
     """Merge a backup into the database. Attempts already present (same
     time, item and result) are skipped; for a card in both, the one with
@@ -241,6 +255,7 @@ def import_backup(data):
     progress. Returns (attempts added, cards added or updated)."""
     if not isinstance(data, dict) or data.get("app") != "spanish-learning":
         raise ValueError("Este archivo no es una copia de seguridad de la app.")
+    _check_backup_dates(data)
     added_attempts = changed_cards = 0
     with _connect() as conn:
         existing = {(r["ts"], r["target_form"], r["is_correct"]) for r in
