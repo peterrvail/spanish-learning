@@ -3,6 +3,7 @@ import difflib
 import json
 import random
 import re
+import sqlite3
 import unicodedata
 from datetime import datetime, timedelta
 import os
@@ -258,9 +259,18 @@ def inject_responsive_css():
         unsafe_allow_html=True,
     )
 
+# Commands that act on the drill in progress, so must not end it.
+_DRILL_COMMANDS_KEEPING_DRILL = ("!pausa", "!resumen")
+
+
+def _keeps_drill(cmd):
+    return cmd.split(" ", 1)[0].lower() in _DRILL_COMMANDS_KEEPING_DRILL
+
+
 def _set_active_command(cmd):
     st.session_state.active_command = cmd
-    st.session_state.drill_active = False
+    if not _keeps_drill(cmd):
+        st.session_state.drill_active = False
     st.rerun()
 
 def _on_typed_command(key):
@@ -271,7 +281,8 @@ def _on_typed_command(key):
     cmd = st.session_state.get(key, "").strip()
     if cmd:
         st.session_state.active_command = cmd
-        st.session_state.drill_active = False
+        if not _keeps_drill(cmd):
+            st.session_state.drill_active = False
     st.session_state[key] = ""
 
 def _render_button_grid(commands, columns, key_prefix):
@@ -1567,6 +1578,10 @@ def run_drill(module_type="imperativo", duration_seconds=None):
 
     if duration_seconds is None:
         duration_seconds = drill_duration(module_type, st.session_state.get("duration_override"))
+    # A drill keeps the length it started with: changing Duración mid-drill
+    # applies to the next drill, instead of ending this one on the spot.
+    if st.session_state.drill_active and st.session_state.get("drill_duration_s"):
+        duration_seconds = st.session_state.drill_duration_s
 
     if st.session_state.drill_active:
         _resume_drill()  # back from Pausa/Resumen, where the clock was stopped
@@ -1582,6 +1597,8 @@ def run_drill(module_type="imperativo", duration_seconds=None):
         st.session_state.drill_active = True
         st.session_state.drill_module = module_type
         st.session_state.drill_start_time = datetime.now()
+        st.session_state.drill_duration_s = duration_seconds
+        _clear_question_state()
         st.session_state.drill_items = get_drill_items(module_type)
         st.session_state.current_item_index = 0
         st.session_state.answers = []
@@ -1747,6 +1764,18 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                 _record_answer(item, "", False, revealed=True)
                 st.rerun()
 
+# Per-question keys. Question ids restart at 0 in every drill, so without
+# clearing these a hint or a half-typed answer from the last drill would show
+# up on the first questions of the next one.
+_QUESTION_KEY_PREFIXES = ("hint_level_", "answer_", "choice_")
+
+
+def _clear_question_state():
+    for key in list(st.session_state.keys()):
+        if isinstance(key, str) and key.startswith(_QUESTION_KEY_PREFIXES):
+            del st.session_state[key]
+
+
 ACCENT_KEYS = ["á", "é", "í", "ó", "ú", "ñ", "ü", "¿", "¡"]
 
 def _append_accent(answer_key, ch):
@@ -1769,9 +1798,9 @@ def make_hint(target, level):
 
 def _claude_review(item, answer):
     """Claude's verdict on a sentence that missed the model answer, cached per
-    (model answer, typed answer) so a repeat answer costs no second call."""
+    (question, model answer, typed answer) so a repeat answer costs no second call."""
     cache = st.session_state.setdefault("ai_verdicts", {})
-    key = (item["target_form"], _normalize_for_grading(_loose(answer)))
+    key = (item.get("prompt", ""), item["target_form"], _normalize_for_grading(_loose(answer)))
     if key not in cache:
         with st.spinner("Revisando tu frase con Claude…"):
             verdict = grading.judge(conversation.get_client(_anthropic_secret()), item, answer)
@@ -2489,7 +2518,7 @@ def _render_backup(empty):
                     # Rerun so the stats on this page include what was just restored.
                     st.session_state.backup_message = f"✅ Restaurado: {added} intentos y {cards} tarjetas de repaso."
                     st.rerun()
-                except (ValueError, KeyError, TypeError) as e:
+                except (ValueError, KeyError, TypeError, AttributeError, sqlite3.Error) as e:
                     st.error(f"No se pudo restaurar: {e}")
 
 def run_progreso():
