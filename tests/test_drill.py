@@ -185,6 +185,24 @@ def test_accent_button_keeps_typed_text(db):
     assert at.session_state["answers"] == []  # an accent tap is not a submission
 
 
+def test_new_drill_starts_without_last_drills_hint_or_text(db):
+    # Question ids restart at 0 in every drill, so a hint or half-typed answer
+    # must not carry over to the next drill's first question.
+    at = _app()
+    _start_typed_drill(at, "numeros")
+    next(b for b in at.button if "Pista" in b.label).click()
+    at.run()
+    at.text_input(key="answer_0").set_value("medio")
+    next(b for b in at.sidebar.button if b.label.startswith("📜 Pretérito")).click()
+    at.run()
+    for it in at.session_state["drill_items"]:
+        it.pop("choices", None)
+    at.run()
+    assert not any("Pista" in i.value for i in at.info)
+    assert at.text_input(key="answer_0").value == ""
+    assert not at.exception
+
+
 def test_no_se_reveals_and_queues(db):
     at = _app()
     item = _start_typed_drill(at, "numeros")
@@ -942,3 +960,44 @@ def test_progress_page_offers_backup_even_when_empty(db):
     at.run()
     assert not at.exception
     assert any("Copia de seguridad" in e.label for e in at.expander)
+
+
+@pytest.mark.parametrize("data", [
+    [], {"app": "other"}, {"app": "spanish-learning", "attempts": ["x"]},
+    {"app": "spanish-learning", "attempts": [{}]}, {"app": "spanish-learning", "attempts": 5},
+    {"app": "spanish-learning", "cards": [{"key": "k"}]},
+])
+def test_malformed_backup_raises_only_errors_the_page_catches(db, data):
+    import sqlite3
+    with pytest.raises((ValueError, KeyError, TypeError, AttributeError, sqlite3.Error)):
+        progress.import_backup(data)
+
+
+def test_typed_pausa_and_resumen_keep_the_drill(db):
+    at = _app()
+    at.run()
+    at.sidebar.text_input(key="desktop_typed_cmd").set_value("!drill numeros")
+    at.run()
+    next(b for b in at.button if "No sé" in b.label).click()
+    at.run()
+    for cmd in ("!resumen", "!pausa"):
+        at.sidebar.text_input(key="desktop_typed_cmd").set_value(cmd)
+        at.run()
+        assert at.session_state["drill_active"]
+        assert len(at.session_state["answers"]) == 1
+    assert not at.exception
+
+
+def test_changing_duration_mid_drill_keeps_its_length(db):
+    at = _app()
+    at.run()
+    at.sidebar.text_input(key="desktop_typed_cmd").set_value("!drill preterito")
+    at.run()
+    started_with = at.session_state["drill_duration_s"]
+    at.session_state["drill_start_time"] -= timedelta(minutes=4)
+    at.sidebar.selectbox(key="duration_choice").set_value("3 min")
+    at.run()
+    assert at.session_state["drill_duration_s"] == started_with
+    assert at.session_state["drill_active"]
+    assert not any("Complete" in t.value for t in at.success)
+    assert not at.exception
