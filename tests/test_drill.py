@@ -1119,3 +1119,40 @@ def test_resumen_before_any_answer_keeps_the_way_back(db):
     assert at.session_state["drill_module"] == "numeros" and at.session_state["drill_active"]
     assert at.session_state["active_command"] == "!drill numeros"
     assert not at.exception
+
+
+def test_leaving_a_drill_midway_can_be_picked_up_again(db):
+    at = _app()
+    at.run()
+    at.sidebar.text_input(key="desktop_typed_cmd").set_value("!drill numeros")
+    at.run()
+    items = at.session_state["drill_items"]
+    next(b for b in at.button if "No sé" in b.label).click()
+    at.run()
+    next(b for b in at.button if "Continuar" in b.label).click()
+    at.run()
+    started = at.session_state["drill_start_time"]
+    # A stray tap on another screen...
+    next(b for b in at.sidebar.button if "progreso" in b.label.lower()).click()
+    at.run()
+    assert not at.session_state["drill_active"]
+    resume = next(b for b in at.sidebar.button if b.label.startswith("▶️ Seguir"))
+    resume.click()
+    at.run()
+    # ...doesn't lose the drill: same questions, same place, same score.
+    assert at.session_state["drill_active"] and at.session_state["drill_module"] == "numeros"
+    assert at.session_state["drill_items"] == items
+    assert at.session_state["current_item_index"] == 1 and len(at.session_state["answers"]) == 1
+    assert at.session_state["drill_start_time"] >= started  # time away doesn't count
+    assert not any(b.label.startswith("▶️ Seguir") for b in at.sidebar.button)
+    assert not at.exception
+
+
+def test_nothing_to_pick_up_after_leaving_an_untouched_drill(db):
+    at = _app()
+    at.run()
+    at.sidebar.text_input(key="desktop_typed_cmd").set_value("!drill numeros")
+    at.run()
+    next(b for b in at.sidebar.button if b.label == "🏠 Home").click()
+    at.run()
+    assert not any(b.label.startswith("▶️ Seguir") for b in at.sidebar.button)

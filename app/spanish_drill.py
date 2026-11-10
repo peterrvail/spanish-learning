@@ -267,10 +267,51 @@ def _keeps_drill(cmd):
     return cmd.split(" ", 1)[0].lower() in _DRILL_COMMANDS_KEEPING_DRILL
 
 
+# What a drill in progress is made of, so it can be set aside and picked up again.
+_DRILL_STATE_KEYS = ("drill_module", "drill_items", "current_item_index", "answers", "score",
+                     "total_questions", "drill_start_time", "drill_duration_s", "pending_feedback")
+
+
+def _leave_drill():
+    """End the current drill as the active one. If it was under way (something
+    answered, questions and time left), keep it so "Seguir con el drill" can
+    pick it up where it stopped, instead of a stray tap losing the session."""
+    ss = st.session_state
+    if ss.get("drill_active") and ss.get("answers") and ss.get("drill_start_time"):
+        paused_at = ss.get("paused_at") or datetime.now()
+        elapsed = (paused_at - ss.drill_start_time).total_seconds()
+        if ss.current_item_index < len(ss.drill_items) and elapsed < (ss.get("drill_duration_s") or 0):
+            ss.suspended_drill = {k: ss.get(k) for k in _DRILL_STATE_KEYS} | {"paused_at": paused_at}
+    ss.pop("paused_at", None)
+    ss.drill_active = False
+
+
+def _resume_suspended_drill():
+    saved = st.session_state.pop("suspended_drill")
+    for k in _DRILL_STATE_KEYS:
+        st.session_state[k] = saved[k]
+    st.session_state.paused_at = saved["paused_at"]  # run_drill restarts the clock from here
+    st.session_state.drill_active = True
+    st.session_state.active_command = f"!drill {saved['drill_module']}"
+    st.rerun()
+
+
+def _render_resume_button():
+    saved = st.session_state.get("suspended_drill")
+    if not saved or st.session_state.get("drill_active"):
+        return
+    done = len(saved["answers"])
+    cmd = f"!drill {saved['drill_module']}"
+    name = next((label for label, c in DRILL_COMMANDS if c == cmd), saved["drill_module"])
+    if st.button(f"▶️ Seguir con {name} ({done}/{len(saved['drill_items'])})",
+                 key="resume_suspended_drill", type="primary", **FULL_WIDTH):
+        _resume_suspended_drill()
+
+
 def _set_active_command(cmd):
     st.session_state.active_command = cmd
     if not _keeps_drill(cmd):
-        st.session_state.drill_active = False
+        _leave_drill()
     st.rerun()
 
 def _on_typed_command(key):
@@ -282,7 +323,7 @@ def _on_typed_command(key):
     if cmd:
         st.session_state.active_command = cmd
         if not _keeps_drill(cmd):
-            st.session_state.drill_active = False
+            _leave_drill()
     st.session_state[key] = ""
 
 def _render_button_grid(commands, columns, key_prefix):
@@ -2719,10 +2760,11 @@ def main():
         if st.session_state.active_command:
             if st.button("🏠 Home", **FULL_WIDTH):
                 st.session_state.active_command = None
-                st.session_state.drill_active = False
+                _leave_drill()
                 st.rerun()
             dispatch_command(st.session_state.active_command)
         else:
+            _render_resume_button()
             render_landing()
             render_command_menu(columns=1)
 
@@ -2737,8 +2779,10 @@ def main():
         if st.session_state.active_command:
             if st.sidebar.button("🏠 Home"):
                 st.session_state.active_command = None
-                st.session_state.drill_active = False
+                _leave_drill()
                 st.rerun()
+        with st.sidebar:
+            _render_resume_button()
 
         st.sidebar.markdown("**Quick Commands:**")
         with st.sidebar:
