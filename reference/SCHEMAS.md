@@ -198,3 +198,42 @@ When adding content, provide:
 }
 ```
 
+---
+
+## Contracts that are enforced in code
+
+The per-file shapes above are illustrative. These three are checked by code and tests:
+
+### Progress database (`app/progress.py`, schema version 2)
+
+| Table | Columns |
+|---|---|
+| `attempts` | `id`, `ts`, `module`, `exercise_type`, `target_form`, `is_correct`, `typed_answer`, `error_tag`, `card_key` |
+| `cards` | `key` (sha1 of prompt and answer), `item_json`, `box` (0–3), `due`, `attempts`, `misses` |
+| `lt_done` | `track` (Language Transfer tracks listened to) |
+| `meta` | `key`, `value` (`schema_version`) |
+
+`typed_answer`, `error_tag` and `card_key` are empty for attempts logged before version 2. `error_tag` is an `error` concept id; the app itself only sets `accent`.
+
+### Concepts (`data/concepts.json`, validated by `python app/concepts.py`)
+
+```json
+{"id": "preterito", "label": "Pretérito (pasado simple)", "kind": "grammar",
+ "modules": ["preterito", "ejercicio"], "exercise_type_prefixes": ["preterite_"], "parent": null}
+```
+
+`kind` is `grammar`, `vocab` or `error`. An attempt's concept is looked up from its exercise type (longest matching prefix), then its module, when it is read; it is not stored.
+
+### Lesson observations (`ingest/schemas.py`, Pydantic)
+
+`data/observations/staged/<sha12>.json` holds one `ObservationFile`: the `Artifact` (the screenshot: `sha256`, `filename`, `kind`, `lesson`, `captured_on`, `ingested_at`, `extractor`) and its `Observation`s:
+
+```json
+{"id": "abababababab-2", "artifact_id": "<sha256>", "status": "pending",
+ "type": "correction", "region": "tutor_annotation",
+ "verbatim": "yo hablo ayer -> hablé", "spanish": "Yo hablé ayer.", "english": null,
+ "correction": {"wrong": "yo hablo ayer", "right": "yo hablé ayer", "why": "pasado: pretérito"},
+ "concept_ids": ["preterito"], "error_tags": ["tense_choice"], "confidence": "medium"}
+```
+
+`type`: `vocab`, `expression`, `correction`, `example`, `rule_note`. `region`: `tutor_annotation`, `board`, `exercise`, `learner_text`. `status`: `pending`, `approved`, `rejected`, `duplicate`. Raw images are not committed (`data/artifacts/raw/` is git-ignored).

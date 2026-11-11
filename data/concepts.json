@@ -1,0 +1,440 @@
+{
+  "_meta": {
+    "version": 1,
+    "description": "The learning concepts everything rolls up to. kind 'grammar' and 'vocab' group drills and lesson observations: an attempt's concept is looked up from its exercise_type (longest matching prefix) and then its module, at read time, so this mapping can change without rewriting history. kind 'error' are the kinds of mistake used in attempts.error_tag and in observations. Validated by app/concepts.py."
+  },
+  "concepts": [
+    {
+      "id": "presente_rutina",
+      "label": "Presente: rutina diaria",
+      "kind": "grammar",
+      "modules": [
+        "rutina"
+      ]
+    },
+    {
+      "id": "cambios_de_raiz",
+      "label": "Presente: cambios de raíz (e→ie, o→ue, e→i)",
+      "kind": "grammar",
+      "modules": [
+        "cambios",
+        "stem_changes"
+      ],
+      "exercise_type_prefixes": [
+        "stem_change"
+      ]
+    },
+    {
+      "id": "preterito",
+      "label": "Pretérito (pasado simple)",
+      "kind": "grammar",
+      "modules": [
+        "preterito",
+        "preterite",
+        "ejercicio",
+        "review111"
+      ],
+      "exercise_type_prefixes": [
+        "preterite_"
+      ]
+    },
+    {
+      "id": "imperfecto",
+      "label": "Imperfecto",
+      "kind": "grammar",
+      "modules": [
+        "pasado",
+        "imperfecto"
+      ],
+      "exercise_type_prefixes": [
+        "imperfect"
+      ]
+    },
+    {
+      "id": "preterito_vs_imperfecto",
+      "label": "Pretérito o imperfecto",
+      "kind": "grammar",
+      "note": "No drill yet: for tutor corrections about choosing between the two."
+    },
+    {
+      "id": "perfecto_participios",
+      "label": "Pretérito perfecto y participios",
+      "kind": "grammar",
+      "modules": [
+        "participios"
+      ]
+    },
+    {
+      "id": "pluscuamperfecto",
+      "label": "Pluscuamperfecto",
+      "kind": "grammar",
+      "modules": [
+        "pluscuam",
+        "pluscuamperfecto"
+      ]
+    },
+    {
+      "id": "futuro",
+      "label": "Futuro",
+      "kind": "grammar",
+      "modules": [
+        "futuro",
+        "futuro_irregular"
+      ],
+      "exercise_type_prefixes": [
+        "futuro_"
+      ]
+    },
+    {
+      "id": "condicional",
+      "label": "Condicional",
+      "kind": "grammar",
+      "modules": [
+        "condicional",
+        "conditional"
+      ],
+      "exercise_type_prefixes": [
+        "condicional_"
+      ]
+    },
+    {
+      "id": "condicional_perfecto",
+      "label": "Condicional perfecto (habría / debería haber)",
+      "kind": "grammar",
+      "modules": [
+        "cond_perfecto"
+      ],
+      "exercise_type_prefixes": [
+        "cond_perfecto_"
+      ]
+    },
+    {
+      "id": "subjuntivo_presente",
+      "label": "Subjuntivo presente",
+      "kind": "grammar",
+      "modules": [
+        "subjuntivo",
+        "subjunctive"
+      ],
+      "exercise_type_prefixes": [
+        "subjuntivo_",
+        "indicativo_contraste"
+      ]
+    },
+    {
+      "id": "si_hipotetico",
+      "label": "Si + hipótesis",
+      "kind": "grammar",
+      "modules": [
+        "si_hipotetico"
+      ],
+      "exercise_type_prefixes": [
+        "si_hipotetico_"
+      ]
+    },
+    {
+      "id": "imperativo",
+      "label": "Imperativo",
+      "kind": "grammar",
+      "modules": [
+        "imperativo"
+      ],
+      "exercise_type_prefixes": [
+        "imperativo_"
+      ]
+    },
+    {
+      "id": "estar_gerundio",
+      "label": "Estar + gerundio",
+      "kind": "grammar",
+      "modules": [
+        "estar_gerundio",
+        "progresivo"
+      ],
+      "exercise_type_prefixes": [
+        "estar_gerundio_",
+        "gerundio_"
+      ]
+    },
+    {
+      "id": "ir_gerundio",
+      "label": "Ir + gerundio",
+      "kind": "grammar",
+      "modules": [
+        "gerundio",
+        "ir_gerundio"
+      ],
+      "exercise_type_prefixes": [
+        "ir_gerundio"
+      ]
+    },
+    {
+      "id": "pronombres_objeto",
+      "label": "Pronombres de objeto directo e indirecto",
+      "kind": "grammar",
+      "note": "No drill of its own yet; double pronouns are drilled under pronombres_dobles."
+    },
+    {
+      "id": "pronombres_dobles",
+      "label": "Pronombres dobles (se lo, me la)",
+      "kind": "grammar",
+      "parent": "pronombres_objeto",
+      "modules": [
+        "pronombres"
+      ],
+      "exercise_type_prefixes": [
+        "double_pronoun"
+      ]
+    },
+    {
+      "id": "reflexivos",
+      "label": "Verbos reflexivos",
+      "kind": "grammar",
+      "modules": [
+        "reflexivos"
+      ]
+    },
+    {
+      "id": "gustar",
+      "label": "Gustar y verbos parecidos",
+      "kind": "grammar",
+      "modules": [
+        "gustar",
+        "gustar_verbos"
+      ],
+      "exercise_type_prefixes": [
+        "gustar_"
+      ]
+    },
+    {
+      "id": "se",
+      "label": "Se: accidental, impersonal y pasivo",
+      "kind": "grammar",
+      "modules": [
+        "se"
+      ],
+      "exercise_type_prefixes": [
+        "se_"
+      ]
+    },
+    {
+      "id": "relativos",
+      "label": "Relativos (que, quien, lo que, cuyo)",
+      "kind": "grammar",
+      "modules": [
+        "relativos"
+      ],
+      "exercise_type_prefixes": [
+        "relativos_"
+      ]
+    },
+    {
+      "id": "demostrativos",
+      "label": "Demostrativos y distancia",
+      "kind": "grammar",
+      "modules": [
+        "demostrativos",
+        "distancias"
+      ]
+    },
+    {
+      "id": "indefinidos",
+      "label": "Indefinidos y negativos",
+      "kind": "grammar",
+      "modules": [
+        "indefinidos"
+      ]
+    },
+    {
+      "id": "ser_estar",
+      "label": "Ser, estar y hay",
+      "kind": "grammar",
+      "modules": [
+        "ser_estar",
+        "serestar"
+      ],
+      "exercise_type_prefixes": [
+        "ser_estar_"
+      ]
+    },
+    {
+      "id": "por_para",
+      "label": "Por y para",
+      "kind": "grammar",
+      "modules": [
+        "por_para",
+        "porpara"
+      ]
+    },
+    {
+      "id": "preposiciones",
+      "label": "Otras preposiciones",
+      "kind": "grammar",
+      "modules": [
+        "preposiciones"
+      ]
+    },
+    {
+      "id": "verbo_infinitivo",
+      "label": "Verbo + infinitivo y preguntas",
+      "kind": "grammar",
+      "modules": [
+        "estructuras",
+        "preguntas"
+      ]
+    },
+    {
+      "id": "adjetivos",
+      "label": "Adjetivos: posición y formas cortas",
+      "kind": "vocab",
+      "modules": [
+        "adjetivos"
+      ]
+    },
+    {
+      "id": "adverbios",
+      "label": "Adverbios",
+      "kind": "vocab",
+      "modules": [
+        "adverbios"
+      ]
+    },
+    {
+      "id": "numeros",
+      "label": "Números",
+      "kind": "vocab",
+      "modules": [
+        "numeros"
+      ]
+    },
+    {
+      "id": "lugares",
+      "label": "Lugares",
+      "kind": "vocab",
+      "modules": [
+        "lugares"
+      ]
+    },
+    {
+      "id": "vocab_tematico",
+      "label": "Vocabulario por temas",
+      "kind": "vocab",
+      "modules": [
+        "vocabulario"
+      ],
+      "exercise_type_prefixes": [
+        "vocabulario_mio"
+      ]
+    },
+    {
+      "id": "vocab_frecuente",
+      "label": "Vocabulario frecuente",
+      "kind": "vocab",
+      "modules": [
+        "comunes",
+        "vocab_comun",
+        "vocab_mezcla"
+      ],
+      "exercise_type_prefixes": [
+        "vocabulario_comun",
+        "vocabulario_mezcla"
+      ]
+    },
+    {
+      "id": "vocab_de_clase",
+      "label": "Vocabulario de mis clases (tarjetas)",
+      "kind": "vocab",
+      "modules": [
+        "tarjetas"
+      ],
+      "exercise_type_prefixes": [
+        "tarjetas_"
+      ]
+    },
+    {
+      "id": "expresiones",
+      "label": "Expresiones",
+      "kind": "vocab",
+      "parent": "vocab_de_clase",
+      "exercise_type_prefixes": [
+        "tarjetas_expresiones"
+      ]
+    },
+    {
+      "id": "cognados",
+      "label": "Cognados",
+      "kind": "vocab",
+      "modules": [
+        "cognados"
+      ],
+      "exercise_type_prefixes": [
+        "cognados_"
+      ]
+    },
+    {
+      "id": "accent",
+      "label": "Tilde que falta o sobra",
+      "kind": "error"
+    },
+    {
+      "id": "spelling",
+      "label": "Ortografía",
+      "kind": "error"
+    },
+    {
+      "id": "gender_agreement",
+      "label": "Concordancia de género",
+      "kind": "error"
+    },
+    {
+      "id": "number_agreement",
+      "label": "Concordancia de número",
+      "kind": "error"
+    },
+    {
+      "id": "verb_person",
+      "label": "Persona del verbo",
+      "kind": "error"
+    },
+    {
+      "id": "tense_choice",
+      "label": "Elección del tiempo verbal",
+      "kind": "error"
+    },
+    {
+      "id": "mood_choice",
+      "label": "Indicativo o subjuntivo",
+      "kind": "error"
+    },
+    {
+      "id": "ser_estar_choice",
+      "label": "Ser o estar",
+      "kind": "error"
+    },
+    {
+      "id": "por_para_choice",
+      "label": "Por o para",
+      "kind": "error"
+    },
+    {
+      "id": "clitic_order",
+      "label": "Orden o posición de los pronombres",
+      "kind": "error"
+    },
+    {
+      "id": "article",
+      "label": "Artículo",
+      "kind": "error"
+    },
+    {
+      "id": "word_order",
+      "label": "Orden de las palabras",
+      "kind": "error"
+    },
+    {
+      "id": "word_choice",
+      "label": "Palabra equivocada o falso amigo",
+      "kind": "error"
+    }
+  ]
+}

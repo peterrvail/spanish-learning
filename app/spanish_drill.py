@@ -3,7 +3,6 @@ import difflib
 import json
 import random
 import re
-import sqlite3
 import unicodedata
 from datetime import datetime, timedelta
 import os
@@ -14,6 +13,7 @@ import flashcards
 import pattern_modules
 import grading
 import progress
+import store
 import importlib
 import inspect
 
@@ -35,8 +35,40 @@ def _reload_stale_modules(*modules):
             importlib.reload(module)
 
 
-# conversation before grading, which imports from it.
-_reload_stale_modules(conversation, grading, external, flashcards, pattern_modules, progress)
+# conversation before grading, which imports from it; store before progress.
+_reload_stale_modules(conversation, grading, external, flashcards, pattern_modules, store, progress)
+if progress.StoreError is not store.StoreError:  # store was reloaded but progress wasn't
+    importlib.reload(progress)
+
+
+def _secret(name):
+    """A value from .streamlit/secrets.toml (or the Streamlit Cloud secrets), if there is one."""
+    try:
+        return st.secrets.get(name)
+    except Exception:  # no secrets file at all
+        return None
+
+
+# Progress goes to the hosted database when its two secrets are set (they can
+# also come from the environment); otherwise to a local SQLite file. Done on
+# every run because reloading progress.py forgets the setting.
+progress.configure(_secret("TURSO_DATABASE_URL"), _secret("TURSO_AUTH_TOKEN"))
+
+
+def _due_count():
+    """Cards due for review. With a hosted database the count is a network
+    call, and the menu asks for it on every rerun, so it is kept for the
+    session and refreshed after each recorded answer (see _log_attempt)."""
+    if not progress.is_hosted():
+        return progress.due_count()
+    if "due_count_cache" not in st.session_state:
+        st.session_state.due_count_cache = progress.due_count()
+    return st.session_state.due_count_cache
+
+
+def _log_attempt(item, is_correct, **details):
+    progress.record_attempt(item, is_correct, **details)
+    st.session_state.pop("due_count_cache", None)
 
 # Full-width buttons and tables. Streamlit deprecated use_container_width
 # (to be removed "after 2025-12-31") in favour of width="stretch", but the
@@ -360,9 +392,12 @@ def render_command_menu(columns=2):
         st.session_state.duration_choice = next(k for k, v in DURATION_CHOICES.items() if v == saved)
     choice = st.selectbox("⏱️ Duración", list(DURATION_CHOICES), key="duration_choice")
     st.session_state.duration_override = DURATION_CHOICES[choice]
-    pending = progress.due_count()
+    pending = _due_count()
     if pending:
         st.caption(f"🔁 {pending} para repasar hoy")
+    if progress.storage_problem():
+        st.warning("⚠️ No se está guardando tu progreso ahora mismo "
+                   f"({'base de datos en línea' if progress.is_hosted() else 'archivo local'} no disponible).")
     st.caption("📖 = Repasar (revisar sin cronómetro ni puntuación)")
     for category_name, commands in DRILL_CATEGORIES.items():
         st.markdown(f"#### {category_name}")
@@ -1875,7 +1910,10 @@ def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, 
         "exercise_type": item.get("exercise_type"),
         "module": item.get("module"),
     })
-    progress.record_attempt(item, is_correct and not hinted)
+    # Only a missing accent can be named with certainty today; the other
+    # error tags in data/concepts.json come with tutor corrections.
+    _log_attempt(item, is_correct and not hinted, typed_answer=user_answer,
+                 error_tag="accent" if accent_fix else None)
     st.session_state.total_questions += 1
     if is_correct:
         st.session_state.score += 1
@@ -2254,10 +2292,7 @@ def run_hablar():
 
 def _anthropic_secret():
     """ANTHROPIC_API_KEY from .streamlit/secrets.toml, if there is one."""
-    try:
-        return st.secrets.get("ANTHROPIC_API_KEY")
-    except Exception:  # no secrets file at all
-        return None
+    return _secret("ANTHROPIC_API_KEY")
 
 def _chat_available():
     return conversation.credentials_configured(_anthropic_secret())
@@ -2495,14 +2530,14 @@ def run_tarjetas():
 
     again, knew = st.container(key="row_fc_grade").columns(2)
     if again.button("🔁 Otra vez", **FULL_WIDTH):
-        progress.record_attempt(_card_quiz_item(card), False)
+        _log_attempt(_card_quiz_item(card), False)
         if card["id"] not in session["missed"]:
             session["missed"].append(card["id"])
         flashcards.requeue(queue, 0)
         session["flips"] += 1
         st.rerun()
     if knew.button("✅ Lo sabía", **FULL_WIDTH):
-        progress.record_attempt(_card_quiz_item(card), True)
+        _log_attempt(_card_quiz_item(card), True)
         queue.pop(0)
         session["done"] += 1
         session["flips"] += 1
@@ -2511,25 +2546,19 @@ def run_tarjetas():
         st.session_state.pop("fc", None)
         st.rerun()
 
-def _lt_progress_file():
-    return external.progress_path(progress.db_path())
-
 def _toggle_lt_track(track, key):
     """Checkbox callback: save the tick right away, so it survives a restart."""
-    path = _lt_progress_file()
-    done = external.load_done(path)
-    (done.add if st.session_state[key] else done.discard)(track)
-    if not external.save_done(path, done):
+    if not progress.set_lt_done(track, st.session_state[key]):
         st.session_state["lt_save_failed"] = True
 
 def run_lt():
     """Listening tracker for Language Transfer – Complete Spanish: the 90
     tracks with the topics each teaches, ticked off as you listen. Ticks are
-    saved to data/progress/lt_progress.json, not just the session."""
+    saved with the rest of the progress, not just in the session."""
     st.title("🎧 Language Transfer")
     data = external.load_lt()
     links = data["_meta"]["links"]
-    done = external.load_done(_lt_progress_file())
+    done = progress.lt_done()
     tracks = data["tracks"]
     nxt = external.next_track(done, len(tracks))
     st.progress(len(done) / len(tracks))
@@ -2537,7 +2566,7 @@ def run_lt():
     st.caption(f"[Curso gratis]({links['course']}) · [Notas por pista]({links['track_notes']}) · "
                f"[Transcripción (PDF)]({links['transcript']})")
     if st.session_state.pop("lt_save_failed", False):
-        st.warning("No se pudo guardar el progreso en el disco.")
+        st.warning("No se pudo guardar el progreso.")
 
     gaps_only = st.toggle("Solo pistas con temas que tus clases aún no han visto")
     if gaps_only:
@@ -2567,34 +2596,40 @@ def _module_label(module):
     return module.replace("_", " ")
 
 def _render_backup(empty):
-    """Download / restore everything the app remembers. On Streamlit Community
-    Cloud files the app writes are wiped on every reboot or redeploy, so
-    without this the spaced-repetition history resets on each update."""
+    """Download everything the app remembers, and (local database only)
+    restore it. With the hosted database progress survives redeploys on its
+    own, so the download is just an offline copy and there is no restore: an
+    upload there could only confuse two histories."""
     if st.session_state.get("backup_message"):
         st.success(st.session_state.pop("backup_message"))
-    with st.expander("💾 Copia de seguridad del progreso", expanded=empty):
-        st.caption("En Streamlit Cloud el progreso se borra cada vez que la app se reinicia o se "
-                   "actualiza. Descarga una copia de vez en cuando y súbela después de una actualización.")
-        lt_path = _lt_progress_file()
-        backup = progress.export_backup(extra={"lt_done": sorted(external.load_done(lt_path))})
-        st.download_button("⬇️ Descargar copia", data=json.dumps(backup, ensure_ascii=False),
-                           file_name=f"progreso_espanol_{datetime.now():%Y-%m-%d}.json",
-                           mime="application/json", **FULL_WIDTH)
+    hosted = progress.is_hosted()
+    with st.expander("💾 Copia de seguridad del progreso", expanded=empty and not hosted):
+        st.caption("Tu progreso se guarda en la base de datos en línea. Puedes descargar una copia por si acaso."
+                   if hosted else
+                   "Sin base de datos en línea, el progreso se guarda en un archivo local que Streamlit Cloud "
+                   "borra en cada reinicio. Descarga una copia de vez en cuando y súbela después.")
+        # Built only on request: with the hosted database it is a full download.
+        if st.button("📦 Preparar copia (JSON)", **FULL_WIDTH):
+            st.session_state.backup_ready = json.dumps(progress.export_backup(), ensure_ascii=False)
+        if st.session_state.get("backup_ready"):
+            st.download_button("⬇️ Descargar copia", data=st.session_state.backup_ready,
+                               file_name=f"progreso_espanol_{datetime.now():%Y-%m-%d}.json",
+                               mime="application/json", **FULL_WIDTH)
+        if hosted:
+            return
         upload = st.file_uploader("⬆️ Restaurar una copia", type=["json"], key="backup_upload")
         if upload is not None:
             raw = upload.getvalue()
             # Streamlit reruns with the same file still attached: import it once.
             if st.session_state.get("backup_imported") != hash(raw):
                 try:
-                    restored = json.loads(raw)
-                    added, cards = progress.import_backup(restored)
-                    done = external.load_done(lt_path) | set(restored.get("lt_done", []))
-                    external.save_done(lt_path, done)
+                    added, cards = progress.import_backup(json.loads(raw))
                     st.session_state.backup_imported = hash(raw)
+                    st.session_state.pop("backup_ready", None)
                     # Rerun so the stats on this page include what was just restored.
                     st.session_state.backup_message = f"✅ Restaurado: {added} intentos y {cards} tarjetas de repaso."
                     st.rerun()
-                except (ValueError, KeyError, TypeError, AttributeError, sqlite3.Error) as e:
+                except (ValueError, KeyError, TypeError, AttributeError, store.StoreError) as e:
                     st.error(f"No se pudo restaurar: {e}")
 
 def run_progreso():
