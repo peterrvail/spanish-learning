@@ -3,7 +3,6 @@ this app's lessons and drills. Data: data/external/language_transfer.json.
 Kept free of Streamlit so it can be tested on its own."""
 import json
 import os
-from datetime import datetime
 
 # Recorded so spanish_drill.py can tell when this file changed under a running
 # app and reload it (see _reload_stale_modules there).
@@ -55,32 +54,6 @@ def is_gap_track(track, data=None):
     data = data or load_lt()
     by_id = {t["id"]: t for t in data["topics"]}
     return any(by_id[t]["status"] == "gap" for t in track["topics"])
-
-
-# --- listening progress -------------------------------------------------------
-# Saved to a small JSON file next to the progress database (data/progress/,
-# git-ignored), because Streamlit's session state resets when the app restarts.
-
-def progress_path(db_path):
-    return os.path.join(os.path.dirname(os.path.abspath(db_path)), "lt_progress.json")
-
-
-def load_done(path):
-    try:
-        with open(path, encoding="utf-8") as f:
-            return set(json.load(f).get("done", []))
-    except (OSError, ValueError):
-        return set()
-
-
-def save_done(path, done):
-    try:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump({"done": sorted(done), "updated": datetime.now().isoformat(timespec="seconds")}, f)
-        return True
-    except OSError:
-        return False
 
 
 def next_track(done, total=90):

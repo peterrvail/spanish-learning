@@ -67,7 +67,9 @@ Spanish/
 │   ├── expressions/      # Greetings, classroom phrases, discourse markers
 │   ├── exercises/        # Homework exercises (e.g. preterite review, for !drill ejercicio)
 │   ├── external/         # Language Transfer track mapping (for !lt)
-│   └── progress/         # Local progress data (SQLite + LT ticks); git-ignored
+│   ├── concepts.json     # Concept taxonomy: what drills and lesson observations roll up to, and error tags
+│   ├── observations/     # What was read from lesson screenshots (staged/, one file per screenshot)
+│   └── progress/         # Local progress fallback (SQLite); git-ignored
 ├── reference/
 │   ├── SCHEMAS.md        # Canonical JSON schemas for all data modules
 │   └── CLITIC_RULES.md   # Clitic placement and ordering rules
@@ -78,7 +80,11 @@ Spanish/
 │   ├── grading.py        # Claude grading of sentence answers (optional)
 │   ├── flashcards.py     # !tarjetas decks and card logic
 │   ├── progress.py       # Attempt log, Leitner queue, stats for !progreso
+│   ├── store.py          # Where progress is kept: hosted Turso (HTTP) or local SQLite
+│   ├── concepts.py       # Loader and validator for data/concepts.json
 │   └── external.py       # Language Transfer tracker (!lt)
+├── ingest/               # Data contracts for lesson-screenshot ingestion (schemas.py); not used by the app
+├── scripts/              # migrate_progress.py (one-off move of a backup into the database)
 ├── tests/                # pytest suite
 └── README.md             # This file
 ```
@@ -191,7 +197,19 @@ With Claude API access the conversation happens inside the app (see **In-app con
 
 ### Progress & spaced repetition
 
-Every graded answer is logged to a local SQLite file (`data/progress/progress.db`, git-ignored; override with `SPANISH_PROGRESS_DB`). **On Streamlit Community Cloud this file does not survive a reboot or redeploy** (files the app writes are wiped), so 📈 `!progreso` has a 💾 *Copia de seguridad* section: download a backup (review history + Language Transfer ticks) and upload it again after an update; restoring merges and never undoes newer progress. Missed items enter a Leitner queue: a miss is due again immediately, one correct answer pushes it out a day, two a week (then two weeks).
+Every graded answer is logged with what you typed, and each item gets a spaced-repetition card. Where that is kept depends on configuration (`app/store.py`):
+
+- **Hosted (recommended, and needed on Streamlit Community Cloud):** a [Turso](https://turso.tech) database, reached over its HTTP API with no extra package. Set two secrets, in Streamlit Cloud's *Secrets* or in `.streamlit/secrets.toml`, or as environment variables:
+  ```toml
+  TURSO_DATABASE_URL = "libsql://<database>-<org>.turso.io"
+  TURSO_AUTH_TOKEN = "<token>"
+  ```
+  Progress then survives redeploys and is shared between your devices. The tables are created on first use.
+- **Local fallback:** without those, a SQLite file (`data/progress/progress.db`, git-ignored; override with `SPANISH_PROGRESS_DB`). On Streamlit Cloud that file is wiped on every reboot or redeploy.
+
+`python scripts/migrate_progress.py --check` tests the connection (it leaves nothing behind). To move an existing history into the hosted database, download a backup from 📈 `!progreso` and run `python scripts/migrate_progress.py <backup.json>` once with the two variables set; it merges, so running it twice is safe. 📈 `!progreso` keeps a 💾 *Copia de seguridad* download as an offline copy; restoring from a file is only offered with the local fallback. If the database can't be reached, drills keep working and the menu shows a warning that progress isn't being saved.
+
+Missed items enter a Leitner queue: a miss is due again immediately, one correct answer pushes it out a day, two a week (then two weeks).
 
 - `!drill fallos` — timed quiz on what is due
 - `!repasar fallos` — read-through of the same queue ("Repasar solo lo que falle")

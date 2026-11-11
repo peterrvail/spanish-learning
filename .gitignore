@@ -54,3 +54,7 @@ settings.local.json
 
 # Local progress/attempt log (spaced repetition)
 data/progress/
+
+# Raw lesson screenshots: only what is read from them is committed
+# (data/observations/staged/), never the images.
+data/artifacts/raw/

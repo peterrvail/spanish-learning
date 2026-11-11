@@ -753,7 +753,7 @@ def test_language_transfer_ticks_survive_a_restart(db):
     assert any("2 / 90" in m.value and "siguiente: **3**" in m.value for m in at.markdown)
     assert at.checkbox(key="lt_1").value and not at.checkbox(key="lt_3").value
     at.checkbox(key="lt_1").uncheck().run()
-    assert external.load_done(external.progress_path(progress.db_path())) == {2}
+    assert progress.lt_done() == {2}
 
 
 def test_condicional_and_ser_estar_drills():
@@ -1156,3 +1156,285 @@ def test_nothing_to_pick_up_after_leaving_an_untouched_drill(db):
     next(b for b in at.sidebar.button if b.label == "🏠 Home").click()
     at.run()
     assert not any(b.label.startswith("▶️ Seguir") for b in at.sidebar.button)
+
+
+# --- hosted progress store, schema migration, concepts, ingestion contracts ------
+
+@pytest.fixture
+def turso(monkeypatch, tmp_path):
+    """progress.py pointed at a fake Turso server instead of a local file."""
+    from fake_turso import FakeTurso
+    server = FakeTurso()
+    monkeypatch.setenv("SPANISH_PROGRESS_DB", str(tmp_path / "must_stay_unused.db"))
+    monkeypatch.setenv("TURSO_DATABASE_URL", server.url)
+    monkeypatch.setenv("TURSO_AUTH_TOKEN", server.token)
+    monkeypatch.setattr(progress, "RETRY_AFTER_SECONDS", 0)   # tests recover at once
+    monkeypatch.setattr(progress, "_paused_until", None)
+    progress._hosted.clear()
+    yield server
+    progress._hosted.clear()
+    server.close()
+
+
+def test_hosted_store_runs_the_same_progress_logic(turso, tmp_path):
+    t0 = datetime(2026, 1, 1, 12)
+    assert progress.is_hosted()
+    assert progress.record_attempt(item("fui"), False, module="preterito", now=t0, typed_answer="fue")
+    assert progress.record_attempt(item("habló"), False, module="preterito", now=t0, typed_answer="hablo",
+                                   error_tag="accent")
+    assert progress.record_attempt(item("tengo"), True, module="rutina", now=t0)
+    assert progress.due_count(now=t0) == 2 and progress.storage_problem() is None
+    assert {i["target_form"] for i in progress.due_items(now=t0)} == {"fui", "habló"}
+    assert progress.due_keys(now=t0) == {progress.card_key(item("fui")), progress.card_key(item("habló"))}
+    assert progress.stats(now=t0)["total"] == 3
+    # Leitner: right today -> tomorrow; right again -> a week later.
+    progress.record_attempt(item("fui"), True, now=t0)
+    assert progress.due_count(now=t0) == 1 and progress.due_count(now=t0 + timedelta(days=1)) == 2
+    assert progress.set_lt_done(4) and progress.set_lt_done(9) and progress.set_lt_done(4, False)
+    assert progress.lt_done() == {9}
+    backup = progress.export_backup()
+    assert backup["version"] == 2 and backup["lt_done"] == [9] and len(backup["attempts"]) == 4
+    assert [a["error_tag"] for a in backup["attempts"]] == [None, "accent", None, None]
+    assert backup["attempts"][0]["typed_answer"] == "fue"
+    assert backup["attempts"][0]["card_key"] == progress.card_key(item("fui"))
+    assert not (tmp_path / "must_stay_unused.db").exists()  # nothing was written locally
+
+
+def test_hosted_batch_is_all_or_nothing(turso):
+    hosted = progress._store()
+    with pytest.raises(progress.StoreError):
+        hosted.batch([("INSERT INTO lt_done (track) VALUES (?)", (1,)),
+                      ("INSERT INTO no_such_table VALUES (1)", ())])
+    assert progress.lt_done() == set()
+    assert hosted.batch([("INSERT INTO lt_done (track) VALUES (?)", (1,)),
+                         ("INSERT INTO lt_done (track) VALUES (?)", (2,))]) == [1, 1]
+    assert progress.lt_done() == {1, 2}
+
+
+def test_hosted_store_failures_never_raise_and_are_reported(turso, monkeypatch):
+    progress.record_attempt(item("fui"), False)
+    turso.fail_next = 5
+    assert progress.record_attempt(item("fui"), False) is False
+    assert progress.storage_problem()
+    assert progress.due_count() == 0 and progress.due_items() == [] and progress.stats() is None
+    turso.fail_next = 0
+    assert progress.due_count() == 1 and progress.storage_problem() is None
+    # A wrong token is a failure too, not a crash.
+    monkeypatch.setenv("TURSO_AUTH_TOKEN", "wrong")
+    assert progress.record_attempt(item("fui"), False) is False and "401" in progress.storage_problem()
+
+
+def test_hosted_store_is_left_alone_for_a_while_after_a_failure(turso, monkeypatch):
+    monkeypatch.setattr(progress, "RETRY_AFTER_SECONDS", 30)
+    progress.due_count()
+    turso.fail_next = 1
+    assert progress.record_attempt(item("fui"), False) is False
+    before = turso.requests
+    assert progress.record_attempt(item("fui"), False) is False and progress.due_count() == 0
+    assert turso.requests == before           # no waiting on a database that is down
+    assert progress.storage_problem()
+    monkeypatch.setattr(progress, "_paused_until", datetime.now() - timedelta(seconds=1))
+    assert progress.record_attempt(item("fui"), False) and progress.storage_problem() is None
+
+
+def test_hosted_store_retries_a_dropped_connection(turso):
+    hosted = progress._store()
+    hosted._conn.close()                      # what a stale keep-alive connection looks like...
+    hosted._conn.sock = None
+    assert progress.set_lt_done(7) and progress.lt_done() == {7}
+    turso.fail_next = 0
+    before = turso.requests
+    progress.due_count()
+    assert turso.requests == before + 1       # ...and normally one answer is one request
+
+
+def test_recording_an_answer_is_one_request_when_hosted(turso):
+    progress.record_attempt(item("fui"), False)   # includes the one-off schema check
+    before = turso.requests
+    progress.record_attempt(item("fui"), True)
+    assert turso.requests == before + 1
+
+
+def test_old_database_gains_the_new_columns_and_keeps_its_rows(db, tmp_path):
+    import sqlite3
+    with sqlite3.connect(progress.db_path()) as conn:          # the schema before this change
+        conn.executescript("""
+            CREATE TABLE attempts (id INTEGER PRIMARY KEY AUTOINCREMENT, ts TEXT NOT NULL, module TEXT,
+                                   exercise_type TEXT, target_form TEXT NOT NULL, is_correct INTEGER NOT NULL);
+            CREATE TABLE cards (key TEXT PRIMARY KEY, item_json TEXT NOT NULL, box INTEGER NOT NULL, due TEXT NOT NULL,
+                                attempts INTEGER NOT NULL DEFAULT 0, misses INTEGER NOT NULL DEFAULT 0);
+            INSERT INTO attempts (ts, module, target_form, is_correct) VALUES ('2026-01-01T10:00:00', 'preterito', 'fui', 0);
+            INSERT INTO cards VALUES ('k', '{"prompt": "p", "target_form": "fui"}', 0, '2026-01-01T10:00:00', 1, 1);
+        """)
+    (tmp_path / "lt_progress.json").write_text('{"done": [3, 5]}')  # the old listening file, next to it
+    assert progress.due_count() == 1
+    assert progress.lt_done() == {3, 5}
+    assert progress.record_attempt(item("vi"), False, typed_answer="ví", error_tag="accent")
+    rows = progress.export_backup()["attempts"]
+    assert [(r["target_form"], r["typed_answer"], r["error_tag"]) for r in rows] == [("fui", None, None),
+                                                                                    ("vi", "ví", "accent")]
+    (tmp_path / "lt_progress.json").write_text('{"done": [3, 5, 80]}')
+    assert progress.lt_done() == {3, 5}                         # the old file is read once, not on every start
+
+
+def test_version_1_backup_moves_into_the_hosted_store(turso):
+    v1 = {"app": "spanish-learning", "version": 1, "lt_done": [1, 2],
+          "attempts": [{"ts": "2026-03-01T09:00:00", "module": "preterito", "exercise_type": "t",
+                        "target_form": "fui", "is_correct": 0}],
+          "cards": [{"key": "k", "item_json": '{"prompt": "p", "target_form": "fui"}', "box": 0,
+                     "due": "2026-03-01T09:00:00", "attempts": 1, "misses": 1}]}
+    assert progress.import_backup(v1) == (1, 1)
+    assert progress.import_backup(v1) == (0, 0)
+    assert progress.due_count(now=datetime(2026, 3, 2)) == 1 and progress.lt_done() == {1, 2}
+
+
+def test_migration_script(turso, tmp_path, capsys):
+    import importlib.util
+    import json as _json
+    backup = tmp_path / "b.json"
+    backup.write_text(_json.dumps({"app": "spanish-learning", "version": 1, "lt_done": [4], "cards": [],
+                                   "attempts": [{"ts": "2026-03-01T09:00:00", "target_form": "fui", "is_correct": 1}]}))
+    spec = importlib.util.spec_from_file_location(
+        "migrate_progress", os.path.join(os.path.dirname(__file__), "..", "scripts", "migrate_progress.py"))
+    script = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(script)
+    assert script.main(["x", str(backup)]) == 0
+    out = capsys.readouterr().out
+    assert "Turso" in out and "Added 1 attempts" in out and "1 listening ticks" in out
+    (tmp_path / "bad.json").write_text("{}")
+    assert script.main(["x", str(tmp_path / "bad.json")]) == 1
+    assert script.main(["x", "--check"]) == 0 and "Check passed" in capsys.readouterr().out
+    assert progress._store().query("SELECT * FROM meta WHERE key='check'") == []
+    turso.token = "changed"                                      # e.g. an expired or mistyped token
+    assert script.main(["x", "--check"]) == 1 and "CHECK FAILED" in capsys.readouterr().out
+
+
+def test_app_on_hosted_store_logs_answers_and_hides_restore(turso):
+    at = _app()
+    item_ = _start_typed_drill(at, "numeros")
+    at.text_input(key=f"answer_{item_['id']}").set_value("xyz")
+    next(b for b in at.button if "Submit" in b.label).click()
+    at.run()
+    assert not at.exception
+    logged = progress.export_backup()["attempts"]
+    assert [(a["typed_answer"], a["is_correct"], a["card_key"]) for a in logged] == [
+        ("xyz", 0, progress.card_key(item_))]
+    assert any("1 para repasar" in c.value for c in at.sidebar.caption)   # the cached count was refreshed
+    at.session_state["active_command"] = "!progreso"
+    at.run()
+    assert not at.exception
+    assert any("Copia de seguridad" in e.label for e in at.expander)
+    next(b for b in at.button if "Preparar copia" in b.label).click()
+    at.run()
+    assert at.session_state["backup_ready"] and not at.exception
+
+
+def test_app_warns_when_progress_is_not_being_saved(turso):
+    at = _app()
+    at.run()
+    assert not any("No se está guardando" in w.value for w in at.sidebar.warning)
+    turso.fail_next = 50
+    at.session_state["active_command"] = "!drill numeros"
+    at.run()
+    next(b for b in at.button if "No sé" in b.label).click()
+    at.run()
+    at.run()
+    assert not at.exception                                      # the drill carries on
+    assert any("No se está guardando" in w.value for w in at.sidebar.warning)
+
+
+def test_concepts_cover_every_drill():
+    import concepts
+    assert concepts.validate() == []
+    assert "accent" in concepts.error_tags()                     # the one tag the app sets itself
+    modules = {cmd.split()[1] for _, cmd in sd.DRILL_COMMANDS if cmd.startswith("!drill ")} | set(sd._MIXTO_MODULES)
+    for module in sorted(modules - {"mixto", "fallos"}):
+        by_module = concepts.concept_for(module=module)
+        assert by_module, f"module {module!r} has no concept"
+        for it in sd._build_drill_items(module):
+            assert concepts.concept_for(exercise_type=it["exercise_type"]) == by_module, (module, it["exercise_type"])
+            assert concepts.concept_for(it.get("module"), it["exercise_type"]) == by_module
+    cards = flashcards.load_cards()
+    kinds = {concepts.concept_for("tarjetas", flashcards.quiz_item(c, sd.split_alternates)["exercise_type"])
+             for c in cards}
+    assert kinds == {"vocab_de_clase", "expresiones"}
+    assert concepts.concept_for("nope", "nope") is None
+
+
+def test_concepts_validation_catches_mistakes(tmp_path):
+    import concepts
+    import json as _json
+    bad = tmp_path / "c.json"
+    bad.write_text(_json.dumps({"concepts": [
+        {"id": "a", "label": "A", "kind": "grammar", "modules": ["m"]},
+        {"id": "a", "label": "", "kind": "nope", "modules": ["m"], "parent": "zzz"}]}))
+    problems = " ".join(concepts.validate(str(bad)))
+    assert all(word in problems for word in ("duplicate id", "kind must be", "empty label", "module 'm'", "parent"))
+
+
+def _schemas():
+    pytest.importorskip("pydantic")
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+    from ingest import schemas
+    return schemas
+
+
+def _artifact(S):
+    return S.Artifact(sha256="ab" * 32, filename="IMG_1.png", kind="whiteboard", lesson="L119",
+                      ingested_at=datetime(2026, 11, 11, 10), extractor={"model": "m", "prompt_version": "v1"})
+
+
+def test_observation_file_round_trip():
+    S = _schemas()
+    extraction = S.Extraction(kind="whiteboard", lesson="L119", observations=[
+        {"type": "vocab", "region": "board", "verbatim": "el valde", "spanish": "el balde", "english": "bucket",
+         "concept_ids": ["vocab_de_clase"], "confidence": "high"},
+        {"type": "correction", "region": "tutor_annotation", "verbatim": "yo hablo ayer -> hablé",
+         "spanish": "Yo hablé ayer.", "correction": {"wrong": "yo hablo ayer", "right": "yo hablé ayer",
+                                                     "why": "pasado: pretérito"},
+         "concept_ids": ["preterito"], "error_tags": ["tense_choice"], "confidence": "medium"}])
+    staged = S.stage(_artifact(S), extraction)
+    assert [o.id for o in staged.observations] == ["abababababab-1", "abababababab-2"]
+    assert all(o.status == "pending" for o in staged.observations) and staged.filename == "abababababab.json"
+    again = S.ObservationFile.model_validate_json(staged.model_dump_json())
+    assert again == staged
+    # The reply format given to Claude must stay free of constraints it can't enforce.
+    import json as _json
+    text = _json.dumps(S.Extraction.model_json_schema())
+    assert not any(f'"{key}":' in text for key in ("pattern", "minimum", "maximum", "minLength", "maxLength", "format"))
+
+
+@pytest.mark.parametrize("change,message", [
+    ({"concept_ids": ["no_such_concept"]}, "not grammar/vocab concepts"),
+    ({"concept_ids": ["accent"]}, "not grammar/vocab concepts"),        # an error tag is not a topic
+    ({"type": "correction"}, "needs its wrong/right pair"),
+    ({"error_tags": ["accent"]}, "only a 'correction'"),
+    ({"type": "correction", "correction": {"wrong": "a", "right": "a"}}, "are the same"),
+    ({"type": "correction", "correction": {"wrong": "a", "right": "b"}, "error_tags": ["preterito"]}, "not error tags"),
+    ({"spanish": "  "}, "must not be blank"),
+    ({"region": "ui_noise"}, "region"),
+    ({"surprise": 1}, "surprise"),
+])
+def test_observation_rules(change, message):
+    S = _schemas()
+    base = {"type": "vocab", "region": "board", "verbatim": "x", "spanish": "x", "confidence": "high"}
+    with pytest.raises(ValueError, match=message):
+        S.ExtractedObservation(**{**base, **change})
+
+
+def test_stored_observation_and_artifact_rules():
+    S = _schemas()
+    art = _artifact(S)
+    base = {"type": "vocab", "region": "board", "verbatim": "x", "spanish": "x", "confidence": "high",
+            "artifact_id": art.sha256}
+    with pytest.raises(ValueError, match="id must start"):
+        S.Observation(**base, id="zzz-1")
+    with pytest.raises(ValueError, match="duplicate_of"):
+        S.Observation(**base, id="abababababab-1", status="duplicate")
+    with pytest.raises(ValueError, match="sha256"):
+        S.Artifact(**{**art.model_dump(), "sha256": "ABC"})
+    with pytest.raises(ValueError, match="lesson"):
+        S.Artifact(**{**art.model_dump(), "lesson": "lesson 3"})
+    one = S.Observation(**base, id="abababababab-1")
+    with pytest.raises(ValueError, match="unique"):
+        S.ObservationFile(artifact=art, observations=[one, one])

@@ -119,7 +119,7 @@ Spanish/
 │   ├── expressions/
 │   ├── exercises/
 │   ├── external/                 # Language Transfer mapping
-│   └── progress/                 # Local progress (git-ignored)
+│   └── progress/                 # Local progress fallback (git-ignored); see README for the hosted database
 └── reference/
     ├── SCHEMAS.md                # Canonical JSON schemas
     └── CLITIC_RULES.md           # Deep dive on clitic mechanics
