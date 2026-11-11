@@ -26,6 +26,21 @@ VOCAB_DIR = os.path.join(DATA_DIR, "vocabulary")
 EXAMPLE_SOURCES = ["class_notes_recent.json", "core_verbs.json", "food_and_restaurant.json",
                    "numbers_and_money.json"]
 EXTRA_DECK = ("notas_de_clase:extra", "📝 Notas de clase (extra)")
+# Words, expressions and example sentences read from lesson screenshots and
+# approved (python scripts/ingest.py: run, review, compile). The file is
+# generated; it also holds tutor corrections, drilled as "!drill correcciones".
+LESSON_DECK = ("capturas:clase", "📸 De mis capturas")
+COMPILED_FILE = os.path.join(DATA_DIR, "compiled", "lesson_observations.json")
+
+
+def load_compiled(path=None):
+    """The compiled lesson observations, or empty lists when nothing has been compiled yet."""
+    try:
+        with open(path or COMPILED_FILE, encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        data = {}
+    return {key: data.get(key, []) for key in ("cards", "corrections", "rule_notes")}
 _NOUN_PARTS = {"sustantivos_vida_diaria", "sustantivos_mundo"}
 _QUOTED = re.compile(r'^"[^"]+"(\s*;\s*"[^"]+")*$')
 
@@ -173,6 +188,21 @@ def load_cards(reference_file=REFERENCE_FILE):
                 card["example_from_class"] = entry.get("example_source") == "pizarra"
                 card["lesson"] = "Lecciones 113–119"
                 cards.append(card)
+                seen |= _match_keys(entry["spanish"])
+
+    # From lesson screenshots. Anything the decks above already have is left
+    # out (the ingestion script marks those as duplicates, this is the backstop).
+    deck, label = LESSON_DECK
+    _labels[deck] = label
+    for entry in load_compiled()["cards"]:
+        if _match_keys(entry["spanish"]) & seen:
+            continue
+        seen |= _match_keys(entry["spanish"])
+        is_noun = entry.get("type") == "vocab"
+        card = _card(deck, "de mis capturas", {**entry, "first_seen": entry.get("lesson") or ""},
+                     _gender(entry["spanish"]) if is_noun else "", examples)
+        card["id"] = f"{deck}:{entry['id']}"  # the observation id: stable if the text is edited later
+        cards.append(card)
     return cards
 
 

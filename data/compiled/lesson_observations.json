@@ -1,0 +1,10 @@
+{
+  "_meta": {
+    "generated_by": "python scripts/ingest.py compile",
+    "source": "approved observations in data/observations/staged/",
+    "notes": "Do not edit by hand: change the observations and compile again."
+  },
+  "cards": [],
+  "corrections": [],
+  "rule_notes": []
+}

@@ -10,4 +10,6 @@ What was read from lesson screenshots, before it becomes study material.
   which is ignored.
 - Concept and error-tag ids come from `data/concepts.json`.
 
-Nothing writes here yet: the ingestion script (`scripts/ingest.py`) is the next step.
+Written by `python scripts/ingest.py run` and updated by `review`. `compile`
+turns the approved ones into `data/compiled/lesson_observations.json`, which
+is what the app reads. See "Lesson screenshots" in the main README.

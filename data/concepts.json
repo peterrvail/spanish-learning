@@ -5,6 +5,18 @@
   },
   "concepts": [
     {
+      "id": "correcciones_de_clase",
+      "label": "Correcciones de mi tutor",
+      "kind": "grammar",
+      "modules": [
+        "correcciones"
+      ],
+      "exercise_type_prefixes": [
+        "correccion_"
+      ],
+      "note": "Tutor corrections read from lesson screenshots, drilled as a set. Each correction also names its own concepts in the compiled file."
+    },
+    {
       "id": "presente_rutina",
       "label": "Presente: rutina diaria",
       "kind": "grammar",

@@ -1,5 +1,9 @@
 # Data Ingestion Workflow
 
+> **Lesson screenshots have their own, repeatable route now:** `python scripts/ingest.py run / review / compile`
+> (see "Lesson screenshots" in the README). The manual workflow below is for everything else:
+> homework text, grammar notes, scenarios.
+
 Convert your raw lesson materials (homework, screenshots, notes) into structured JSON data.
 
 ---
