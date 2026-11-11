@@ -177,14 +177,19 @@ def extract(client, media_type, data, model=MODEL, lesson=None, kind=None):
 
 def known_items(staged, skip_artifact=None):
     """match key -> what already has it (a flashcard id or an observation id),
-    for duplicate detection: every card the app already has, then every
-    staged observation that isn't rejected or itself a duplicate."""
+    for duplicate detection: every card the app already has (its word, and
+    its example sentence, so a sentence that is already some card's example
+    isn't added again as a card of its own), then every staged observation
+    that isn't rejected or itself a duplicate."""
     known = {}
     for card in flashcards.load_cards():
         if card["deck"] == flashcards.LESSON_DECK[0]:
             continue  # compiled from these very observations
         for key in flashcards._match_keys(card["spanish"]):
             known.setdefault(key, card["id"])
+        for sentence in card["example"].split(" / "):
+            if sentence.strip():
+                known.setdefault(flashcards._key(sentence), card["id"])
     for obs_file in staged:
         if obs_file.artifact.sha256 == skip_artifact:
             continue
@@ -195,10 +200,26 @@ def known_items(staged, skip_artifact=None):
     return known
 
 
+def split_joined(observations):
+    """A vocab observation that lists several words ("las plumas; emigrar;
+    volar" = "feathers; to migrate; to fly") becomes one observation per
+    word, when both sides split into the same number of parts. One card
+    should hold one thing to learn."""
+    out = []
+    for o in observations:
+        spanish = [p.strip() for p in o.spanish.split(";")]
+        english = [p.strip() for p in (o.english or "").split(";")]
+        if o.type == "vocab" and len(spanish) > 1 and len(spanish) == len(english) and all(spanish) and all(english):
+            out += [o.model_copy(update={"spanish": s, "english": e}) for s, e in zip(spanish, english)]
+        else:
+            out.append(o)
+    return out
+
+
 def stage(artifact, observations, known):
     """Give observations their ids and mark the ones the app already has."""
     staged = []
-    for n, o in enumerate(observations, 1):
+    for n, o in enumerate(split_joined(observations), 1):
         oid = f"{artifact.short_id}-{n}"
         duplicate_of = None
         if o.type in CARD_TYPES:
@@ -223,13 +244,17 @@ def plan(path, directory=None, force=False, discard_reviews=False):
         old = ObservationFile.model_validate_json(f.read())
     reviewed = sum(1 for o in old.observations if o.reviewed_at or o.status in ("approved", "rejected"))
     outdated = old.artifact.extractor.prompt_version != prompt.PROMPT_VERSION
-    if not force and not outdated:
-        return "cached", sha, "already read"
+    if not force:
+        if not outdated:
+            return "cached", sha, "already read"
+        if reviewed:
+            # Reviewed work is worth more than a newer prompt's second opinion.
+            return "cached", sha, "already read and reviewed (with an older prompt version)"
+        return "reread", sha, "older prompt version, nothing reviewed yet"
     if reviewed and not discard_reviews:
-        why = "read with an older prompt, but" if outdated and not force else "it"
-        return "blocked", sha, (f"{why} has {reviewed} reviewed observation(s); "
-                                "add --force --discard-reviews to read it again and lose them")
-    return "reread", sha, "older prompt version" if outdated and not force else "forced"
+        return "blocked", sha, (f"it has {reviewed} reviewed observation(s); "
+                                "add --discard-reviews to read it again and lose them")
+    return "reread", sha, "forced"
 
 
 def ingest_image(client, path, lesson=None, kind=None, captured_on=None, model=MODEL, directory=None,
@@ -266,9 +291,11 @@ def ingest_image(client, path, lesson=None, kind=None, captured_on=None, model=M
 EDITABLE = ("spanish", "english", "note", "wrong", "right", "why")
 
 
-def decide(obs_file, observation_id, status, now=None, **edits):
+def decide(obs_file, observation_id, status, now=None, duplicate_of=None, **edits):
     """Set one observation's status (and optionally edit its text), returning
-    the updated file. Edits are validated like everything else."""
+    the updated file. Edits are validated like everything else. Marking
+    something a duplicate needs `duplicate_of` (the card or observation it
+    repeats), unless it already has one."""
     updated = []
     for o in obs_file.observations:
         if o.id == observation_id:
@@ -284,8 +311,7 @@ def decide(obs_file, observation_id, status, now=None, **edits):
                 else:
                     data[field] = value
             data.update(status=status, reviewed_at=now or datetime.now().replace(microsecond=0))
-            if status != "duplicate":
-                data["duplicate_of"] = None
+            data["duplicate_of"] = (duplicate_of or data.get("duplicate_of")) if status == "duplicate" else None
             o = Observation.model_validate(data)
         updated.append(o)
     return ObservationFile(schema_version=obs_file.schema_version, artifact=obs_file.artifact, observations=updated)
@@ -319,6 +345,12 @@ def _lesson_sort(lesson):
     return flashcards.lesson_number(lesson) if lesson else float("inf")
 
 
+def _id_sort(observation_id):
+    """'47cd…-10' after '47cd…-9': by screenshot, then by position in it."""
+    artifact, _, n = observation_id.rpartition("-")
+    return artifact, int(n) if n.isdigit() else 0
+
+
 def compile_observations(staged):
     """Approved observations as the study data the app reads. Deterministic:
     the same staged files always give the same output, so its diff shows
@@ -339,7 +371,7 @@ def compile_observations(staged):
             elif o.english:  # a card needs both sides
                 cards.append({**base, "type": o.type, "spanish": o.spanish, "english": o.english,
                               "note": o.note or ""})
-    order = lambda x: (_lesson_sort(x["lesson"]), x["id"])  # noqa: E731
+    order = lambda x: (_lesson_sort(x["lesson"]), _id_sort(x["id"]))  # noqa: E731
     return {
         "_meta": {"generated_by": "python scripts/ingest.py compile",
                   "source": "approved observations in data/observations/staged/",

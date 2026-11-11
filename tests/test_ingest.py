@@ -203,8 +203,10 @@ def test_new_prompt_version_rereads_only_unreviewed(work, monkeypatch):
     run_cli(monkeypatch, client, "run", a, b)
     reviewed = next(f for f in pipeline.load_staged() if f.artifact.filename == "a.png")
     pipeline.save_staged(pipeline.decide(reviewed, reviewed.observations[0].id, "rejected"))
-    monkeypatch.setattr(prompt, "PROMPT_VERSION", "v2")
-    assert pipeline.plan(a)[0] == "blocked" and pipeline.plan(b)[0] == "reread"
+    monkeypatch.setattr(prompt, "PROMPT_VERSION", "v-next")
+    assert pipeline.plan(a)[0] == "cached" and pipeline.plan(b)[0] == "reread"     # reviewed work is kept
+    assert pipeline.plan(a, force=True)[0] == "blocked"
+    assert pipeline.plan(a, force=True, discard_reviews=True)[0] == "reread"
 
 
 def test_large_image_is_scaled_down_but_hashed_as_is(work):
@@ -334,3 +336,68 @@ def test_app_reads_the_compiled_file(work, monkeypatch):
     assert progress.export_backup()["attempts"][0]["module"] == "correcciones"
     # Ingesting again later treats the compiled deck as its own output, not as "already known".
     assert pipeline.known_items([]).get(next(iter(flashcards._match_keys(VOCAB["spanish"])))) is None
+
+
+def test_several_words_in_one_observation_become_one_card_each(work, monkeypatch):
+    joined = {**VOCAB, "verbatim": "plumas emigran? vuelan", "spanish": "las plumas raras; emigrar lejos; volar alto",
+              "english": "odd feathers; to migrate far; to fly high"}
+    uneven = {**VOCAB, "verbatim": "x", "spanish": "la tuerca rara; el tornillo raro", "english": "nut and bolt"}
+    sentence = {**EXPRESSION, "spanish": "no dar pie con bola; ni una", "english": "to get nothing right; not one"}
+    run_cli(monkeypatch, FakeClaude(reply(joined, uneven, sentence)), "run", shot(work))
+    [staged] = pipeline.load_staged()
+    assert [(o.spanish, o.english) for o in staged.observations] == [
+        ("las plumas raras", "odd feathers"), ("emigrar lejos", "to migrate far"), ("volar alto", "to fly high"),
+        ("la tuerca rara; el tornillo raro", "nut and bolt"),         # can't be paired up: left for review
+        ("no dar pie con bola; ni una", "to get nothing right; not one")]   # only word lists are split
+    assert [o.id[-2:] for o in staged.observations] == ["-1", "-2", "-3", "-4", "-5"]
+
+
+def test_sentence_that_is_already_a_cards_example_is_a_duplicate(work, monkeypatch):
+    card = next(c for c in flashcards.load_cards() if c["example"] and " / " not in c["example"])
+    example = {"type": "example", "region": "board", "verbatim": card["example"].lower(),
+               "spanish": card["example"], "english": "x", "confidence": "high"}
+    run_cli(monkeypatch, FakeClaude(reply(example)), "run", shot(work))
+    [staged] = pipeline.load_staged()
+    assert [(o.status, o.duplicate_of) for o in staged.observations] == [("duplicate", card["id"])]
+
+
+def test_compiled_order_follows_the_screenshot(work, monkeypatch):
+    words = [{**VOCAB, "spanish": f"la palabra inventada {n}", "verbatim": str(n), "english": f"word {n}"}
+             for n in range(1, 13)]
+    script, _ = run_cli(monkeypatch, FakeClaude(reply(*words)), "run", shot(work))
+    approve_all(work)
+    compiled = pipeline.compile_observations(pipeline.load_staged())
+    assert [c["english"] for c in compiled["cards"]] == [f"word {n}" for n in range(1, 13)]   # 9 before 10
+
+
+def test_review_can_go_back_over_approved_items(work, monkeypatch, capsys):
+    script, _ = run_cli(monkeypatch, FakeClaude(reply(VOCAB, EXPRESSION)), "run", shot(work))
+    approve_all(work)
+    answers = iter(["e", "english", "cross-head screwdriver", "s", "r"])
+    args = script.build_parser().parse_args(["review", "--status", "approved"])
+    assert script.cmd_review(args, ask=lambda _: next(answers)) == 0
+    first, second = pipeline.load_staged()[0].observations
+    assert (first.status, first.english) == ("approved", "cross-head screwdriver")   # an edit keeps the decision
+    assert second.status == "rejected"
+    args = script.build_parser().parse_args(["review", "--status", "duplicate"])
+    assert script.cmd_review(args, ask=lambda _: "q") == 0 and "Nothing is duplicate" in capsys.readouterr().out
+
+
+def test_a_wrongly_flagged_duplicate_can_be_approved(work, monkeypatch):
+    known = next(c for c in flashcards.load_cards() if c["spanish"].startswith(("el ", "la ")))
+    script, _ = run_cli(monkeypatch, FakeClaude(reply({**VOCAB, "spanish": known["spanish"]})), "run", shot(work))
+    args = script.build_parser().parse_args(["review", "--status", "duplicate"])
+    assert script.cmd_review(args, ask=lambda _: "a") == 0
+    [o] = pipeline.load_staged()[0].observations
+    assert (o.status, o.duplicate_of) == ("approved", None)
+
+
+def test_marking_a_duplicate_by_hand_needs_what_it_repeats(work, monkeypatch):
+    run_cli(monkeypatch, FakeClaude(reply(VOCAB)), "run", shot(work))
+    [staged] = pipeline.load_staged()
+    oid = staged.observations[0].id
+    with pytest.raises(ValueError):
+        pipeline.decide(staged, oid, "duplicate")
+    marked = pipeline.decide(staged, oid, "duplicate", duplicate_of="some:card")
+    assert marked.observations[0].duplicate_of == "some:card"
+    assert pipeline.decide(marked, oid, "approved").observations[0].duplicate_of is None

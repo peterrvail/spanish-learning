@@ -655,7 +655,8 @@ def test_reference_matches_the_document():
 
 def test_flashcards_are_built_from_the_reference():
     cards = flashcards.load_cards()
-    ref_cards = [c for c in cards if not c["deck"].startswith("notas_de_clase")]
+    # The reference deck only: not the class-notes extras, nor cards read from screenshots.
+    ref_cards = [c for c in cards if not c["deck"].startswith(("notas_de_clase", "capturas"))]
     assert len(ref_cards) == 3563 and len({c["id"] for c in cards}) == len(cards)
     decks = flashcards.decks(cards)
     assert len([d for d in decks if d.startswith("expresiones:")]) == 9      # one deck per situation
