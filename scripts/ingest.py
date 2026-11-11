@@ -10,6 +10,7 @@ run      reads each new screenshot with Claude (needs ANTHROPIC_API_KEY) and
          writes what it found to data/observations/staged/, as "pending".
          A screenshot already read is skipped, so it is safe to run again.
 review   shows pending observations one at a time: approve, edit, reject.
+         (--status approved goes back over ones already approved.)
 compile  writes the approved ones to data/compiled/lesson_observations.json,
          which the app shows as the "De mis capturas" flashcard deck and the
          "Correcciones de clase" drill. Commit that file and the staged ones.
@@ -120,16 +121,17 @@ def cmd_review(args, ask=input):
                 pipeline.save_staged(staged[i])
             approved += n
         print(f"Approved {approved} high-confidence word(s) and expression(s).")
-    pending = [(i, o.id) for i, f in enumerate(staged) for o in f.observations if o.status == "pending"]
+    pending = [(i, o.id) for i, f in enumerate(staged) for o in f.observations if o.status == args.status]
     if not pending:
-        print("Nothing left to review. Next: python scripts/ingest.py compile")
+        print("Nothing left to review. Next: python scripts/ingest.py compile" if args.status == "pending"
+              else f"Nothing is {args.status}.")
         return 0
     print(f"{len(pending)} to review.  [a]pprove  [e]dit  [r]eject  [s]kip  [q]uit")
     done = 0
     for n, (i, oid) in enumerate(pending, 1):
         while True:
             o = next(x for x in staged[i].observations if x.id == oid)
-            _show(o, staged[i].artifact, f"{n}/{len(pending)}")
+            _show(o, staged[i].artifact, f"{n}/{len(pending)}" + ("" if o.status == "pending" else f", now {o.status}"))
             try:
                 answer = ask("  a/e/r/s/q > ").strip().lower()[:1]
             except EOFError:
@@ -151,7 +153,7 @@ def cmd_review(args, ask=input):
                     print("  not one of those fields")
                     continue
                 try:
-                    staged[i] = pipeline.decide(staged[i], oid, "pending", **{field: ask(f"  new {field} > ")})
+                    staged[i] = pipeline.decide(staged[i], oid, o.status, **{field: ask(f"  new {field} > ")})
                     pipeline.save_staged(staged[i])
                 except ValueError as e:
                     print(f"  not saved: {str(e).splitlines()[-1].strip()}")
@@ -191,6 +193,9 @@ def build_parser():
     review.add_argument("--lesson", type=_lesson, help="only this lesson")
     review.add_argument("--approve-high", action="store_true",
                         help="first approve every high-confidence word and expression")
+    review.add_argument("--status", choices=("pending", "approved", "rejected", "duplicate"), default="pending",
+                        help="which observations to go through (default pending); use 'approved' to "
+                             "revisit earlier decisions")
     review.set_defaults(func=cmd_review)
     sub.add_parser("compile", help="write approved observations for the app").set_defaults(func=cmd_compile)
     return parser

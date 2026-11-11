@@ -248,7 +248,7 @@ git add data/observations/staged data/compiled && git commit -m "Lesson 120 scre
 ```
 
 - **run** hashes each image, skips any it has already read (so it is safe to run again and costs nothing), and writes what Claude found to `data/observations/staged/<hash>.json` as *pending*: vocabulary, expressions, example sentences, rule notes and tutor corrections (what you said, the fix, and why). Items the app already has are marked *duplicate*. Useful flags: `--dry-run` (send nothing), `--limit N`, `--kind`, `--date`, `--model`, `--force` (read again; add `--discard-reviews` if that image was already reviewed). PNG, JPEG, WebP and GIF are read; convert HEIC first. The images are copied to `data/artifacts/raw/`, which is not in git.
-- **review** shows each pending item for a one-key decision. `--approve-high` first approves every high-confidence word and expression, leaving corrections and uncertain readings for you. `python scripts/ingest.py status` shows the counts.
+- **review** shows each pending item for a one-key decision. `--approve-high` first approves every high-confidence word and expression, leaving corrections and uncertain readings for you. `python scripts/ingest.py status` shows the counts, and `review --status approved` (or `rejected`, `duplicate`) goes back over earlier decisions.
 - **compile** rewrites `data/compiled/lesson_observations.json` from the approved items only. The app shows them as the flashcard deck **📸 De mis capturas** and, once there is at least one correction, the drill **✍️ Correcciones de clase** (`!drill correcciones`: your own mistake is the prompt, the tutor's version is the answer).
 
 The formats are defined in `ingest/schemas.py`; topics and kinds of mistake come from `data/concepts.json`.

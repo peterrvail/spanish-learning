@@ -67,9 +67,9 @@
       "note": null,
       "id": "47cdee516d31-3",
       "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
-      "status": "approved",
-      "duplicate_of": null,
-      "reviewed_at": "2026-11-11T16:08:54"
+      "status": "duplicate",
+      "duplicate_of": "sustantivos_vida_diaria:casa_y_hogar:la gotera",
+      "reviewed_at": "2026-11-11T21:13:38"
     },
     {
       "type": "vocab",
@@ -183,9 +183,9 @@
       "note": "Fragmentary notes about birds.",
       "id": "47cdee516d31-9",
       "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
-      "status": "approved",
+      "status": "rejected",
       "duplicate_of": null,
-      "reviewed_at": "2026-11-11T16:08:55"
+      "reviewed_at": "2026-11-11T21:13:38"
     },
     {
       "type": "example",

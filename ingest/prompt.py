@@ -3,7 +3,7 @@ a way that could change what is extracted: screenshots read with an older
 version can then be told apart (and re-read) later."""
 import concepts
 
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v2"
 
 _SYSTEM = """You read one screenshot from a private Spanish lesson (an adult learner, level B1-B2, with a tutor) and list what is worth studying from it.
 
@@ -23,6 +23,10 @@ For every observation:
 - `region` is where it was: tutor_annotation (the tutor's marks, arrows, comments or replies), board (lesson content on a whiteboard or in notes), exercise (a printed or typed exercise), learner_text (something the learner wrote that was not corrected).
 - `concept_ids` are the topics it belongs to, chosen only from the list below; leave it empty if none fits.
 - `confidence` is high when the text is clearly legible and its meaning is certain, medium when you inferred part of it, low when the handwriting or the meaning is doubtful. Say what was doubtful in `note`.
+
+One observation is one thing to learn. When the notes list several words together ("plumas, emigran, vuelan" or "piso de cerámica o piso de madera"), report each as its own vocab observation: never join separate words or phrases with ";", "," or "/" in `spanish`. The only use of " / " is for the two gender forms of the same word ("el abogado / la abogada"). Give verbs in the infinitive when the word itself is what is being learned.
+
+When the text is a fragment, report what is there. Complete it only when the missing part is obvious; if you have to guess the subject or object, set confidence to low and say what you guessed in `note`.
 
 Leave out everything that is not lesson content: names, timestamps, buttons, menus, window titles, emoji reactions, greetings and scheduling talk. Do not report the same item twice. If the screenshot has nothing worth studying, return an empty list.
 
