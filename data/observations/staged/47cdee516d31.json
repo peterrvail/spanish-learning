@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "artifact": {
+    "sha256": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+    "filename": "Leccion 119.png",
+    "kind": "notes",
+    "lesson": "L119",
+    "captured_on": null,
+    "ingested_at": "2026-11-11T16:07:20",
+    "extractor": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "v1"
+    }
+  },
+  "observations": [
+    {
+      "type": "example",
+      "region": "board",
+      "verbatim": "fuimos a la despedida",
+      "spanish": "Fuimos a la despedida.",
+      "english": "We went to the farewell party.",
+      "correction": null,
+      "concept_ids": [
+        "preterito",
+        "vocab_de_clase"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": null,
+      "id": "47cdee516d31-1",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "pending",
+      "duplicate_of": null,
+      "reviewed_at": null
+    },
+    {
+      "type": "vocab",
+      "region": "board",
+      "verbatim": "un valde",
+      "spanish": "el balde",
+      "english": "the bucket",
+      "correction": null,
+      "concept_ids": [
+        "vocab_de_clase"
+      ],
+      "error_tags": [],
+      "confidence": "medium",
+      "note": "Written 'valde' in the notes; the standard spelling is 'balde'.",
+      "id": "47cdee516d31-2",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "duplicate",
+      "duplicate_of": "sustantivos_vida_diaria:casa_y_hogar:el balde",
+      "reviewed_at": null
+    },
+    {
+      "type": "example",
+      "region": "board",
+      "verbatim": "tenemos una gotera también",
+      "spanish": "Tenemos una gotera también.",
+      "english": "We have a leak (in the roof) too.",
+      "correction": null,
+      "concept_ids": [
+        "vocab_de_clase"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": null,
+      "id": "47cdee516d31-3",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "approved",
+      "duplicate_of": null,
+      "reviewed_at": "2026-11-11T16:08:54"
+    },
+    {
+      "type": "vocab",
+      "region": "board",
+      "verbatim": "Lluvia torrencial",
+      "spanish": "la lluvia torrencial",
+      "english": "torrential rain",
+      "correction": null,
+      "concept_ids": [
+        "vocab_tematico"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": null,
+      "id": "47cdee516d31-4",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "duplicate",
+      "duplicate_of": "sustantivos_mundo:naturaleza_y_clima:la lluvia torrencial",
+      "reviewed_at": null
+    },
+    {
+      "type": "example",
+      "region": "board",
+      "verbatim": "el maestro que repara techos",
+      "spanish": "el maestro que repara techos",
+      "english": "the tradesman who repairs roofs",
+      "correction": null,
+      "concept_ids": [
+        "relativos",
+        "vocab_de_clase"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": "'Maestro' here means a skilled tradesman, not a schoolteacher.",
+      "id": "47cdee516d31-5",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "approved",
+      "duplicate_of": null,
+      "reviewed_at": "2026-11-11T16:08:54"
+    },
+    {
+      "type": "example",
+      "region": "board",
+      "verbatim": "muy inclinado y necesito herramientas, equipos adecuados",
+      "spanish": "Es muy inclinado y necesita herramientas, equipos adecuados.",
+      "english": "It's very steep and you need tools, the right equipment.",
+      "correction": null,
+      "concept_ids": [
+        "vocab_de_clase",
+        "adjetivos"
+      ],
+      "error_tags": [],
+      "confidence": "medium",
+      "note": "A fragment, probably about a steep roof. The subject of 'necesito' is unclear.",
+      "id": "47cdee516d31-6",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "approved",
+      "duplicate_of": null,
+      "reviewed_at": "2026-11-11T16:08:55"
+    },
+    {
+      "type": "vocab",
+      "region": "board",
+      "verbatim": "piso de cerámica o piso de madera",
+      "spanish": "el piso de cerámica / el piso de madera",
+      "english": "tiled floor / wooden floor",
+      "correction": null,
+      "concept_ids": [
+        "vocab_de_clase"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": null,
+      "id": "47cdee516d31-7",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "duplicate",
+      "duplicate_of": "sustantivos_vida_diaria:casa_y_hogar:el piso de cerámica",
+      "reviewed_at": null
+    },
+    {
+      "type": "example",
+      "region": "board",
+      "verbatim": "yo llamo no me tiene miedo",
+      "spanish": "Yo lo llamo y no me tiene miedo.",
+      "english": "I call it and it isn't afraid of me.",
+      "correction": null,
+      "concept_ids": [
+        "expresiones"
+      ],
+      "error_tags": [],
+      "confidence": "medium",
+      "note": "A fragment; the object (probably a bird) is inferred.",
+      "id": "47cdee516d31-8",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "approved",
+      "duplicate_of": null,
+      "reviewed_at": "2026-11-11T16:08:55"
+    },
+    {
+      "type": "vocab",
+      "region": "board",
+      "verbatim": "plumas emigran? vuelan",
+      "spanish": "las plumas; emigrar; volar",
+      "english": "feathers; to migrate; to fly",
+      "correction": null,
+      "concept_ids": [
+        "vocab_tematico"
+      ],
+      "error_tags": [],
+      "confidence": "medium",
+      "note": "Fragmentary notes about birds.",
+      "id": "47cdee516d31-9",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "approved",
+      "duplicate_of": null,
+      "reviewed_at": "2026-11-11T16:08:55"
+    },
+    {
+      "type": "example",
+      "region": "board",
+      "verbatim": "les gusta volar",
+      "spanish": "Les gusta volar.",
+      "english": "They like to fly.",
+      "correction": null,
+      "concept_ids": [
+        "gustar"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": null,
+      "id": "47cdee516d31-10",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "approved",
+      "duplicate_of": null,
+      "reviewed_at": "2026-11-11T16:08:55"
+    },
+    {
+      "type": "example",
+      "region": "board",
+      "verbatim": "leí un libro el pico evoluciona en diferentes islas, es una reacción natural.",
+      "spanish": "Leí un libro: el pico evoluciona en diferentes islas, es una reacción natural.",
+      "english": "I read a book: the beak evolves on different islands; it's a natural reaction.",
+      "correction": null,
+      "concept_ids": [
+        "preterito",
+        "vocab_tematico"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": null,
+      "id": "47cdee516d31-11",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "approved",
+      "duplicate_of": null,
+      "reviewed_at": "2026-11-11T16:08:56"
+    },
+    {
+      "type": "vocab",
+      "region": "board",
+      "verbatim": "el pico",
+      "spanish": "el pico",
+      "english": "the beak",
+      "correction": null,
+      "concept_ids": [
+        "vocab_tematico"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": null,
+      "id": "47cdee516d31-12",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "duplicate",
+      "duplicate_of": "sustantivos_mundo:animales:el pico",
+      "reviewed_at": null
+    },
+    {
+      "type": "vocab",
+      "region": "board",
+      "verbatim": "las tortugas terrestres, marinas",
+      "spanish": "las tortugas terrestres / las tortugas marinas",
+      "english": "land tortoises / sea turtles",
+      "correction": null,
+      "concept_ids": [
+        "vocab_tematico"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": null,
+      "id": "47cdee516d31-13",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "approved",
+      "duplicate_of": null,
+      "reviewed_at": "2026-11-11T16:07:43"
+    },
+    {
+      "type": "vocab",
+      "region": "board",
+      "verbatim": "mi disfraz",
+      "spanish": "el disfraz",
+      "english": "the costume",
+      "correction": null,
+      "concept_ids": [
+        "vocab_de_clase"
+      ],
+      "error_tags": [],
+      "confidence": "high",
+      "note": null,
+      "id": "47cdee516d31-14",
+      "artifact_id": "47cdee516d314178e0919a703efbb09a9b415905012fbabd85f34c24a454490a",
+      "status": "duplicate",
+      "duplicate_of": "sustantivos_vida_diaria:ropa_y_accesorios:el disfraz",
+      "reviewed_at": null
+    }
+  ]
+}

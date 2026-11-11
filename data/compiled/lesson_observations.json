@@ -1,0 +1,102 @@
+{
+  "_meta": {
+    "generated_by": "python scripts/ingest.py compile",
+    "source": "approved observations in data/observations/staged/",
+    "notes": "Do not edit by hand: change the observations and compile again."
+  },
+  "cards": [
+    {
+      "id": "47cdee516d31-10",
+      "lesson": "L119",
+      "concept_ids": [
+        "gustar"
+      ],
+      "type": "example",
+      "spanish": "Les gusta volar.",
+      "english": "They like to fly.",
+      "note": ""
+    },
+    {
+      "id": "47cdee516d31-11",
+      "lesson": "L119",
+      "concept_ids": [
+        "preterito",
+        "vocab_tematico"
+      ],
+      "type": "example",
+      "spanish": "Leí un libro: el pico evoluciona en diferentes islas, es una reacción natural.",
+      "english": "I read a book: the beak evolves on different islands; it's a natural reaction.",
+      "note": ""
+    },
+    {
+      "id": "47cdee516d31-13",
+      "lesson": "L119",
+      "concept_ids": [
+        "vocab_tematico"
+      ],
+      "type": "vocab",
+      "spanish": "las tortugas terrestres / las tortugas marinas",
+      "english": "land tortoises / sea turtles",
+      "note": ""
+    },
+    {
+      "id": "47cdee516d31-3",
+      "lesson": "L119",
+      "concept_ids": [
+        "vocab_de_clase"
+      ],
+      "type": "example",
+      "spanish": "Tenemos una gotera también.",
+      "english": "We have a leak (in the roof) too.",
+      "note": ""
+    },
+    {
+      "id": "47cdee516d31-5",
+      "lesson": "L119",
+      "concept_ids": [
+        "relativos",
+        "vocab_de_clase"
+      ],
+      "type": "example",
+      "spanish": "el maestro que repara techos",
+      "english": "the tradesman who repairs roofs",
+      "note": "'Maestro' here means a skilled tradesman, not a schoolteacher."
+    },
+    {
+      "id": "47cdee516d31-6",
+      "lesson": "L119",
+      "concept_ids": [
+        "vocab_de_clase",
+        "adjetivos"
+      ],
+      "type": "example",
+      "spanish": "Es muy inclinado y necesita herramientas, equipos adecuados.",
+      "english": "It's very steep and you need tools, the right equipment.",
+      "note": "A fragment, probably about a steep roof. The subject of 'necesito' is unclear."
+    },
+    {
+      "id": "47cdee516d31-8",
+      "lesson": "L119",
+      "concept_ids": [
+        "expresiones"
+      ],
+      "type": "example",
+      "spanish": "Yo lo llamo y no me tiene miedo.",
+      "english": "I call it and it isn't afraid of me.",
+      "note": "A fragment; the object (probably a bird) is inferred."
+    },
+    {
+      "id": "47cdee516d31-9",
+      "lesson": "L119",
+      "concept_ids": [
+        "vocab_tematico"
+      ],
+      "type": "vocab",
+      "spanish": "las plumas; emigrar; volar",
+      "english": "feathers; to migrate; to fly",
+      "note": "Fragmentary notes about birds."
+    }
+  ],
+  "corrections": [],
+  "rule_notes": []
+}

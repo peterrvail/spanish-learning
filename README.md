@@ -69,6 +69,7 @@ Spanish/
 │   ├── external/         # Language Transfer track mapping (for !lt)
 │   ├── concepts.json     # Concept taxonomy: what drills and lesson observations roll up to, and error tags
 │   ├── observations/     # What was read from lesson screenshots (staged/, one file per screenshot)
+│   ├── compiled/         # Generated from approved observations; read by the app (deck + corrections drill)
 │   └── progress/         # Local progress fallback (SQLite); git-ignored
 ├── reference/
 │   ├── SCHEMAS.md        # Canonical JSON schemas for all data modules
@@ -83,8 +84,8 @@ Spanish/
 │   ├── store.py          # Where progress is kept: hosted Turso (HTTP) or local SQLite
 │   ├── concepts.py       # Loader and validator for data/concepts.json
 │   └── external.py       # Language Transfer tracker (!lt)
-├── ingest/               # Data contracts for lesson-screenshot ingestion (schemas.py); not used by the app
-├── scripts/              # migrate_progress.py (one-off move of a backup into the database)
+├── ingest/               # Screenshot ingestion: schemas.py (formats), prompt.py, pipeline.py; not imported by the app
+├── scripts/              # ingest.py (lesson screenshots -> study data), migrate_progress.py
 ├── tests/                # pytest suite
 └── README.md             # This file
 ```
@@ -235,7 +236,24 @@ Entries in `data/` marked `"source": "claude-draft"` were written by Claude to f
 
 ## Data Ingestion Workflow
 
-### Submit Raw Materials
+### Lesson screenshots (`scripts/ingest.py`)
+
+Screenshots of the whiteboard, chat or annotated exercises become study material in three steps, run on your own computer (it needs `ANTHROPIC_API_KEY`; the images are sent to the Claude API):
+
+```bash
+python scripts/ingest.py run ~/Desktop/leccion120 --lesson L120   # read new screenshots
+python scripts/ingest.py review --approve-high                    # approve / edit / reject what was found
+python scripts/ingest.py compile                                  # write the approved items for the app
+git add data/observations/staged data/compiled && git commit -m "Lesson 120 screenshots"
+```
+
+- **run** hashes each image, skips any it has already read (so it is safe to run again and costs nothing), and writes what Claude found to `data/observations/staged/<hash>.json` as *pending*: vocabulary, expressions, example sentences, rule notes and tutor corrections (what you said, the fix, and why). Items the app already has are marked *duplicate*. Useful flags: `--dry-run` (send nothing), `--limit N`, `--kind`, `--date`, `--model`, `--force` (read again; add `--discard-reviews` if that image was already reviewed). PNG, JPEG, WebP and GIF are read; convert HEIC first. The images are copied to `data/artifacts/raw/`, which is not in git.
+- **review** shows each pending item for a one-key decision. `--approve-high` first approves every high-confidence word and expression, leaving corrections and uncertain readings for you. `python scripts/ingest.py status` shows the counts.
+- **compile** rewrites `data/compiled/lesson_observations.json` from the approved items only. The app shows them as the flashcard deck **📸 De mis capturas** and, once there is at least one correction, the drill **✍️ Correcciones de clase** (`!drill correcciones`: your own mistake is the prompt, the tutor's version is the answer).
+
+The formats are defined in `ingest/schemas.py`; topics and kinds of mistake come from `data/concepts.json`.
+
+### Submit Raw Materials (other content)
 
 Have lesson screenshots, homework assignments, or notes you want to convert into structured data?
 

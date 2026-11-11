@@ -138,6 +138,10 @@ DRILL_CATEGORIES = {
         ("🚂 Ir + Gerundio", "!drill gerundio"),
     ],
 }
+# Tutor corrections read from lesson screenshots (scripts/ingest.py). The
+# drill is only offered once there is something in it.
+if flashcards.load_compiled()["corrections"]:
+    DRILL_CATEGORIES["📸 De mis clases"] = [("✍️ Correcciones de clase", "!drill correcciones")]
 # Flat list kept for backward-compatible lookups (parse_command etc.)
 DRILL_COMMANDS = [item for group in DRILL_CATEGORIES.values() for item in group]
 ROL_COMMANDS = [
@@ -774,6 +778,25 @@ def get_pluscuamperfecto_drill_items(count=10):
                 "exercise_type": "pluscuamperfecto",
                 "explanation": f"{ex['spanish']} — {ex.get('explanation', '')}"
             })
+    random.shuffle(items)
+    return items[:count]
+
+def get_correcciones_drill_items(count=15):
+    """The tutor's corrections as "fix this sentence" items: the learner's
+    own mistake is the prompt and the tutor's version is the answer."""
+    items = []
+    for c in flashcards.load_compiled()["corrections"]:
+        tag = c["error_tags"][0] if c.get("error_tags") else "general"
+        lesson = f" (lección {c['lesson'][1:]})" if c.get("lesson") else ""
+        why = f" — {c['why']}" if c.get("why") else ""
+        items.append({
+            "id": len(items),
+            "prompt": f"Corrige la frase: {c['wrong']}",
+            "target_form": c["right"],
+            # By kind of mistake, so the end-of-drill breakdown says which kind is weak.
+            "exercise_type": f"correccion_{tag}",
+            "explanation": f"✗ {c['wrong']} → ✓ {c['right']}{why}{lesson}",
+        })
     random.shuffle(items)
     return items[:count]
 
@@ -1454,7 +1477,7 @@ def get_imperative_drill_items(verbs_data, count=20):
 
 # Every module name _build_drill_items understands, aliases included.
 KNOWN_MODULES = {
-    "mixto", "fallos", "imperativo", "pronombres", "stem_changes", "cambios", "imperfecto", "pasado",
+    "mixto", "fallos", "correcciones", "imperativo", "pronombres", "stem_changes", "cambios", "imperfecto", "pasado",
     "preterito", "preterite", "pluscuamperfecto", "pluscuam", "ejercicio", "review111", "por_para",
     "porpara", "demostrativos", "distancias", "adverbios", "adjetivos", "numeros", "reflexivos",
     "participios", "futuro_irregular", "futuro", "estructuras", "preguntas", "lugares", "rutina",
@@ -1480,6 +1503,8 @@ def _build_drill_items(module_type):
         return get_pluscuamperfecto_drill_items()
     elif module_type == "ejercicio" or module_type == "review111":
         return get_ejercicio_drill_items()
+    elif module_type == "correcciones":
+        return get_correcciones_drill_items()
     elif module_type == "por_para" or module_type == "porpara":
         return get_por_para_drill_items()
     elif module_type == "demostrativos" or module_type == "distancias":
@@ -1685,7 +1710,9 @@ def run_drill(module_type="imperativo", duration_seconds=None):
         if not st.session_state.drill_items:
             st.session_state.drill_active = False
             st.info("✅ No hay nada pendiente de repasar ahora mismo. ¡Haz un drill y vuelve después!"
-                    if module_type == "fallos" else "No hay elementos para este módulo.")
+                    if module_type == "fallos" else
+                    "Todavía no hay correcciones de clase: se añaden con `python scripts/ingest.py`."
+                    if module_type == "correcciones" else "No hay elementos para este módulo.")
             return
 
     elapsed = (datetime.now() - st.session_state.drill_start_time).total_seconds()
