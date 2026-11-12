@@ -95,7 +95,7 @@ class TursoStore:
     hosted = True
     BATCH_LIMIT = 400  # statements per request, to keep request bodies modest
 
-    def __init__(self, url, token, timeout=8):
+    def __init__(self, url, token, timeout=6):
         parts = urlsplit(url if "://" in url else f"https://{url}")
         if not parts.hostname:
             raise StoreError(f"TURSO_DATABASE_URL no es una URL válida: {url!r}")

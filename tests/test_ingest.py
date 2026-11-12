@@ -401,3 +401,17 @@ def test_marking_a_duplicate_by_hand_needs_what_it_repeats(work, monkeypatch):
     marked = pipeline.decide(staged, oid, "duplicate", duplicate_of="some:card")
     assert marked.observations[0].duplicate_of == "some:card"
     assert pipeline.decide(marked, oid, "approved").observations[0].duplicate_of is None
+
+
+def test_a_damaged_staged_file_is_reported_not_a_traceback(work, monkeypatch, capsys):
+    path = shot(work)
+    script, _ = run_cli(monkeypatch, FakeClaude(reply(VOCAB)), "run", path)
+    [name] = os.listdir(work / "staged")
+    (work / "staged" / name).write_text('{"schema_version": 1, "oops": true}')
+    for argv in (["status"], ["review"], ["compile"]):
+        assert script.main(argv) == 1
+        out = capsys.readouterr().out
+        assert "Stopped:" in out and name in out
+    client = FakeClaude(reply(VOCAB))
+    _, code = run_cli(monkeypatch, client, "run", path)
+    assert code == 1 and client.calls == [] and "can't be read" in capsys.readouterr().out

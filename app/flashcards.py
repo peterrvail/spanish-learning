@@ -33,6 +33,13 @@ LESSON_DECK = ("capturas:clase", "📸 De mis capturas")
 COMPILED_FILE = os.path.join(DATA_DIR, "compiled", "lesson_observations.json")
 
 
+def sources_stamp():
+    """Changes whenever anything load_cards() reads changes (the data files,
+    or this module): the key for caching its result."""
+    paths = [REFERENCE_FILE, COMPILED_FILE, __file__] + [os.path.join(VOCAB_DIR, name) for name in EXAMPLE_SOURCES]
+    return tuple((p, os.path.getmtime(p) if os.path.exists(p) else None) for p in paths)
+
+
 def load_compiled(path=None):
     """The compiled lesson observations, or empty lists when nothing has been compiled yet."""
     try:

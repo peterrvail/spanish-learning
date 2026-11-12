@@ -203,7 +203,11 @@ def build_parser():
 
 def main(argv=None):
     args = build_parser().parse_args(argv)
-    return args.func(args)
+    try:
+        return args.func(args)
+    except pipeline.IngestError as e:
+        print(f"Stopped: {e}")
+        return 1
 
 
 if __name__ == "__main__":
