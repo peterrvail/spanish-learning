@@ -1171,6 +1171,7 @@ def turso(monkeypatch, tmp_path):
     monkeypatch.setenv("TURSO_AUTH_TOKEN", server.token)
     monkeypatch.setattr(progress, "RETRY_AFTER_SECONDS", 0)   # tests recover at once
     monkeypatch.setattr(progress, "_paused_until", None)
+    monkeypatch.setattr(progress, "_unsent", [])                # nothing queued by an earlier test
     progress._hosted.clear()
     yield server
     progress._hosted.clear()
@@ -1439,3 +1440,24 @@ def test_stored_observation_and_artifact_rules():
     one = S.Observation(**base, id="abababababab-1")
     with pytest.raises(ValueError, match="unique"):
         S.ObservationFile(artifact=art, observations=[one, one])
+
+
+def test_answers_given_while_the_hosted_store_is_down_are_sent_later(turso, monkeypatch):
+    monkeypatch.setattr(progress, "RETRY_AFTER_SECONDS", 30)
+    monkeypatch.setattr(progress, "_unsent", [])
+    t0 = datetime(2026, 1, 1, 12)
+    progress.record_attempt(item("uno"), False, now=t0)
+    turso.fail_next = 1
+    assert progress.record_attempt(item("dos"), False, now=t0) is False          # the failure itself
+    assert progress.record_attempt(item("tres"), True, now=t0) is False          # during the pause: no request
+    assert progress.set_lt_done(5) is False
+    assert progress.unsent_count() == 3 and progress.storage_problem()
+    monkeypatch.setattr(progress, "_paused_until", None)                         # the pause is over
+    assert progress.due_count(now=t0) == 2                                       # sent first, so already counted
+    assert progress.unsent_count() == 0 and progress.storage_problem() is None
+    assert [a["target_form"] for a in progress.export_backup()["attempts"]] == ["uno", "dos", "tres"]
+    assert progress.lt_done() == {5}
+    # A local file has no queue: a failed write there is simply reported.
+    monkeypatch.delenv("TURSO_DATABASE_URL")
+    monkeypatch.setenv("SPANISH_PROGRESS_DB", "/proc/nope/p.db")
+    assert progress.record_attempt(item("x"), False) is False and progress.unsent_count() == 0

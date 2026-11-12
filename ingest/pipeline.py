@@ -85,14 +85,19 @@ def find_images(paths):
 
 def load_staged(directory=None):
     """Every staged ObservationFile, by file name order. A file that no
-    longer matches the schema is an error worth stopping for."""
+    longer matches the format (edited by hand, say) is worth stopping for:
+    raises IngestError naming it."""
     directory = directory or staged_dir()
     files = []
     if os.path.isdir(directory):
         for name in sorted(os.listdir(directory)):
             if name.endswith(".json"):
-                with open(os.path.join(directory, name), encoding="utf-8") as f:
-                    files.append(ObservationFile.model_validate_json(f.read()))
+                try:
+                    with open(os.path.join(directory, name), encoding="utf-8") as f:
+                        files.append(ObservationFile.model_validate_json(f.read()))
+                except (OSError, ValueError) as e:
+                    detail = "; ".join(line.strip() for line in str(e).splitlines()[:3])
+                    raise IngestError(f"{os.path.join(STAGED_DIR, name)} can't be read: {detail}") from e
     return files
 
 
@@ -240,8 +245,12 @@ def plan(path, directory=None, force=False, discard_reviews=False):
     existing = os.path.join(directory, f"{sha[:12]}.json")
     if not os.path.exists(existing):
         return "new", sha, ""
-    with open(existing, encoding="utf-8") as f:
-        old = ObservationFile.model_validate_json(f.read())
+    try:
+        with open(existing, encoding="utf-8") as f:
+            old = ObservationFile.model_validate_json(f.read())
+    except (OSError, ValueError) as e:  # edited by hand into something that no longer fits
+        problem = str(e).splitlines()[0][:120]
+        return "blocked", sha, f"its staged file can't be read ({problem}); fix or delete {os.path.basename(existing)}"
     reviewed = sum(1 for o in old.observations if o.reviewed_at or o.status in ("approved", "rejected"))
     outdated = old.artifact.extractor.prompt_version != prompt.PROMPT_VERSION
     if not force:

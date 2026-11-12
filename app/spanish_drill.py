@@ -400,8 +400,11 @@ def render_command_menu(columns=2):
     if pending:
         st.caption(f"🔁 {pending} para repasar hoy")
     if progress.storage_problem():
+        waiting = progress.unsent_count()
         st.warning("⚠️ No se está guardando tu progreso ahora mismo "
-                   f"({'base de datos en línea' if progress.is_hosted() else 'archivo local'} no disponible).")
+                   f"({'base de datos en línea' if progress.is_hosted() else 'archivo local'} no disponible)."
+                   + (f" {waiting} respuesta(s) se enviarán cuando vuelva la conexión; no cierres la app."
+                      if waiting else ""))
     st.caption("📖 = Repasar (revisar sin cronómetro ni puntuación)")
     for category_name, commands in DRILL_CATEGORIES.items():
         st.markdown(f"#### {category_name}")
@@ -2464,10 +2467,25 @@ def run_resumen():
 _DIRECTIONS = {"Español → inglés": "es_en", "Inglés → español": "en_es", "Mezcla": "mix"}
 _DECK_SIZES = {"10": 10, "20": 20, "30": 30, "Todas": 0}
 
-@st.cache_resource
+@st.cache_resource(max_entries=2)
+def _cards_for(stamp):
+    return {c["id"]: c for c in flashcards.load_cards()}
+
+
+def _all_cards():
+    """Every flashcard, by id. Building them from the data files is the
+    slowest thing on the flashcard screen, so it is done once and again only
+    when a data file changes. Shared between reruns: treat it as read-only."""
+    return _cards_for(flashcards.sources_stamp())
+
+
+@st.cache_resource(max_entries=2)
+def _same_meaning_for(stamp):
+    return flashcards.same_meaning(_all_cards().values(), split_alternates)
+
+
 def _same_meaning_index():
-    """Built once per server process rather than on every flashcard tap."""
-    return flashcards.same_meaning(flashcards.load_cards(), split_alternates)
+    return _same_meaning_for(flashcards.sources_stamp())
 
 
 def _card_quiz_item(card):
@@ -2494,7 +2512,7 @@ def run_tarjetas():
     goes into the spaced-repetition log, so missed words also show up in
     "!drill fallos" and the review counter."""
     st.title("🃏 Tarjetas")
-    cards = {c["id"]: c for c in flashcards.load_cards()}
+    cards = _all_cards()
     session = st.session_state.get("fc")
 
     if session is None:

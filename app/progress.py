@@ -138,6 +138,16 @@ def _store():
 # the pause every answer would wait out a network timeout while it is down.
 RETRY_AFTER_SECONDS = 30
 _paused_until = None
+# Writes that could not reach the hosted database (answers given while it
+# was unreachable). They are sent, in order, before the next thing that does
+# get through. Kept in memory only: a restart of the app loses them.
+_unsent = []
+MAX_UNSENT = 500
+
+
+def unsent_count():
+    """Answers and ticks waiting for the hosted database to come back."""
+    return len(_unsent)
 
 
 def _run(work, fallback):
@@ -147,7 +157,11 @@ def _run(work, fallback):
     if hosted and _paused_until and datetime.now() < _paused_until:
         return fallback
     try:
-        result = work(_store())
+        store = _store()
+        if hosted and _unsent:
+            store.batch([statement for write in _unsent for statement in write])
+            del _unsent[:]
+        result = work(store)
     except (StoreError, OSError) as e:
         _last_error = str(e)
         if hosted:
@@ -155,6 +169,16 @@ def _run(work, fallback):
         return fallback
     _last_error, _paused_until = None, None
     return result
+
+
+def _write(statements):
+    """Run a write. If the hosted database can't be reached, keep it to send
+    later and report False (the caller's "not saved yet")."""
+    if _run(lambda s: s.batch(statements) is not None, False):
+        return True
+    if is_hosted() and len(_unsent) < MAX_UNSENT:
+        _unsent.append(statements)
+    return False
 
 
 def card_key(item):
@@ -202,7 +226,7 @@ def record_attempt(item, is_correct, module=None, now=None, typed_answer=None, e
          (key, json.dumps(stored, ensure_ascii=False), 1 if correct else 0, due[1] if correct else due[0],
           0 if correct else 1, correct, *due[1:top], due[top], due[0], correct)),
     ]
-    return _run(lambda s: s.batch(statements) is not None, False)
+    return _write(statements)
 
 
 def due_items(limit=20, now=None):
@@ -315,7 +339,7 @@ def lt_done():
 
 def set_lt_done(track, done=True):
     sql = "INSERT OR IGNORE INTO lt_done (track) VALUES (?)" if done else "DELETE FROM lt_done WHERE track=?"
-    return _run(lambda s: s.batch([(sql, (int(track),))]) is not None, False)
+    return _write([(sql, (int(track),))])
 
 
 # --- backup / restore -----------------------------------------------------------
