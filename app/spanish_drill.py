@@ -546,7 +546,25 @@ def check_answer(user_answer, item):
         if normalized == _normalize_for_grading(_loose(form)):
             return True, form, True
 
+    # "nosotros escribimos" for "escribimos": saying who is fine when it is
+    # the person the question asked for.
+    rest = _without_named_subject(typed, item.get("prompt", ""))
+    if rest:
+        return check_answer(rest, item)
     return False, None, False
+
+def _without_named_subject(typed, prompt):
+    """The answer minus a leading subject pronoun, if the prompt names that
+    pronoun ("... nosotros form", "(estar/yo)"); otherwise None. A pronoun
+    the prompt doesn't name stays, so "yo come" is not waved through for an
+    "él form" question. The pronoun's own accent is not checked: it isn't
+    what is being asked."""
+    words = _loose(typed).split()
+    if len(words) < 2:
+        return None
+    named = {_normalize_for_grading(p) for p in _SUBJECT_PRONOUNS
+             if re.search(rf"(?<!\w){re.escape(p)}(?!\w)", prompt.lower())}
+    return " ".join(words[1:]) if _normalize_for_grading(words[0]) in named else None
 
 def is_correct_answer(user_answer, item):
     """Boolean-only view of check_answer, for callers that just need a verdict."""
