@@ -1461,3 +1461,23 @@ def test_answers_given_while_the_hosted_store_is_down_are_sent_later(turso, monk
     monkeypatch.delenv("TURSO_DATABASE_URL")
     monkeypatch.setenv("SPANISH_PROGRESS_DB", "/proc/nope/p.db")
     assert progress.record_attempt(item("x"), False) is False and progress.unsent_count() == 0
+
+
+def test_subject_pronoun_is_accepted_when_the_question_names_it():
+    asks_nosotros = item("escribimos", prompt="Conjugate 'escribir' (to write) in preterite, nosotros form.")
+    assert sd.check_answer("nosotros escribimos", asks_nosotros) == (True, "escribimos", False)
+    assert sd.check_answer("Nosotros  escribimos.", asks_nosotros)[0]
+    assert not sd.check_answer("yo escribimos", asks_nosotros)[0]          # not the person asked for
+    assert not sd.check_answer("nosotros escribieron", asks_nosotros)[0]   # the verb still has to be right
+    assert not sd.check_answer("nosotros", asks_nosotros)[0]
+    asks_el = item("habló", prompt="Pretérito de 'hablar' — él/ella/usted")
+    assert sd.check_answer("él habló", asks_el) == (True, "habló", False)
+    assert sd.check_answer("el habló", asks_el)[0]                         # the pronoun's accent isn't the point
+    assert sd.check_answer("ella hablo", asks_el) == (True, "habló", True)  # but the verb's is (scored as a miss)
+    assert sd.check_answer("usted habló", asks_el)[0] and not sd.check_answer("ustedes habló", asks_el)[0]
+    in_blank = item("estuve", prompt="La semana pasada (estar/yo) _____ de baja.")
+    assert sd.check_answer("yo estuve", in_blank)[0]
+    no_person = item("el libro", prompt="Translate: the book")
+    assert not sd.check_answer("yo el libro", no_person)[0]
+    article = item("come", prompt="Completa: el perro ___ (comer)")        # "el" the article is not "él"
+    assert not sd.check_answer("él come", article)[0]

@@ -86,7 +86,7 @@ Spanish/
 │   └── external.py       # Language Transfer tracker (!lt)
 ├── ingest/               # Screenshot ingestion: schemas.py (formats), prompt.py, pipeline.py; not imported by the app
 ├── scripts/              # ingest.py (lesson screenshots -> study data), migrate_progress.py
-├── tests/                # pytest suite
+├── tests/                # pytest suite (RUN_PLAYTHROUGH=1 also plays every drill end to end; several minutes)
 └── README.md             # This file
 ```
 
