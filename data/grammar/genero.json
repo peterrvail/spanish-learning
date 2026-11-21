@@ -1,0 +1,147 @@
+{
+  "genero": {
+    "source": "claude-draft: rules of thumb checked against the learner's own vocabulary reference (tests/test_genero.py re-checks them whenever the data changes)",
+    "overview": "Every Spanish noun is masculine (el) or feminine (la), and the article has to agree with it. Meaning rarely tells you which, so learn each noun together with its article, and use the endings below as a first guess. They are rules of thumb: each has exceptions, and the biggest groups of exceptions are listed at the end. When a noun ends in -e, -l, -z, -n or -s there is no useful rule: just learn it with its article.",
+    "rules": [
+      {
+        "endings": [
+          "ción",
+          "sión",
+          "dad",
+          "tad",
+          "tud",
+          "umbre"
+        ],
+        "article": "la",
+        "tip": "-ción, -sión, -dad, -tad, -tud and -umbre are feminine (la información, la ciudad)."
+      },
+      {
+        "endings": [
+          "aje",
+          "miento",
+          "án"
+        ],
+        "article": "el",
+        "tip": "-aje, -miento and -án are masculine (el viaje, el movimiento)."
+      },
+      {
+        "endings": [
+          "or"
+        ],
+        "article": "el",
+        "tip": "-or is masculine (el color, el valor); la flor and la labor are the exceptions."
+      },
+      {
+        "endings": [
+          "o"
+        ],
+        "article": "el",
+        "tip": "-o is usually masculine (el libro)."
+      },
+      {
+        "endings": [
+          "a"
+        ],
+        "article": "la",
+        "tip": "-a is usually feminine (la casa)."
+      }
+    ],
+    "exceptions": [
+      {
+        "article": "el",
+        "words": [
+          "agua",
+          "águila",
+          "alma",
+          "hacha",
+          "área",
+          "aula",
+          "ala",
+          "hambre",
+          "arma"
+        ],
+        "tip": "it is feminine, but takes el because it starts with a stressed a- (el agua fría, las aguas)."
+      },
+      {
+        "article": "el",
+        "words": [
+          "tema",
+          "problema",
+          "programa",
+          "idioma",
+          "clima",
+          "sistema",
+          "fantasma",
+          "aroma",
+          "mapa",
+          "día",
+          "mediodía"
+        ],
+        "tip": "it is masculine in spite of the -a (most -ma words of Greek origin: el tema, el problema, el idioma)."
+      },
+      {
+        "article": "la",
+        "words": [
+          "mano",
+          "foto",
+          "moto",
+          "flor",
+          "labor"
+        ],
+        "tip": "it is feminine in spite of the ending (la foto = la fotografía, la moto = la motocicleta)."
+      }
+    ],
+    "uses": [
+      {
+        "name": "Endings that tell you the gender",
+        "description": "Feminine: -ción, -sión, -dad, -tad, -tud, -umbre. Masculine: -aje, -miento, -án, -or. Then the broad tendencies: -o is usually masculine and -a usually feminine.",
+        "examples": [
+          {
+            "spanish": "la información, la ciudad, el viaje, el color",
+            "english": "information, city, trip, colour"
+          }
+        ]
+      },
+      {
+        "name": "Feminine nouns that take el",
+        "description": "Feminine nouns starting with a stressed a- use el in the singular, but everything else about them stays feminine: el agua fría, las aguas. Others: el águila, el alma, el hacha, el área, el aula, el ala, el hambre, el arma.",
+        "examples": [
+          {
+            "spanish": "el agua fría",
+            "english": "the cold water"
+          }
+        ]
+      },
+      {
+        "name": "Masculine words that end in -a",
+        "description": "Most -ma words of Greek origin are masculine: el tema, el problema, el programa, el idioma, el clima, el sistema. Also el mapa, el día. Be careful: plenty of -ma words are feminine (la forma, la cama, la broma), so this is a list to learn, not a rule.",
+        "examples": [
+          {
+            "spanish": "el problema, el idioma, el día",
+            "english": "the problem, the language, the day"
+          }
+        ]
+      },
+      {
+        "name": "Feminine words that end in -o",
+        "description": "Only a handful, mostly shortened words: la mano, la foto (fotografía), la moto (motocicleta).",
+        "examples": [
+          {
+            "spanish": "la mano, la foto",
+            "english": "the hand, the photo"
+          }
+        ]
+      },
+      {
+        "name": "Same form, either gender",
+        "description": "Nouns for people in -ista, -ante, -ente and a few more take their gender from the person: el turista / la turista, el estudiante / la estudiante. Some words change meaning with the article: el capital (money) / la capital (city), el cura (priest) / la cura (cure). The drill leaves out nouns where both answers would be right.",
+        "examples": [
+          {
+            "spanish": "el capital / la capital",
+            "english": "the capital (money) / the capital (city)"
+          }
+        ]
+      }
+    ]
+  }
+}

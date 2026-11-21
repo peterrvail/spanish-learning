@@ -144,6 +144,7 @@ Every button in the app's menu, grouped by menu section (source: `DRILL_CATEGORI
 - `!drill numeros` — 🔢 Números
 - `!drill adverbios` — 🧭 Adverbios
 - `!drill lugares` — 📍 Lugares
+- `!drill genero` — 🚹🚺 Género: el o la
 
 **🚀 Adelantado (aún no en clase)**
 
@@ -168,6 +169,7 @@ Every button in the app's menu, grouped by menu section (source: `DRILL_CATEGORI
 - `!tarjetas` — Flashcards from your complete lesson vocabulary: `data/reference/vocabulary_reference.json`, the "Spanish Vocabulary — Complete Lesson Reference" (3,563 words and phrases from Lessons 1–119), as 36 decks (expressions by situation, verbs, nouns by topic, adjectives, small words), plus **📝 Notas de clase (extra)** for class-notes phrases the reference leaves out. Choose by topic, or by lesson range (default: your last ten lessons). Cards show the lesson where each word first appeared, and an example sentence where there is one (from the reference's notes, or the whiteboard examples in `class_notes_recent.json`). Tap the card to flip it, then "Otra vez" (it comes back a few cards later) or "Lo sabía". Results feed the spaced-repetition queue, so missed words also show up in `!drill fallos`.
 - `!drill condicional` — Simple conditional: irregular stems (tendría, diría...), regular forms, and translations of the seven uses
 - `!drill subjuntivo` — Present subjunctive: forms (regular, dé/vaya/sea/haya/esté/sepa, -go/-zco, stem changes incl. durmamos, -car/-gar/-zar) and sentences where the trigger decides the mood — including indicative contrasts (creo que tiene, cuando + habit), so it drills *when*, not just *how*. Ahead of the lessons; Language Transfer tracks 69–85
+- `!drill genero` — 🚹🚺 Género: el o la. Nouns from the "Otros sustantivos" deck and the places list, 20 per round: half typed with their article (English → "la calle"), half as a minimal pair ("el calle" or "la calle"). Scored in two parts, so a right noun with the wrong article is told apart from a wrong noun; a wrong article is logged with the error tag `gender_agreement` and the question goes to the review queue. The letter hint keeps the article hidden. After a miss you get a rule of thumb (-ción/-dad → la, -aje/-miento → el, ...) or the exception (el agua, el problema, la mano), checked against your own vocabulary; 📖 has the full list. Nouns where both articles are words (el capital / la capital) are only asked by typing
 - `!drill gustar` — Gustar-type verbs as one pattern (gustar, encantar, doler, importar, molestar, interesar, faltar, hacer falta): pronoun + verb fill-ins in present and past, translations, and correcting the classic mistakes (Yo gusto el café → Me gusta el café). Language Transfer tracks 42, 45, 63
 - **🚀 Adelantado (aún no en clase)** — topics Language Transfer teaches before the lessons do, built on one shared data shape (`app/pattern_modules.py`: fill-ins, translations, "which type?" questions, mistakes to correct):
   - `!drill se` — accidental se (se me olvidaron), impersonal and passive se, and telling se apart (reflexive, reciprocal, se = le). LT 47, 80

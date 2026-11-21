@@ -47,6 +47,8 @@ def eligible(item):
     cansancio." / "Estaba cansado."). Single words and short forms (se lo,
     no hables) have one right answer, and a multiple-choice pick is graded
     against its options."""
+    if str(item.get("exercise_type", "")).startswith("genero_"):
+        return False  # "la calle": the article is the whole question, no paraphrase is right
     target = item["target_form"].strip()
     is_sentence = target.endswith((".", "?", "!", "…")) or len(target.split()) >= MIN_WORDS
     return not item.get("choices") and is_sentence

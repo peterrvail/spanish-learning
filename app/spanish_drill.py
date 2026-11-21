@@ -10,6 +10,7 @@ import os
 import conversation
 import external
 import flashcards
+import genero
 import pattern_modules
 import grading
 import progress
@@ -36,7 +37,7 @@ def _reload_stale_modules(*modules):
 
 
 # conversation before grading, which imports from it; store before progress.
-_reload_stale_modules(conversation, grading, external, flashcards, pattern_modules, store, progress)
+_reload_stale_modules(conversation, grading, external, flashcards, genero, pattern_modules, store, progress)
 if progress.StoreError is not store.StoreError:  # store was reloaded but progress wasn't
     importlib.reload(progress)
 
@@ -126,6 +127,7 @@ DRILL_CATEGORIES = {
         ("🔢 Números", "!drill numeros"),
         ("🧭 Adverbios", "!drill adverbios"),
         ("📍 Lugares", "!drill lugares"),
+        ("🚹🚺 Género: el o la", "!drill genero"),
     ],
     # Topics Language Transfer teaches that the lessons haven't reached yet.
     "🚀 Adelantado (aún no en clase)": [
@@ -1106,6 +1108,12 @@ def get_lugares_drill_items(count=15):
     random.shuffle(items)
     return items[:count]
 
+def get_genero_drill_items(count=20):
+    """El o la: nouns from the "Otros sustantivos" deck and the places list,
+    half typed with their article and half as a minimal pair (see genero.py)."""
+    pool = genero.nouns(_all_cards().values(), load_vocabulary("places.json")["places"])
+    return genero.make_items(pool, random, count)
+
 def get_rutina_drill_items(count=15):
     """Generate daily-routine present-tense drill items (yo form)."""
     data = load_grammar("present_tense_routine.json")
@@ -1504,7 +1512,7 @@ KNOWN_MODULES = {
     "participios", "futuro_irregular", "futuro", "estructuras", "preguntas", "lugares", "rutina",
     "ir_gerundio", "gerundio", "estar_gerundio", "progresivo", "condicional", "conditional",
     "ser_estar", "serestar", "subjuntivo", "subjunctive",
-    "gustar", "gustar_verbos", *pattern_modules.MODULES, "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
+    "gustar", "gustar_verbos", "genero", *pattern_modules.MODULES, "vocabulario", "comunes", "vocab_comun", "vocab_mezcla", "indefinidos",
     "preposiciones",
 }
 
@@ -1562,6 +1570,8 @@ def _build_drill_items(module_type):
         return get_gustar_drill_items()
     elif module_type in pattern_modules.MODULES:
         return pattern_modules.items(module_type)
+    elif module_type == "genero":
+        return get_genero_drill_items()
     elif module_type == "vocabulario" or module_type == "comunes":
         return get_vocabulario_drill_items(source="mio")
     elif module_type == "vocab_comun":
@@ -1582,7 +1592,7 @@ _MIXTO_MODULES = [
     "imperativo", "pronombres", "cambios", "pasado", "preterito", "pluscuam",
     "por_para", "demostrativos", "adjetivos", "reflexivos", "participios",
     "futuro", "estructuras", "rutina", "gerundio", "estar_gerundio", "condicional", "ser_estar", "subjuntivo", "gustar", *pattern_modules.MODULES, "indefinidos",
-    "preposiciones", "adverbios", "lugares", "numeros", "vocabulario",
+    "preposiciones", "adverbios", "lugares", "numeros", "vocabulario", "genero",
 ]
 
 def get_mixto_drill_items(count=20):
@@ -1621,7 +1631,10 @@ def _add_recognition_variants(items, fraction=0.3):
     Distractors only come from the same module, so a mixed review queue
     ('fallos') never offers a number as a wrong answer to a verb question."""
     # Items that bring their own options (e.g. "which kind of se?") keep them.
-    candidates = [it for it in items if len(it["target_form"].split()) <= 3 and not it.get("choices")]
+    # The gender drill makes its own: the contrast there is el/la on one noun,
+    # not a choice between different nouns.
+    candidates = [it for it in items if len(it["target_form"].split()) <= 3 and not it.get("choices")
+                  and not genero.is_gender_item(it)]
     forms_by_module = {}
     for it in candidates:
         forms_by_module.setdefault(it.get("module"), []).append(it["target_form"])
@@ -1819,9 +1832,13 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                 if pending.get("accent_fix"):
                     st.warning(f"✍️ Solo te faltó la tilde: se escribe **{pending['accent_fix']}**. "
                                "La tilde cambia la palabra (hablo / habló), así que cuenta como fallo.")
-                diff = grading.word_diff(pending.get("user_answer", ""), pending["target_form"])
-                if diff:
-                    st.markdown(f"🔍 {diff}")
+                if pending.get("gender_lines"):
+                    for line in pending["gender_lines"]:
+                        st.markdown(line)
+                else:
+                    diff = grading.word_diff(pending.get("user_answer", ""), pending["target_form"])
+                    if diff:
+                        st.markdown(f"🔍 {diff}")
                 if (pending.get("ai_review") or {}).get("feedback"):
                     st.info(f"🤖 {pending['ai_review']['feedback']}")
                 if pending.get("explanation"):
@@ -1849,7 +1866,7 @@ def run_drill(module_type="imperativo", duration_seconds=None):
             user_answer = user_answer or ""
         else:
             if hint_level:
-                st.info(f"💡 Pista: `{make_hint(item['target_form'], hint_level)}`")
+                st.info(f"💡 Pista: `{_hint_for(item, hint_level)}`")
             # Wrapped in a form so pressing Enter submits it (Enter fires the
             # form's FIRST submit button, so Submit must come before the accents).
             # The accent keys are submit buttons too: a plain st.button outside
@@ -1887,7 +1904,7 @@ def run_drill(module_type="imperativo", duration_seconds=None):
         col2, col3 = st.container(key="row_answer_tools").columns(2)
 
         with col2:
-            can_hint = not item.get("choices") and hint_level < len(item["target_form"]) - 1
+            can_hint = not item.get("choices") and hint_level < _hint_limit(item)
             if st.button("💡 Pista (una letra más)", **FULL_WIDTH, disabled=not can_hint):
                 st.session_state[hint_key] = hint_level + 1
                 st.rerun()
@@ -1931,6 +1948,15 @@ def make_hint(target, level):
             out.append(ch)
     return "".join(out)
 
+def _hint_for(item, level):
+    """The letter hint. For the gender drill the article stays masked: its
+    first letter would answer the question being asked."""
+    return genero.hint_text(item, level) if item.get("exercise_type") == "genero_escribir" \
+        else make_hint(item["target_form"], level)
+
+def _hint_limit(item):
+    return genero.hint_limit(item) if item.get("exercise_type") == "genero_escribir" else len(item["target_form"]) - 1
+
 def _claude_review(item, answer):
     """Claude's verdict on a sentence that missed the model answer, cached per
     (question, model answer, typed answer) so a repeat answer costs no second call."""
@@ -1958,10 +1984,14 @@ def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, 
         "exercise_type": item.get("exercise_type"),
         "module": item.get("module"),
     })
-    # Only a missing accent can be named with certainty today; the other
+    # Two kinds of mistake can be named with certainty: a missing accent, and
+    # (in the gender drill) the wrong article on the right noun. The other
     # error tags in data/concepts.json come with tutor corrections.
+    parts = genero.explain(user_answer, item["target_form"]) \
+        if genero.is_gender_item(item) and user_answer.strip() and not revealed else None
+    gender_tag = genero.error_tag(parts) if parts and not is_correct else None
     _log_attempt(item, is_correct and not hinted, typed_answer=user_answer,
-                 error_tag="accent" if accent_fix else None)
+                 error_tag="accent" if accent_fix else gender_tag)
     st.session_state.total_questions += 1
     if is_correct:
         st.session_state.score += 1
@@ -1973,6 +2003,7 @@ def _record_answer(item, user_answer, is_correct, hinted=False, revealed=False, 
         "target_form": item["target_form"],
         "explanation": item.get("explanation", ""),
         "accent_fix": accent_fix,
+        "gender_lines": genero.feedback_lines(parts, bool(item.get("choices"))) if parts and not is_correct else [],
         "user_answer": user_answer,
         "ai_review": ai_review,
         "ai_unavailable": ai_unavailable,
@@ -2074,6 +2105,8 @@ def get_module_concept(module_type):
             return {"overview": d["overview"], "uses": uses}
         elif module_type in pattern_modules.MODULES:
             return pattern_modules.concept(module_type)
+        elif module_type == "genero":
+            return genero.concept()
         elif module_type in ("gustar", "gustar_verbos"):
             d = load_grammar("gustar_verbs.json")["gustar_verbs"]
             pronouns = ", ".join(f"{p['emphasis']} → {p['pronoun']}" for p in d["pronouns"])

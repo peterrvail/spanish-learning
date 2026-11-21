@@ -353,6 +353,17 @@
       ]
     },
     {
+      "id": "genero_articulo",
+      "label": "Género y artículos (el o la)",
+      "kind": "grammar",
+      "modules": [
+        "genero"
+      ],
+      "exercise_type_prefixes": [
+        "genero_"
+      ]
+    },
+    {
       "id": "vocab_de_clase",
       "label": "Vocabulario de mis clases (tarjetas)",
       "kind": "vocab",
