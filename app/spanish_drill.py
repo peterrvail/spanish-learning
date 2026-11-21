@@ -1828,14 +1828,17 @@ def run_drill(module_type="imperativo", duration_seconds=None):
                 if pending.get("hinted"):
                     st.caption("💡 Con pista — volverá a salir en el repaso espaciado.")
             else:
-                st.error(f"❌ Incorrect. The correct form is: '{pending['target_form']}'")
+                # Green is right, yellow is right but for a missing accent, red is wrong.
+                # Yellow still counts as a miss (the accent can change the word).
                 if pending.get("accent_fix"):
-                    st.warning(f"✍️ Solo te faltó la tilde: se escribe **{pending['accent_fix']}**. "
-                               "La tilde cambia la palabra (hablo / habló), así que cuenta como fallo.")
+                    st.warning(f"⚠️ Almost: only the accent is missing. It is written **{pending['accent_fix']}**. "
+                               "The accent can change the word (hablo / habló), so this counts as a miss.")
+                else:
+                    st.error(f"❌ Incorrect. The correct form is: '{pending['target_form']}'")
                 if pending.get("gender_lines"):
                     for line in pending["gender_lines"]:
                         st.markdown(line)
-                else:
+                elif not pending.get("accent_fix"):
                     diff = grading.word_diff(pending.get("user_answer", ""), pending["target_form"])
                     if diff:
                         st.markdown(f"🔍 {diff}")

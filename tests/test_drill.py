@@ -1105,8 +1105,31 @@ def test_missing_accent_counts_as_a_miss_and_shows_the_spelling(db):
     next(b for b in at.button if "Submit" in b.label).click()
     at.run()
     assert at.session_state["answers"][0]["is_correct"] is False
-    assert any("tilde" in w.value for w in at.warning)
+    assert any("only the accent is missing" in w.value and "habló" in w.value for w in at.warning)
+    assert not at.error and not at.success                                          # yellow, not red or green
     assert progress.due_count() == 1
+
+
+def _answer_first_item(item_changes, typed):
+    at = _app()
+    _start_typed_drill(at, "preterito")
+    items = at.session_state["drill_items"]
+    items[0] = dict(items[0], **item_changes)
+    at.run()
+    at.text_input(key=f"answer_{items[0]['id']}").set_value(typed)
+    next(b for b in at.button if "Submit" in b.label).click()
+    at.run()
+    return at
+
+
+def test_feedback_colours_green_yellow_red(db):
+    target = {"target_form": "habló", "accepted_forms": ["habló"], "also_accepted": []}
+    green = _answer_first_item(target, "habló")
+    assert green.success and not green.warning and not green.error
+    yellow = _answer_first_item(target, "hablo")
+    assert yellow.warning and not yellow.success and not yellow.error
+    red = _answer_first_item(target, "hablé")
+    assert red.error and not red.success and not any("accent" in w.value for w in red.warning)
 
 
 def test_resumen_before_any_answer_keeps_the_way_back(db):
